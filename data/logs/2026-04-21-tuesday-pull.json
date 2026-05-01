@@ -1,0 +1,149 @@
+{
+  "id": "2026-04-21-tuesday-pull",
+  "date": "2026-04-21",
+  "day_of_week": "tuesday",
+  "type": "pull",
+  "muscle_groups": [
+    "back",
+    "biceps"
+  ],
+  "phase": "1 (Observation)",
+  "location": "Puerto Escondido — PT gym",
+  "trainer": "PXM personal trainer",
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "inverted-row",
+      "display_name": "Ring Row (warmup)",
+      "weight_raw": "bodyweight",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Warmup — not counted in working volume. **NEW exercise**"
+    },
+    {
+      "exercise_id": "band-assisted-pull-up",
+      "display_name": "Band-Assisted Pull-up",
+      "weight_raw": "BW − green + purple bands",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 10
+        }
+      ],
+      "notes": "Both bands both sets. **Jacob:** green band only, 10 × 10 × 2. **NEW**"
+    },
+    {
+      "exercise_id": "lat-pulldown",
+      "display_name": "Lat Pulldown (cable)",
+      "weight_raw": "45 kg (99 lbs), drop to 40 kg (88 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 45.0,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 45.0,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 45.0,
+          "reps": 10
+        }
+      ],
+      "notes": "Sets 1–2 at 45 kg, set 3 dropped to 40 kg for 12. **Jacob:** 25 kg × 12 × 3"
+    },
+    {
+      "exercise_id": "iso-lateral-high-row",
+      "display_name": "Iso-Lateral High Row (plate)",
+      "weight_raw": "50 kg (110 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 50.0,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 50.0,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 50.0,
+          "reps": 12
+        }
+      ],
+      "notes": "Plate-loaded, seated, thigh pads. **Jacob:** same weight."
+    },
+    {
+      "exercise_id": "plate-loaded-row",
+      "display_name": "Plate-Loaded Row",
+      "weight_raw": "40 kg (88 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 40.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 40.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 40.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Iso-lateral seated row. **Jacob:** 40 kg × 12 × 3."
+    },
+    {
+      "exercise_id": "barbell-curl",
+      "display_name": "Barbell Biceps Curls",
+      "weight_raw": "20 kg (44 lbs) — straight bar only",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 20.0,
+          "reps": 8
+        },
+        {
+          "set": 2,
+          "weight_kg": 20.0,
+          "reps": 8
+        },
+        {
+          "set": 3,
+          "weight_kg": 20.0,
+          "reps": 8
+        }
+      ],
+      "notes": "Bar only, no added plates. **Jacob:** 20 kg × 12."
+    }
+  ],
+  "session_notes": "",
+  "source_md": "Workout Log/2026-04-21-Tuesday-Pull.md"
+}

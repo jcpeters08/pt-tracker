@@ -1,0 +1,20 @@
+{
+  "id": "plate-loaded-shoulder-press",
+  "name": "Plate-Loaded Shoulder Press",
+  "primary_muscle": "shoulders",
+  "secondary_muscles": [
+    "triceps",
+    "front-delts"
+  ],
+  "equipment": [
+    "plate-loaded-machine"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Adjust seat so handles align at ear/shoulder",
+    "Drive elbows under handles"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

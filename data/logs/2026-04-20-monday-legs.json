@@ -1,0 +1,152 @@
+{
+  "id": "2026-04-20-monday-legs",
+  "date": "2026-04-20",
+  "day_of_week": "monday",
+  "type": "legs",
+  "muscle_groups": [
+    "legs",
+    "glutes",
+    "hamstrings",
+    "quads",
+    "calves"
+  ],
+  "phase": "1 (Observation)",
+  "location": "Puerto Escondido — PT gym",
+  "trainer": "PXM personal trainer",
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "plate-loaded-deadlift-machine",
+      "display_name": "Plate-Loaded Deadlift Machine (warmup)",
+      "weight_raw": "0 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 10
+        }
+      ],
+      "notes": "Warmup — not counted in volume"
+    },
+    {
+      "exercise_id": "plate-loaded-deadlift-machine",
+      "display_name": "Plate-Loaded Deadlift Machine",
+      "weight_raw": "50 kg (110 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 50.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 50.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 50.0,
+          "reps": 15
+        }
+      ],
+      "notes": "+10 kg vs Thu 4/16 (was 40 kg × 15). Jacob: 43 kg"
+    },
+    {
+      "exercise_id": "machine-squat",
+      "display_name": "Machine Squat",
+      "weight_raw": "53 kg (117 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 53.0,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 53.0,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 53.0,
+          "reps": 12
+        }
+      ],
+      "notes": "+3 kg vs Thu (was 50 kg × 15). Jacob: 10 reps at same wt"
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "display_name": "Seated Leg Curl",
+      "weight_raw": "28 kg (62 lbs), last set 31 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 28.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 28.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 28.0,
+          "reps": 15
+        }
+      ],
+      "notes": "+3 kg vs Thu. Top set pushed to 31 kg. Jacob: 25 kg × 15"
+    },
+    {
+      "exercise_id": "leg-press",
+      "display_name": "45-Degree Incline Leg Press",
+      "weight_raw": "120 kg (265 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 120.0,
+          "reps": 20
+        },
+        {
+          "set": 2,
+          "weight_kg": 120.0,
+          "reps": 20
+        },
+        {
+          "set": 3,
+          "weight_kg": 120.0,
+          "reps": 20
+        }
+      ],
+      "notes": "+10 kg AND +5 reps/set vs Thu (was 110 × 15/15/20). Jacob: 80 kg × 14"
+    },
+    {
+      "exercise_id": "calf-raise",
+      "display_name": "Standing Calf Raise",
+      "weight_raw": "40 kg (88 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 40.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 40.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 40.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Unchanged — ready to progress next session"
+    }
+  ],
+  "session_notes": "",
+  "source_md": "Workout Log/2026-04-20-Monday-Legs.md"
+}

@@ -1,0 +1,136 @@
+{
+  "id": "2026-04-15-wednesday-pull",
+  "date": "2026-04-15",
+  "day_of_week": "wednesday",
+  "type": "pull",
+  "muscle_groups": [
+    "back",
+    "biceps"
+  ],
+  "phase": "1 (Observation)",
+  "location": "Puerto Escondido — PT gym",
+  "trainer": "PXM personal trainer",
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "lat-pulldown",
+      "display_name": "Lat Pulldown",
+      "weight_raw": "25 kg (55 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 25.0,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 25.0,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 25.0,
+          "reps": 12
+        }
+      ],
+      "notes": "Jacob used 20 kg"
+    },
+    {
+      "exercise_id": "seated-cable-row",
+      "display_name": "Seated Cable Row",
+      "weight_raw": "20 kg (44 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 20.0,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 20.0,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 20.0,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-curl",
+      "display_name": "Dumbbell Biceps Curl",
+      "weight_raw": "10 kg (22 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 10.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 10.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 10.0,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "cable-face-pull",
+      "display_name": "Face Pull (Cable with Rope)",
+      "weight_raw": "10 kg (22 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 10.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 10.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 10.0,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "hammer-curl",
+      "display_name": "Hammer Curls (Dumbbell)",
+      "weight_raw": "10 kg (22 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 10.0,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 10.0,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 10.0,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "session_notes": "",
+  "source_md": "Workout Log/2026-04-15-Wednesday-Pull.md"
+}

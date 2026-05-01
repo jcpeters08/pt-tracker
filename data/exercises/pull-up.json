@@ -1,0 +1,20 @@
+{
+  "id": "pull-up",
+  "name": "Pull-Up",
+  "primary_muscle": "back",
+  "secondary_muscles": [
+    "biceps",
+    "lats"
+  ],
+  "equipment": [
+    "pull-up-bar"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Full hang at the bottom",
+    "Chin clears the bar at the top"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

@@ -1,0 +1,20 @@
+{
+  "id": "plate-loaded-chest-press",
+  "name": "Plate-Loaded Chest Press",
+  "primary_muscle": "chest",
+  "secondary_muscles": [
+    "triceps",
+    "front-delts"
+  ],
+  "equipment": [
+    "plate-loaded-machine"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Adjust seat so handles align with mid-chest",
+    "Full ROM — handles to chest, full lockout"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

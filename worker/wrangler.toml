@@ -1,0 +1,21 @@
+name = "pt-tracker-auth"
+main = "src/index.ts"
+compatibility_date = "2026-01-15"
+
+# Public (non-secret) config. Edit if the app URL or allowed origin changes.
+[vars]
+ALLOWED_ORIGIN = "https://jcpeters08.github.io"
+APP_URL = "https://jcpeters08.github.io/pt-tracker/"
+ALLOWED_EMAILS = "jcpeters08@gmail.com"
+
+# KV namespace for email codes, sessions, and the encrypted PAT.
+# Run `wrangler kv namespace create pt_tracker_auth_kv` and paste the returned id below.
+# Also create a preview namespace for `wrangler dev`: `wrangler kv namespace create pt_tracker_auth_kv --preview`.
+[[kv_namespaces]]
+binding = "KV"
+id = "REPLACE_WITH_KV_ID"
+preview_id = "REPLACE_WITH_PREVIEW_KV_ID"
+
+# Secrets (do NOT put values here — set via `wrangler secret put`):
+#   RESEND_API_KEY   — from https://resend.com/api-keys
+#   PAT_ENC_KEY      — 32 random bytes, base64. Generate: `openssl rand -base64 32`

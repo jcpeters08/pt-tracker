@@ -1,0 +1,22 @@
+{
+  "id": "2026-04-17-friday-push-core",
+  "date": "2026-04-17",
+  "day_of_week": "friday",
+  "type": "push-core",
+  "muscle_groups": [
+    "chest",
+    "shoulders",
+    "core",
+    "abs"
+  ],
+  "phase": "1 (Observation)",
+  "location": "Puerto Escondido — PT gym",
+  "trainer": "PXM personal trainer",
+  "training_partner": "Jacob",
+  "thermocycling": false,
+  "fasted": true,
+  "warmup_exercises": [],
+  "exercises": [],
+  "session_notes": "",
+  "source_md": "Workout Log/2026-04-17-Friday-Push-Core.md"
+}

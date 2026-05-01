@@ -1,0 +1,17 @@
+{
+  "id": "calf-raise",
+  "name": "Standing Calf Raise (Machine)",
+  "primary_muscle": "calves",
+  "secondary_muscles": [],
+  "equipment": [
+    "machine"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Full ROM — drop heel below platform, then full extension",
+    "Pause at the top"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

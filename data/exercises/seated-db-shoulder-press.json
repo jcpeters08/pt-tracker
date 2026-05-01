@@ -1,0 +1,21 @@
+{
+  "id": "seated-db-shoulder-press",
+  "name": "Seated Dumbbell Shoulder Press",
+  "primary_muscle": "shoulders",
+  "secondary_muscles": [
+    "triceps",
+    "front-delts"
+  ],
+  "equipment": [
+    "dumbbells",
+    "bench"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Bench upright, lower back supported",
+    "DBs start at ear height, press straight up"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

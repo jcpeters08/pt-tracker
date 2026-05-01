@@ -1,0 +1,21 @@
+{
+  "id": "band-assisted-pull-up",
+  "name": "Band-Assisted Pull-Up",
+  "primary_muscle": "back",
+  "secondary_muscles": [
+    "biceps",
+    "lats"
+  ],
+  "equipment": [
+    "pull-up-bar",
+    "resistance-band"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Loop band around the bar; foot in the band",
+    "Same form as a pull-up — no kip"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

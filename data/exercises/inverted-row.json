@@ -1,0 +1,21 @@
+{
+  "id": "inverted-row",
+  "name": "Inverted Row",
+  "primary_muscle": "back",
+  "secondary_muscles": [
+    "biceps",
+    "rear-delts"
+  ],
+  "equipment": [
+    "smith-machine",
+    "barbell"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Body straight from heels to head",
+    "Pull chest to bar"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

@@ -1,0 +1,20 @@
+{
+  "id": "leg-press",
+  "name": "45-Degree Incline Leg Press",
+  "primary_muscle": "quads",
+  "secondary_muscles": [
+    "glutes",
+    "hamstrings"
+  ],
+  "equipment": [
+    "plate-loaded-machine"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Don't lock out at the top",
+    "Push through mid-foot"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

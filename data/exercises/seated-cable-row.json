@@ -1,0 +1,20 @@
+{
+  "id": "seated-cable-row",
+  "name": "Seated Cable Row",
+  "primary_muscle": "back",
+  "secondary_muscles": [
+    "biceps"
+  ],
+  "equipment": [
+    "cable",
+    "row-attachment"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Tall posture, chest up",
+    "Pull to navel; squeeze at the back"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

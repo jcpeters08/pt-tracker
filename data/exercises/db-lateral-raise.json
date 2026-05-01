@@ -1,0 +1,18 @@
+{
+  "id": "db-lateral-raise",
+  "name": "Dumbbell Lateral Raise",
+  "primary_muscle": "lateral-delts",
+  "secondary_muscles": [],
+  "equipment": [
+    "dumbbells"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Lead with the elbow, not the hand",
+    "Stop at shoulder height — no higher",
+    "Slight forward lean isolates the side delt"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

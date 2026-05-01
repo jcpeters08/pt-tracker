@@ -1,0 +1,157 @@
+{
+  "id": "2026-04-27-monday-legs",
+  "date": "2026-04-27",
+  "day_of_week": "monday",
+  "type": "legs",
+  "muscle_groups": [
+    "legs",
+    "glutes",
+    "hamstrings",
+    "quads",
+    "calves"
+  ],
+  "phase": "1 (Observation)",
+  "location": "Puerto Escondido — PT gym",
+  "trainer": "PXM personal trainer",
+  "training_partner": "Jacob",
+  "thermocycling": false,
+  "fasted": true,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "plate-loaded-deadlift-machine",
+      "display_name": "Plate-Loaded Deadlift Machine (warmup)",
+      "weight_raw": "0 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 10
+        }
+      ],
+      "notes": "Warmup — not counted in volume"
+    },
+    {
+      "exercise_id": "plate-loaded-deadlift-machine",
+      "display_name": "Plate-Loaded Deadlift Machine",
+      "weight_raw": "50 kg (110 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 50.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 50.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 50.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Held vs 4/23. Lower back clean. **Jacob:** 40 kg"
+    },
+    {
+      "exercise_id": "machine-squat",
+      "display_name": "Machine Squat",
+      "weight_raw": "50 kg (110 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 50.0,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 50.0,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 50.0,
+          "reps": 12
+        }
+      ],
+      "notes": "**−3 kg vs 4/23** (was 53 kg). **Jacob:** 10 reps at same weight"
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "display_name": "Seated Leg Curl",
+      "weight_raw": "25 kg (55 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 25.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 25.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 25.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Held vs 4/23. **Jacob:** 20 kg"
+    },
+    {
+      "exercise_id": "leg-press",
+      "display_name": "45-Degree Incline Leg Press",
+      "weight_raw": "120 kg (265 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 120.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 120.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 120.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Held vs 4/23. **Jacob:** skipped — lower back pain"
+    },
+    {
+      "exercise_id": "calf-raise",
+      "display_name": "Standing Calf Raise",
+      "weight_raw": "40 kg (88 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 40.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 40.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 40.0,
+          "reps": 15
+        }
+      ],
+      "notes": "**Flat 5 sessions running.** **Jacob:** same"
+    }
+  ],
+  "session_notes": "Fasted training (6am, eating window starts at noon).\n**Held back intentionally.** Could have pushed more but consciously didn't. No specific recovery flag — self-regulated effort.\n**Machine squat regressed −3 kg** (53 → 50). Two sessions now off the 4/20 baseline. Reclaim 53 next leg day.\n**Calves flat 5 sessions running.** 4/20 flag (bump to 45 kg) unactioned across three leg days. Push 45 kg × 15 × 3 next session — non-negotiable.\n**Leg press held at 120 × 15 × 3.** Second session at the regressed rep target — didn't reclaim 4/20 AMRAP (20/20/20).\n**Seated leg curl held at 25 kg.** Still −3 kg below 4/20 baseline. Push 28 next session.\nJacob skipped leg press (lower back pain). Loads on deadlift, squat, and leg curl all held same as 4/23.\nPer [[project_pt_programming_style|PT programming pattern]]: heavy compound first (deadlift), so leg curl + calf numbers are post-fatigue — don't read as fresh capacity.",
+  "source_md": "Workout Log/2026-04-27-Monday-Legs.md"
+}

@@ -1,0 +1,17 @@
+{
+  "id": "db-glute-bridge",
+  "name": "Dumbbell Glute Bridge",
+  "primary_muscle": "glutes",
+  "secondary_muscles": [],
+  "equipment": [
+    "dumbbells"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "DB on hip crease",
+    "Drive through heels; squeeze glutes hard at the top"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

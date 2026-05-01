@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+
+# Node / Wrangler
+worker/node_modules/
+worker/.wrangler/
+worker/.dev.vars
+
+# Logs
+*.log
+
+# Local secrets (PAT lives in the Worker's encrypted KV; never on disk)
+.env
+.env.local
+*.pat

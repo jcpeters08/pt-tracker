@@ -1,0 +1,17 @@
+{
+  "id": "db-front-raise",
+  "name": "Dumbbell Front Raise",
+  "primary_muscle": "front-delts",
+  "secondary_muscles": [],
+  "equipment": [
+    "dumbbells"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Raise to shoulder height",
+    "Control the descent"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

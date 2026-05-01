@@ -1,0 +1,19 @@
+{
+  "id": "smith-machine-squat",
+  "name": "Smith Machine Squat",
+  "primary_muscle": "quads",
+  "secondary_muscles": [
+    "glutes"
+  ],
+  "equipment": [
+    "smith-machine"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Feet slightly forward of the bar path",
+    "Full depth; control the eccentric"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

@@ -1,0 +1,19 @@
+{
+  "id": "db-goblet-squat",
+  "name": "Dumbbell Goblet Squat",
+  "primary_muscle": "quads",
+  "secondary_muscles": [
+    "glutes"
+  ],
+  "equipment": [
+    "dumbbells"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Hold DB at chest, elbows tucked",
+    "Knees track over toes; full depth"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

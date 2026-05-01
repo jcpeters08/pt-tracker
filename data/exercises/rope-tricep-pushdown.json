@@ -1,0 +1,18 @@
+{
+  "id": "rope-tricep-pushdown",
+  "name": "Rope Tricep Pushdown (Cable)",
+  "primary_muscle": "triceps",
+  "secondary_muscles": [],
+  "equipment": [
+    "cable",
+    "rope-attachment"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Elbows pinned at sides",
+    "Spread the rope at the bottom for full contraction"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

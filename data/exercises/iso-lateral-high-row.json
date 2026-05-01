@@ -1,0 +1,20 @@
+{
+  "id": "iso-lateral-high-row",
+  "name": "Iso-Lateral High Row",
+  "primary_muscle": "back",
+  "secondary_muscles": [
+    "lats",
+    "rear-delts"
+  ],
+  "equipment": [
+    "plate-loaded-machine"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Pull each arm independently",
+    "Drive elbows down and back"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

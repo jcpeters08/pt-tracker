@@ -1,0 +1,22 @@
+{
+  "id": "flat-db-bench-press",
+  "name": "Flat Dumbbell Bench Press",
+  "primary_muscle": "chest",
+  "secondary_muscles": [
+    "triceps",
+    "front-delts"
+  ],
+  "equipment": [
+    "dumbbells",
+    "flat-bench"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Feet flat, glutes engaged, shoulder blades retracted",
+    "DBs travel slightly inward at the top",
+    "Control the eccentric — 2 sec down, 1 sec up"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

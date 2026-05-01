@@ -1,0 +1,20 @@
+{
+  "id": "bent-over-db-row",
+  "name": "Bent-Over Dumbbell Row",
+  "primary_muscle": "back",
+  "secondary_muscles": [
+    "biceps",
+    "rear-delts"
+  ],
+  "equipment": [
+    "dumbbells"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Hinge at hip, neutral spine",
+    "Pull DBs to hips, not to chest"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

@@ -1,0 +1,17 @@
+{
+  "id": "db-tricep-kickback",
+  "name": "Dumbbell Tricep Kickback",
+  "primary_muscle": "triceps",
+  "secondary_muscles": [],
+  "equipment": [
+    "dumbbells"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Hinge at hip, flat back",
+    "Pin upper arm to torso; extend at elbow only"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

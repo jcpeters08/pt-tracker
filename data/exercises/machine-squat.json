@@ -1,0 +1,19 @@
+{
+  "id": "machine-squat",
+  "name": "Machine Squat",
+  "primary_muscle": "quads",
+  "secondary_muscles": [
+    "glutes"
+  ],
+  "equipment": [
+    "machine"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Adjust seat / pad for full ROM",
+    "Drive through heels"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

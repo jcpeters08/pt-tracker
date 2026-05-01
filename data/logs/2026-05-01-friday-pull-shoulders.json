@@ -1,0 +1,157 @@
+{
+  "id": "2026-05-01-friday-pull-shoulders",
+  "date": "2026-05-01",
+  "day_of_week": "friday",
+  "type": "pull-shoulders",
+  "muscle_groups": [
+    "back",
+    "lats",
+    "shoulders",
+    "biceps"
+  ],
+  "phase": "1 (Observation) — final week",
+  "location": "Puerto Escondido — PT gym",
+  "trainer": "PXM personal trainer",
+  "training_partner": "Jacob",
+  "thermocycling": false,
+  "fasted": true,
+  "warmup_exercises": [
+    {
+      "exercise_id": "dual-rope-straight-arm-pulldown",
+      "display_name": "Dual-rope straight-arm pulldown",
+      "weight_raw": "5 kg/arm (11 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 5.0,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 5.0,
+          "reps": 10
+        }
+      ],
+      "notes": "Warmup — not counted in volume"
+    }
+  ],
+  "exercises": [
+    {
+      "exercise_id": "dual-rope-straight-arm-pulldown",
+      "display_name": "Dual-rope straight-arm pulldown",
+      "weight_raw": "10 kg/arm (22 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 10.0,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 10.0,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 10.0,
+          "reps": 12
+        }
+      ],
+      "notes": "**NEW exercise** — lat isolation, no biceps engagement"
+    },
+    {
+      "exercise_id": "inverted-row",
+      "display_name": "Inverted Row",
+      "weight_raw": "bodyweight",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 0.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Bodyweight only, clean across all 3 sets"
+    },
+    {
+      "exercise_id": "seated-db-shoulder-press",
+      "display_name": "Seated DB Shoulder Press",
+      "weight_raw": "10 kg (22 lbs) ea",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 10.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 10.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 10.0,
+          "reps": 15
+        }
+      ],
+      "notes": "**+5 kg / +100% vs 4/13 baseline** (was 5 kg × 15 × 3). **Jacob:** 8 kg"
+    },
+    {
+      "exercise_id": "db-lateral-raise",
+      "display_name": "Seated DB Lateral Raise",
+      "weight_raw": "6 kg (13 lbs) ea",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 6.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 6.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 6.0,
+          "reps": 15
+        }
+      ],
+      "notes": "**First direct lateral delt work logged in Phase 1**"
+    },
+    {
+      "exercise_id": "barbell-curl",
+      "display_name": "Standing Straight-Bar Biceps Curl",
+      "weight_raw": "25 kg (55 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 25.0,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 25.0,
+          "reps": 8
+        },
+        {
+          "set": 3,
+          "weight_kg": 25.0,
+          "reps": 10
+        }
+      ],
+      "notes": "**+5 kg vs 4/28 PR** (20 kg × 10/10/10). Set 2 dipped, set 3 recovered"
+    }
+  ],
+  "session_notes": "Fasted 6am training. Eating window opens at noon.\n**Shoulder gap addressed.** First Phase 1 session with both shoulder press AND direct lateral delt isolation in one workout. The 4/22 push day had ZERO shoulder work — this directly compensates. PT may have heard the flag.\n**Two PRs today:** DB shoulder press (5→10 kg, 100% jump from baseline) and barbell curl (20→25 kg, +25%). Both on a \"deload\" week pattern — mixed signal vs 4/30 leg compound deload.\n**Biceps curl set 2 dipped to 8 reps**, set 3 recovered to 10. Suggests 25 kg is at the top of clean range — earn 3×10 clean before pushing to 27.5 kg.\n**Two new exercises logged:** dual-rope straight-arm pulldown (lat isolation, no elbow flexion — biceps-free pulling) and seated DB lateral raise (lateral delt isolation). Both useful for Phase 2 carry-over.\nPer [[project_pt_programming_style|PT programming pattern]]: heavy compound first, then accessories. Curl came AFTER lateral raise + shoulder press — biceps were less pre-fatigued than typical pull days. Likely why the curl PR landed.\n**Still no face pulls / rear delt work** — fourth session running (4/21, 4/22, 4/28, 5/1). Front delts + lateral delts hit today, but rear delts skipped again. Carry into Phase 2 programming.",
+  "source_md": "Workout Log/2026-05-01-Friday-Pull-Shoulders.md"
+}

@@ -1,0 +1,17 @@
+{
+  "id": "db-reverse-fly",
+  "name": "Dumbbell Reverse Fly",
+  "primary_muscle": "rear-delts",
+  "secondary_muscles": [],
+  "equipment": [
+    "dumbbells"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Bent over OR chest on incline bench",
+    "Lead with the elbows; squeeze rear delts"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

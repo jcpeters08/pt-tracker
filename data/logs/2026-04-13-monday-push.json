@@ -1,0 +1,142 @@
+{
+  "id": "2026-04-13-monday-push",
+  "date": "2026-04-13",
+  "day_of_week": "monday",
+  "type": "push",
+  "muscle_groups": [
+    "chest",
+    "triceps",
+    "shoulders"
+  ],
+  "phase": "1 (Observation)",
+  "location": "Puerto Escondido — PT gym",
+  "trainer": "PXM personal trainer",
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "incline-db-bench-press",
+      "display_name": "Incline Dumbbell Bench Press",
+      "weight_raw": "10 kg (22 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 10.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 10.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 10.0,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "flat-db-bench-press",
+      "display_name": "Flat Dumbbell Bench Press",
+      "weight_raw": "14 kg (31 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 14.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 14.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 14.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Jacob used 12 kg"
+    },
+    {
+      "exercise_id": "db-tricep-kickback",
+      "display_name": "Dumbbell Bent-Over Triceps Kickback",
+      "weight_raw": "15 kg (33 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 15.0,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 15.0,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 15.0,
+          "reps": 10
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "rope-tricep-pushdown",
+      "display_name": "Rope Triceps Pushdown (Cable)",
+      "weight_raw": "15 kg (33 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 15.0,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 15.0,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 15.0,
+          "reps": 10
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "seated-db-shoulder-press",
+      "display_name": "Seated Dumbbell Shoulder Press",
+      "weight_raw": "5 kg (11 lbs) each",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 5.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 5.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 5.0,
+          "reps": 15
+        },
+        {
+          "set": 4,
+          "weight_kg": 5.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Free dumbbell on adjustable bench — 5 kg is full dumbbell weight, not added plates"
+    }
+  ],
+  "session_notes": "",
+  "source_md": "Workout Log/2026-04-13-Monday-Push.md"
+}

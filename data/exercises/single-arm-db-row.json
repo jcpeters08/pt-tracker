@@ -1,0 +1,21 @@
+{
+  "id": "single-arm-db-row",
+  "name": "Single-Arm Dumbbell Row",
+  "primary_muscle": "back",
+  "secondary_muscles": [
+    "biceps",
+    "rear-delts"
+  ],
+  "equipment": [
+    "dumbbells",
+    "bench"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Knee + hand on bench, flat back",
+    "Drive elbow back — don't twist torso"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

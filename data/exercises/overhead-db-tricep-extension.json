@@ -1,0 +1,17 @@
+{
+  "id": "overhead-db-tricep-extension",
+  "name": "Overhead Dumbbell Tricep Extension",
+  "primary_muscle": "triceps",
+  "secondary_muscles": [],
+  "equipment": [
+    "dumbbells"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Both hands cradle one DB",
+    "Lower behind head; keep elbows close — no flaring"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

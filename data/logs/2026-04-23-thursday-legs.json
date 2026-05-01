@@ -1,0 +1,157 @@
+{
+  "id": "2026-04-23-thursday-legs",
+  "date": "2026-04-23",
+  "day_of_week": "thursday",
+  "type": "legs",
+  "muscle_groups": [
+    "legs",
+    "glutes",
+    "hamstrings",
+    "quads",
+    "calves"
+  ],
+  "phase": "1 (Observation)",
+  "location": "Puerto Escondido — PT gym",
+  "trainer": "PXM personal trainer",
+  "training_partner": "Jacob",
+  "thermocycling": false,
+  "fasted": true,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "plate-loaded-deadlift-machine",
+      "display_name": "Plate-Loaded Deadlift Machine (warmup)",
+      "weight_raw": "0 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 10
+        }
+      ],
+      "notes": "Warmup — not counted in volume"
+    },
+    {
+      "exercise_id": "plate-loaded-deadlift-machine",
+      "display_name": "Plate-Loaded Deadlift Machine",
+      "weight_raw": "50 kg (110 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 50.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 50.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 50.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Held vs 4/20. Jacob: 40 kg"
+    },
+    {
+      "exercise_id": "machine-squat",
+      "display_name": "Machine Squat",
+      "weight_raw": "53 kg (117 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 53.0,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 53.0,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 53.0,
+          "reps": 12
+        }
+      ],
+      "notes": "Held vs 4/20. Jacob: 10 reps at same weight"
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "display_name": "Seated Leg Curl",
+      "weight_raw": "25 kg (55 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 25.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 25.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 25.0,
+          "reps": 15
+        }
+      ],
+      "notes": "**−3 kg vs 4/20** (was 28 kg, top 31). Jacob: same"
+    },
+    {
+      "exercise_id": "leg-press",
+      "display_name": "45-Degree Incline Leg Press",
+      "weight_raw": "120 kg (265 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 120.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 120.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 120.0,
+          "reps": 15
+        }
+      ],
+      "notes": "**−5 reps/set vs 4/20** (was 20/20/20). Jacob: 80 kg × 8"
+    },
+    {
+      "exercise_id": "calf-raise",
+      "display_name": "Standing Calf Raise",
+      "weight_raw": "40 kg (88 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 40.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 40.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 40.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Flat 4 sessions running. Jacob: same"
+    }
+  ],
+  "session_notes": "Fasted training (6am, eating window starts at noon).\n**Intentional hold.** Full body tired + sore. Hour hike at Punta Cometa with Jacob later same afternoon — legs saved for that, not left in the gym.\nRegressions (leg curl load, leg press reps) are a deliberate ease-back, not a strength loss — context-bound to today. Do not treat as a reset baseline.\nCalves flat 4 sessions running — 4/20 flag still stands: bump to 45 kg next calf session.\nJacob: leg press gap widened (80 × 8 vs 120 × 15).",
+  "source_md": "Workout Log/2026-04-23-Thursday-Legs.md"
+}

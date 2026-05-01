@@ -1,0 +1,18 @@
+{
+  "id": "db-skullcrusher",
+  "name": "Dumbbell Skullcrusher",
+  "primary_muscle": "triceps",
+  "secondary_muscles": [],
+  "equipment": [
+    "dumbbells",
+    "flat-bench"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Lying flat, DBs over chest",
+    "Hinge at the elbow only — keep upper arms vertical"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

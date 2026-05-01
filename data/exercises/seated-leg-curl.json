@@ -1,0 +1,17 @@
+{
+  "id": "seated-leg-curl",
+  "name": "Seated Leg Curl",
+  "primary_muscle": "hamstrings",
+  "secondary_muscles": [],
+  "equipment": [
+    "machine"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Pad just above ankles",
+    "Squeeze at the contracted position"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

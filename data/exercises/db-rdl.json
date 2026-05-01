@@ -1,0 +1,19 @@
+{
+  "id": "db-rdl",
+  "name": "Dumbbell Romanian Deadlift",
+  "primary_muscle": "hamstrings",
+  "secondary_muscles": [
+    "glutes"
+  ],
+  "equipment": [
+    "dumbbells"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Hinge at hips, slight knee bend",
+    "DBs trail down legs; feel hamstring stretch"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

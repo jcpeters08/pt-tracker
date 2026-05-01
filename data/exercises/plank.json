@@ -1,0 +1,15 @@
+{
+  "id": "plank",
+  "name": "Plank",
+  "primary_muscle": "core",
+  "secondary_muscles": [],
+  "equipment": [],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Straight line from heels to head",
+    "Squeeze glutes; don't let hips sag"
+  ],
+  "default_load_unit": "sec",
+  "notes": ""
+}

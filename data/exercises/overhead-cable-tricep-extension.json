@@ -1,0 +1,18 @@
+{
+  "id": "overhead-cable-tricep-extension",
+  "name": "Overhead Cable Tricep Extension (Rope)",
+  "primary_muscle": "triceps",
+  "secondary_muscles": [],
+  "equipment": [
+    "cable",
+    "rope-attachment"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Face away from cable, slight forward lean",
+    "Drive hands apart at the bottom of the rep"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

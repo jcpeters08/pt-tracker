@@ -1,0 +1,19 @@
+{
+  "id": "hammer-curl",
+  "name": "Hammer Curl",
+  "primary_muscle": "biceps",
+  "secondary_muscles": [
+    "forearms"
+  ],
+  "equipment": [
+    "dumbbells"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Neutral grip throughout",
+    "Brachialis emphasis — slow eccentric"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

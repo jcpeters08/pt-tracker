@@ -1,0 +1,18 @@
+{
+  "id": "single-leg-calf-raise",
+  "name": "Single-Leg Calf Raise (on Step)",
+  "primary_muscle": "calves",
+  "secondary_muscles": [],
+  "equipment": [
+    "dumbbells",
+    "step"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Same-side DB held in hand",
+    "Drop heel below the step; full extension at the top"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

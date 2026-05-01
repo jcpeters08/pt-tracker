@@ -1,0 +1,21 @@
+{
+  "id": "lat-pulldown",
+  "name": "Lat Pulldown",
+  "primary_muscle": "back",
+  "secondary_muscles": [
+    "biceps",
+    "lats"
+  ],
+  "equipment": [
+    "cable",
+    "lat-bar"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Slight backward lean",
+    "Pull to upper chest; drive elbows down"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

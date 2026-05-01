@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PT Tracker">
+<meta name="theme-color" content="#B23A3A">
+<title>🏋️ PT Tracker</title>
+<style>
+  :root {
+    --bg: #FAF7F2;
+    --bg-card: #FFFFFF;
+    --bg-soft: #F2EDE5;
+    --ink: #2A1F1A;
+    --ink-soft: #5C4F47;
+    --ink-muted: #8B7E75;
+    --accent: #B23A3A;
+    --accent-ink: #FFFFFF;
+    --accent-soft: #F2D7D9;
+    --good: #3D6B4D;
+    --warn: #B07514;
+    --rule: #E5DDD2;
+    --shadow: 0 1px 2px rgba(40,25,15,.06), 0 4px 16px rgba(40,25,15,.06);
+    --radius: 12px;
+    --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  h1, h2, h3, .serif { font-family: var(--serif); font-weight: 600; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  button { font-family: inherit; font-size: inherit; cursor: pointer; min-height: 44px; }
+  input, select, textarea {
+    font-family: inherit;
+    font-size: 16px;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: var(--bg-card);
+    color: var(--ink);
+    min-height: 44px;
+  }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 18px 14px 80px; }
+
+  /* Header */
+  header.app {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--bg);
+    padding: 14px 0 10px; margin-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .header-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px;
+  }
+  header.app h1 { font-size: 22px; margin: 0; }
+  .routine-pill {
+    font-size: 13px; color: var(--ink-soft);
+    background: var(--bg-soft); border: 1px solid var(--rule);
+    padding: 6px 10px; border-radius: 999px; flex: 1;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .signout-btn {
+    background: transparent; border: none; color: var(--ink-muted);
+    font-size: 20px; padding: 6px 8px; min-height: 0;
+  }
+
+  /* Day toggle */
+  .day-toggle {
+    display: flex; gap: 6px; overflow-x: auto;
+    padding: 4px 0; margin-top: 12px;
+    scrollbar-width: none;
+  }
+  .day-toggle::-webkit-scrollbar { display: none; }
+  .day-pill {
+    flex: 0 0 auto;
+    background: var(--bg-card); border: 1px solid var(--rule); color: var(--ink);
+    border-radius: 10px; padding: 8px 14px;
+    font-weight: 600; font-size: 13px;
+    text-align: center; min-width: 64px;
+  }
+  .day-pill.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .day-pill.today  { box-shadow: 0 0 0 2px var(--accent-soft); }
+  .day-pill.rest   { color: var(--ink-muted); background: var(--bg); }
+  .day-pill .day-label { font-size: 11px; font-weight: 500; opacity: 0.85; display: block; margin-top: 2px; }
+
+  /* Setup panels */
+  .setup {
+    background: var(--bg-card); border: 1px solid var(--rule); border-radius: var(--radius);
+    padding: 22px; box-shadow: var(--shadow); margin-bottom: 18px;
+  }
+  .setup h2 { margin-top: 0; font-size: 22px; }
+  .setup .row { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .setup input { flex: 1; min-width: 220px; }
+  .btn {
+    background: var(--accent); color: var(--accent-ink);
+    border: none; border-radius: 8px; padding: 12px 18px; font-weight: 600;
+  }
+  .btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  .btn.subtle { background: var(--bg-soft); color: var(--ink); border: 1px solid var(--rule); }
+  .btn[disabled] { opacity: .5; cursor: not-allowed; }
+  .status-msg { margin-top: 10px; font-size: 14px; min-height: 18px; }
+  .status-msg.ok  { color: var(--good); }
+  .status-msg.err { color: var(--accent); }
+
+  /* Warm-up card */
+  .warmup {
+    background: var(--bg-soft); border: 1px solid var(--rule); border-radius: var(--radius);
+    padding: 12px 14px; margin-bottom: 12px;
+    font-size: 14px; color: var(--ink-soft);
+  }
+  .warmup b { color: var(--ink); }
+
+  /* Exercise card */
+  .ex-card {
+    background: var(--bg-card); border: 1px solid var(--rule); border-radius: var(--radius);
+    padding: 14px; margin-bottom: 14px; box-shadow: var(--shadow);
+  }
+  .ex-head { display: flex; gap: 12px; align-items: flex-start; }
+  .ex-img {
+    flex: 0 0 88px; height: 88px; width: 88px;
+    background: var(--bg-soft); border-radius: 8px;
+    overflow: hidden; display: flex; align-items: center; justify-content: center;
+    font-size: 32px; color: var(--ink-muted);
+  }
+  .ex-img img { width: 100%; height: 100%; object-fit: cover; }
+  .ex-meta h3 { margin: 0 0 4px; font-size: 18px; line-height: 1.2; }
+  .ex-meta .muscles { font-size: 12px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .04em; }
+  .ex-meta .target { font-size: 14px; color: var(--ink-soft); margin-top: 6px; }
+  .ex-meta .target b { color: var(--ink); }
+  .ex-meta .video { font-size: 13px; margin-top: 6px; display: inline-block; }
+
+  .ex-body { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--rule); }
+  .set-row {
+    display: grid; grid-template-columns: 36px 1fr 1fr 92px;
+    gap: 8px; align-items: center; margin-bottom: 8px;
+  }
+  .set-row .set-num { font-weight: 600; color: var(--ink-soft); font-size: 13px; }
+  .set-row input { width: 100%; }
+  .set-row .done-btn {
+    background: var(--bg-soft); border: 1px solid var(--rule); border-radius: 8px;
+    color: var(--ink-soft); font-size: 13px; padding: 0 10px; min-height: 40px;
+  }
+  .set-row.done .done-btn {
+    background: var(--good); color: white; border-color: var(--good);
+  }
+  .set-row .unit-hint { font-size: 11px; color: var(--ink-muted); padding-left: 4px; }
+
+  .ex-card .add-set {
+    margin-top: 6px; background: transparent; color: var(--accent);
+    border: 1px dashed var(--accent); border-radius: 8px;
+    padding: 8px 12px; width: 100%; font-size: 13px;
+  }
+  .ex-card .ex-notes {
+    width: 100%; margin-top: 10px; min-height: 36px;
+    font-size: 14px;
+  }
+
+  /* Submit */
+  .session-notes {
+    background: var(--bg-card); border: 1px solid var(--rule); border-radius: var(--radius);
+    padding: 14px; margin: 18px 0;
+  }
+  .session-notes textarea { width: 100%; min-height: 80px; resize: vertical; }
+  .submit-row {
+    position: sticky; bottom: 0; background: var(--bg);
+    padding: 10px 0 14px; margin: 0 -2px;
+    box-shadow: 0 -8px 16px -8px rgba(40,25,15,.06);
+  }
+  .submit-row .btn { width: 100%; padding: 16px; font-size: 16px; }
+
+  /* Empty / rest day */
+  .rest-day-msg {
+    background: var(--bg-card); border: 1px dashed var(--rule); border-radius: var(--radius);
+    padding: 32px 16px; text-align: center; color: var(--ink-muted);
+    font-style: italic;
+  }
+  .nav-link {
+    display: inline-block; font-size: 14px; color: var(--accent);
+    margin-top: 8px; padding: 6px 0;
+  }
+
+  .toast {
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 8px;
+    font-size: 14px; box-shadow: var(--shadow); z-index: 1000;
+    opacity: 0; transition: opacity .25s ease; pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+  .toast.err  { background: var(--accent); }
+  .toast.ok   { background: var(--good); }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 480px) {
+    .ex-img { flex-basis: 64px; height: 64px; width: 64px; font-size: 24px; }
+    .ex-meta h3 { font-size: 16px; }
+    .set-row { grid-template-columns: 28px 1fr 1fr 80px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="app">
+    <div class="header-row">
+      <h1>🏋️ PT Tracker</h1>
+      <div class="routine-pill" id="routine-label">Loading…</div>
+      <button id="signout-btn" class="signout-btn hidden" title="Sign out">⏻</button>
+    </div>
+    <nav class="day-toggle" id="day-toggle"></nav>
+  </header>
+
+  <!-- Sign-in panel -->
+  <section id="signin-panel" class="setup hidden">
+    <h2>Sign in</h2>
+    <p>Enter your email; we'll send a one-time 6-digit code. After sign-in, your GitHub token is shared across every device.</p>
+    <div class="row">
+      <input id="email-input" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email" spellcheck="false">
+      <button class="btn" id="email-send">Send code</button>
+    </div>
+    <div class="row hidden" id="code-row">
+      <input id="code-input" type="text" placeholder="6-digit code" autocomplete="one-time-code" inputmode="numeric" maxlength="6" spellcheck="false">
+      <button class="btn" id="code-verify">Sign in</button>
+      <button class="btn subtle" id="code-resend">Resend</button>
+    </div>
+    <div class="status-msg" id="email-status"></div>
+  </section>
+
+  <!-- PAT setup panel -->
+  <section id="pat-panel" class="setup hidden">
+    <h2>One-time setup — add your GitHub token</h2>
+    <p>This app reads your routines from the GitHub repo and writes back logged sessions. It needs a personal access token scoped to <code>jcpeters08/pt-tracker</code>.</p>
+    <ol>
+      <li>Open <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">github.com/settings/tokens?type=beta</a> → Fine-grained PAT.</li>
+      <li><b>Repository access:</b> Only select repositories → <code>jcpeters08/pt-tracker</code>.</li>
+      <li><b>Permissions → Repository → Contents:</b> Read and write.</li>
+      <li>Paste the PAT below and click Test &amp; save. It is encrypted at rest with a server-side key on the auth Worker.</li>
+    </ol>
+    <div class="row">
+      <input id="pat-input" type="password" placeholder="github_pat_..." autocomplete="off" spellcheck="false">
+      <button class="btn" id="pat-save">Test &amp; save</button>
+    </div>
+    <div class="status-msg" id="pat-status"></div>
+  </section>
+
+  <!-- Main app -->
+  <main id="app" class="hidden">
+    <div id="warmup-host"></div>
+    <div id="exercises-host"></div>
+
+    <section class="session-notes hidden" id="session-notes-host">
+      <label for="session-notes-input"><b>Session notes</b> (optional)</label>
+      <textarea id="session-notes-input" placeholder="How did the session feel? PRs, drops, equipment notes…"></textarea>
+    </section>
+
+    <div class="submit-row hidden" id="submit-row">
+      <button class="btn" id="submit-btn">Submit session</button>
+      <p style="text-align:center; margin: 6px 0 0; font-size: 12px; color: var(--ink-muted);">
+        Saves to GitHub now. Synced to your vault overnight.
+        · <a href="reports.html">Reports →</a>
+      </p>
+    </div>
+  </main>
+
+  <div id="toast" class="toast"></div>
+</div>
+
+<script>
+"use strict";
+
+// ---- Config ---------------------------------------------------------------
+
+const REPO_OWNER   = "jcpeters08";
+const REPO_NAME    = "pt-tracker";
+const WORKER_URL   = "https://pt-tracker-auth.ositodelnorte.workers.dev"; // updated post-deploy
+const SID_KEY      = "pt_tracker_sid";
+const ROUTINE_KEY  = "pt_tracker_active_routine";
+const PENDING_PATH = "data/pending.json";
+
+const DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
+const DAY_LABELS = { monday:"Mon", tuesday:"Tue", wednesday:"Wed", thursday:"Thu", friday:"Fri", saturday:"Sat", sunday:"Sun" };
+
+// ---- State ----------------------------------------------------------------
+
+const state = {
+  sid: null,
+  email: null,
+  pat: null,
+  routines: [],         // [{id, file}, ...]
+  routine: null,        // active routine JSON
+  exercises: {},        // id → exercise JSON
+  selectedDay: null,    // "monday" etc
+  log: {},              // exercise_id → {sets: [{set, weight_kg, reps, done}], notes}
+  sessionNotes: "",
+  submitting: false,
+};
+
+// ---- Helpers --------------------------------------------------------------
+
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function isoNow() { return new Date().toISOString(); }
+function localDateIso(d = new Date()) {
+  const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,"0"), day = String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+function todayKey() { return DAYS[(new Date().getDay() + 6) % 7]; }
+function toast(msg, kind) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.toggle("err", kind === "err");
+  t.classList.toggle("ok",  kind === "ok");
+  t.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove("show"), 2400);
+}
+function b64encodeUtf8(s) { return btoa(unescape(encodeURIComponent(s))); }
+function b64decodeUtf8(s) { return decodeURIComponent(escape(atob(s.replace(/\n/g, "")))); }
+
+// ---- Auth -----------------------------------------------------------------
+
+function loadSid() { state.sid = localStorage.getItem(SID_KEY) || null; return state.sid; }
+function saveSid(sid) { localStorage.setItem(SID_KEY, sid); state.sid = sid; }
+function clearSid() {
+  localStorage.removeItem(SID_KEY);
+  state.sid = null; state.email = null; state.pat = null;
+}
+
+async function apiFetch(path, opts = {}) {
+  if (!WORKER_URL || WORKER_URL.includes("REPLACE")) throw new Error("Worker URL not configured");
+  const headers = new Headers(opts.headers || {});
+  if (state.sid) headers.set("Authorization", `Bearer ${state.sid}`);
+  if (opts.body && !headers.has("Content-Type")) headers.set("Content-Type", "application/json");
+  const res = await fetch(`${WORKER_URL}${path}`, { ...opts, headers });
+  return res;
+}
+
+async function requestCode(email) {
+  const res = await apiFetch("/auth/request", { method: "POST", body: JSON.stringify({ email }) });
+  if (!res.ok) throw new Error(`Sign-in request failed: ${res.status}`);
+}
+async function verifyCode(email, code) {
+  const res = await apiFetch("/auth/verify-code", { method: "POST", body: JSON.stringify({ email, code }) });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || `Verification failed: ${res.status}`);
+  }
+  const data = await res.json();
+  if (!data.sid) throw new Error("No session id in response");
+  saveSid(data.sid);
+}
+async function verifySession() {
+  if (!state.sid) return null;
+  const res = await apiFetch("/auth/me");
+  if (res.status === 401) { clearSid(); return null; }
+  if (!res.ok) throw new Error(`Session check failed: ${res.status}`);
+  const data = await res.json();
+  state.email = data.email;
+  return data.email;
+}
+async function fetchPat() {
+  const res = await apiFetch("/pat");
+  if (!res.ok) throw new Error(`Fetch PAT failed: ${res.status}`);
+  const data = await res.json();
+  return data.pat || null;
+}
+async function testAndSavePat(pat) {
+  const ghRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/pending.json`, {
+    headers: { Authorization: `Bearer ${pat}`, Accept: "application/vnd.github+json" },
+  });
+  if (!ghRes.ok) throw new Error(`PAT validation failed: ${ghRes.status}`);
+  const res = await apiFetch("/pat", { method: "PUT", body: JSON.stringify({ pat }) });
+  if (!res.ok) throw new Error(`Save PAT failed: ${res.status}`);
+  state.pat = pat;
+}
+async function signOut() {
+  try { await apiFetch("/auth/logout", { method: "POST" }); } catch {}
+  clearSid();
+  location.reload();
+}
+
+// ---- Data fetch -----------------------------------------------------------
+
+async function fetchJson(path) {
+  const res = await fetch(`./${path}?t=${Date.now()}`);
+  if (!res.ok) throw new Error(`fetch ${path} failed: ${res.status}`);
+  return res.json();
+}
+
+async function fetchExercise(id) {
+  if (state.exercises[id]) return state.exercises[id];
+  try {
+    const ex = await fetchJson(`data/exercises/${id}.json`);
+    state.exercises[id] = ex;
+    return ex;
+  } catch (e) {
+    console.warn("missing exercise json", id);
+    const fallback = { id, name: id.replace(/-/g, " "), primary_muscle: "", secondary_muscles: [], equipment: [], image_url: null, video_url: null, form_cues: [], default_load_unit: "kg" };
+    state.exercises[id] = fallback;
+    return fallback;
+  }
+}
+
+async function loadRoutines() {
+  // Discover routine files via the GitHub Contents API (anonymous on a public repo).
+  // Falls back to a known seed file path if the listing fails.
+  try {
+    const list = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/routines`).then(r => r.ok ? r.json() : []);
+    const files = (Array.isArray(list) ? list : []).filter(f => f.name.endsWith(".json")).map(f => f.name.replace(/\.json$/, ""));
+    state.routines = files.length ? files : ["2026-W18-CDMX-Phase-1-Closeout"];
+  } catch {
+    state.routines = ["2026-W18-CDMX-Phase-1-Closeout"];
+  }
+
+  // Pick the most recent routine by id (lexically, since they start with YYYY-WXX).
+  const stored = localStorage.getItem(ROUTINE_KEY);
+  const id = (stored && state.routines.includes(stored)) ? stored : state.routines.slice().sort().pop();
+  state.routine = await fetchJson(`data/routines/${id}.json`);
+  localStorage.setItem(ROUTINE_KEY, id);
+
+  // Pre-fetch all exercises referenced by the routine.
+  const ids = new Set();
+  for (const day of Object.values(state.routine.days || {})) {
+    for (const ex of (day.exercises || [])) ids.add(ex.exercise_id);
+  }
+  await Promise.all([...ids].map(fetchExercise));
+}
+
+// ---- Pending append -------------------------------------------------------
+
+async function appendPending(entry) {
+  if (!state.pat) throw new Error("no PAT");
+  const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${PENDING_PATH}`;
+  const headers = { Authorization: `Bearer ${state.pat}`, Accept: "application/vnd.github+json" };
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const cur = await fetch(url, { headers, cache: "no-store" }).then(r => {
+      if (!r.ok) throw new Error(`GET pending failed: ${r.status}`);
+      return r.json();
+    });
+    let parsed;
+    try { parsed = JSON.parse(b64decodeUtf8(cur.content)); }
+    catch { parsed = { format_note: "", entries: [] }; }
+    if (!Array.isArray(parsed.entries)) parsed.entries = [];
+    parsed.entries.push(entry);
+    const body = {
+      message: `web app: ${entry.session?.date || ""} ${entry.session?.day_of_week || ""}`,
+      content: b64encodeUtf8(JSON.stringify(parsed, null, 2) + "\n"),
+      sha: cur.sha,
+    };
+    const res = await fetch(url, { method: "PUT", headers: { ...headers, "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    if (res.ok) return;
+    if (res.status !== 409 || attempt > 0) {
+      throw new Error(`PUT pending failed: ${res.status}`);
+    }
+  }
+}
+
+// ---- UI: sign-in / PAT panels ---------------------------------------------
+
+function showPanel(which) {
+  $("#signin-panel").classList.toggle("hidden", which !== "signin");
+  $("#pat-panel").classList.toggle("hidden", which !== "pat");
+  $("#app").classList.toggle("hidden", which !== "app");
+  $("#signout-btn").classList.toggle("hidden", which !== "app");
+}
+
+function bindSigninPanel() {
+  $("#email-send").addEventListener("click", async () => {
+    const email = $("#email-input").value.trim();
+    if (!email) return;
+    try {
+      $("#email-status").className = "status-msg";
+      $("#email-status").textContent = "Sending…";
+      await requestCode(email);
+      $("#code-row").classList.remove("hidden");
+      $("#email-status").className = "status-msg ok";
+      $("#email-status").textContent = "Code sent. Check your inbox.";
+      $("#code-input").focus();
+    } catch (e) {
+      $("#email-status").className = "status-msg err";
+      $("#email-status").textContent = e.message;
+    }
+  });
+  $("#code-resend").addEventListener("click", () => $("#email-send").click());
+  $("#code-verify").addEventListener("click", async () => {
+    const email = $("#email-input").value.trim();
+    const code = $("#code-input").value.trim();
+    if (!email || !code) return;
+    try {
+      $("#email-status").className = "status-msg";
+      $("#email-status").textContent = "Verifying…";
+      await verifyCode(email, code);
+      $("#email-status").textContent = "";
+      await bootApp();
+    } catch (e) {
+      $("#email-status").className = "status-msg err";
+      $("#email-status").textContent = e.message;
+    }
+  });
+}
+
+function bindPatPanel() {
+  $("#pat-save").addEventListener("click", async () => {
+    const pat = $("#pat-input").value.trim();
+    if (!pat) return;
+    try {
+      $("#pat-status").className = "status-msg";
+      $("#pat-status").textContent = "Validating with GitHub…";
+      await testAndSavePat(pat);
+      $("#pat-status").className = "status-msg ok";
+      $("#pat-status").textContent = "Saved.";
+      $("#pat-input").value = "";
+      await renderApp();
+      showPanel("app");
+    } catch (e) {
+      $("#pat-status").className = "status-msg err";
+      $("#pat-status").textContent = e.message;
+    }
+  });
+}
+
+// ---- UI: day toggle + exercise cards --------------------------------------
+
+function dayLabel(key) {
+  const day = state.routine?.days?.[key];
+  return day?.label?.split("(")[0]?.trim() || (day?.exercises?.length ? "Workout" : "Rest");
+}
+
+function renderDayToggle() {
+  const today = todayKey();
+  const host = $("#day-toggle");
+  host.innerHTML = "";
+  for (const key of DAYS) {
+    const day = state.routine?.days?.[key];
+    const hasExercises = !!(day?.exercises?.length);
+    const btn = document.createElement("button");
+    btn.className = "day-pill";
+    if (key === state.selectedDay) btn.classList.add("active");
+    if (key === today) btn.classList.add("today");
+    if (!hasExercises) btn.classList.add("rest");
+    btn.innerHTML = `${DAY_LABELS[key]}<span class="day-label">${escapeHtml(hasExercises ? dayLabel(key) : "—")}</span>`;
+    btn.addEventListener("click", () => {
+      state.selectedDay = key;
+      renderApp();
+    });
+    host.appendChild(btn);
+  }
+}
+
+function renderWarmup(day) {
+  const host = $("#warmup-host");
+  if (day?.warmup) {
+    host.innerHTML = `<div class="warmup"><b>Warm-up:</b> ${escapeHtml(day.warmup)}</div>`;
+  } else {
+    host.innerHTML = "";
+  }
+}
+
+function ensureLogState(exId, targetWeight, targetReps, targetSets) {
+  if (state.log[exId]) return state.log[exId];
+  const sets = [];
+  for (let i = 0; i < (targetSets || 1); i++) {
+    sets.push({ weight_kg: targetWeight ?? null, reps: targetReps ?? null, done: false });
+  }
+  state.log[exId] = { sets, notes: "" };
+  return state.log[exId];
+}
+
+function renderExerciseCard(exDef, ex) {
+  const meta = state.exercises[ex.exercise_id] || {};
+  const log = ensureLogState(ex.exercise_id, ex.target_weight_kg, ex.target_reps, ex.target_sets);
+  const muscles = [meta.primary_muscle, ...(meta.secondary_muscles || [])].filter(Boolean).join(" · ");
+  const targetText = `${ex.target_weight_raw || (ex.target_weight_kg ? ex.target_weight_kg + " kg" : "")} × ${ex.target_reps || "?"} × ${ex.target_sets || "?"}`;
+
+  const setsHtml = log.sets.map((s, i) => `
+    <div class="set-row${s.done ? " done" : ""}" data-set="${i}">
+      <span class="set-num">${i+1}</span>
+      <input type="number" inputmode="decimal" step="0.5" placeholder="kg" value="${s.weight_kg ?? ""}" data-field="weight">
+      <input type="number" inputmode="numeric"  step="1"   placeholder="reps" value="${s.reps ?? ""}" data-field="reps">
+      <button class="done-btn" data-action="done">${s.done ? "✓ Done" : "Done"}</button>
+    </div>
+  `).join("");
+
+  const card = document.createElement("section");
+  card.className = "ex-card";
+  card.dataset.exid = ex.exercise_id;
+  card.innerHTML = `
+    <div class="ex-head">
+      <div class="ex-img">
+        ${meta.image_url ? `<img src="${escapeHtml(meta.image_url)}" alt="${escapeHtml(meta.name)}" loading="lazy">` : "🏋️"}
+      </div>
+      <div class="ex-meta">
+        <h3>${escapeHtml(meta.name || ex.exercise_id)}</h3>
+        <div class="muscles">${escapeHtml(muscles)}</div>
+        <div class="target"><b>Target:</b> ${escapeHtml(targetText)}${ex.notes ? ` · <span style="color:var(--ink-muted)">${escapeHtml(ex.notes)}</span>` : ""}</div>
+        ${meta.video_url ? `<a class="video" href="${escapeHtml(meta.video_url)}" target="_blank" rel="noopener">▶ Watch demo</a>` : ""}
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="set-list">${setsHtml}</div>
+      <button class="add-set" data-action="add-set">+ Add set</button>
+      <textarea class="ex-notes" placeholder="Notes for this exercise…">${escapeHtml(log.notes)}</textarea>
+    </div>
+  `;
+  return card;
+}
+
+function bindCardEvents(card, exId) {
+  const log = state.log[exId];
+  card.querySelectorAll(".set-row").forEach(row => {
+    const idx = Number(row.dataset.set);
+    row.querySelector('input[data-field="weight"]').addEventListener("input", e => {
+      log.sets[idx].weight_kg = e.target.value === "" ? null : Number(e.target.value);
+    });
+    row.querySelector('input[data-field="reps"]').addEventListener("input", e => {
+      log.sets[idx].reps = e.target.value === "" ? null : Number(e.target.value);
+    });
+    row.querySelector('[data-action="done"]').addEventListener("click", () => {
+      log.sets[idx].done = !log.sets[idx].done;
+      row.classList.toggle("done", log.sets[idx].done);
+      row.querySelector('[data-action="done"]').textContent = log.sets[idx].done ? "✓ Done" : "Done";
+    });
+  });
+  card.querySelector('[data-action="add-set"]').addEventListener("click", () => {
+    const last = log.sets[log.sets.length - 1] || {};
+    log.sets.push({ weight_kg: last.weight_kg ?? null, reps: last.reps ?? null, done: false });
+    renderApp();
+  });
+  card.querySelector(".ex-notes").addEventListener("input", e => {
+    log.notes = e.target.value;
+  });
+}
+
+function renderExercises() {
+  const host = $("#exercises-host");
+  host.innerHTML = "";
+  const day = state.routine?.days?.[state.selectedDay];
+  if (!day || !day.exercises?.length) {
+    host.innerHTML = `<div class="rest-day-msg">Rest day — no scheduled exercises.<br>Use the day toggle to see another day.</div>`;
+    $("#session-notes-host").classList.add("hidden");
+    $("#submit-row").classList.add("hidden");
+    return;
+  }
+  for (const ex of day.exercises) {
+    const card = renderExerciseCard(state.routine, ex);
+    host.appendChild(card);
+    bindCardEvents(card, ex.exercise_id);
+  }
+  $("#session-notes-host").classList.remove("hidden");
+  $("#submit-row").classList.remove("hidden");
+}
+
+function renderApp() {
+  $("#routine-label").textContent = state.routine?.name || state.routine?.id || "(no routine)";
+  if (!state.selectedDay) {
+    state.selectedDay = (state.routine?.days?.[todayKey()]?.exercises?.length) ? todayKey() : (Object.keys(state.routine?.days || {})[0] || "monday");
+  }
+  renderDayToggle();
+  renderWarmup(state.routine?.days?.[state.selectedDay]);
+  renderExercises();
+}
+
+// ---- Submit session -------------------------------------------------------
+
+function buildSessionPayload() {
+  const day = state.routine?.days?.[state.selectedDay];
+  const muscleSet = new Set();
+  const exercises = [];
+  for (const planEx of (day?.exercises || [])) {
+    const log = state.log[planEx.exercise_id];
+    if (!log) continue;
+    const sets = log.sets
+      .map((s, i) => ({ set: i + 1, weight_kg: s.weight_kg, reps: s.reps }))
+      .filter(s => s.weight_kg !== null && s.reps !== null && (s.weight_kg !== 0 || s.reps !== 0));
+    if (!sets.length) continue;
+    const meta = state.exercises[planEx.exercise_id];
+    if (meta?.primary_muscle) muscleSet.add(meta.primary_muscle);
+    exercises.push({
+      exercise_id: planEx.exercise_id,
+      display_name: meta?.name || planEx.exercise_id,
+      sets,
+      notes: log.notes || "",
+    });
+  }
+  return {
+    type: "log",
+    submitted_at: isoNow(),
+    session: {
+      date: localDateIso(),
+      day_of_week: state.selectedDay,
+      type: (state.routine?.days?.[state.selectedDay]?.label || "").toLowerCase().split("(")[0].trim().replace(/\s+/g, "-") || state.selectedDay,
+      muscle_groups: [...muscleSet],
+      routine_id: state.routine?.id,
+      phase: state.routine?.phase || null,
+      exercises,
+      session_notes: state.sessionNotes || "",
+    },
+  };
+}
+
+async function submitSession() {
+  if (state.submitting) return;
+  const payload = buildSessionPayload();
+  if (!payload.session.exercises.length) {
+    toast("Log at least one set before submitting.", "err");
+    return;
+  }
+  state.submitting = true;
+  const btn = $("#submit-btn");
+  btn.disabled = true; btn.textContent = "Submitting…";
+  try {
+    await appendPending(payload);
+    toast("✓ Saved. Synced to vault overnight.", "ok");
+    btn.textContent = "✓ Submitted — log another?";
+    state.log = {}; state.sessionNotes = "";
+    $("#session-notes-input").value = "";
+    setTimeout(() => { btn.disabled = false; btn.textContent = "Submit session"; renderApp(); }, 1800);
+  } catch (e) {
+    console.error(e);
+    toast(`Submit failed: ${e.message}`, "err");
+    btn.disabled = false; btn.textContent = "Submit session";
+  } finally {
+    state.submitting = false;
+  }
+}
+
+// ---- Boot ------------------------------------------------------------------
+
+async function bootApp() {
+  loadSid();
+  if (!state.sid) { showPanel("signin"); return; }
+  try {
+    const email = await verifySession();
+    if (!email) { showPanel("signin"); return; }
+    state.pat = await fetchPat();
+    if (!state.pat) { showPanel("pat"); return; }
+    await loadRoutines();
+    renderApp();
+    showPanel("app");
+  } catch (e) {
+    console.error(e);
+    toast(`Boot failed: ${e.message}`, "err");
+    showPanel("signin");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  bindSigninPanel();
+  bindPatPanel();
+  $("#signout-btn").addEventListener("click", signOut);
+  $("#submit-btn").addEventListener("click", submitSession);
+  $("#session-notes-input").addEventListener("input", e => { state.sessionNotes = e.target.value; });
+  bootApp();
+});
+</script>
+</body>
+</html>

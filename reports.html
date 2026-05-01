@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>🏋️ PT Tracker — Reports</title>
+<style>
+  :root {
+    --bg: #FAF7F2;
+    --bg-card: #FFFFFF;
+    --bg-soft: #F2EDE5;
+    --ink: #2A1F1A;
+    --ink-soft: #5C4F47;
+    --ink-muted: #8B7E75;
+    --accent: #B23A3A;
+    --accent-soft: #F2D7D9;
+    --good: #3D6B4D;
+    --warn: #B07514;
+    --rule: #E5DDD2;
+    --shadow: 0 1px 2px rgba(40,25,15,.06), 0 4px 16px rgba(40,25,15,.06);
+    --radius: 12px;
+    --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--ink); font-family: var(--sans);
+    font-size: 16px; line-height: 1.45; -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .container { max-width: 880px; margin: 0 auto; padding: 18px 14px 80px; }
+  header.app {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 10px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--rule);
+  }
+  header.app h1 { font-size: 22px; margin: 0; }
+  .nav-link { font-size: 14px; }
+
+  .section {
+    background: var(--bg-card); border: 1px solid var(--rule); border-radius: var(--radius);
+    padding: 18px; box-shadow: var(--shadow); margin-bottom: 18px;
+  }
+  .section h2 { margin: 0 0 6px; font-size: 18px; }
+  .section .subtle { color: var(--ink-soft); font-size: 13px; margin: 0 0 14px; }
+  .chart-host { position: relative; height: 280px; }
+  select { font-family: inherit; font-size: 14px; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--rule); background: var(--bg-card); }
+
+  table.prs { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.prs th, table.prs td { text-align: left; padding: 8px 8px; border-bottom: 1px solid var(--rule); }
+  table.prs th { color: var(--ink-soft); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  table.prs .delta { color: var(--good); font-weight: 600; }
+
+  .calendar-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 10px;
+  }
+  .cal-cell {
+    aspect-ratio: 1 / 1; border-radius: 4px; background: var(--bg-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--ink-muted);
+  }
+  .cal-cell.session { background: var(--good); color: white; }
+  .cal-cell.future { opacity: 0.3; }
+
+  .empty { color: var(--ink-muted); font-style: italic; padding: 16px 0; }
+
+  @media (max-width: 480px) {
+    .chart-host { height: 240px; }
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <header class="app">
+    <h1>🏋️ Reports</h1>
+    <a href="./" class="nav-link">← Back to day view</a>
+  </header>
+
+  <section class="section">
+    <h2>Weekly volume by muscle group</h2>
+    <p class="subtle">Working sets per primary muscle, last 8 weeks. Bars where rear-delts = 0 are flagged.</p>
+    <div class="chart-host"><canvas id="volume-chart"></canvas></div>
+  </section>
+
+  <section class="section">
+    <h2>Lift progression</h2>
+    <p class="subtle">Top-set weight × reps and total session volume per logged session.</p>
+    <div style="margin-bottom: 10px;"><select id="lift-select"></select></div>
+    <div class="chart-host"><canvas id="lift-chart"></canvas></div>
+  </section>
+
+  <section class="section">
+    <h2>Session compliance</h2>
+    <p class="subtle">Sessions logged per ISO week.</p>
+    <div class="chart-host" style="height:200px"><canvas id="compliance-chart"></canvas></div>
+  </section>
+
+  <section class="section">
+    <h2>PRs</h2>
+    <p class="subtle">Each session where top-set weight increased vs the prior best on that lift.</p>
+    <div id="prs-host"></div>
+  </section>
+</div>
+
+<script>
+"use strict";
+
+const REPO_OWNER = "jcpeters08";
+const REPO_NAME  = "pt-tracker";
+
+const MUSCLE_COLORS = {
+  "chest":          "#B23A3A",
+  "back":           "#3D6B4D",
+  "shoulders":      "#C58F2E",
+  "front-delts":    "#D9B05C",
+  "lateral-delts":  "#A0763D",
+  "rear-delts":     "#8B5A2B",
+  "biceps":         "#7A4C2D",
+  "triceps":        "#6E3A47",
+  "lats":           "#4A6B5E",
+  "quads":          "#406A8B",
+  "hamstrings":     "#5C7CB0",
+  "glutes":         "#7A5BA8",
+  "calves":         "#9B4A78",
+  "core":           "#5C5C5C",
+  "other":          "#B0B0B0",
+};
+
+async function fetchJson(path) {
+  const res = await fetch(`./${path}?t=${Date.now()}`);
+  if (!res.ok) throw new Error(`fetch ${path} failed: ${res.status}`);
+  return res.json();
+}
+
+async function fetchExerciseNameMap() {
+  // Get exercise display names by listing the directory via GitHub's contents API
+  // (anonymous, public repo). Fall back to id-as-name if that fails.
+  try {
+    const list = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/exercises`).then(r => r.ok ? r.json() : []);
+    const ids = (Array.isArray(list) ? list : []).map(f => f.name.replace(/\.json$/, ""));
+    const map = {};
+    await Promise.all(ids.map(async id => {
+      try {
+        const ex = await fetchJson(`data/exercises/${id}.json`);
+        map[id] = ex.name || id;
+      } catch { map[id] = id; }
+    }));
+    return map;
+  } catch {
+    return {};
+  }
+}
+
+function lastN(arr, n) { return arr.slice(Math.max(0, arr.length - n)); }
+
+function renderVolumeChart(analytics) {
+  const allWeeks = Object.keys(analytics.lifts_per_week || {}).sort();
+  const weeks = lastN(allWeeks, 8);
+  const muscleSet = new Set();
+  for (const row of analytics.weekly_volume_by_muscle) muscleSet.add(row.muscle);
+  const muscles = [...muscleSet].sort();
+  const datasets = muscles.map(m => ({
+    label: m,
+    data: weeks.map(w => {
+      const r = analytics.weekly_volume_by_muscle.find(x => x.week === w && x.muscle === m);
+      return r ? r.sets : 0;
+    }),
+    backgroundColor: MUSCLE_COLORS[m] || MUSCLE_COLORS.other,
+  }));
+  new Chart(document.getElementById("volume-chart"), {
+    type: "bar",
+    data: { labels: weeks, datasets },
+    options: {
+      maintainAspectRatio: false,
+      responsive: true,
+      scales: {
+        x: { stacked: true },
+        y: { stacked: true, title: { display: true, text: "working sets" } },
+      },
+      plugins: {
+        legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } },
+        tooltip: { mode: "index" },
+      },
+    },
+  });
+}
+
+function renderLiftChart(analytics, exerciseNames) {
+  const select = document.getElementById("lift-select");
+  const ids = Object.keys(analytics.exercise_progression).sort((a, b) => (exerciseNames[a] || a).localeCompare(exerciseNames[b] || b));
+  select.innerHTML = ids.map(id => `<option value="${id}">${exerciseNames[id] || id}</option>`).join("");
+  if (!ids.length) return;
+
+  let chart;
+  function draw(id) {
+    const series = analytics.exercise_progression[id] || [];
+    const labels = series.map(p => p.date);
+    const topSet = series.map(p => p.top_set_weight_kg * (p.top_set_reps || 1));
+    const totalVol = series.map(p => p.total_volume_kg);
+    if (chart) chart.destroy();
+    chart = new Chart(document.getElementById("lift-chart"), {
+      type: "line",
+      data: {
+        labels,
+        datasets: [
+          { label: "Top set (weight × reps)", data: topSet, borderColor: "#B23A3A", backgroundColor: "#B23A3A", tension: 0.2, yAxisID: "y" },
+          { label: "Total session volume (kg)", data: totalVol, borderColor: "#3D6B4D", backgroundColor: "#3D6B4D", borderDash: [4,4], tension: 0.2, yAxisID: "y1" },
+        ],
+      },
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        interaction: { mode: "index", intersect: false },
+        scales: {
+          y:  { type: "linear", position: "left",  title: { display: true, text: "weight × reps" } },
+          y1: { type: "linear", position: "right", title: { display: true, text: "session volume (kg)" }, grid: { drawOnChartArea: false } },
+        },
+        plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } } },
+      },
+    });
+  }
+  select.addEventListener("change", () => draw(select.value));
+  // default to the most-frequently-logged lift
+  const defaultId = ids.reduce((best, id) =>
+    (analytics.exercise_progression[id]?.length > (analytics.exercise_progression[best]?.length || 0) ? id : best), ids[0]);
+  select.value = defaultId;
+  draw(defaultId);
+}
+
+function renderComplianceChart(analytics) {
+  const compliance = analytics.session_compliance || {};
+  const weeks = Object.keys(compliance).sort();
+  new Chart(document.getElementById("compliance-chart"), {
+    type: "bar",
+    data: {
+      labels: weeks,
+      datasets: [{
+        label: "Sessions logged",
+        data: weeks.map(w => compliance[w].completed || 0),
+        backgroundColor: "#B23A3A",
+      }],
+    },
+    options: {
+      maintainAspectRatio: false,
+      responsive: true,
+      scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+      plugins: { legend: { display: false } },
+    },
+  });
+}
+
+function renderPrs(analytics, exerciseNames) {
+  const host = document.getElementById("prs-host");
+  if (!analytics.prs?.length) {
+    host.innerHTML = `<div class="empty">No PRs yet — log a heavier set to start the streak.</div>`;
+    return;
+  }
+  host.innerHTML = `
+    <table class="prs">
+      <thead><tr><th>Exercise</th><th>Date</th><th>Weight × Reps</th><th>Δ</th></tr></thead>
+      <tbody>
+        ${analytics.prs.map(p => `
+          <tr>
+            <td>${exerciseNames[p.exercise_id] || p.exercise_id}</td>
+            <td>${p.date}</td>
+            <td>${p.weight_kg} kg × ${p.reps}</td>
+            <td class="delta">+${p.delta_kg} kg</td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  `;
+}
+
+(async () => {
+  try {
+    const [analytics, exerciseNames] = await Promise.all([
+      fetchJson("data/analytics.json"),
+      fetchExerciseNameMap(),
+    ]);
+    renderVolumeChart(analytics);
+    renderLiftChart(analytics, exerciseNames);
+    renderComplianceChart(analytics);
+    renderPrs(analytics, exerciseNames);
+  } catch (e) {
+    console.error(e);
+    document.querySelector(".container").insertAdjacentHTML("beforeend",
+      `<div class="section"><p style="color:var(--accent)">Failed to load reports: ${e.message}</p></div>`);
+  }
+})();
+</script>
+</body>
+</html>

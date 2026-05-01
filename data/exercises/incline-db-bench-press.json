@@ -1,0 +1,21 @@
+{
+  "id": "incline-db-bench-press",
+  "name": "Incline Dumbbell Bench Press",
+  "primary_muscle": "chest",
+  "secondary_muscles": [
+    "front-delts",
+    "triceps"
+  ],
+  "equipment": [
+    "dumbbells",
+    "incline-bench"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Bench at ~30°, not 45°",
+    "Press straight up; keep elbows at ~45° from torso"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}

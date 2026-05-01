@@ -1,0 +1,20 @@
+{
+  "id": "db-walking-lunge",
+  "name": "Dumbbell Walking Lunge",
+  "primary_muscle": "quads",
+  "secondary_muscles": [
+    "glutes",
+    "hamstrings"
+  ],
+  "equipment": [
+    "dumbbells"
+  ],
+  "image_url": null,
+  "video_url": null,
+  "form_cues": [
+    "Long stride",
+    "Knee tracks over toe; back knee almost touches floor"
+  ],
+  "default_load_unit": "kg",
+  "notes": ""
+}
