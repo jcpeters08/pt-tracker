@@ -50,15 +50,22 @@ See `TODO_EXERCISES.md` — every exercise has `image_url: null` and `video_url:
 
 ## Daily sync — Cowork scheduled task
 
-The sync script runs at 8:00 CT daily. Set up via Cowork:
+A Cowork scheduled task fires daily at 8:03 CT (mirrors the TV Concierge setup). It runs as Claude on your Mac, so it has access to the vault.
 
-- **Title:** PT Tracker daily sync
-- **Schedule:** `0 8 * * *` (Central time)
-- **Command:** `python3 ~/Git/pt-tracker/scripts/sync.py`
+- **Task id:** `pt-tracker-daily-sync`
+- **Cron:** `3 8 * * *` (local time)
+- **Skill file:** `~/.claude/scheduled-tasks/pt-tracker-daily-sync/SKILL.md`
+- **Manage:** the "Scheduled" section in the Claude sidebar — pause, disable, or run on demand from there
 
-Or as a launchd job locally — see `scripts/sync.py` for env vars (`PT_TRACKER_VAULT_ROOT`, `PT_TRACKER_REPO_ROOT`).
+The task body is the prompt stored in the SKILL.md file. The high-level steps it runs:
 
-You can also run it on demand:
+1. `git pull --ff-only` in `~/Git/pt-tracker`
+2. `python3 scripts/sync.py` — drains `data/pending.json` into vault MD, re-derives JSON snapshots from vault MD, recomputes `data/analytics.json`, resets pending, auto-commits and pushes
+3. Reports a summary
+
+**Pre-conditions:** Mac on, vault mounted at `~/Documents/Jonathan's Vault`, repo on `main`.
+
+You can also run sync on demand:
 ```bash
 python3 ~/Git/pt-tracker/scripts/sync.py
 ```
