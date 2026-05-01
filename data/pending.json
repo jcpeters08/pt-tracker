@@ -1,4 +1,157 @@
 {
   "format_note": "Append-only inbox written by the web app. Daily scheduled task drains entries[] into vault MD files at Workout Log/YYYY-MM-DD-day-type.md and into data/logs/*.json, then resets to []. Schema: {type: 'log', submitted_at: ISO8601, session: {…full log object…}}",
-  "entries": []
+  "entries": [
+    {
+      "type": "log",
+      "submitted_at": "2026-05-01T23:40:26.957Z",
+      "session": {
+        "date": "2026-05-01",
+        "day_of_week": "monday",
+        "type": "push",
+        "muscle_groups": [
+          "chest",
+          "shoulders",
+          "lateral-delts",
+          "triceps"
+        ],
+        "routine_id": "2026-W18-CDMX-Phase-1-Closeout",
+        "phase": "1-closeout",
+        "exercises": [
+          {
+            "exercise_id": "flat-db-bench-press",
+            "display_name": "Flat Dumbbell Bench Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 16,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 16,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 16,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "incline-db-bench-press",
+            "display_name": "Incline Dumbbell Bench Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 12,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 12,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 12,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-db-shoulder-press",
+            "display_name": "Seated Dumbbell Shoulder Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 10,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 10,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 10,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-lateral-raise",
+            "display_name": "Dumbbell Lateral Raise",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 6,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 6,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 6,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-skullcrusher",
+            "display_name": "Dumbbell Skullcrusher",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 10,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 10,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 10,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-tricep-kickback",
+            "display_name": "Dumbbell Tricep Kickback",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 8,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 8,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 8,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "session_notes": "__TEST_E2E_CLAUDE_VERIFY__ — End-to-end verification by Claude on 2026-05-01. Pre-filled W18 Monday Push targets used as logged values. DELETE THIS LOG after verification."
+      }
+    }
+  ]
 }
