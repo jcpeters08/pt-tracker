@@ -525,9 +525,11 @@ function bindPatPanel() {
       $("#pat-status").textContent = "Validating with GitHub…";
       await testAndSavePat(pat);
       $("#pat-status").className = "status-msg ok";
-      $("#pat-status").textContent = "Saved.";
+      $("#pat-status").textContent = "Loading routine…";
       $("#pat-input").value = "";
-      await renderApp();
+      await loadRoutines();
+      $("#pat-status").textContent = "Saved.";
+      renderApp();
       showPanel("app");
     } catch (e) {
       $("#pat-status").className = "status-msg err";
@@ -668,12 +670,24 @@ function renderExercises() {
 }
 
 function renderApp() {
-  $("#routine-label").textContent = state.routine?.name || state.routine?.id || "(no routine)";
+  // Defensive: if a code path landed here without loading the routine,
+  // kick off the load and re-render when it returns. Avoids the all-rest-day
+  // state that used to appear on the first sign-in after paste-PAT.
+  if (!state.routine) {
+    $("#routine-label").textContent = "Loading routine…";
+    loadRoutines().then(() => renderApp()).catch(e => {
+      console.error("loadRoutines failed", e);
+      $("#routine-label").textContent = "(no routine)";
+      toast(`Couldn't load routine: ${e.message}`, "err");
+    });
+    return;
+  }
+  $("#routine-label").textContent = state.routine.name || state.routine.id || "(no routine)";
   if (!state.selectedDay) {
-    state.selectedDay = (state.routine?.days?.[todayKey()]?.exercises?.length) ? todayKey() : (Object.keys(state.routine?.days || {})[0] || "monday");
+    state.selectedDay = (state.routine.days?.[todayKey()]?.exercises?.length) ? todayKey() : (Object.keys(state.routine.days || {})[0] || "monday");
   }
   renderDayToggle();
-  renderWarmup(state.routine?.days?.[state.selectedDay]);
+  renderWarmup(state.routine.days?.[state.selectedDay]);
   renderExercises();
 }
 
