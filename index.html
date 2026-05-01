@@ -139,6 +139,43 @@
   }
   .ex-img img { width: 100%; height: 100%; object-fit: cover; }
 
+  /* Video modal — inline YouTube embed */
+  .video-modal {
+    position: fixed; inset: 0; background: rgba(20, 14, 10, 0.92);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2100; padding: 16px;
+    opacity: 0; pointer-events: none; transition: opacity .18s ease;
+  }
+  .video-modal.show { opacity: 1; pointer-events: auto; }
+  .video-modal .vm-frame {
+    position: relative; width: 100%; max-width: 880px; aspect-ratio: 16 / 9;
+    background: #000; border-radius: 12px; overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,.5);
+  }
+  .video-modal iframe {
+    position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+  }
+  .video-modal .vm-close {
+    position: absolute; top: 12px; right: 12px;
+    background: rgba(0,0,0,0.6); border: none; color: white;
+    font-size: 22px; cursor: pointer; padding: 4px 12px;
+    border-radius: 999px; line-height: 1; min-height: 0;
+    z-index: 2;
+  }
+  .video-modal .vm-caption {
+    position: absolute; bottom: -28px; left: 0; right: 0;
+    text-align: center; color: white; font-size: 13px; opacity: 0.85;
+  }
+  .ex-meta .video {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 13px; margin-top: 6px;
+    background: transparent; color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 999px;
+    padding: 4px 12px; min-height: 0; cursor: pointer;
+    text-decoration: none;
+  }
+  .ex-meta .video:hover { background: var(--accent-soft); }
+
   /* Lightbox */
   .lightbox {
     position: fixed; inset: 0; background: rgba(20, 14, 10, 0.92);
@@ -315,6 +352,15 @@
     <button class="lb-close" aria-label="Close">×</button>
     <img id="lb-img" alt="">
     <div class="lb-caption" id="lb-caption"></div>
+  </div>
+
+  <!-- Inline video player -->
+  <div id="video-modal" class="video-modal" role="dialog" aria-modal="true" aria-label="Exercise demo video">
+    <div class="vm-frame">
+      <button class="vm-close" id="vm-close" aria-label="Close">×</button>
+      <div id="vm-iframe-host"></div>
+      <div class="vm-caption" id="vm-caption"></div>
+    </div>
   </div>
 </div>
 
@@ -659,7 +705,9 @@ function renderExerciseCard(exDef, ex) {
         <h3>${escapeHtml(meta.name || ex.exercise_id)}</h3>
         <div class="muscles">${escapeHtml(muscles)}</div>
         <div class="target"><b>Target:</b> ${escapeHtml(targetText)}${ex.notes ? ` · <span style="color:var(--ink-muted)">${escapeHtml(ex.notes)}</span>` : ""}</div>
-        ${meta.video_url ? `<a class="video" href="${escapeHtml(meta.video_url)}" target="_blank" rel="noopener">▶ Watch demo</a>` : ""}
+        ${meta.video_id
+            ? `<button class="video" type="button" data-action="play-video">▶ Watch demo</button>`
+            : (meta.video_url ? `<a class="video" href="${escapeHtml(meta.video_url)}" target="_blank" rel="noopener">▶ Watch demo</a>` : "")}
       </div>
     </div>
     <div class="ex-body">
@@ -680,6 +728,11 @@ function bindCardEvents(card, exId) {
     imgWrap.addEventListener("click", () => openLightbox(meta.image_url, meta.name || exId));
   } else {
     imgWrap.style.cursor = "default";
+  }
+  // Inline video player
+  const playBtn = card.querySelector('[data-action="play-video"]');
+  if (playBtn && meta.video_id) {
+    playBtn.addEventListener("click", () => openVideo(meta.video_id, meta.name || exId));
   }
   card.querySelectorAll(".set-row:not(.set-header)").forEach(row => {
     const idx = Number(row.dataset.set);
@@ -830,6 +883,27 @@ async function bootApp() {
   }
 }
 
+function openVideo(videoId, caption) {
+  const modal = $("#video-modal");
+  const host = $("#vm-iframe-host");
+  // Build the iframe fresh each time so prior video stops cleanly.
+  host.innerHTML = `<iframe
+    src="https://www.youtube.com/embed/${encodeURIComponent(videoId)}?autoplay=1&playsinline=1&rel=0&modestbranding=1"
+    title="${escapeHtml(caption)}"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen></iframe>`;
+  $("#vm-caption").textContent = caption || "";
+  modal.classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+function closeVideo() {
+  const modal = $("#video-modal");
+  modal.classList.remove("show");
+  document.body.style.overflow = "";
+  // Tearing down the iframe is what actually stops audio on iOS.
+  setTimeout(() => { $("#vm-iframe-host").innerHTML = ""; }, 250);
+}
+
 function openLightbox(src, caption) {
   const lb = $("#lightbox");
   $("#lb-img").src = src;
@@ -852,8 +926,15 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#session-notes-input").addEventListener("input", e => { state.sessionNotes = e.target.value; });
   // Lightbox: backdrop, image, close button — any click closes
   $("#lightbox").addEventListener("click", closeLightbox);
+  // Video modal: clicks on backdrop or × close it; clicks on the player don't bubble
+  $("#video-modal").addEventListener("click", e => {
+    if (e.target.id === "video-modal") closeVideo();
+  });
+  $("#vm-close").addEventListener("click", closeVideo);
   document.addEventListener("keydown", e => {
-    if (e.key === "Escape" && $("#lightbox").classList.contains("show")) closeLightbox();
+    if (e.key !== "Escape") return;
+    if ($("#video-modal").classList.contains("show")) closeVideo();
+    else if ($("#lightbox").classList.contains("show")) closeLightbox();
   });
   bootApp();
 });
