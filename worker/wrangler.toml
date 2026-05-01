@@ -13,8 +13,8 @@ ALLOWED_EMAILS = "jcpeters08@gmail.com"
 # Also create a preview namespace for `wrangler dev`: `wrangler kv namespace create pt_tracker_auth_kv --preview`.
 [[kv_namespaces]]
 binding = "KV"
-id = "REPLACE_WITH_KV_ID"
-preview_id = "REPLACE_WITH_PREVIEW_KV_ID"
+id = "63f3e6bd36b946caadbbe423cfa2c556"
+preview_id = "3e9756d40c28497d9875dff19b27b257"
 
 # Secrets (do NOT put values here — set via `wrangler secret put`):
 #   RESEND_API_KEY   — from https://resend.com/api-keys
