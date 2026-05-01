@@ -519,10 +519,33 @@ async function fetchPat() {
   return data.pat || null;
 }
 async function testAndSavePat(pat) {
-  const ghRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/pending.json`, {
-    headers: { Authorization: `Bearer ${pat}`, Accept: "application/vnd.github+json" },
+  // 1. Read check — confirms the token can see the repo at all.
+  const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/pending.json`;
+  const ghHeaders = { Authorization: `Bearer ${pat}`, Accept: "application/vnd.github+json" };
+  const getRes = await fetch(url, { headers: ghHeaders });
+  if (!getRes.ok) throw new Error(`PAT read check failed: ${getRes.status}. Confirm the token has access to ${REPO_OWNER}/${REPO_NAME}.`);
+  const cur = await getRes.json();
+  // 2. Write check — PUT the file back to itself with the existing sha and
+  // identical content. GitHub treats this as a no-op (no commit created)
+  // when the content matches, but enforces Contents:write — so a read-only
+  // token gets a 403 here instead of silently passing validation and
+  // failing on first real submit (the bug we hit on 2026-05-01).
+  const putRes = await fetch(url, {
+    method: "PUT",
+    headers: { ...ghHeaders, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      message: "PAT write validation (no-op)",
+      content: cur.content.replace(/\s+/g, ""),
+      sha: cur.sha,
+    }),
   });
-  if (!ghRes.ok) throw new Error(`PAT validation failed: ${ghRes.status}`);
+  if (!putRes.ok) {
+    const detail = putRes.status === 403
+      ? "The token can read but not write. Edit the PAT on github.com and grant Repository → Contents: Read and write."
+      : `Status ${putRes.status}.`;
+    throw new Error(`PAT write check failed. ${detail}`);
+  }
+  // 3. Save the encrypted PAT on the worker.
   const res = await apiFetch("/pat", { method: "PUT", body: JSON.stringify({ pat }) });
   if (!res.ok) throw new Error(`Save PAT failed: ${res.status}`);
   state.pat = pat;
@@ -898,28 +921,47 @@ function buildSessionPayload() {
 }
 
 async function submitSession() {
-  if (state.submitting) return;
+  const btn = $("#submit-btn");
+  // Disable the button SYNCHRONOUSLY before any await — closes the
+  // microsecond-wide window where two near-simultaneous clicks could both
+  // pass the state.submitting check (the cause of the toast/console
+  // inconsistency on 2026-05-01).
+  if (state.submitting || btn.disabled) return;
+  btn.disabled = true;
+  state.submitting = true;
   const payload = buildSessionPayload();
   if (!payload.session.exercises.length) {
     toast("Log at least one set before submitting.", "err");
+    btn.disabled = false;
+    state.submitting = false;
     return;
   }
-  state.submitting = true;
-  const btn = $("#submit-btn");
-  btn.disabled = true; btn.textContent = "Submitting…";
+  btn.textContent = "Submitting…";
+  let succeeded = false;
   try {
     await appendPending(payload);
+    succeeded = true;
     toast("✓ Saved. Synced to vault overnight.", "ok");
     btn.textContent = "✓ Submitted — log another?";
     state.log = {}; state.sessionNotes = "";
     $("#session-notes-input").value = "";
     setTimeout(() => { btn.disabled = false; btn.textContent = "Submit session"; renderApp(); }, 1800);
   } catch (e) {
-    console.error(e);
-    toast(`Submit failed: ${e.message}`, "err");
-    btn.disabled = false; btn.textContent = "Submit session";
+    console.error("submitSession:", e);
+    // Be explicit about a 403 so the user knows it's a token-permission
+    // problem, not an app bug.
+    const msg = /403/.test(e.message)
+      ? "Submit failed: GitHub denied the write (403). Your PAT lost write access — sign out and re-paste a token with Contents: Read and write."
+      : `Submit failed: ${e.message}`;
+    toast(msg, "err");
+    btn.textContent = "Submit session";
+    btn.disabled = false;
   } finally {
     state.submitting = false;
+    // Belt-and-suspenders: never end with a green toast if the write failed.
+    if (!succeeded) {
+      // toast() above already showed the error; nothing more to do here.
+    }
   }
 }
 
