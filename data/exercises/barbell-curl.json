@@ -6,12 +6,14 @@
   "equipment": [
     "barbell"
   ],
-  "image_url": null,
-  "video_url": null,
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Curl/0.jpg",
+  "video_url": "https://www.youtube.com/results?search_query=Barbell+Biceps+Curl+proper+form",
   "form_cues": [
     "Elbows pinned at sides",
     "Avoid swinging — strict tempo"
   ],
   "default_load_unit": "kg",
-  "notes": ""
+  "notes": "",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Barbell Curl"
 }

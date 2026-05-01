@@ -10,12 +10,14 @@
     "smith-machine",
     "barbell"
   ],
-  "image_url": null,
-  "video_url": null,
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inverted_Row/0.jpg",
+  "video_url": "https://www.youtube.com/results?search_query=Inverted+Row+proper+form",
   "form_cues": [
     "Body straight from heels to head",
     "Pull chest to bar"
   ],
   "default_load_unit": "kg",
-  "notes": ""
+  "notes": "",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Inverted Row"
 }

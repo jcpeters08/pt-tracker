@@ -7,12 +7,14 @@
     "cable",
     "rope-attachment"
   ],
-  "image_url": null,
-  "video_url": null,
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown_-_Rope_Attachment/0.jpg",
+  "video_url": "https://www.youtube.com/results?search_query=Overhead+Cable+Tricep+Extension+%28Rope%29+proper+form",
   "form_cues": [
     "Face away from cable, slight forward lean",
     "Drive hands apart at the bottom of the rep"
   ],
   "default_load_unit": "kg",
-  "notes": ""
+  "notes": "",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Triceps Pushdown - Rope Attachment"
 }

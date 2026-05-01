@@ -6,12 +6,14 @@
   "equipment": [
     "dumbbells"
   ],
-  "image_url": null,
-  "video_url": null,
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg",
+  "video_url": "https://www.youtube.com/results?search_query=Standing+Dumbbell+Curl+proper+form",
   "form_cues": [
     "Elbows pinned at sides",
     "Supinate as you curl"
   ],
   "default_load_unit": "kg",
-  "notes": ""
+  "notes": "",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Dumbbell Bicep Curl"
 }

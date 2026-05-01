@@ -6,12 +6,14 @@
   "equipment": [
     "machine"
   ],
-  "image_url": null,
-  "video_url": null,
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg",
+  "video_url": "https://www.youtube.com/results?search_query=Seated+Leg+Curl+proper+form",
   "form_cues": [
     "Pad just above ankles",
     "Squeeze at the contracted position"
   ],
   "default_load_unit": "kg",
-  "notes": ""
+  "notes": "",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Seated Leg Curl"
 }

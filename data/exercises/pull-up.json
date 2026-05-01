@@ -9,12 +9,14 @@
   "equipment": [
     "pull-up-bar"
   ],
-  "image_url": null,
-  "video_url": null,
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/0.jpg",
+  "video_url": "https://www.youtube.com/results?search_query=Pull-Up+proper+form",
   "form_cues": [
     "Full hang at the bottom",
     "Chin clears the bar at the top"
   ],
   "default_load_unit": "kg",
-  "notes": ""
+  "notes": "",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Pullups"
 }

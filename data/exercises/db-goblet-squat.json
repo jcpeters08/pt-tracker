@@ -8,12 +8,14 @@
   "equipment": [
     "dumbbells"
   ],
-  "image_url": null,
-  "video_url": null,
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/0.jpg",
+  "video_url": "https://www.youtube.com/results?search_query=Dumbbell+Goblet+Squat+proper+form",
   "form_cues": [
     "Hold DB at chest, elbows tucked",
     "Knees track over toes; full depth"
   ],
   "default_load_unit": "kg",
-  "notes": ""
+  "notes": "",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Goblet Squat"
 }

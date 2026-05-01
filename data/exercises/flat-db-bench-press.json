@@ -10,13 +10,15 @@
     "dumbbells",
     "flat-bench"
   ],
-  "image_url": null,
-  "video_url": null,
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/0.jpg",
+  "video_url": "https://www.youtube.com/results?search_query=Flat+Dumbbell+Bench+Press+proper+form",
   "form_cues": [
     "Feet flat, glutes engaged, shoulder blades retracted",
     "DBs travel slightly inward at the top",
     "Control the eccentric — 2 sec down, 1 sec up"
   ],
   "default_load_unit": "kg",
-  "notes": ""
+  "notes": "",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Dumbbell Bench Press"
 }

@@ -9,12 +9,14 @@
   "equipment": [
     "plate-loaded-machine"
   ],
-  "image_url": null,
-  "video_url": null,
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Smith_Machine_Overhead_Shoulder_Press/0.jpg",
+  "video_url": "https://www.youtube.com/results?search_query=Plate-Loaded+Shoulder+Press+proper+form",
   "form_cues": [
     "Adjust seat so handles align at ear/shoulder",
     "Drive elbows under handles"
   ],
   "default_load_unit": "kg",
-  "notes": ""
+  "notes": "",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Smith Machine Overhead Shoulder Press"
 }
