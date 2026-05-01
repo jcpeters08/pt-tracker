@@ -77,6 +77,14 @@
     background: transparent; border: none; color: var(--ink-muted);
     font-size: 20px; padding: 6px 8px; min-height: 0;
   }
+  .header-link {
+    background: transparent; color: var(--ink-soft); text-decoration: none;
+    border: 1px solid var(--rule); border-radius: 999px;
+    padding: 4px 10px; font-size: 12px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 4px;
+    flex-shrink: 0;
+  }
+  .header-link:hover { background: var(--bg-soft); }
 
   /* Day toggle */
   .day-toggle {
@@ -320,6 +328,7 @@
     <div class="header-row">
       <h1>🏋️ PT Tracker</h1>
       <div class="routine-pill" id="routine-label">Loading…</div>
+      <a class="header-link" href="https://www.muscleandstrength.com/exercises" target="_blank" rel="noopener" title="Open Muscle &amp; Strength exercise database">M&amp;S ↗</a>
       <button id="signout-btn" class="signout-btn hidden" title="Sign out">⏻</button>
     </div>
     <nav class="day-toggle" id="day-toggle"></nav>
