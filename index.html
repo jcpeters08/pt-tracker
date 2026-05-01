@@ -166,15 +166,20 @@
     position: absolute; bottom: -28px; left: 0; right: 0;
     text-align: center; color: white; font-size: 13px; opacity: 0.85;
   }
-  .ex-meta .video {
+  .ex-meta .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .ex-meta .video,
+  .ex-meta .info {
     display: inline-flex; align-items: center; gap: 4px;
-    font-size: 13px; margin-top: 6px;
-    background: transparent; color: var(--accent);
+    font-size: 13px;
+    background: transparent;
     border: 1px solid var(--accent); border-radius: 999px;
     padding: 4px 12px; min-height: 0; cursor: pointer;
     text-decoration: none;
   }
+  .ex-meta .video { color: var(--accent); }
+  .ex-meta .info  { color: var(--ink-soft); border-color: var(--rule); }
   .ex-meta .video:hover { background: var(--accent-soft); }
+  .ex-meta .info:hover  { background: var(--bg-soft); }
 
   /* Lightbox */
   .lightbox {
@@ -705,9 +710,12 @@ function renderExerciseCard(exDef, ex) {
         <h3>${escapeHtml(meta.name || ex.exercise_id)}</h3>
         <div class="muscles">${escapeHtml(muscles)}</div>
         <div class="target"><b>Target:</b> ${escapeHtml(targetText)}${ex.notes ? ` · <span style="color:var(--ink-muted)">${escapeHtml(ex.notes)}</span>` : ""}</div>
-        ${meta.video_id
-            ? `<button class="video" type="button" data-action="play-video">▶ Watch demo</button>`
-            : (meta.video_url ? `<a class="video" href="${escapeHtml(meta.video_url)}" target="_blank" rel="noopener">▶ Watch demo</a>` : "")}
+        <div class="pill-row">
+          ${meta.video_id
+              ? `<button class="video" type="button" data-action="play-video">▶ Watch demo</button>`
+              : (meta.video_url ? `<a class="video" href="${escapeHtml(meta.video_url)}" target="_blank" rel="noopener">▶ Watch demo</a>` : "")}
+          ${meta.info_url ? `<a class="info" href="${escapeHtml(meta.info_url)}" target="_blank" rel="noopener">ℹ More info</a>` : ""}
+        </div>
       </div>
     </div>
     <div class="ex-body">

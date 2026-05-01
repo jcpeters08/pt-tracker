@@ -22,5 +22,7 @@
   "image_match": "Inverted Row",
   "video_source": "youtube_search_fallback",
   "video_id": "hXTc1mDnZCw",
-  "video_id_query": "Inverted Row how to proper form"
+  "video_id_query": "Inverted Row how to proper form",
+  "info_url": "https://www.youtube.com/results?search_query=Inverted+Row+proper+form",
+  "info_source": "youtube_search"
 }
