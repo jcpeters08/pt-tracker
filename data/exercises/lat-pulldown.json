@@ -11,7 +11,7 @@
     "lat-bar"
   ],
   "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg",
-  "video_url": "https://www.youtube.com/results?search_query=Lat+Pulldown+proper+form",
+  "video_url": "https://www.muscleandstrength.com/exercises/lat-pull-down",
   "form_cues": [
     "Slight backward lean",
     "Pull to upper chest; drive elbows down"
@@ -19,5 +19,6 @@
   "default_load_unit": "kg",
   "notes": "",
   "image_source": "yuhonas/free-exercise-db (public domain)",
-  "image_match": "Wide-Grip Lat Pulldown"
+  "image_match": "Wide-Grip Lat Pulldown",
+  "video_source": "muscleandstrength.com"
 }

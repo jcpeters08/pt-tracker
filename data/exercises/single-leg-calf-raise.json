@@ -8,7 +8,7 @@
     "step"
   ],
   "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Raise_On_A_Dumbbell/0.jpg",
-  "video_url": "https://www.youtube.com/results?search_query=Single-Leg+Calf+Raise+%28on+Step%29+proper+form",
+  "video_url": "https://www.muscleandstrength.com/exercises/standing-one-leg-calf-raise-with-dumbbell",
   "form_cues": [
     "Same-side DB held in hand",
     "Drop heel below the step; full extension at the top"
@@ -16,5 +16,6 @@
   "default_load_unit": "kg",
   "notes": "",
   "image_source": "yuhonas/free-exercise-db (public domain)",
-  "image_match": "Calf Raise On A Dumbbell"
+  "image_match": "Calf Raise On A Dumbbell",
+  "video_source": "muscleandstrength.com"
 }

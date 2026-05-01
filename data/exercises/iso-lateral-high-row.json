@@ -18,5 +18,6 @@
   "default_load_unit": "kg",
   "notes": "",
   "image_source": "yuhonas/free-exercise-db (public domain)",
-  "image_match": "Leverage High Row"
+  "image_match": "Leverage High Row",
+  "video_source": "youtube_search_fallback"
 }

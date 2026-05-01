@@ -10,7 +10,7 @@
     "pull-up-bar"
   ],
   "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/0.jpg",
-  "video_url": "https://www.youtube.com/results?search_query=Pull-Up+proper+form",
+  "video_url": "https://www.muscleandstrength.com/exercises/pull-up",
   "form_cues": [
     "Full hang at the bottom",
     "Chin clears the bar at the top"
@@ -18,5 +18,6 @@
   "default_load_unit": "kg",
   "notes": "",
   "image_source": "yuhonas/free-exercise-db (public domain)",
-  "image_match": "Pullups"
+  "image_match": "Pullups",
+  "video_source": "muscleandstrength.com"
 }

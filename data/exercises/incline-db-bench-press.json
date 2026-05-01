@@ -11,7 +11,7 @@
     "incline-bench"
   ],
   "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Smith_Machine_Incline_Bench_Press/0.jpg",
-  "video_url": "https://www.youtube.com/results?search_query=Incline+Dumbbell+Bench+Press+proper+form",
+  "video_url": "https://www.muscleandstrength.com/exercises/incline-dumbbell-bench-press",
   "form_cues": [
     "Bench at ~30°, not 45°",
     "Press straight up; keep elbows at ~45° from torso"
@@ -19,5 +19,6 @@
   "default_load_unit": "kg",
   "notes": "",
   "image_source": "yuhonas/free-exercise-db (public domain)",
-  "image_match": "Smith Machine Incline Bench Press"
+  "image_match": "Smith Machine Incline Bench Press",
+  "video_source": "muscleandstrength.com"
 }

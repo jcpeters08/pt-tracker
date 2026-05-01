@@ -5,11 +5,12 @@
   "secondary_muscles": [],
   "equipment": [],
   "image_url": null,
-  "video_url": "https://www.youtube.com/results?search_query=Wall+Sit+proper+form",
+  "video_url": "https://www.muscleandstrength.com/exercises/bodyweight-wall-squat",
   "form_cues": [
     "Thighs parallel to the floor",
     "Back flat against the wall"
   ],
   "default_load_unit": "sec",
-  "notes": ""
+  "notes": "",
+  "video_source": "muscleandstrength.com"
 }

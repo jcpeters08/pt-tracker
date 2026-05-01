@@ -16,5 +16,6 @@
   "default_load_unit": "kg",
   "notes": "",
   "image_source": "yuhonas/free-exercise-db (public domain)",
-  "image_match": "Triceps Pushdown - Rope Attachment"
+  "image_match": "Triceps Pushdown - Rope Attachment",
+  "video_source": "youtube_search_fallback"
 }

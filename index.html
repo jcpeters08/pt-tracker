@@ -135,8 +135,33 @@
     background: var(--bg-soft); border-radius: 8px;
     overflow: hidden; display: flex; align-items: center; justify-content: center;
     font-size: 32px; color: var(--ink-muted);
+    cursor: zoom-in;
   }
   .ex-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed; inset: 0; background: rgba(20, 14, 10, 0.92);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2000; padding: 24px;
+    opacity: 0; pointer-events: none; transition: opacity .18s ease;
+  }
+  .lightbox.show { opacity: 1; pointer-events: auto; }
+  .lightbox img {
+    max-width: 100%; max-height: 100%;
+    border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,.5);
+    cursor: zoom-out;
+  }
+  .lightbox .lb-caption {
+    position: absolute; bottom: 24px; left: 0; right: 0; text-align: center;
+    color: white; font-size: 14px; opacity: 0.9;
+  }
+  .lightbox .lb-close {
+    position: absolute; top: 16px; right: 16px;
+    background: transparent; border: none; color: white;
+    font-size: 28px; cursor: pointer; padding: 4px 12px;
+    line-height: 1; min-height: 0;
+  }
   .ex-meta h3 { margin: 0 0 4px; font-size: 18px; line-height: 1.2; }
   .ex-meta .muscles { font-size: 12px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .04em; }
   .ex-meta .target { font-size: 14px; color: var(--ink-soft); margin-top: 6px; }
@@ -284,6 +309,13 @@
   </main>
 
   <div id="toast" class="toast"></div>
+
+  <!-- Lightbox: tap an exercise image to expand it -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Exercise image">
+    <button class="lb-close" aria-label="Close">×</button>
+    <img id="lb-img" alt="">
+    <div class="lb-caption" id="lb-caption"></div>
+  </div>
 </div>
 
 <script>
@@ -641,7 +673,15 @@ function renderExerciseCard(exDef, ex) {
 
 function bindCardEvents(card, exId) {
   const log = state.log[exId];
-  card.querySelectorAll(".set-row").forEach(row => {
+  // Lightbox on image tap
+  const imgWrap = card.querySelector(".ex-img");
+  const meta = state.exercises[exId] || {};
+  if (meta.image_url) {
+    imgWrap.addEventListener("click", () => openLightbox(meta.image_url, meta.name || exId));
+  } else {
+    imgWrap.style.cursor = "default";
+  }
+  card.querySelectorAll(".set-row:not(.set-header)").forEach(row => {
     const idx = Number(row.dataset.set);
     row.querySelector('input[data-field="weight"]').addEventListener("input", e => {
       log.sets[idx].weight_kg = e.target.value === "" ? null : Number(e.target.value);
@@ -790,12 +830,31 @@ async function bootApp() {
   }
 }
 
+function openLightbox(src, caption) {
+  const lb = $("#lightbox");
+  $("#lb-img").src = src;
+  $("#lb-img").alt = caption || "";
+  $("#lb-caption").textContent = caption || "";
+  lb.classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+function closeLightbox() {
+  $("#lightbox").classList.remove("show");
+  document.body.style.overflow = "";
+  setTimeout(() => { $("#lb-img").src = ""; }, 250);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   bindSigninPanel();
   bindPatPanel();
   $("#signout-btn").addEventListener("click", signOut);
   $("#submit-btn").addEventListener("click", submitSession);
   $("#session-notes-input").addEventListener("input", e => { state.sessionNotes = e.target.value; });
+  // Lightbox: backdrop, image, close button — any click closes
+  $("#lightbox").addEventListener("click", closeLightbox);
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && $("#lightbox").classList.contains("show")) closeLightbox();
+  });
   bootApp();
 });
 </script>

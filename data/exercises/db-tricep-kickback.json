@@ -7,7 +7,7 @@
     "dumbbells"
   ],
   "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Tricep_Dumbbell_Kickback/0.jpg",
-  "video_url": "https://www.youtube.com/results?search_query=Dumbbell+Tricep+Kickback+proper+form",
+  "video_url": "https://www.muscleandstrength.com/exercises/tricep-kickback",
   "form_cues": [
     "Hinge at hip, flat back",
     "Pin upper arm to torso; extend at elbow only"
@@ -15,5 +15,6 @@
   "default_load_unit": "kg",
   "notes": "",
   "image_source": "yuhonas/free-exercise-db (public domain)",
-  "image_match": "Tricep Dumbbell Kickback"
+  "image_match": "Tricep Dumbbell Kickback",
+  "video_source": "muscleandstrength.com"
 }

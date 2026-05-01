@@ -10,7 +10,7 @@
     "dumbbells"
   ],
   "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Two-Dumbbell_Row/0.jpg",
-  "video_url": "https://www.youtube.com/results?search_query=Bent-Over+Dumbbell+Row+proper+form",
+  "video_url": "https://www.muscleandstrength.com/exercises/bent-over-dumbbell-row",
   "form_cues": [
     "Hinge at hip, neutral spine",
     "Pull DBs to hips, not to chest"
@@ -18,5 +18,6 @@
   "default_load_unit": "kg",
   "notes": "",
   "image_source": "yuhonas/free-exercise-db (public domain)",
-  "image_match": "Bent Over Two-Dumbbell Row"
+  "image_match": "Bent Over Two-Dumbbell Row",
+  "video_source": "muscleandstrength.com"
 }

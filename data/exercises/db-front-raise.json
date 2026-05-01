@@ -7,7 +7,7 @@
     "dumbbells"
   ],
   "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Front_Dumbbell_Raise/0.jpg",
-  "video_url": "https://www.youtube.com/results?search_query=Dumbbell+Front+Raise+proper+form",
+  "video_url": "https://www.muscleandstrength.com/exercises/dumbbell-front-raise",
   "form_cues": [
     "Raise to shoulder height",
     "Control the descent"
@@ -15,5 +15,6 @@
   "default_load_unit": "kg",
   "notes": "",
   "image_source": "yuhonas/free-exercise-db (public domain)",
-  "image_match": "Front Dumbbell Raise"
+  "image_match": "Front Dumbbell Raise",
+  "video_source": "muscleandstrength.com"
 }

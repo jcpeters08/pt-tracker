@@ -7,7 +7,7 @@
     "dumbbells"
   ],
   "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Reverse_Flyes/0.jpg",
-  "video_url": "https://www.youtube.com/results?search_query=Dumbbell+Reverse+Fly+proper+form",
+  "video_url": "https://www.muscleandstrength.com/exercises/dumbbell-reverse-fly",
   "form_cues": [
     "Bent over OR chest on incline bench",
     "Lead with the elbows; squeeze rear delts"
@@ -15,5 +15,6 @@
   "default_load_unit": "kg",
   "notes": "",
   "image_source": "yuhonas/free-exercise-db (public domain)",
-  "image_match": "Reverse Flyes"
+  "image_match": "Reverse Flyes",
+  "video_source": "muscleandstrength.com"
 }

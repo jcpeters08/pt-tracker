@@ -7,7 +7,7 @@
     "dumbbells"
   ],
   "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg",
-  "video_url": "https://www.youtube.com/results?search_query=Dumbbell+Lateral+Raise+proper+form",
+  "video_url": "https://www.muscleandstrength.com/exercises/dumbbell-lateral-raise",
   "form_cues": [
     "Lead with the elbow, not the hand",
     "Stop at shoulder height — no higher",
@@ -16,5 +16,6 @@
   "default_load_unit": "kg",
   "notes": "",
   "image_source": "yuhonas/free-exercise-db (public domain)",
-  "image_match": "Side Lateral Raise"
+  "image_match": "Side Lateral Raise",
+  "video_source": "muscleandstrength.com"
 }
