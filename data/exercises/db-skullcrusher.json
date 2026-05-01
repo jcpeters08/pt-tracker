@@ -20,6 +20,10 @@
   "video_source": "muscleandstrength.com",
   "video_id": "iuYB_fLp26Q",
   "video_id_query": "Dumbbell Skullcrusher how to proper form",
-  "info_url": "https://www.muscleandstrength.com/exercises/lying-tricep-extension",
-  "info_source": "muscleandstrength.com"
+  "instructions": [
+    "Using a close grip, lift the EZ bar and hold it with your elbows in as you lie on the bench. Your arms should be perpendicular to the floor. This will be your starting position.",
+    "Keeping the upper arms stationary, lower the bar by allowing the elbows to flex. Inhale as you perform this portion of the movement. Pause once the bar is directly above the forehead.",
+    "Lift the bar back to the starting position by extending the elbow and exhaling.",
+    "Repeat."
+  ]
 }

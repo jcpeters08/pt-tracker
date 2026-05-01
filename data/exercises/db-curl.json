@@ -19,6 +19,10 @@
   "video_source": "muscleandstrength.com",
   "video_id": "iui51E31sX8",
   "video_id_query": "Standing Dumbbell Curl how to proper form",
-  "info_url": "https://www.muscleandstrength.com/exercises/standing-dumbbell-curl",
-  "info_source": "muscleandstrength.com"
+  "instructions": [
+    "Stand up straight with a dumbbell in each hand at arm's length. Keep your elbows close to your torso and rotate the palms of your hands until they are facing forward. This will be your starting position.",
+    "Now, keeping the upper arms stationary, exhale and curl the weights while contracting your biceps. Continue to raise the weights until your biceps are fully contracted and the dumbbells are at shoulder level. Hold the contracted position for a brief pause as you squeeze your biceps.",
+    "Then, inhale and slowly begin to lower the dumbbells back to the starting position.",
+    "Repeat for the recommended amount of repetitions."
+  ]
 }

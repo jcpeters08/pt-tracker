@@ -167,19 +167,46 @@
     text-align: center; color: white; font-size: 13px; opacity: 0.85;
   }
   .ex-meta .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-  .ex-meta .video,
-  .ex-meta .info {
+  .ex-meta .pill {
     display: inline-flex; align-items: center; gap: 4px;
     font-size: 13px;
     background: transparent;
-    border: 1px solid var(--accent); border-radius: 999px;
+    border: 1px solid var(--rule); border-radius: 999px;
     padding: 4px 12px; min-height: 0; cursor: pointer;
-    text-decoration: none;
+    color: var(--ink-soft); text-decoration: none;
   }
-  .ex-meta .video { color: var(--accent); }
-  .ex-meta .info  { color: var(--ink-soft); border-color: var(--rule); }
-  .ex-meta .video:hover { background: var(--accent-soft); }
-  .ex-meta .info:hover  { background: var(--bg-soft); }
+  .ex-meta .pill:hover { background: var(--bg-soft); }
+  .ex-meta .pill.video { color: var(--accent); border-color: var(--accent); }
+  .ex-meta .pill.video:hover { background: var(--accent-soft); }
+
+  /* How-to inline modal */
+  .howto-modal {
+    position: fixed; inset: 0; background: rgba(20, 14, 10, 0.78);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2050; padding: 16px;
+    opacity: 0; pointer-events: none; transition: opacity .18s ease;
+  }
+  .howto-modal.show { opacity: 1; pointer-events: auto; }
+  .howto-modal .ht-frame {
+    background: var(--bg-card); border-radius: 12px; max-width: 680px;
+    width: 100%; max-height: 92vh; overflow-y: auto;
+    padding: 22px 22px 18px; position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  }
+  .howto-modal .ht-close {
+    position: absolute; top: 8px; right: 12px;
+    background: transparent; border: none; font-size: 26px; line-height: 1;
+    color: var(--ink-muted); cursor: pointer; padding: 4px 8px; min-height: 0;
+  }
+  .howto-modal h3 { margin: 0 0 4px; font-size: 22px; }
+  .howto-modal .ht-muscles { font-size: 12px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 14px; }
+  .howto-modal h4 { font-size: 14px; margin: 14px 0 6px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .04em; }
+  .howto-modal ol, .howto-modal ul { margin: 0 0 8px; padding-left: 20px; }
+  .howto-modal li { margin: 4px 0; line-height: 1.45; }
+  .howto-modal .ht-link {
+    display: block; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule);
+    color: var(--accent); font-size: 14px;
+  }
 
   /* Lightbox */
   .lightbox {
@@ -365,6 +392,16 @@
       <button class="vm-close" id="vm-close" aria-label="Close">×</button>
       <div id="vm-iframe-host"></div>
       <div class="vm-caption" id="vm-caption"></div>
+    </div>
+  </div>
+
+  <!-- How-to modal: step-by-step instructions + form cues -->
+  <div id="howto-modal" class="howto-modal" role="dialog" aria-modal="true" aria-label="How to do the exercise">
+    <div class="ht-frame">
+      <button class="ht-close" id="ht-close" aria-label="Close">×</button>
+      <h3 id="ht-title"></h3>
+      <div class="ht-muscles" id="ht-muscles"></div>
+      <div id="ht-body"></div>
     </div>
   </div>
 </div>
@@ -712,9 +749,10 @@ function renderExerciseCard(exDef, ex) {
         <div class="target"><b>Target:</b> ${escapeHtml(targetText)}${ex.notes ? ` · <span style="color:var(--ink-muted)">${escapeHtml(ex.notes)}</span>` : ""}</div>
         <div class="pill-row">
           ${meta.video_id
-              ? `<button class="video" type="button" data-action="play-video">▶ Watch demo</button>`
-              : (meta.video_url ? `<a class="video" href="${escapeHtml(meta.video_url)}" target="_blank" rel="noopener">▶ Watch demo</a>` : "")}
-          ${meta.info_url ? `<a class="info" href="${escapeHtml(meta.info_url)}" target="_blank" rel="noopener">ℹ More info</a>` : ""}
+              ? `<button class="pill video" type="button" data-action="play-video">▶ Watch demo</button>`
+              : (meta.video_url ? `<a class="pill video" href="${escapeHtml(meta.video_url)}" target="_blank" rel="noopener">▶ Watch demo</a>` : "")}
+          ${(meta.instructions?.length || meta.form_cues?.length) ? `<button class="pill" type="button" data-action="show-howto">ℹ How to</button>` : ""}
+          ${meta.info_url ? `<a class="pill" href="${escapeHtml(meta.info_url)}" target="_blank" rel="noopener">↗ M&S</a>` : ""}
         </div>
       </div>
     </div>
@@ -741,6 +779,11 @@ function bindCardEvents(card, exId) {
   const playBtn = card.querySelector('[data-action="play-video"]');
   if (playBtn && meta.video_id) {
     playBtn.addEventListener("click", () => openVideo(meta.video_id, meta.name || exId));
+  }
+  // How-to inline modal
+  const howtoBtn = card.querySelector('[data-action="show-howto"]');
+  if (howtoBtn) {
+    howtoBtn.addEventListener("click", () => openHowto(meta));
   }
   card.querySelectorAll(".set-row:not(.set-header)").forEach(row => {
     const idx = Number(row.dataset.set);
@@ -891,6 +934,33 @@ async function bootApp() {
   }
 }
 
+function openHowto(meta) {
+  const modal = $("#howto-modal");
+  $("#ht-title").textContent = meta.name || meta.id || "";
+  const muscles = [meta.primary_muscle, ...(meta.secondary_muscles || [])].filter(Boolean).join(" · ");
+  $("#ht-muscles").textContent = muscles;
+  const parts = [];
+  if (meta.instructions?.length) {
+    parts.push("<h4>Steps</h4><ol>" + meta.instructions.map(s => `<li>${escapeHtml(s)}</li>`).join("") + "</ol>");
+  }
+  if (meta.form_cues?.length) {
+    parts.push("<h4>Form cues</h4><ul>" + meta.form_cues.map(s => `<li>${escapeHtml(s)}</li>`).join("") + "</ul>");
+  }
+  if (meta.equipment?.length) {
+    parts.push(`<h4>Equipment</h4><p style="margin:4px 0">${escapeHtml(meta.equipment.join(", "))}</p>`);
+  }
+  if (meta.info_url) {
+    parts.push(`<a class="ht-link" href="${escapeHtml(meta.info_url)}" target="_blank" rel="noopener">Read full article on muscleandstrength.com →</a>`);
+  }
+  $("#ht-body").innerHTML = parts.join("");
+  modal.classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+function closeHowto() {
+  $("#howto-modal").classList.remove("show");
+  document.body.style.overflow = "";
+}
+
 function openVideo(videoId, caption) {
   const modal = $("#video-modal");
   const host = $("#vm-iframe-host");
@@ -939,9 +1009,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.id === "video-modal") closeVideo();
   });
   $("#vm-close").addEventListener("click", closeVideo);
+  // How-to modal close
+  $("#howto-modal").addEventListener("click", e => {
+    if (e.target.id === "howto-modal") closeHowto();
+  });
+  $("#ht-close").addEventListener("click", closeHowto);
   document.addEventListener("keydown", e => {
     if (e.key !== "Escape") return;
     if ($("#video-modal").classList.contains("show")) closeVideo();
+    else if ($("#howto-modal").classList.contains("show")) closeHowto();
     else if ($("#lightbox").classList.contains("show")) closeLightbox();
   });
   bootApp();
