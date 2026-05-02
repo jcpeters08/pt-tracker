@@ -103,6 +103,119 @@
         "phase": "1-closeout",
         "reason": ""
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-05-02T02:46:53.298Z",
+      "session": {
+        "date": "2026-05-04",
+        "submitted_at": "2026-05-02T02:46:53.298Z",
+        "day_of_week": "monday",
+        "type": "push",
+        "muscle_groups": [
+          "chest",
+          "shoulders",
+          "lateral-delts"
+        ],
+        "routine_id": "2026-W18-CDMX-Phase-1-Closeout",
+        "phase": "1-closeout",
+        "exercises": [
+          {
+            "exercise_id": "flat-db-bench-press",
+            "display_name": "Flat Dumbbell Bench Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 14,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 16,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 16,
+                "reps": 12
+              },
+              {
+                "set": 4,
+                "weight_kg": 16,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "incline-db-bench-press",
+            "display_name": "Incline Dumbbell Bench Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 12,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 12,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 12,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-db-shoulder-press",
+            "display_name": "Seated Dumbbell Shoulder Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 10,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 10,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 10,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-lateral-raise",
+            "display_name": "Dumbbell Lateral Raise",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 6,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 6,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 6,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "session_notes": "Test"
+      }
     }
   ]
 }
