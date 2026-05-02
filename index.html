@@ -891,16 +891,20 @@ function buildSessionPayload() {
   for (const planEx of (day?.exercises || [])) {
     const log = state.log[planEx.exercise_id];
     if (!log) continue;
-    const sets = log.sets
-      .map((s, i) => ({ set: i + 1, weight_kg: s.weight_kg, reps: s.reps }))
-      .filter(s => s.weight_kg !== null && s.reps !== null && (s.weight_kg !== 0 || s.reps !== 0));
-    if (!sets.length) continue;
+    // Only sets explicitly marked Done count as work that actually happened.
+    // Prefilled targets that were never confirmed (and skipped exercises
+    // entirely) are dropped, matching the user's expectation that "if I
+    // didn't click Done it didn't happen."
+    const doneSets = log.sets
+      .filter(s => s.done && s.weight_kg !== null && s.reps !== null && (s.weight_kg !== 0 || s.reps !== 0))
+      .map((s, i) => ({ set: i + 1, weight_kg: s.weight_kg, reps: s.reps }));
+    if (!doneSets.length) continue;
     const meta = state.exercises[planEx.exercise_id];
     if (meta?.primary_muscle) muscleSet.add(meta.primary_muscle);
     exercises.push({
       exercise_id: planEx.exercise_id,
       display_name: meta?.name || planEx.exercise_id,
-      sets,
+      sets: doneSets,
       notes: log.notes || "",
     });
   }
