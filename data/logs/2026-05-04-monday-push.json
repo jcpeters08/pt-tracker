@@ -1,0 +1,96 @@
+{
+  "id": "2026-05-04-monday-push",
+  "date": "2026-05-04",
+  "day_of_week": "monday",
+  "type": "push",
+  "muscle_groups": [
+    "chest",
+    "lateral-delts"
+  ],
+  "phase": "1-closeout",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "flat-db-bench-press",
+      "display_name": "Flat Dumbbell Bench Press",
+      "weight_raw": "14 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 14.0,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 14.0,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 14.0,
+          "reps": 12
+        },
+        {
+          "set": 4,
+          "weight_kg": 14.0,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "incline-db-bench-press",
+      "display_name": "Incline Dumbbell Bench Press",
+      "weight_raw": "12 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 12.0,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 12.0,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 12.0,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-lateral-raise",
+      "display_name": "Dumbbell Lateral Raise",
+      "weight_raw": "6 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 6.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 6.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 6.0,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "session_notes": "Test",
+  "submitted_at": "2026-05-02T02:47:20.490Z",
+  "source_md": "Workout Log/2026-05-04-Monday-Push.md"
+}
