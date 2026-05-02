@@ -40,6 +40,8 @@ META_KEYS = {
     "Post (within 30 min)": "post_workout",
     "Recovery state": "recovery_state",
     "Session context": "session_context",
+    "Workout date": "workout_date",
+    "Submitted": "submitted_at",
 }
 
 
@@ -188,6 +190,7 @@ def parse_log_md(text: str, *, filename: str) -> dict | None:
         "warmup_exercises": warmup_exercises,
         "exercises": exercises,
         "session_notes": session_notes,
+        "submitted_at": meta.get("submitted_at"),
         "source_md": f"Workout Log/{filename}",
     }
 

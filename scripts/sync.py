@@ -135,6 +135,8 @@ def render_log_md(session: dict, exercises_index: dict[str, dict]) -> str:
     ]
 
     meta_lines = []
+    meta_lines.append(f"**Workout date:** {date}")
+    meta_lines.append(f"**Submitted:** {session.get('submitted_at', now_iso())}")
     if session.get("location"):
         meta_lines.append(f"**Location:** {session['location']}")
     if session.get("trainer"):
@@ -146,7 +148,7 @@ def render_log_md(session: dict, exercises_index: dict[str, dict]) -> str:
     if session.get("fasted"):
         meta_lines.append("**Time:** Fasted (eating window opens noon)")
     meta_lines.append(f"**Thermocycling post-workout:** {'Yes' if session.get('thermocycling') else 'No'}")
-    meta_lines.append(f"**Logged via:** PT Tracker web app — submitted {session.get('submitted_at', now_iso())}")
+    meta_lines.append("**Logged via:** PT Tracker web app")
 
     body = []
     body.extend(head)
@@ -218,7 +220,9 @@ def render_skip_md(session: dict) -> str:
             "→ Back to: [[🏋️ Personal Trainer/Overview|Overview]] · [[🏋️ Personal Trainer/Log|Session Log]]",
             "",
             "**Status:** Skipped",
-            f"**Logged via:** PT Tracker web app — submitted {session.get('submitted_at', now_iso())}"]
+            f"**Workout date:** {date}",
+            f"**Submitted:** {session.get('submitted_at', now_iso())}",
+            "**Logged via:** PT Tracker web app"]
     if reason:
         body.extend(["", "---", "", "## Reason", "", reason])
     body.extend(["", "---", "",
@@ -336,21 +340,24 @@ def main() -> int:
         if kind == "log":
             fname = _filename_for_session(session)
             target = workout_logs_md_dir / fname
-            if target.exists():
-                skipped.append(f"already exists: {fname}")
-                continue
+            # Re-submitting an already-logged session OVERWRITES — the user
+            # may be editing/correcting a prior entry. The skipped-marker
+            # filename is different (-Skipped.md), so a real skipped file
+            # won't be clobbered by a log re-submit unless the user
+            # intentionally fills the form for that day.
+            existed = target.exists()
             target.write_text(render_log_md(session, exercises_index), encoding="utf-8")
-            append_log_index_line(log_md, session)
-            drained.append(f"log: {fname}")
+            if not existed:
+                append_log_index_line(log_md, session)
+            drained.append(f"{'update' if existed else 'log'}: {fname}")
         elif kind == "skip":
             fname = _filename_for_skip(session)
             target = workout_logs_md_dir / fname
-            if target.exists():
-                skipped.append(f"already exists: {fname}")
-                continue
+            existed = target.exists()
             target.write_text(render_skip_md(session), encoding="utf-8")
-            append_skip_index_line(log_md, session)
-            drained.append(f"skip: {fname}")
+            if not existed:
+                append_skip_index_line(log_md, session)
+            drained.append(f"{'update-skip' if existed else 'skip'}: {fname}")
         else:
             skipped.append(f"unknown entry type: {kind!r}")
 

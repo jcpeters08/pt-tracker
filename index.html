@@ -86,6 +86,31 @@
   }
   .header-link:hover { background: var(--bg-soft); }
 
+  /* Workout date picker + log status row */
+  .date-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; margin-top: 10px; flex-wrap: wrap;
+  }
+  .date-picker-wrap {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--bg-card); border: 1px solid var(--rule);
+    border-radius: 999px; padding: 4px 12px;
+    font-size: 13px; color: var(--ink-soft);
+  }
+  .date-picker-wrap label { color: var(--ink-muted); font-weight: 600; }
+  .date-picker-wrap input[type=date] {
+    border: none; background: transparent; padding: 4px 0;
+    color: var(--ink); font-size: 13px; min-height: 0;
+  }
+  .date-picker-wrap input[type=date]:focus { outline: none; }
+  .log-status {
+    font-size: 12px; padding: 4px 10px; border-radius: 999px;
+    font-weight: 600; letter-spacing: .02em;
+  }
+  .log-status.logged  { background: var(--good); color: white; }
+  .log-status.pending { background: var(--warn); color: white; }
+  .log-status.skipped { background: var(--bg-soft); color: var(--ink-soft); border: 1px solid var(--rule); }
+
   /* Day toggle */
   .day-toggle {
     display: flex; gap: 6px; overflow-x: auto;
@@ -340,6 +365,13 @@
       <button id="signout-btn" class="signout-btn hidden" title="Sign out">⏻</button>
     </div>
     <nav class="day-toggle" id="day-toggle"></nav>
+    <div class="date-row">
+      <span class="date-picker-wrap">
+        <label for="workout-date">Workout date</label>
+        <input type="date" id="workout-date">
+      </span>
+      <span class="log-status hidden" id="log-status"></span>
+    </div>
   </header>
 
   <!-- Sign-in panel -->
@@ -451,9 +483,15 @@ const state = {
   routine: null,        // active routine JSON
   exercises: {},        // id → exercise JSON
   selectedDay: null,    // "monday" etc
+  workoutDate: null,    // YYYY-MM-DD — defaults to today, user can change via date picker
+  sessionLookup: null,  // Map<"date|day|type", { kind, session, status, submitted_at }>
+  activeSession: null,  // current view's matching session (or null)
   log: {},              // exercise_id → {sets: [{set, weight_kg, reps, done}], notes}
   sessionNotes: "",
   submitting: false,
+  // Track which (date|day|type) keys we've already hydrated into state.log so
+  // a re-render doesn't clobber the user's in-progress edits.
+  hydratedKeys: new Set(),
 };
 
 // ---- Helpers --------------------------------------------------------------
@@ -589,6 +627,53 @@ async function fetchExercise(id) {
   }
 }
 
+async function loadSessions() {
+  // Discover synced log files via GitHub's contents listing (anonymous, public).
+  state.sessionLookup = new Map();
+  let logIds = [];
+  try {
+    const list = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/logs`)
+      .then(r => r.ok ? r.json() : []);
+    logIds = (Array.isArray(list) ? list : [])
+      .filter(f => f.name && f.name.endsWith(".json"))
+      .map(f => f.name.replace(/\.json$/, ""));
+  } catch {}
+  // Fetch all logs in parallel.
+  const logs = await Promise.all(
+    logIds.map(id => fetchJson(`data/logs/${id}.json`).catch(() => null))
+  );
+  for (const log of logs) {
+    if (!log?.date || !log?.day_of_week) continue;
+    const key = `${log.date}|${log.day_of_week}|${log.type || ""}`;
+    state.sessionLookup.set(key, {
+      kind: "log",
+      status: "synced",
+      session: log,
+      submitted_at: null,
+    });
+  }
+  // Pending overlay: entries posted since the last sync. Newer than synced
+  // logs for the same key, so we let pending overwrite synced.
+  try {
+    const pending = await fetchJson("data/pending.json");
+    for (const entry of pending?.entries || []) {
+      const s = entry.session || {};
+      if (!s.date || !s.day_of_week) continue;
+      const key = `${s.date}|${s.day_of_week}|${s.type || ""}`;
+      state.sessionLookup.set(key, {
+        kind: entry.type,           // "log" or "skip"
+        status: "pending",
+        session: s,
+        submitted_at: entry.submitted_at,
+      });
+    }
+  } catch {}
+}
+
+function dayTypeKey(dayLabel, fallback) {
+  return (dayLabel || "").toLowerCase().split("(")[0].trim().replace(/\s+/g, "-") || fallback;
+}
+
 async function loadRoutines() {
   // Discover routine files via the GitHub Contents API (anonymous on a public repo).
   // Falls back to a known seed file path if the listing fails.
@@ -698,7 +783,7 @@ function bindPatPanel() {
       $("#pat-status").className = "status-msg ok";
       $("#pat-status").textContent = "Loading routine…";
       $("#pat-input").value = "";
-      await loadRoutines();
+      await Promise.all([loadRoutines(), loadSessions()]);
       $("#pat-status").textContent = "Saved.";
       renderApp();
       showPanel("app");
@@ -731,6 +816,9 @@ function renderDayToggle() {
     btn.innerHTML = `${DAY_LABELS[key]}<span class="day-label">${escapeHtml(hasExercises ? dayLabel(key) : "—")}</span>`;
     btn.addEventListener("click", () => {
       state.selectedDay = key;
+      // Clear in-progress edits so cards re-hydrate from whatever's logged
+      // (or routine targets) for the newly-selected day.
+      state.log = {};
       renderApp();
     });
     host.appendChild(btn);
@@ -748,12 +836,70 @@ function renderWarmup(day) {
 
 function ensureLogState(exId, targetWeight, targetReps, targetSets) {
   if (state.log[exId]) return state.log[exId];
+  // If there's an existing session for the current view, prefill from it
+  // (sets carry their logged weight/reps and are marked Done).
+  const active = state.activeSession;
+  if (active && active.kind === "log") {
+    const logged = (active.session?.exercises || []).find(e => e.exercise_id === exId);
+    if (logged) {
+      const sets = (logged.sets || []).map(s => ({
+        weight_kg: s.weight_kg ?? null,
+        reps: s.reps ?? null,
+        done: true,                   // it's in the saved log → it counted
+      }));
+      state.log[exId] = { sets, notes: logged.notes || "" };
+      return state.log[exId];
+    }
+  }
   const sets = [];
   for (let i = 0; i < (targetSets || 1); i++) {
     sets.push({ weight_kg: targetWeight ?? null, reps: targetReps ?? null, done: false });
   }
   state.log[exId] = { sets, notes: "" };
   return state.log[exId];
+}
+
+function refreshActiveSession() {
+  if (!state.workoutDate || !state.selectedDay || !state.routine) {
+    state.activeSession = null;
+    return;
+  }
+  const day = state.routine.days?.[state.selectedDay];
+  const dayType = dayTypeKey(day?.label, state.selectedDay);
+  const key = `${state.workoutDate}|${state.selectedDay}|${dayType}`;
+  state.activeSession = state.sessionLookup?.get(key) || null;
+  // When the (date|day|type) view changes, the in-progress log state from a
+  // different view becomes meaningless. Reset state.log so ensureLogState
+  // freshly hydrates from the active session (or routine targets).
+  if (!state.hydratedKeys.has(key)) {
+    state.log = {};
+    state.sessionNotes = state.activeSession?.session?.session_notes || "";
+    const notesInput = $("#session-notes-input");
+    if (notesInput) notesInput.value = state.sessionNotes;
+    state.hydratedKeys.add(key);
+  }
+}
+
+function renderLogStatus() {
+  const el = $("#log-status");
+  if (!el) return;
+  el.classList.remove("logged", "pending", "skipped");
+  el.classList.add("hidden");
+  const active = state.activeSession;
+  if (!active) return;
+  el.classList.remove("hidden");
+  if (active.kind === "skip") {
+    el.classList.add("skipped");
+    el.textContent = "✕ Skipped";
+    return;
+  }
+  if (active.status === "pending") {
+    el.classList.add("pending");
+    el.textContent = "● Submitted (pending sync)";
+  } else {
+    el.classList.add("logged");
+    el.textContent = "✓ Logged";
+  }
 }
 
 function renderExerciseCard(exDef, ex) {
@@ -888,8 +1034,13 @@ function renderApp() {
   if (!state.selectedDay) {
     state.selectedDay = (state.routine.days?.[todayKey()]?.exercises?.length) ? todayKey() : (Object.keys(state.routine.days || {})[0] || "monday");
   }
+  if (!state.workoutDate) state.workoutDate = localDateIso();
+  const datePicker = $("#workout-date");
+  if (datePicker && datePicker.value !== state.workoutDate) datePicker.value = state.workoutDate;
+  refreshActiveSession();
   renderDayToggle();
   renderWarmup(state.routine.days?.[state.selectedDay]);
+  renderLogStatus();
   renderExercises();
 }
 
@@ -919,13 +1070,15 @@ function buildSessionPayload() {
       notes: log.notes || "",
     });
   }
+  const submittedAt = isoNow();
   return {
     type: "log",
-    submitted_at: isoNow(),
+    submitted_at: submittedAt,
     session: {
-      date: localDateIso(),
+      date: state.workoutDate || localDateIso(),
+      submitted_at: submittedAt,        // also denormalized inside session
       day_of_week: state.selectedDay,
-      type: (state.routine?.days?.[state.selectedDay]?.label || "").toLowerCase().split("(")[0].trim().replace(/\s+/g, "-") || state.selectedDay,
+      type: dayTypeKey(state.routine?.days?.[state.selectedDay]?.label, state.selectedDay),
       muscle_groups: [...muscleSet],
       routine_id: state.routine?.id,
       phase: state.routine?.phase || null,
@@ -948,12 +1101,14 @@ async function submitSkip() {
 
   btn.disabled = true;
   state.submitting = true;
-  const sessionType = (day.label || "").toLowerCase().split("(")[0].trim().replace(/\s+/g, "-") || state.selectedDay;
+  const sessionType = dayTypeKey(day.label, state.selectedDay);
+  const submittedAt = isoNow();
   const payload = {
     type: "skip",
-    submitted_at: isoNow(),
+    submitted_at: submittedAt,
     session: {
       date: dateStr,
+      submitted_at: submittedAt,
       day_of_week: state.selectedDay,
       type: sessionType,
       routine_id: state.routine?.id,
@@ -964,7 +1119,9 @@ async function submitSkip() {
   try {
     await appendPending(payload);
     toast("✓ Marked skipped. Synced to vault overnight.", "ok");
+    await loadSessions().catch(() => {});
     state.log = {}; state.sessionNotes = "";
+    state.hydratedKeys = new Set();
     $("#session-notes-input").value = "";
     setTimeout(() => { btn.disabled = false; renderApp(); }, 1500);
   } catch (e) {
@@ -1002,7 +1159,11 @@ async function submitSession() {
     succeeded = true;
     toast("✓ Saved. Synced to vault overnight.", "ok");
     btn.textContent = "✓ Submitted — log another?";
+    // Refresh the local pending overlay so the just-submitted entry shows
+    // up in the day view immediately (no full reload required).
+    await loadSessions().catch(() => {});
     state.log = {}; state.sessionNotes = "";
+    state.hydratedKeys = new Set();
     $("#session-notes-input").value = "";
     setTimeout(() => { btn.disabled = false; btn.textContent = "Submit session"; renderApp(); }, 1800);
   } catch (e) {
@@ -1034,7 +1195,7 @@ async function bootApp() {
     if (!email) { showPanel("signin"); return; }
     state.pat = await fetchPat();
     if (!state.pat) { showPanel("pat"); return; }
-    await loadRoutines();
+    await Promise.all([loadRoutines(), loadSessions()]);
     renderApp();
     showPanel("app");
   } catch (e) {
@@ -1112,6 +1273,14 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#signout-btn").addEventListener("click", signOut);
   $("#submit-btn").addEventListener("click", submitSession);
   $("#skip-btn").addEventListener("click", submitSkip);
+  $("#workout-date").addEventListener("change", e => {
+    const v = e.target.value || localDateIso();
+    if (v === state.workoutDate) return;
+    state.workoutDate = v;
+    state.log = {};
+    state.hydratedKeys = new Set();   // every cached hydration is keyed on date; clear all
+    renderApp();
+  });
   $("#session-notes-input").addEventListener("input", e => { state.sessionNotes = e.target.value; });
   // Lightbox: backdrop, image, close button — any click closes
   $("#lightbox").addEventListener("click", closeLightbox);
