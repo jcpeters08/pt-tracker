@@ -90,6 +90,19 @@
         ],
         "session_notes": "Test"
       }
+    },
+    {
+      "type": "skip",
+      "submitted_at": "2026-05-02T02:46:12.579Z",
+      "session": {
+        "date": "2026-05-01",
+        "submitted_at": "2026-05-02T02:46:12.579Z",
+        "day_of_week": "tuesday",
+        "type": "pull",
+        "routine_id": "2026-W18-CDMX-Phase-1-Closeout",
+        "phase": "1-closeout",
+        "reason": ""
+      }
     }
   ]
 }
