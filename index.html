@@ -291,6 +291,14 @@
     box-shadow: 0 -8px 16px -8px rgba(40,25,15,.06);
   }
   .submit-row .btn { width: 100%; padding: 16px; font-size: 16px; }
+  .skip-row { text-align: center; margin-top: 4px; }
+  .skip-link {
+    background: transparent; border: none; color: var(--ink-muted);
+    font-size: 13px; text-decoration: underline; cursor: pointer; padding: 8px;
+    min-height: 0;
+  }
+  .skip-link:hover { color: var(--ink-soft); }
+  .skip-link:disabled { opacity: 0.4; cursor: not-allowed; text-decoration: none; }
 
   /* Empty / rest day */
   .rest-day-msg {
@@ -383,6 +391,9 @@
         Saves to GitHub now. Synced to your vault overnight.
         · <a href="reports.html">Reports →</a>
       </p>
+      <div class="skip-row">
+        <button class="skip-link" id="skip-btn" type="button">I didn't do this workout — mark as skipped</button>
+      </div>
     </div>
   </main>
 
@@ -924,6 +935,50 @@ function buildSessionPayload() {
   };
 }
 
+async function submitSkip() {
+  const btn = $("#skip-btn");
+  if (state.submitting || btn.disabled) return;
+  const day = state.routine?.days?.[state.selectedDay];
+  if (!day) return;
+  const dayLabel = day.label || state.selectedDay;
+  const dateStr = localDateIso();
+  const reason = (state.sessionNotes || "").trim();
+  const reasonNote = reason ? `\n\nReason saved from Session Notes: "${reason}"` : "\n\n(No reason — leave the Session Notes blank if that's intentional, or add one and click Skip again.)";
+  if (!confirm(`Mark ${dayLabel} as SKIPPED for ${dateStr}?${reasonNote}`)) return;
+
+  btn.disabled = true;
+  state.submitting = true;
+  const sessionType = (day.label || "").toLowerCase().split("(")[0].trim().replace(/\s+/g, "-") || state.selectedDay;
+  const payload = {
+    type: "skip",
+    submitted_at: isoNow(),
+    session: {
+      date: dateStr,
+      day_of_week: state.selectedDay,
+      type: sessionType,
+      routine_id: state.routine?.id,
+      phase: state.routine?.phase || null,
+      reason,
+    },
+  };
+  try {
+    await appendPending(payload);
+    toast("✓ Marked skipped. Synced to vault overnight.", "ok");
+    state.log = {}; state.sessionNotes = "";
+    $("#session-notes-input").value = "";
+    setTimeout(() => { btn.disabled = false; renderApp(); }, 1500);
+  } catch (e) {
+    console.error("submitSkip:", e);
+    const msg = /403/.test(e.message)
+      ? "Skip failed: GitHub denied the write (403). Token needs Contents: Read and write."
+      : `Skip failed: ${e.message}`;
+    toast(msg, "err");
+    btn.disabled = false;
+  } finally {
+    state.submitting = false;
+  }
+}
+
 async function submitSession() {
   const btn = $("#submit-btn");
   // Disable the button SYNCHRONOUSLY before any await — closes the
@@ -1056,6 +1111,7 @@ document.addEventListener("DOMContentLoaded", () => {
   bindPatPanel();
   $("#signout-btn").addEventListener("click", signOut);
   $("#submit-btn").addEventListener("click", submitSession);
+  $("#skip-btn").addEventListener("click", submitSkip);
   $("#session-notes-input").addEventListener("input", e => { state.sessionNotes = e.target.value; });
   // Lightbox: backdrop, image, close button — any click closes
   $("#lightbox").addEventListener("click", closeLightbox);

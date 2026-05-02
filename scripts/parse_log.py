@@ -134,12 +134,18 @@ def _parse_session_notes(section_lines: list[str]) -> str:
     return "\n".join(text_lines)
 
 
-def parse_log_md(text: str, *, filename: str) -> dict:
+def parse_log_md(text: str, *, filename: str) -> dict | None:
+    """Return the parsed log dict, or None if the file is a skipped-session
+    marker (status: skipped frontmatter). Skipped sessions live in the same
+    Workout Log/ folder but have no Exercises table — analytics ignores them
+    so they don't count against compliance as "logged-but-empty"."""
     info = pc.parse_log_filename(filename)
     if not info:
         raise ValueError(f"Cannot parse filename: {filename!r}")
 
     fm, body = pc.parse_frontmatter(text)
+    if fm.get("status") == "skipped":
+        return None
     lines = body.splitlines()
     meta = _parse_meta(lines)
 
@@ -186,8 +192,10 @@ def parse_log_md(text: str, *, filename: str) -> dict:
     }
 
 
-def _process_one(in_path: Path, out_dir: Path) -> Path:
+def _process_one(in_path: Path, out_dir: Path) -> Path | None:
     log = parse_log_md(in_path.read_text(encoding="utf-8"), filename=in_path.name)
+    if log is None:
+        return None
     out_path = out_dir / (log["id"] + ".json")
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(log, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -202,6 +210,9 @@ def main() -> int:
     if len(args) == 1:
         p = Path(args[0])
         log = parse_log_md(p.read_text(encoding="utf-8"), filename=p.name)
+        if log is None:
+            print(f"# {p.name} is a skipped-session marker — no JSON output", file=sys.stderr)
+            return 0
         json.dump(log, sys.stdout, indent=2, ensure_ascii=False)
         sys.stdout.write("\n")
         return 0
@@ -209,14 +220,18 @@ def main() -> int:
     out_dir = Path(args[1])
     md_files = sorted(src_dir.glob("*.md"))
     n = 0
+    skipped_count = 0
     for f in md_files:
         try:
             out_path = _process_one(f, out_dir)
+            if out_path is None:
+                skipped_count += 1
+                continue
             print(f"  log: {f.name} → {out_path.name}")
             n += 1
         except Exception as e:
             print(f"  ERROR parsing {f.name}: {e}", file=sys.stderr)
-    print(f"Processed {n} log(s).")
+    print(f"Processed {n} log(s).{f' Skipped {skipped_count} skipped-session marker(s).' if skipped_count else ''}")
     return 0
 
 

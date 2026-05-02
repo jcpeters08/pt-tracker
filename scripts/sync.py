@@ -190,6 +190,65 @@ def render_log_md(session: dict, exercises_index: dict[str, dict]) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Skip-session helpers — write a vault MD that records "didn't work out today"
+# ---------------------------------------------------------------------------
+
+def _filename_for_skip(session: dict) -> str:
+    date = session["date"]
+    day = (session.get("day_of_week") or "").capitalize()
+    type_part = "-".join(w.capitalize() for w in (session.get("type") or "").split("-"))
+    return f"{date}-{day}-{type_part}-Skipped.md"
+
+
+def render_skip_md(session: dict) -> str:
+    date = session["date"]
+    day = (session.get("day_of_week") or "").capitalize()
+    type_label = (session.get("type") or "").replace("-", " ").title()
+    reason = (session.get("reason") or "").strip()
+
+    fm_lines = ["---", "type: log", "status: skipped", "tags:",
+                "  - fitness", "  - workout-log", "  - skipped"]
+    if session.get("phase"):
+        fm_lines.append(f"  - phase-{session['phase']}")
+    fm_lines.append("aliases:")
+    fm_lines.append(f"  - {day} {type_label} {date} skipped")
+    fm_lines.append("---")
+
+    body = ["", f"# 🏋️ {date} — {day} · {type_label} · SKIPPED", "",
+            "→ Back to: [[🏋️ Personal Trainer/Overview|Overview]] · [[🏋️ Personal Trainer/Log|Session Log]]",
+            "",
+            "**Status:** Skipped",
+            f"**Logged via:** PT Tracker web app — submitted {session.get('submitted_at', now_iso())}"]
+    if reason:
+        body.extend(["", "---", "", "## Reason", "", reason])
+    body.extend(["", "---", "",
+                 "## See Also", "",
+                 "- Project: [[🏋️ Personal Trainer/Overview|Personal Trainer Overview]]",
+                 "- Session log: [[🏋️ Personal Trainer/Log|Log]]", ""])
+    return "\n".join(fm_lines) + "\n" + "\n".join(body)
+
+
+def append_skip_index_line(log_md_path: Path, session: dict) -> None:
+    date = session["date"]
+    day = (session.get("day_of_week") or "").capitalize()
+    type_label = (session.get("type") or "").replace("-", " ").title()
+    reason = (session.get("reason") or "").strip()
+    fname = _filename_for_skip(session)
+    link = fname[:-3]
+    suffix = f" — _{reason}_" if reason else ""
+    line = f"- {date} · [[{link}|{day} {type_label}]] — **skipped**{suffix}"
+
+    existing = log_md_path.read_text(encoding="utf-8") if log_md_path.exists() else ""
+    if link in existing:
+        return
+    if existing and not existing.endswith("\n"):
+        existing += "\n"
+    if not existing.strip():
+        existing = "# 🏋️ Session Log\n\n"
+    log_md_path.write_text(existing + line + "\n", encoding="utf-8")
+
+
+# ---------------------------------------------------------------------------
 # Append-to-Log.md helper
 # ---------------------------------------------------------------------------
 
@@ -268,22 +327,32 @@ def main() -> int:
     skipped: list[str] = []
 
     for entry in entries:
-        if entry.get("type") != "log":
-            skipped.append(f"unknown entry type: {entry.get('type')}")
-            continue
+        kind = entry.get("type")
         session = entry.get("session") or {}
         if not session.get("date") or not session.get("day_of_week"):
-            skipped.append("session missing date or day_of_week")
+            skipped.append(f"{kind or 'entry'} missing date or day_of_week")
             continue
         session.setdefault("submitted_at", entry.get("submitted_at", now_iso()))
-        fname = _filename_for_session(session)
-        target = workout_logs_md_dir / fname
-        if target.exists():
-            skipped.append(f"already exists: {fname}")
-            continue
-        target.write_text(render_log_md(session, exercises_index), encoding="utf-8")
-        append_log_index_line(log_md, session)
-        drained.append(f"log: {fname}")
+        if kind == "log":
+            fname = _filename_for_session(session)
+            target = workout_logs_md_dir / fname
+            if target.exists():
+                skipped.append(f"already exists: {fname}")
+                continue
+            target.write_text(render_log_md(session, exercises_index), encoding="utf-8")
+            append_log_index_line(log_md, session)
+            drained.append(f"log: {fname}")
+        elif kind == "skip":
+            fname = _filename_for_skip(session)
+            target = workout_logs_md_dir / fname
+            if target.exists():
+                skipped.append(f"already exists: {fname}")
+                continue
+            target.write_text(render_skip_md(session), encoding="utf-8")
+            append_skip_index_line(log_md, session)
+            drained.append(f"skip: {fname}")
+        else:
+            skipped.append(f"unknown entry type: {kind!r}")
 
     # Step 3: re-derive routine + log JSONs
     routines_out = repo_root / "data" / "routines"
@@ -303,6 +372,9 @@ def main() -> int:
     for f in sorted(workout_logs_md_dir.glob("*.md")):
         try:
             log = pl.parse_log_md(f.read_text(encoding="utf-8"), filename=f.name)
+            if log is None:
+                # status: skipped marker — no JSON snapshot, by design.
+                continue
             (logs_out / (log["id"] + ".json")).write_text(
                 json.dumps(log, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
             )
