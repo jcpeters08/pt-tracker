@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-02T02:25:32Z",
-  "log_count": 14,
+  "generated_at": "2026-05-02T02:38:25Z",
+  "log_count": 15,
   "lifts_per_week": {
     "2026-W16": {
       "monday": "push",
@@ -16,7 +16,7 @@
       "thursday": "legs"
     },
     "2026-W18": {
-      "monday": "legs",
+      "monday": "push",
       "tuesday": "pull",
       "wednesday": "push",
       "thursday": "legs",
@@ -111,13 +111,18 @@
     },
     {
       "week": "2026-W18",
+      "muscle": "chest",
+      "sets": 4
+    },
+    {
+      "week": "2026-W18",
       "muscle": "hamstrings",
       "sets": 6
     },
     {
       "week": "2026-W18",
       "muscle": "lateral-delts",
-      "sets": 3
+      "sets": 6
     },
     {
       "week": "2026-W18",
@@ -132,7 +137,7 @@
     {
       "week": "2026-W18",
       "muscle": "shoulders",
-      "sets": 3
+      "sets": 6
     }
   ],
   "exercise_progression": {
@@ -152,6 +157,13 @@
         "top_set_reps": 15,
         "total_volume_kg": 630.0,
         "sets_count": 3
+      },
+      {
+        "date": "2026-05-01",
+        "top_set_weight_kg": 18.0,
+        "top_set_reps": 12,
+        "total_volume_kg": 864.0,
+        "sets_count": 4
       }
     ],
     "db-tricep-kickback": [
@@ -185,6 +197,13 @@
         "top_set_weight_kg": 10.0,
         "top_set_reps": 15,
         "total_volume_kg": 450.0,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-05-01",
+        "top_set_weight_kg": 10.0,
+        "top_set_reps": 12,
+        "total_volume_kg": 360.0,
         "sets_count": 3
       }
     ],
@@ -612,10 +631,24 @@
         "top_set_reps": 15,
         "total_volume_kg": 270.0,
         "sets_count": 3
+      },
+      {
+        "date": "2026-05-01",
+        "top_set_weight_kg": 10.0,
+        "top_set_reps": 15,
+        "total_volume_kg": 450.0,
+        "sets_count": 3
       }
     ]
   },
   "prs": [
+    {
+      "exercise_id": "flat-db-bench-press",
+      "date": "2026-05-01",
+      "weight_kg": 18.0,
+      "reps": 12,
+      "delta_kg": 4.0
+    },
     {
       "exercise_id": "seated-db-shoulder-press",
       "date": "2026-05-01",
@@ -629,6 +662,13 @@
       "weight_kg": 25.0,
       "reps": 10,
       "delta_kg": 5.0
+    },
+    {
+      "exercise_id": "db-lateral-raise",
+      "date": "2026-05-01",
+      "weight_kg": 10.0,
+      "reps": 15,
+      "delta_kg": 4.0
     },
     {
       "exercise_id": "lat-pulldown",
@@ -684,7 +724,7 @@
     },
     "2026-W18": {
       "planned": null,
-      "completed": 5
+      "completed": 6
     }
   }
 }
