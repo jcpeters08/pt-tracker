@@ -1,0 +1,32 @@
+{
+  "id": "cable-chest-fly",
+  "name": "Cable Chest Fly",
+  "primary_muscle": "chest",
+  "secondary_muscles": [
+    "front-delts"
+  ],
+  "equipment": [
+    "cable",
+    "single-handles"
+  ],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Crossover/0.jpg",
+  "video_url": "https://www.muscleandstrength.com/exercises/cable-crossover",
+  "form_cues": [
+    "Stand between pulleys, handles at mid-chest height",
+    "Slight forward lean and soft elbow bend",
+    "Bring hands together in front of sternum; squeeze chest at full ROM"
+  ],
+  "default_load_unit": "kg",
+  "notes": "Mid-chest height is the default. Move pulleys higher for low-to-high fly (upper chest) or lower for high-to-low (lower chest).",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Cable Crossover",
+  "video_source": "muscleandstrength.com",
+  "info_url": "https://www.muscleandstrength.com/exercises/cable-crossover",
+  "info_source": "muscleandstrength.com",
+  "instructions": [
+    "Set both pulleys to mid-chest height and attach single-handle attachments. Grip the handles, step forward to create tension, and stagger your stance.",
+    "Lean slightly forward, maintain a soft bend in the elbows, and start with arms extended out to the sides at shoulder level.",
+    "Squeeze your chest to bring the handles together in front of your sternum in a wide arc. Keep the elbow angle locked throughout — this is a fly, not a press.",
+    "Control the eccentric back to the start position with the chest stretched but shoulders stable."
+  ]
+}

@@ -172,12 +172,12 @@
           "notes": "Hold Phase 1 ceiling"
         },
         {
-          "exercise_id": "db-hip-thrust-back-on-bench-db-on-hips",
+          "exercise_id": "db-hip-thrust",
           "target_weight_kg": 20.0,
           "target_weight_raw": "20 kg (44 lbs)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "**NEW** — first dedicated glute work. Squeeze top hard"
+          "notes": "**NEW** — first dedicated glute work. Upper back on bench, DB on hips. Squeeze top hard"
         },
         {
           "exercise_id": "calf-raise",

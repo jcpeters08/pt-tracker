@@ -1,0 +1,32 @@
+{
+  "id": "db-hip-thrust",
+  "name": "Dumbbell Hip Thrust",
+  "primary_muscle": "glutes",
+  "secondary_muscles": [
+    "hamstrings"
+  ],
+  "equipment": [
+    "dumbbells",
+    "bench"
+  ],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg",
+  "video_url": "https://www.muscleandstrength.com/exercises/dumbbell-hip-thrust",
+  "form_cues": [
+    "Upper back on bench, feet flat, shins vertical at lockout",
+    "DB on hip crease — use a pad or towel if it digs",
+    "Drive through heels; squeeze glutes hard at the top for 1 sec"
+  ],
+  "default_load_unit": "kg",
+  "notes": "Heavier-load glute movement than the floor glute bridge. Larger ROM = more glute stretch + contraction. Tuck chin and ribcage to avoid hyperextending the low back at lockout.",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Barbell Hip Thrust",
+  "video_source": "muscleandstrength.com",
+  "info_url": "https://www.muscleandstrength.com/exercises/dumbbell-hip-thrust",
+  "info_source": "muscleandstrength.com",
+  "instructions": [
+    "Sit on the floor with your upper back braced against a flat bench, feet flat on the floor about hip-width apart, knees bent. The bench should hit just below your shoulder blades.",
+    "Place a single dumbbell upright on your hip crease (use a hip pad or folded towel for comfort). Hold the dumbbell steady with both hands.",
+    "Drive through your heels and extend your hips so your torso forms a straight line from shoulders to knees. Shins should be vertical at the top — adjust foot position if knees travel past or stop short.",
+    "Squeeze your glutes hard at lockout for a 1-second pause, then lower under control without resting the dumbbell on the floor between reps."
+  ]
+}
