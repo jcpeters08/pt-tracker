@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-12T13:02:03Z",
-  "log_count": 14,
+  "generated_at": "2026-05-12T16:45:34Z",
+  "log_count": 15,
   "lifts_per_week": {
     "2026-W16": {
       "monday": "push",
@@ -21,6 +21,9 @@
       "wednesday": "push",
       "thursday": "legs",
       "friday": "pull-shoulders"
+    },
+    "2026-W20": {
+      "tuesday": "pull"
     }
   },
   "weekly_volume_by_muscle": [
@@ -133,6 +136,11 @@
       "week": "2026-W18",
       "muscle": "shoulders",
       "sets": 3
+    },
+    {
+      "week": "2026-W20",
+      "muscle": "other",
+      "sets": 1
     }
   ],
   "exercise_progression": {
@@ -613,6 +621,15 @@
         "total_volume_kg": 270.0,
         "sets_count": 3
       }
+    ],
+    "single-arm-dumbbell-row": [
+      {
+        "date": "2026-05-12",
+        "top_set_weight_kg": 20.0,
+        "top_set_reps": 12,
+        "total_volume_kg": 240.0,
+        "sets_count": 1
+      }
     ]
   },
   "prs": [
@@ -685,6 +702,10 @@
     "2026-W18": {
       "planned": null,
       "completed": 5
+    },
+    "2026-W20": {
+      "planned": null,
+      "completed": 1
     }
   }
 }

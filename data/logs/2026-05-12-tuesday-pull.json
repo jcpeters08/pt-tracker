@@ -1,0 +1,34 @@
+{
+  "id": "2026-05-12-tuesday-pull",
+  "date": "2026-05-12",
+  "day_of_week": "tuesday",
+  "type": "pull",
+  "muscle_groups": [
+    "back"
+  ],
+  "phase": "1-closeout",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "single-arm-dumbbell-row",
+      "display_name": "Single-Arm Dumbbell Row",
+      "weight_raw": "20 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 20.0,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "session_notes": "",
+  "submitted_at": "2026-05-12T15:22:24.359Z",
+  "source_md": "Workout Log/2026-05-12-Tuesday-Pull.md"
+}
