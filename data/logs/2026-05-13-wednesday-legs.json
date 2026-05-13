@@ -1,0 +1,162 @@
+{
+  "id": "2026-05-13-wednesday-legs",
+  "date": "2026-05-13",
+  "day_of_week": "wednesday",
+  "type": "legs",
+  "muscle_groups": [
+    "quads",
+    "hamstrings",
+    "calves",
+    "glutes"
+  ],
+  "phase": "1-closeout",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "db-goblet-squat",
+      "display_name": "Dumbbell Goblet Squat",
+      "weight_raw": "20 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 20.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 20.0,
+          "reps": 17
+        },
+        {
+          "set": 3,
+          "weight_kg": 20.0,
+          "reps": 20
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-rdl",
+      "display_name": "Dumbbell Romanian Deadlift",
+      "weight_raw": "16 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 16.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 16.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 16.0,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-walking-lunge",
+      "display_name": "Dumbbell Walking Lunge",
+      "weight_raw": "10 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 10.0,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 10.0,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 10.0,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "single-leg-calf-raise",
+      "display_name": "Single-Leg Calf Raise (on Step)",
+      "weight_raw": "12 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 12.0,
+          "reps": 9
+        },
+        {
+          "set": 2,
+          "weight_kg": 12.0,
+          "reps": 9
+        },
+        {
+          "set": 3,
+          "weight_kg": 12.0,
+          "reps": 10
+        }
+      ],
+      "notes": "Balance on one foot is the challenge"
+    },
+    {
+      "exercise_id": "wall-sit",
+      "display_name": "Wall Sit",
+      "weight_raw": "bodyweight",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 60
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 60
+        },
+        {
+          "set": 3,
+          "weight_kg": 0.0,
+          "reps": 60
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "dumbbell-glute-bridge",
+      "display_name": "Dumbbell Glute Bridge",
+      "weight_raw": "16 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 16.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 16.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 16.0,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "session_notes": "Why is there no cooldown?",
+  "submitted_at": "2026-05-13T19:10:30.672Z",
+  "source_md": "Workout Log/2026-05-13-Wednesday-Legs.md"
+}
