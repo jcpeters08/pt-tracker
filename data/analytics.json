@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-13T23:19:59Z",
+  "generated_at": "2026-05-13T23:22:10Z",
   "log_count": 16,
   "lifts_per_week": {
     "2026-W16": {
@@ -140,18 +140,23 @@
     },
     {
       "week": "2026-W20",
+      "muscle": "back",
+      "sets": 1
+    },
+    {
+      "week": "2026-W20",
       "muscle": "calves",
+      "sets": 3
+    },
+    {
+      "week": "2026-W20",
+      "muscle": "glutes",
       "sets": 3
     },
     {
       "week": "2026-W20",
       "muscle": "hamstrings",
       "sets": 3
-    },
-    {
-      "week": "2026-W20",
-      "muscle": "other",
-      "sets": 4
     },
     {
       "week": "2026-W20",
@@ -638,7 +643,7 @@
         "sets_count": 3
       }
     ],
-    "single-arm-dumbbell-row": [
+    "single-arm-db-row": [
       {
         "date": "2026-05-12",
         "top_set_weight_kg": 20.0,
@@ -692,7 +697,7 @@
         "sets_count": 3
       }
     ],
-    "dumbbell-glute-bridge": [
+    "db-glute-bridge": [
       {
         "date": "2026-05-13",
         "top_set_weight_kg": 16.0,

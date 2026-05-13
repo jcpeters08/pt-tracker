@@ -15,7 +15,7 @@
   "warmup_exercises": [],
   "exercises": [
     {
-      "exercise_id": "single-arm-dumbbell-row",
+      "exercise_id": "single-arm-db-row",
       "display_name": "Single-Arm Dumbbell Row",
       "weight_raw": "20 kg",
       "sets": [
