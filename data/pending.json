@@ -52,6 +52,213 @@
         "notes": "Calf raise on left side was harder.  Curls were tough as well",
         "submitted_at": "2026-05-14T23:22:48.891Z"
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-05-14T23:22:56.514Z",
+      "session": {
+        "date": "2026-05-14",
+        "submitted_at": "2026-05-14T23:22:56.514Z",
+        "day_of_week": "friday",
+        "type": "upper-hybrid",
+        "muscle_groups": [
+          "shoulders",
+          "lateral-delts",
+          "rear-delts",
+          "back",
+          "biceps",
+          "triceps",
+          "calves",
+          "core"
+        ],
+        "routine_id": "2026-W20-Phase-2-Launch-Reentry",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "seated-db-shoulder-press",
+            "display_name": "Seated Dumbbell Shoulder Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 13.61,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 13.61,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 13.61,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-lateral-raise",
+            "display_name": "Dumbbell Lateral Raise",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 4.54,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 4.54,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 4.54,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "cable-face-pull",
+            "display_name": "Cable Face Pull",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 11.34,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 11.34,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "single-arm-db-row",
+            "display_name": "Single-Arm Dumbbell Row",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 15.88,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 15.88,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 15.88,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-curl",
+            "display_name": "Standing Dumbbell Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 9.07,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 9.07,
+                "reps": 8
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-skullcrusher",
+            "display_name": "Dumbbell Skullcrusher",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 11.34,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 11.34,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "single-leg-calf-raise",
+            "display_name": "Single-Leg Calf Raise (on Step)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 9.07,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 9.07,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 9.07,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "plank",
+            "display_name": "Plank",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 0,
+                "reps": 60
+              },
+              {
+                "set": 2,
+                "weight_kg": 0,
+                "reps": 60
+              },
+              {
+                "set": 3,
+                "weight_kg": 0,
+                "reps": 60
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": {
+          "type": "library",
+          "source_key": "upper-hybrid",
+          "fitnessplus_name": "",
+          "completed_at": "2026-05-14T23:21:27.958Z"
+        },
+        "session_notes": ""
+      }
     }
   ]
 }
