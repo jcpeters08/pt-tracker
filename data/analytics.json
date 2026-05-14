@@ -1,6 +1,7 @@
 {
-  "generated_at": "2026-05-13T23:26:56Z",
+  "generated_at": "2026-05-14T13:14:04Z",
   "log_count": 16,
+  "recovery_count": 0,
   "lifts_per_week": {
     "2026-W16": {
       "monday": "push",
@@ -782,5 +783,6 @@
       "planned": null,
       "completed": 2
     }
-  }
+  },
+  "recovery_by_week": {}
 }

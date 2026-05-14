@@ -147,6 +147,7 @@
       "notes": "Unchanged — ready to progress next session"
     }
   ],
+  "cooldown": null,
   "session_notes": "",
   "submitted_at": null,
   "source_md": "Workout Log/2026-04-20-Monday-Legs.md"

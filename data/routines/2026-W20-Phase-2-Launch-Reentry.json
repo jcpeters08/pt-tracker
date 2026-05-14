@@ -8,21 +8,21 @@
   "days": {
     "monday": {
       "label": "Push (Chest / Shoulders / Triceps)",
-      "warmup": "Treadmill incline walk + band pull-aparts × 15 × 2 + DB front raise 5 lb × 10",
+      "warmup": "Treadmill incline walk + band pull-aparts × 15 × 2 + DB front raise 2 kg × 10",
       "cooldown": "",
       "exercises": [
         {
           "exercise_id": "flat-db-bench-press",
           "target_weight_kg": 14.0,
-          "target_weight_raw": "30 lbs (14 kg) ea",
+          "target_weight_raw": "14 kg (31 lbs) ea",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Hold 4/13 ceiling — established PF DB calibration. Rotate in barbell-bench-press one week per month if you want a pressing-strength block."
+          "notes": "Hold 4/13 ceiling — establish PF DB calibration"
         },
         {
           "exercise_id": "incline-db-bench-press",
           "target_weight_kg": 10.0,
-          "target_weight_raw": "20 lbs (9 kg) ea",
+          "target_weight_raw": "10 kg (22 lbs) ea",
           "target_reps": 12,
           "target_sets": 3,
           "notes": "Hold 4/13 ceiling"
@@ -30,7 +30,7 @@
         {
           "exercise_id": "cable-chest-fly",
           "target_weight_kg": 10.0,
-          "target_weight_raw": "20 lbs/arm",
+          "target_weight_raw": "10 kg/arm",
           "target_reps": 12,
           "target_sets": 3,
           "notes": "**NEW** — chest volume fix. Mid-chest height, slight forward lean"
@@ -38,15 +38,15 @@
         {
           "exercise_id": "seated-db-shoulder-press",
           "target_weight_kg": 10.0,
-          "target_weight_raw": "20 lbs (9 kg) ea",
+          "target_weight_raw": "10 kg (22 lbs) ea",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Hold 5/1 PR — do NOT push to 25 lbs this week"
+          "notes": "Hold 5/1 PR — do NOT push to 12 kg this week"
         },
         {
           "exercise_id": "db-lateral-raise",
           "target_weight_kg": 6.0,
-          "target_weight_raw": "10 lbs (4.5 kg) ea",
+          "target_weight_raw": "6 kg (13 lbs) ea",
           "target_reps": 15,
           "target_sets": 3,
           "notes": "Hold 5/1 baseline"
@@ -54,7 +54,7 @@
         {
           "exercise_id": "rope-tricep-pushdown",
           "target_weight_kg": 15.0,
-          "target_weight_raw": "30 lbs (14 kg)",
+          "target_weight_raw": "15 kg (33 lbs)",
           "target_reps": 12,
           "target_sets": 3,
           "notes": "Hold 4/13 ceiling"
@@ -62,7 +62,7 @@
         {
           "exercise_id": "overhead-db-tricep-extension",
           "target_weight_kg": 12.0,
-          "target_weight_raw": "25 lbs (11 kg)",
+          "target_weight_raw": "12 kg (26 lbs)",
           "target_reps": 12,
           "target_sets": 3,
           "notes": "2 hands on 1 DB"
@@ -83,23 +83,23 @@
         {
           "exercise_id": "lat-pulldown",
           "target_weight_kg": 40.0,
-          "target_weight_raw": "90 lbs (40 kg)",
+          "target_weight_raw": "40 kg (88 lbs)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Hold conservative — 100 lbs PR was one session only (4/21). Optionally rotate in barbell-bent-over-row as 4th lift on weeks you want compound horizontal pull."
+          "notes": "Hold conservative — 45 kg PR was one session only (4/21)"
         },
         {
           "exercise_id": "seated-cable-row",
           "target_weight_kg": 25.0,
-          "target_weight_raw": "55 lbs (25 kg)",
+          "target_weight_raw": "25 kg (55 lbs)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Slight bump from 4/15 (45 lbs) — re-test"
+          "notes": "Slight bump from 4/15 (20 kg) — re-test"
         },
         {
           "exercise_id": "dual-rope-straight-arm-pulldown",
           "target_weight_kg": 10.0,
-          "target_weight_raw": "20 lbs/arm (9 kg)",
+          "target_weight_raw": "10 kg/arm (22 lbs)",
           "target_reps": 12,
           "target_sets": 3,
           "notes": "Hold 5/1 baseline — biceps-free lat isolation"
@@ -107,7 +107,7 @@
         {
           "exercise_id": "cable-face-pull",
           "target_weight_kg": 10.0,
-          "target_weight_raw": "20 lbs (9 kg)",
+          "target_weight_raw": "10 kg (22 lbs)",
           "target_reps": 15,
           "target_sets": 3,
           "notes": "**REAR DELTS — NON-NEGOTIABLE**. High-elbow pull to forehead"
@@ -115,7 +115,7 @@
         {
           "exercise_id": "db-reverse-fly",
           "target_weight_kg": 6.0,
-          "target_weight_raw": "10 lbs (4.5 kg) ea",
+          "target_weight_raw": "6 kg (13 lbs) ea",
           "target_reps": 15,
           "target_sets": 3,
           "notes": "**Second rear delt hit** — fixes Phase 1 gap"
@@ -123,15 +123,15 @@
         {
           "exercise_id": "barbell-curl",
           "target_weight_kg": 22.5,
-          "target_weight_raw": "50 lbs (22.5 kg)",
+          "target_weight_raw": "22.5 kg (50 lbs)",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "**Deload from 5/1 PR (55 lbs)** — earn 50 × 10/10/10 clean before re-attempting 55"
+          "notes": "**Deload from 5/1 PR (25 kg)** — earn 22.5 × 10/10/10 clean before re-attempting 25"
         },
         {
           "exercise_id": "hammer-curl",
           "target_weight_kg": 10.0,
-          "target_weight_raw": "20 lbs (9 kg) ea",
+          "target_weight_raw": "10 kg (22 lbs) ea",
           "target_reps": 12,
           "target_sets": 3,
           "notes": "Hold 4/15 baseline"
@@ -154,10 +154,10 @@
         {
           "exercise_id": "leg-press",
           "target_weight_kg": 100.0,
-          "target_weight_raw": "220 lbs (100 kg)",
+          "target_weight_raw": "100 kg (220 lbs)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Deload from 265 lbs PR (4/20) → re-build"
+          "notes": "Deload from 120 kg PR (4/20) → re-build"
         },
         {
           "exercise_id": "barbell-rdl",
@@ -170,7 +170,7 @@
         {
           "exercise_id": "seated-leg-curl",
           "target_weight_kg": 25.0,
-          "target_weight_raw": "55 lbs (25 kg)",
+          "target_weight_raw": "25 kg (55 lbs)",
           "target_reps": 15,
           "target_sets": 3,
           "notes": "Hold Phase 1 ceiling"
@@ -186,7 +186,7 @@
         {
           "exercise_id": "calf-raise",
           "target_weight_kg": 40.0,
-          "target_weight_raw": "90 lbs (40 kg)",
+          "target_weight_raw": "40 kg (88 lbs)",
           "target_reps": 15,
           "target_sets": 3,
           "notes": "First calf hit — Phase 1 plateau load. Pause 1 sec at top"
@@ -201,7 +201,7 @@
         {
           "exercise_id": "seated-db-shoulder-press",
           "target_weight_kg": 10.0,
-          "target_weight_raw": "20 lbs (9 kg) ea",
+          "target_weight_raw": "10 kg (22 lbs) ea",
           "target_reps": 12,
           "target_sets": 3,
           "notes": "**Second shoulder hit** — re-confirm 5/1 PR holds"
@@ -209,7 +209,7 @@
         {
           "exercise_id": "db-lateral-raise",
           "target_weight_kg": 6.0,
-          "target_weight_raw": "10 lbs (4.5 kg) ea",
+          "target_weight_raw": "6 kg (13 lbs) ea",
           "target_reps": 15,
           "target_sets": 3,
           "notes": "Second lateral hit"
@@ -217,7 +217,7 @@
         {
           "exercise_id": "cable-face-pull",
           "target_weight_kg": 10.0,
-          "target_weight_raw": "20 lbs (9 kg)",
+          "target_weight_raw": "10 kg (22 lbs)",
           "target_reps": 15,
           "target_sets": 3,
           "notes": "**Second rear delt hit** — 6 sets rear delts/wk"
@@ -225,7 +225,7 @@
         {
           "exercise_id": "single-arm-db-row",
           "target_weight_kg": 14.0,
-          "target_weight_raw": "30 lbs (14 kg) ea",
+          "target_weight_raw": "14 kg (31 lbs) ea",
           "target_reps": 12,
           "target_sets": 3,
           "notes": "Second back hit — lighter than Wed"
@@ -233,7 +233,7 @@
         {
           "exercise_id": "db-curl",
           "target_weight_kg": 10.0,
-          "target_weight_raw": "20 lbs (9 kg) ea",
+          "target_weight_raw": "10 kg (22 lbs) ea",
           "target_reps": 10,
           "target_sets": 3,
           "notes": "Lighter than Wed barbell curl"
@@ -241,7 +241,7 @@
         {
           "exercise_id": "db-skullcrusher",
           "target_weight_kg": 10.0,
-          "target_weight_raw": "20 lbs (9 kg)",
+          "target_weight_raw": "10 kg (22 lbs)",
           "target_reps": 12,
           "target_sets": 3,
           "notes": "Control eccentric"
@@ -249,10 +249,10 @@
         {
           "exercise_id": "single-leg-calf-raise",
           "target_weight_kg": 10.0,
-          "target_weight_raw": "20 lbs (9 kg)",
+          "target_weight_raw": "10 kg (22 lbs)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "**Second calf hit, different stimulus** — BW + DB per leg ≈ ~210 lbs loaded"
+          "notes": "**Second calf hit, different stimulus** — BW + DB per leg ≈ ~95 kg loaded"
         },
         {
           "exercise_id": "plank",
