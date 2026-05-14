@@ -78,14 +78,34 @@ def parse_recovery_md(text: str, *, filename: str | None = None) -> dict | None:
     lines = body.splitlines()
     data: dict = {}
     notes_lines: list[str] = []
+    rounds_detail: list[dict] = []
     in_notes = False
+
+    # Pick up the per-round table under "## Rounds" if present.
+    for i, ln in enumerate(lines):
+        if re.match(r"^##\s+rounds\s*$", ln, re.I):
+            tbl = pc.find_table(lines, i)
+            if tbl:
+                rows = pc.parse_table_rows(lines, tbl[0], tbl[1])
+                for r in rows:
+                    sauna = _to_int(r.get("sauna (min)") or r.get("sauna") or "")
+                    plunge = _to_int(r.get("plunge (min)") or r.get("plunge") or "")
+                    n = _to_int(r.get("#") or "") or (len(rounds_detail) + 1)
+                    if sauna is None and plunge is None:
+                        continue
+                    rounds_detail.append({"round": n, "sauna_min": sauna, "plunge_min": plunge})
+            break
 
     for ln in lines:
         if re.match(r"^##\s+notes?\s*$", ln, re.I):
             in_notes = True
             continue
+        # Any other `## ` heading closes the notes section
         if ln.startswith("## ") and in_notes:
             in_notes = False
+        # Skip table rows entirely — they belong to the rounds table parsed above
+        if in_notes and re.match(r"^\s*\|", ln):
+            continue
         if in_notes:
             stripped = ln.strip()
             # Stop at a horizontal rule (---) which separates the notes section
@@ -123,6 +143,20 @@ def parse_recovery_md(text: str, *, filename: str | None = None) -> dict | None:
     location_slug = pc.slugify(data.get("location") or "recovery")
     rec_id = f"{data['date']}-{location_slug}"
 
+    # If we parsed a per-round table, derive summary fields from it.
+    if rounds_detail:
+        n = len(rounds_detail)
+        sauna_total = sum((r["sauna_min"] or 0) for r in rounds_detail)
+        plunge_total = sum((r["plunge_min"] or 0) for r in rounds_detail)
+        if "rounds" not in data:
+            data["rounds"] = n
+        if "sauna_min" not in data and n:
+            data["sauna_min"] = round(sauna_total / n)
+        if "plunge_min" not in data and n:
+            data["plunge_min"] = round(plunge_total / n)
+        if "total_min" not in data:
+            data["total_min"] = sauna_total + plunge_total
+
     return {
         "id": rec_id,
         "date": data["date"],
@@ -131,6 +165,7 @@ def parse_recovery_md(text: str, *, filename: str | None = None) -> dict | None:
         "sauna_min": data.get("sauna_min"),
         "plunge_min": data.get("plunge_min"),
         "total_min": data.get("total_min"),
+        "rounds_detail": rounds_detail or None,
         "submitted_at": data.get("submitted_at"),
         "notes": "\n".join(notes_lines).strip(),
         "source_md": f"Recovery Log/{filename}" if filename else None,

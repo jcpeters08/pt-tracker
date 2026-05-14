@@ -27,6 +27,7 @@ SECTION_PATTERNS = {
     "warmup":      re.compile(r"^##\s+warm-?up\s*$", re.I),
     "session":     re.compile(r"^##\s+session\s+notes\s*$", re.I),
     "volume":      re.compile(r"^##\s+volume\s+summary\s*$", re.I),
+    "cooldown":    re.compile(r"^##\s+cool-?down\s*$", re.I),
 }
 
 META_KEYS = {
@@ -121,6 +122,44 @@ def _parse_exercise_table(section_lines: list[str]) -> list[dict]:
     return out
 
 
+def _parse_cooldown(section_lines: list[str]) -> dict | None:
+    """Parse bullet entries like:
+       - **Type:** Prescribed | Apple Fitness+
+       - **Source:** push (library key)
+       - **Name:** Mindful Cooldown with Jessica · 10 min
+       - **Completed:** 2026-05-14T18:30:00Z
+    Returns None if the section is empty or has nothing recognizable."""
+    out: dict = {}
+    for ln in section_lines:
+        if ln.startswith("## ") or ln.startswith("---"):
+            break
+        s = ln.strip()
+        if not s:
+            continue
+        if s.startswith("- "):
+            s = s[2:]
+        m = re.match(r"^\*\*([^*:]+):\*\*\s*(.*)$", s)
+        if not m:
+            continue
+        key = m.group(1).strip().lower()
+        val = m.group(2).strip()
+        if key == "type":
+            v = val.lower()
+            if "fitness" in v or v == "apple fitness+":
+                out["type"] = "fitnessplus"
+            elif "prescribed" in v or "library" in v:
+                out["type"] = "library"
+            else:
+                out["type"] = val
+        elif key == "source":
+            out["source_key"] = val
+        elif key == "name":
+            out["fitnessplus_name"] = val
+        elif key == "completed":
+            out["completed_at"] = val
+    return out or None
+
+
 def _parse_session_notes(section_lines: list[str]) -> str:
     """Concatenate non-empty lines (strip leading dashes)."""
     text_lines: list[str] = []
@@ -164,6 +203,9 @@ def parse_log_md(text: str, *, filename: str) -> dict | None:
     sn_bounds = _section_bounds(lines, SECTION_PATTERNS["session"])
     session_notes = _parse_session_notes(lines[sn_bounds[0]:sn_bounds[1]]) if sn_bounds else ""
 
+    cd_bounds = _section_bounds(lines, SECTION_PATTERNS["cooldown"])
+    cooldown = _parse_cooldown(lines[cd_bounds[0]:cd_bounds[1]]) if cd_bounds else None
+
     # Muscle groups from frontmatter tags (anything that's not "fitness", "workout-log", "phase-X")
     muscle_groups: list[str] = []
     for tag in fm.get("tags", []) if isinstance(fm.get("tags"), list) else []:
@@ -189,6 +231,7 @@ def parse_log_md(text: str, *, filename: str) -> dict | None:
         "fasted": fasted,
         "warmup_exercises": warmup_exercises,
         "exercises": exercises,
+        "cooldown": cooldown,
         "session_notes": session_notes,
         "submitted_at": meta.get("submitted_at"),
         "source_md": f"Workout Log/{filename}",

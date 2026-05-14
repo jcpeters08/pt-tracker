@@ -67,10 +67,15 @@
     gap: 10px;
   }
   header.app h1 { font-size: 22px; margin: 0; }
+  .routine-row {
+    margin-top: 8px;
+    display: flex; align-items: center;
+  }
   .routine-pill {
     font-size: 13px; color: var(--ink-soft);
     background: var(--bg-soft); border: 1px solid var(--rule);
-    padding: 6px 10px; border-radius: 999px; flex: 1;
+    padding: 6px 12px; border-radius: 999px;
+    max-width: 100%;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
   .signout-btn {
@@ -381,16 +386,56 @@
   .cooldown .cd-tab.fitnessplus { color: var(--accent); border-color: var(--accent); background: transparent; }
   .cooldown .cd-tab.fitnessplus.active { background: var(--accent); color: var(--accent-ink); }
   .cooldown .cd-body { font-size: 14px; color: var(--ink-soft); }
-  .cooldown .cd-move { padding: 6px 0; border-bottom: 1px dashed var(--rule); }
+  .cooldown .cd-move {
+    padding: 10px 0; border-bottom: 1px dashed var(--rule);
+    display: flex; gap: 10px; align-items: flex-start;
+  }
   .cooldown .cd-move:last-child { border-bottom: none; }
-  .cooldown .cd-move b { color: var(--ink); }
-  .cooldown .cd-move .cd-cue { font-size: 12px; color: var(--ink-muted); }
+  .cooldown .cd-move-img {
+    flex: 0 0 56px; height: 56px; width: 56px;
+    background: var(--bg-soft); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; color: var(--ink-muted);
+    overflow: hidden;
+  }
+  .cooldown .cd-move-img img { width: 100%; height: 100%; object-fit: cover; }
+  .cooldown .cd-move-meta { flex: 1; min-width: 0; }
+  .cooldown .cd-move-meta b { color: var(--ink); }
+  .cooldown .cd-move-meta .cd-cue { font-size: 12px; color: var(--ink-muted); margin-top: 2px; }
+  .cooldown .cd-move-meta .cd-pills {
+    display: inline-flex; gap: 6px; margin-top: 4px; flex-wrap: wrap;
+  }
+  .cooldown .cd-move-meta .cd-pill {
+    font-size: 11px; padding: 2px 8px; border-radius: 999px;
+    background: transparent; border: 1px solid var(--rule);
+    color: var(--accent); text-decoration: none; font-weight: 600;
+    min-height: 0; cursor: pointer;
+  }
   .cooldown .cd-duration { font-size: 12px; color: var(--accent); margin-bottom: 8px; }
   .cooldown .cd-fp-link {
     display: inline-block; margin-top: 8px; color: var(--accent);
     font-size: 14px; font-weight: 600;
   }
   .cooldown .cd-fp-note { font-size: 12px; color: var(--ink-muted); margin-top: 8px; }
+  .cooldown .cd-fp-name {
+    width: 100%; margin-top: 10px; font-size: 14px;
+  }
+  .cooldown .cd-fp-name label {
+    font-size: 12px; color: var(--ink-soft); font-weight: 600; display: block; margin-bottom: 4px;
+  }
+  .cooldown .cd-complete-row {
+    display: flex; gap: 8px; align-items: center; margin-top: 12px;
+    padding-top: 12px; border-top: 1px solid var(--rule);
+  }
+  .cooldown .cd-complete-btn {
+    flex: 1; background: var(--bg-soft); border: 1px solid var(--rule);
+    border-radius: 8px; padding: 12px; font-weight: 600; color: var(--ink-soft);
+    font-size: 14px; cursor: pointer; min-height: 44px;
+  }
+  .cooldown .cd-complete-btn.done {
+    background: var(--good); color: white; border-color: var(--good);
+  }
+  .cooldown .cd-complete-meta { font-size: 12px; color: var(--ink-muted); }
 
   /* Recovery panel */
   .recovery-panel {
@@ -413,10 +458,38 @@
   .recovery-panel .rec-grid label {
     font-size: 12px; color: var(--ink-soft); font-weight: 600; display: block;
   }
-  .recovery-panel .rec-grid input {
+  .recovery-panel .rec-grid input,
+  .recovery-panel .rec-grid textarea {
     width: 100%; margin-top: 4px;
   }
   .recovery-panel .rec-full { grid-column: 1 / -1; }
+  .recovery-panel .rounds-section { margin-top: 14px; }
+  .recovery-panel .rounds-header {
+    display: grid; grid-template-columns: 36px 1fr 1fr 44px;
+    gap: 8px; font-size: 11px; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--ink-muted); font-weight: 600;
+    padding: 0 4px 4px;
+  }
+  .recovery-panel .round-row {
+    display: grid; grid-template-columns: 36px 1fr 1fr 44px;
+    gap: 8px; align-items: center; margin-bottom: 8px;
+  }
+  .recovery-panel .round-row .rnd-num {
+    font-weight: 600; color: var(--ink-soft); font-size: 13px; text-align: center;
+  }
+  .recovery-panel .round-row input { width: 100%; min-height: 40px; }
+  .recovery-panel .round-row .rnd-del {
+    background: transparent; border: 1px solid var(--rule);
+    color: var(--ink-muted); border-radius: 8px;
+    font-size: 16px; padding: 0; min-height: 40px; cursor: pointer;
+  }
+  .recovery-panel .round-row .rnd-del:hover { background: var(--bg-soft); color: var(--accent); }
+  .recovery-panel .add-round {
+    background: transparent; color: var(--accent);
+    border: 1px dashed var(--accent); border-radius: 8px;
+    padding: 8px 12px; width: 100%; font-size: 13px;
+    margin-top: 4px;
+  }
   .recovery-panel .rec-summary {
     background: var(--bg-soft); border: 1px solid var(--rule); border-radius: 8px;
     padding: 8px 12px; font-size: 13px; color: var(--ink-soft); margin-top: 10px;
@@ -444,13 +517,15 @@
   <header class="app">
     <div class="header-row">
       <h1>🏋️ PT Tracker</h1>
-      <div class="routine-pill" id="routine-label">Loading…</div>
       <div class="unit-toggle" id="unit-toggle" role="group" aria-label="Weight unit">
         <button type="button" data-unit="lbs" class="active">lbs</button>
         <button type="button" data-unit="kg">kg</button>
       </div>
       <a class="header-link" href="https://www.muscleandstrength.com/exercises" target="_blank" rel="noopener" title="Open Muscle &amp; Strength exercise database">M&amp;S ↗</a>
       <button id="signout-btn" class="signout-btn hidden" title="Sign out">⏻</button>
+    </div>
+    <div class="routine-row">
+      <div class="routine-pill" id="routine-label" title="Active routine">Loading…</div>
     </div>
     <nav class="day-toggle" id="day-toggle"></nav>
     <div class="date-row">
@@ -533,22 +608,20 @@
             <label for="rec-location">Location</label>
             <input type="text" id="rec-location" value="Embrace North" placeholder="Embrace North">
           </div>
-          <div>
-            <label for="rec-rounds">Rounds</label>
-            <input type="number" id="rec-rounds" min="1" max="6" step="1" value="3" inputmode="numeric">
+        </div>
+        <div class="rounds-section">
+          <div class="rounds-header">
+            <span>#</span>
+            <span>Sauna (min)</span>
+            <span>Plunge (min)</span>
+            <span></span>
           </div>
-          <div>
-            <label for="rec-sauna">Sauna per round (min)</label>
-            <input type="number" id="rec-sauna" min="1" max="30" step="1" value="15" inputmode="numeric">
-          </div>
-          <div>
-            <label for="rec-plunge">Plunge per round (min)</label>
-            <input type="number" id="rec-plunge" min="1" max="15" step="1" value="4" inputmode="numeric">
-          </div>
-          <div class="rec-full">
-            <label for="rec-notes">Notes (optional)</label>
-            <textarea id="rec-notes" placeholder="How did it feel? Any variations?" style="width:100%; min-height:60px;"></textarea>
-          </div>
+          <div id="rec-rounds-host"></div>
+          <button type="button" class="add-round" id="rec-add-round">+ Add round</button>
+        </div>
+        <div style="margin-top:12px;">
+          <label for="rec-notes" style="font-size:12px; color:var(--ink-soft); font-weight:600; display:block; margin-bottom:4px;">Notes (optional)</label>
+          <textarea id="rec-notes" placeholder="How did it feel? Any variations?" style="width:100%; min-height:60px;"></textarea>
         </div>
         <div class="rec-summary" id="rec-summary"></div>
         <button class="btn rec-submit" id="rec-submit-btn">Log recovery session</button>
@@ -646,10 +719,13 @@ function fmtNum(n, places) {
   const r = roundTo(n, places);
   return r === Math.trunc(r) ? String(Math.trunc(r)) : String(r);
 }
-// Display a weight stored as kg in the user's preferred unit (rounded).
+// Display a weight stored as kg in the user's preferred unit.
+// lbs display rounds to whole numbers (PF plates are integer-friendly,
+// and 94.8 lbs reading is just visual noise from kg roundtripping).
+// kg display rounds to 1 decimal.
 function displayWeight(kg) {
   if (kg == null || kg === 0) return "";
-  if (state.unitPref === "lbs") return fmtNum(kgToLbs(kg), 1);
+  if (state.unitPref === "lbs") return String(Math.round(kgToLbs(kg)));
   return fmtNum(kg, 1);
 }
 // Convert an input value (in user's pref unit) → kg for storage.
@@ -1109,6 +1185,34 @@ function cooldownKeyForDay(day) {
   return "default";
 }
 
+// Get the cooldown completion state for the current view (date|day).
+function cooldownStateKey() {
+  return `${state.workoutDate || ""}|${state.selectedDay || ""}`;
+}
+function getCooldownLog() {
+  const key = cooldownStateKey();
+  if (!state.cooldownLog) state.cooldownLog = {};
+  if (!state.cooldownLog[key]) {
+    // Hydrate from active session if it carried a cooldown
+    const fromSession = state.activeSession?.session?.cooldown;
+    if (fromSession) {
+      state.cooldownLog[key] = {
+        type: fromSession.type || null,
+        source_key: fromSession.source_key || null,
+        fitnessplus_name: fromSession.fitnessplus_name || "",
+        completed_at: fromSession.completed_at || null,
+      };
+    } else {
+      state.cooldownLog[key] = { type: null, source_key: null, fitnessplus_name: "", completed_at: null };
+    }
+  }
+  return state.cooldownLog[key];
+}
+
+function ytSearchUrl(query) {
+  return `https://www.youtube.com/results?search_query=${encodeURIComponent(query || "")}`;
+}
+
 function renderCooldown(day) {
   const host = $("#cooldown-host");
   if (!host) return;
@@ -1123,6 +1227,8 @@ function renderCooldown(day) {
   const choice = state.cooldownChoice || "library";
 
   const dayCooldownText = (day.cooldown || "").trim();
+  const cdLog = getCooldownLog();
+  const isDone = !!cdLog.completed_at && cdLog.type === choice;
 
   const card = document.createElement("section");
   card.className = "cooldown";
@@ -1137,30 +1243,51 @@ function renderCooldown(day) {
 
   let body = "";
   if (choice === "library") {
-    if (dayCooldownText) {
-      body = `<div class="cd-body"><b>Trainer note:</b> ${escapeHtml(dayCooldownText)}</div>`;
-    } else if (lib) {
-      const moves = (lib.moves || []).map(m => `
-        <div class="cd-move">
-          <b>${escapeHtml(m.move)}</b> · ${escapeHtml(m.duration)}
-          ${m.cue ? `<div class="cd-cue">${escapeHtml(m.cue)}</div>` : ""}
-        </div>
-      `).join("");
+    if (lib) {
+      const moves = (lib.moves || []).map(m => {
+        const imgHtml = m.image_url
+          ? `<img src="${escapeHtml(m.image_url)}" alt="${escapeHtml(m.move)}" loading="lazy">`
+          : "🧘";
+        const videoHref = m.video_url || ytSearchUrl(m.video_query || m.move);
+        return `
+          <div class="cd-move">
+            <div class="cd-move-img">${imgHtml}</div>
+            <div class="cd-move-meta">
+              <b>${escapeHtml(m.move)}</b> · ${escapeHtml(m.duration)}
+              ${m.cue ? `<div class="cd-cue">${escapeHtml(m.cue)}</div>` : ""}
+              <div class="cd-pills">
+                <a class="cd-pill" href="${escapeHtml(videoHref)}" target="_blank" rel="noopener">▶ Watch ↗</a>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+      const trainerNote = dayCooldownText
+        ? `<div class="cd-body" style="margin-bottom:8px"><b>Trainer note:</b> ${escapeHtml(dayCooldownText)}</div>`
+        : "";
       body = `
         <div class="cd-duration">~${lib.duration_minutes} min · ${escapeHtml(lib.name)}</div>
+        ${trainerNote}
         <div class="cd-body">${moves}</div>
       `;
+    } else if (dayCooldownText) {
+      body = `<div class="cd-body"><b>Trainer note:</b> ${escapeHtml(dayCooldownText)}</div>`;
     } else {
       body = `<div class="cd-body">No cooldown configured for this day.</div>`;
     }
   } else {
     // fitnessplus
+    const fpName = cdLog.fitnessplus_name || "";
     if (fp?.mindful_cooldown_url) {
       body = `
         <div class="cd-body">
-          Open Apple Fitness+ → <b>Mindful Cooldown</b>. Inside the app, filter for Upper Body / Lower Body / Full Body (5–10 min sessions).
+          Open Apple Fitness+ → <b>Mindful Cooldown</b>. Filter inside the app for Upper Body / Lower Body / Full Body (5–10 min sessions).
           <div><a class="cd-fp-link" href="${escapeHtml(fp.mindful_cooldown_url)}" target="_blank" rel="noopener">Open Mindful Cooldown ↗</a></div>
           ${fp.note ? `<div class="cd-fp-note">${escapeHtml(fp.note)}</div>` : ""}
+          <div class="cd-fp-name">
+            <label for="cd-fp-name-input">Which Apple Fitness+ cooldown did you do?</label>
+            <input id="cd-fp-name-input" type="text" placeholder="e.g. Mindful Cooldown · Jessica · 10 min" value="${escapeHtml(fpName)}">
+          </div>
         </div>
       `;
     } else {
@@ -1168,10 +1295,24 @@ function renderCooldown(day) {
     }
   }
 
+  const completedAtStr = cdLog.completed_at
+    ? new Date(cdLog.completed_at).toLocaleString([], { hour: "2-digit", minute: "2-digit" })
+    : "";
+
+  const completeRow = `
+    <div class="cd-complete-row">
+      <button type="button" class="cd-complete-btn${isDone ? " done" : ""}" id="cd-complete-btn">
+        ${isDone ? "✓ Cool-down logged" : "Mark cool-down complete"}
+      </button>
+      ${isDone ? `<span class="cd-complete-meta">at ${escapeHtml(completedAtStr)}</span>` : ""}
+    </div>
+  `;
+
   card.innerHTML = `
     <h3>🧘 Cool-down</h3>
     ${tabs}
     ${body}
+    ${completeRow}
   `;
   host.appendChild(card);
 
@@ -1182,6 +1323,29 @@ function renderCooldown(day) {
       renderCooldown(day);
     });
   });
+
+  const fpInput = card.querySelector("#cd-fp-name-input");
+  if (fpInput) {
+    fpInput.addEventListener("input", e => {
+      cdLog.fitnessplus_name = e.target.value;
+    });
+  }
+
+  const completeBtn = card.querySelector("#cd-complete-btn");
+  if (completeBtn) {
+    completeBtn.addEventListener("click", () => {
+      if (cdLog.completed_at && cdLog.type === choice) {
+        // Toggle off
+        cdLog.completed_at = null;
+        cdLog.type = null;
+      } else {
+        cdLog.type = choice;
+        cdLog.source_key = choice === "library" ? key : null;
+        cdLog.completed_at = isoNow();
+      }
+      renderCooldown(day);
+    });
+  }
 }
 
 function ensureLogState(exId, targetWeight, targetReps, targetSets) {
@@ -1401,45 +1565,140 @@ function renderApp() {
 
 // ---- Recovery panel -------------------------------------------------------
 
+// Recovery panel state — rounds is a per-row [{sauna_min, plunge_min}, ...]
+function ensureRecoveryRounds() {
+  if (!state.recoveryRounds || !state.recoveryRounds.length) {
+    state.recoveryRounds = [
+      { sauna_min: 15, plunge_min: 4 },
+      { sauna_min: 15, plunge_min: 4 },
+      { sauna_min: 15, plunge_min: 4 },
+    ];
+  }
+  return state.recoveryRounds;
+}
+
+function renderRecoveryRounds() {
+  const host = $("#rec-rounds-host");
+  if (!host) return;
+  const rounds = ensureRecoveryRounds();
+  host.innerHTML = rounds.map((r, i) => `
+    <div class="round-row" data-idx="${i}">
+      <span class="rnd-num">${i + 1}</span>
+      <input type="number" inputmode="numeric" min="0" max="60" step="1" value="${r.sauna_min ?? ""}" data-field="sauna" placeholder="15">
+      <input type="number" inputmode="numeric" min="0" max="30" step="1" value="${r.plunge_min ?? ""}" data-field="plunge" placeholder="4">
+      <button type="button" class="rnd-del" data-action="del" title="Remove round">×</button>
+    </div>
+  `).join("");
+  host.querySelectorAll(".round-row").forEach(row => {
+    const idx = Number(row.dataset.idx);
+    row.querySelector('input[data-field="sauna"]').addEventListener("input", e => {
+      rounds[idx].sauna_min = e.target.value === "" ? null : Number(e.target.value);
+      renderRecoverySummary();
+    });
+    row.querySelector('input[data-field="plunge"]').addEventListener("input", e => {
+      rounds[idx].plunge_min = e.target.value === "" ? null : Number(e.target.value);
+      renderRecoverySummary();
+    });
+    row.querySelector('[data-action="del"]').addEventListener("click", () => {
+      if (rounds.length <= 1) { toast("At least one round required.", "err"); return; }
+      rounds.splice(idx, 1);
+      renderRecoveryRounds();
+      renderRecoverySummary();
+    });
+  });
+}
+
+function addRecoveryRound() {
+  const rounds = ensureRecoveryRounds();
+  const last = rounds[rounds.length - 1] || { sauna_min: 15, plunge_min: 4 };
+  rounds.push({ sauna_min: last.sauna_min, plunge_min: last.plunge_min });
+  renderRecoveryRounds();
+  renderRecoverySummary();
+}
+
+function hydrateRecoveryFromExisting(rec) {
+  // Prefer rounds_detail (new schema). Fall back to old summary fields.
+  if (Array.isArray(rec.rounds_detail) && rec.rounds_detail.length) {
+    state.recoveryRounds = rec.rounds_detail.map(r => ({
+      sauna_min: r.sauna_min ?? null,
+      plunge_min: r.plunge_min ?? null,
+    }));
+  } else if (rec.rounds) {
+    state.recoveryRounds = Array.from({ length: rec.rounds }, () => ({
+      sauna_min: rec.sauna_min ?? 15,
+      plunge_min: rec.plunge_min ?? 4,
+    }));
+  }
+  if (rec.location) $("#rec-location").value = rec.location;
+  if (rec.notes) $("#rec-notes").value = rec.notes;
+}
+
 function recoveryPayloadFromInputs() {
   const date = $("#rec-date").value || localDateIso();
   const location = ($("#rec-location").value || "Embrace North").trim();
-  const rounds = Number($("#rec-rounds").value) || 0;
-  const sauna = Number($("#rec-sauna").value) || 0;
-  const plunge = Number($("#rec-plunge").value) || 0;
   const notes = ($("#rec-notes").value || "").trim();
-  const total_min = rounds * (sauna + plunge);
+  const rounds = (state.recoveryRounds || []).map((r, i) => ({
+    round: i + 1,
+    sauna_min: r.sauna_min ?? 0,
+    plunge_min: r.plunge_min ?? 0,
+  }));
+  const total_min = rounds.reduce((s, r) => s + (r.sauna_min || 0) + (r.plunge_min || 0), 0);
+  // Keep summary fields for backward compatibility with old parsers / analytics.
+  // sauna_min / plunge_min as the per-round average (rounded).
+  const n = rounds.length || 1;
+  const sauna_avg = Math.round(rounds.reduce((s, r) => s + (r.sauna_min || 0), 0) / n);
+  const plunge_avg = Math.round(rounds.reduce((s, r) => s + (r.plunge_min || 0), 0) / n);
+  const submittedAt = isoNow();
   return {
     type: "recovery",
-    submitted_at: isoNow(),
-    session: { date, location, rounds, sauna_min: sauna, plunge_min: plunge, total_min, notes, submitted_at: isoNow() },
+    submitted_at: submittedAt,
+    session: {
+      date,
+      location,
+      rounds: rounds.length,
+      sauna_min: sauna_avg,
+      plunge_min: plunge_avg,
+      total_min,
+      rounds_detail: rounds,
+      notes,
+      submitted_at: submittedAt,
+    },
   };
 }
 
 function renderRecoverySummary() {
   const el = $("#rec-summary");
   if (!el) return;
-  const rounds = Number($("#rec-rounds").value) || 0;
-  const sauna = Number($("#rec-sauna").value) || 0;
-  const plunge = Number($("#rec-plunge").value) || 0;
-  const total = rounds * (sauna + plunge);
-  el.innerHTML = `<b>Total:</b> ${rounds} × (${sauna} min sauna + ${plunge} min plunge) ≈ <b>${total} min</b>`;
+  const rounds = state.recoveryRounds || [];
+  const total = rounds.reduce((s, r) => s + (r.sauna_min || 0) + (r.plunge_min || 0), 0);
+  const breakdown = rounds
+    .map((r, i) => `R${i+1}: ${r.sauna_min ?? 0}/${r.plunge_min ?? 0}`)
+    .join(" · ");
+  el.innerHTML = `<b>Total:</b> ${rounds.length} rounds, ${total} min &nbsp;<span style="color:var(--ink-muted)">${escapeHtml(breakdown)}</span>`;
 }
 
 function renderRecoveryPanel() {
   const date = state.workoutDate || localDateIso();
   const dateInput = $("#rec-date");
   if (dateInput && !dateInput.value) dateInput.value = date;
-  renderRecoverySummary();
-  // If a recovery is already logged for the selected date, show a hint in the
-  // header. The user can still re-submit to update.
-  const head = $("#rec-head");
-  if (!head) return;
-  // Remove any existing status pill
-  const existing = head.querySelector(".rec-status");
-  if (existing) existing.remove();
+
+  // If a recovery is already logged for this date, hydrate inputs from it
+  // (but only on first render — don't clobber user edits on every renderApp call).
   const recDate = dateInput?.value || date;
   const rec = state.recoveryByDate?.get(recDate);
+  if (rec && !state._recoveryHydratedFor) {
+    hydrateRecoveryFromExisting(rec.session);
+    state._recoveryHydratedFor = recDate;
+  }
+
+  renderRecoveryRounds();
+  renderRecoverySummary();
+
+  // Status pill
+  const head = $("#rec-head");
+  if (!head) return;
+  const existing = head.querySelector(".rec-status");
+  if (existing) existing.remove();
   if (rec) {
     const pill = document.createElement("span");
     pill.className = `rec-status ${rec.status === "pending" ? "pending" : "logged"}`;
@@ -1455,6 +1714,7 @@ async function submitRecovery() {
   const payload = recoveryPayloadFromInputs();
   if (!payload.session.date) { toast("Pick a date for the recovery session.", "err"); return; }
   if (payload.session.rounds <= 0) { toast("Enter at least 1 round.", "err"); return; }
+  if (payload.session.total_min <= 0) { toast("Enter sauna and/or plunge minutes per round.", "err"); return; }
   btn.disabled = true;
   state.recoverySubmitting = true;
   btn.textContent = "Submitting…";
@@ -1505,6 +1765,14 @@ function buildSessionPayload() {
     });
   }
   const submittedAt = isoNow();
+  // Attach cooldown completion if the user marked it done
+  const cdLog = state.cooldownLog?.[`${state.workoutDate || ""}|${state.selectedDay || ""}`];
+  const cooldown = (cdLog && cdLog.completed_at) ? {
+    type: cdLog.type,
+    source_key: cdLog.source_key || null,
+    fitnessplus_name: cdLog.fitnessplus_name || "",
+    completed_at: cdLog.completed_at,
+  } : null;
   return {
     type: "log",
     submitted_at: submittedAt,
@@ -1517,6 +1785,7 @@ function buildSessionPayload() {
       routine_id: state.routine?.id,
       phase: state.routine?.phase || null,
       exercises,
+      cooldown,
       session_notes: state.sessionNotes || "",
     },
   };
@@ -1555,6 +1824,7 @@ async function submitSkip() {
     toast("✓ Marked skipped. Synced to vault overnight.", "ok");
     await loadSessions().catch(() => {});
     state.log = {}; state.sessionNotes = "";
+    state.cooldownLog = {};
     state.hydratedKeys = new Set();
     $("#session-notes-input").value = "";
     setTimeout(() => { btn.disabled = false; renderApp(); }, 1500);
@@ -1597,6 +1867,7 @@ async function submitSession() {
     // up in the day view immediately (no full reload required).
     await loadSessions().catch(() => {});
     state.log = {}; state.sessionNotes = "";
+    state.cooldownLog = {};
     state.hydratedKeys = new Set();
     $("#session-notes-input").value = "";
     setTimeout(() => { btn.disabled = false; btn.textContent = "Submit session"; renderApp(); }, 1800);
@@ -1764,10 +2035,13 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#recovery-panel").classList.toggle("collapsed");
     $("#rec-toggle").textContent = $("#recovery-panel").classList.contains("collapsed") ? "▾" : "▴";
   });
-  ["rec-rounds", "rec-sauna", "rec-plunge"].forEach(id => {
-    $("#" + id).addEventListener("input", renderRecoverySummary);
+  $("#rec-add-round").addEventListener("click", addRecoveryRound);
+  $("#rec-date").addEventListener("change", () => {
+    // Reset hydration marker so the new date hydrates fresh from existing log if any
+    state._recoveryHydratedFor = null;
+    state.recoveryRounds = null;  // forces ensureRecoveryRounds() to seed defaults
+    renderRecoveryPanel();
   });
-  $("#rec-date").addEventListener("change", renderRecoveryPanel);
   $("#rec-submit-btn").addEventListener("click", submitRecovery);
   // Lightbox: backdrop, image, close button — any click closes
   $("#lightbox").addEventListener("click", closeLightbox);

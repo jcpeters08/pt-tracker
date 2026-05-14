@@ -181,6 +181,20 @@ def render_log_md(session: dict, exercises_index: dict[str, dict]) -> str:
         notes = (ex.get("notes") or "").replace("\n", " ").replace("|", "\\|")
         body.append(f"| {name} | {weight} | {reps} | {sets_n} | {notes} |")
 
+    cd = session.get("cooldown")
+    if cd:
+        body.extend(["", "---", "", "## Cool-down", ""])
+        if cd.get("type") == "fitnessplus":
+            body.append("- **Type:** Apple Fitness+")
+            if cd.get("fitnessplus_name"):
+                body.append(f"- **Name:** {cd['fitnessplus_name']}")
+        elif cd.get("type") == "library":
+            body.append("- **Type:** Prescribed")
+            if cd.get("source_key"):
+                body.append(f"- **Source:** {cd['source_key']}")
+        if cd.get("completed_at"):
+            body.append(f"- **Completed:** {cd['completed_at']}")
+
     if session.get("session_notes"):
         body.append("")
         body.append("---")
@@ -284,6 +298,7 @@ def render_recovery_md(session: dict) -> str:
     sauna = session.get("sauna_min")
     plunge = session.get("plunge_min")
     total = session.get("total_min")
+    rounds_detail = session.get("rounds_detail") or []
     notes = (session.get("notes") or "").strip()
 
     fm_lines = ["---", "type: recovery-log", "status: completed", "tags:",
@@ -301,15 +316,28 @@ def render_recovery_md(session: dict) -> str:
     body.append(f"**Location:** {location}")
     if rounds is not None:
         body.append(f"**Rounds:** {rounds}")
-    if sauna is not None:
-        body.append(f"**Sauna per round:** {sauna} min")
-    if plunge is not None:
-        body.append(f"**Plunge per round:** {plunge} min")
     if total is not None:
         body.append(f"**Total time:** ~{total} min")
     if session.get("submitted_at"):
         body.append(f"**Submitted:** {session['submitted_at']}")
     body.append("**Logged via:** PT Tracker web app")
+
+    # Per-round breakdown table when we have detail; otherwise fall back to
+    # the legacy "sauna per round / plunge per round" summary lines.
+    if rounds_detail:
+        body.extend(["", "## Rounds", "",
+                     "| # | Sauna (min) | Plunge (min) |",
+                     "|---|---|---|"])
+        for i, r in enumerate(rounds_detail, start=1):
+            n = r.get("round") or i
+            s = r.get("sauna_min")
+            p = r.get("plunge_min")
+            body.append(f"| {n} | {s if s is not None else ''} | {p if p is not None else ''} |")
+    else:
+        if sauna is not None:
+            body.append(f"**Sauna per round:** {sauna} min")
+        if plunge is not None:
+            body.append(f"**Plunge per round:** {plunge} min")
 
     if notes:
         body.extend(["", "---", "", "## Notes", ""])

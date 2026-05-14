@@ -1,5 +1,5 @@
 {
-  "format_note": "Curated cooldown library, keyed by workout type slug. The app picks 'push' / 'pull' / 'legs' / etc. based on the active day's type. Per-day cooldown text authored in the Weekly Plan MD overrides this fallback.",
+  "format_note": "Curated cooldown library, keyed by workout type slug. Per-move fields: move, duration, cue, image_url (optional, falls back to emoji), video_url (specific YouTube embed link if known), video_query (YouTube search fallback). The app picks 'push' / 'pull' / 'legs' / etc. based on the active day's type. Per-day cooldown text authored in the Weekly Plan MD overrides this fallback.",
   "apple_fitness_plus": {
     "mindful_cooldown_url": "https://fitness.apple.com/us/workout-type/mindful-cooldown/1478042987",
     "note": "On iPhone, this is a Universal Link — opens the Fitness app directly to the Mindful Cooldown category if installed. Filter inside the app for Upper Body / Lower Body / Full Body. 5–10 min sessions."
@@ -9,60 +9,60 @@
       "name": "Push-day cooldown (chest / shoulders / triceps)",
       "duration_minutes": 6,
       "moves": [
-        { "move": "Doorway chest stretch",        "duration": "45 sec each side", "cue": "Forearm on door frame, elbow at shoulder height, step through until you feel chest stretch" },
-        { "move": "Cross-body shoulder stretch",  "duration": "30 sec each side", "cue": "Pull arm across body at chest height, use opposite hand at elbow" },
-        { "move": "Sleeper stretch",              "duration": "30 sec each side", "cue": "Side-lying, shoulder and elbow 90°, gently press forearm toward floor" },
-        { "move": "Overhead tricep stretch",      "duration": "30 sec each side", "cue": "Reach hand down between shoulder blades, use opposite hand to gently press elbow back" },
-        { "move": "Child's pose with arm reach",  "duration": "60 sec",           "cue": "Walk hands forward, sink hips back, feel lat + shoulder opening" },
-        { "move": "Cat-cow",                      "duration": "60 sec",           "cue": "5–6 slow cycles, big breath each direction" }
+        { "move": "Doorway chest stretch",        "duration": "45 sec each side", "cue": "Forearm on door frame, elbow at shoulder height, step through until you feel chest stretch", "image_url": null, "video_query": "doorway chest stretch how to proper form" },
+        { "move": "Cross-body shoulder stretch",  "duration": "30 sec each side", "cue": "Pull arm across body at chest height, use opposite hand at elbow",                                  "image_url": null, "video_query": "cross body shoulder stretch how to" },
+        { "move": "Sleeper stretch",              "duration": "30 sec each side", "cue": "Side-lying, shoulder and elbow 90°, gently press forearm toward floor",                            "image_url": null, "video_query": "sleeper stretch shoulder internal rotation how to" },
+        { "move": "Overhead tricep stretch",      "duration": "30 sec each side", "cue": "Reach hand down between shoulder blades, use opposite hand to gently press elbow back",            "image_url": null, "video_query": "overhead tricep stretch how to" },
+        { "move": "Child's pose with arm reach",  "duration": "60 sec",           "cue": "Walk hands forward, sink hips back, feel lat + shoulder opening",                                  "image_url": null, "video_query": "childs pose arm reach yoga how to" },
+        { "move": "Cat-cow",                      "duration": "60 sec",           "cue": "5–6 slow cycles, big breath each direction",                                                       "image_url": null, "video_query": "cat cow stretch yoga how to" }
       ]
     },
     "pull": {
       "name": "Pull-day cooldown (back / lats / rear delts / biceps)",
       "duration_minutes": 6,
       "moves": [
-        { "move": "Lat hang (DB rack or pull-up bar)", "duration": "30 sec × 2",  "cue": "Passive hang, let shoulders decompress" },
-        { "move": "Child's pose with side reach",      "duration": "30 sec each side", "cue": "From child's pose, walk both hands to one side to stretch the opposite lat" },
-        { "move": "Cobra / upward dog",                "duration": "30 sec × 2",  "cue": "Press chest up, shoulders down and back, gentle thoracic extension" },
-        { "move": "Doorway biceps stretch",            "duration": "30 sec each side", "cue": "Arm extended back at shoulder height, palm on wall, rotate body away" },
-        { "move": "Thread the needle",                 "duration": "30 sec each side", "cue": "Quadruped, thread one arm under the body, rotate gently into the shoulder" },
-        { "move": "Cat-cow",                           "duration": "60 sec",           "cue": "5–6 slow cycles" }
+        { "move": "Lat hang (DB rack or pull-up bar)", "duration": "30 sec × 2",      "cue": "Passive hang, let shoulders decompress",                                                        "image_url": null, "video_query": "passive hang pull up bar how to" },
+        { "move": "Child's pose with side reach",      "duration": "30 sec each side", "cue": "From child's pose, walk both hands to one side to stretch the opposite lat",                  "image_url": null, "video_query": "childs pose side reach lat stretch how to" },
+        { "move": "Cobra / upward dog",                "duration": "30 sec × 2",      "cue": "Press chest up, shoulders down and back, gentle thoracic extension",                          "image_url": null, "video_query": "cobra pose upward dog yoga how to" },
+        { "move": "Doorway biceps stretch",            "duration": "30 sec each side", "cue": "Arm extended back at shoulder height, palm on wall, rotate body away",                        "image_url": null, "video_query": "doorway biceps stretch how to" },
+        { "move": "Thread the needle",                 "duration": "30 sec each side", "cue": "Quadruped, thread one arm under the body, rotate gently into the shoulder",                  "image_url": null, "video_query": "thread the needle yoga how to" },
+        { "move": "Cat-cow",                           "duration": "60 sec",           "cue": "5–6 slow cycles",                                                                              "image_url": null, "video_query": "cat cow stretch yoga how to" }
       ]
     },
     "legs": {
       "name": "Legs-day cooldown (quads / hams / glutes / calves)",
       "duration_minutes": 8,
       "moves": [
-        { "move": "Couch stretch",            "duration": "45 sec each side", "cue": "Rear shin against bench/wall, front leg in lunge, sink hips and squeeze glute of stretching leg" },
-        { "move": "Pigeon pose",              "duration": "60 sec each side", "cue": "Front shin perpendicular to body, sink hips, walk hands forward for deeper stretch" },
-        { "move": "Standing hamstring stretch", "duration": "45 sec each side", "cue": "Foot on bench, hinge from hips with flat back, don't round" },
-        { "move": "90/90 hip stretch",        "duration": "45 sec each side", "cue": "Front and back leg both at 90°, lean forward over front leg" },
-        { "move": "Standing calf stretch",    "duration": "30 sec each side", "cue": "Hands on wall, rear leg straight, heel down, press hips forward" },
-        { "move": "Figure-4 glute stretch (supine)", "duration": "45 sec each side", "cue": "Lying on back, ankle on opposite knee, pull thigh toward chest" },
-        { "move": "Child's pose",             "duration": "60 sec",           "cue": "Big toes touching, knees wide, sink hips toward heels" }
+        { "move": "Couch stretch",                  "duration": "45 sec each side", "cue": "Rear shin against bench/wall, front leg in lunge, sink hips and squeeze glute of stretching leg", "image_url": null, "video_query": "couch stretch Kelly Starrett how to" },
+        { "move": "Pigeon pose",                    "duration": "60 sec each side", "cue": "Front shin perpendicular to body, sink hips, walk hands forward for deeper stretch",              "image_url": null, "video_query": "pigeon pose yoga how to" },
+        { "move": "Standing hamstring stretch",     "duration": "45 sec each side", "cue": "Foot on bench, hinge from hips with flat back, don't round",                                       "image_url": null, "video_query": "standing hamstring stretch foot on bench how to" },
+        { "move": "90/90 hip stretch",              "duration": "45 sec each side", "cue": "Front and back leg both at 90°, lean forward over front leg",                                    "image_url": null, "video_query": "90 90 hip stretch how to" },
+        { "move": "Standing calf stretch",          "duration": "30 sec each side", "cue": "Hands on wall, rear leg straight, heel down, press hips forward",                                "image_url": null, "video_query": "standing calf stretch wall how to" },
+        { "move": "Figure-4 glute stretch (supine)","duration": "45 sec each side", "cue": "Lying on back, ankle on opposite knee, pull thigh toward chest",                                  "image_url": null, "video_query": "figure 4 glute stretch supine how to" },
+        { "move": "Child's pose",                   "duration": "60 sec",           "cue": "Big toes touching, knees wide, sink hips toward heels",                                          "image_url": null, "video_query": "childs pose yoga how to" }
       ]
     },
     "upper-hybrid": {
       "name": "Upper-hybrid cooldown (shoulders / rear delts / arms / core)",
       "duration_minutes": 6,
       "moves": [
-        { "move": "Cross-body shoulder stretch", "duration": "30 sec each side", "cue": "Pull arm across body" },
-        { "move": "Doorway chest stretch",       "duration": "30 sec each side", "cue": "Forearm on frame, step through" },
-        { "move": "Lat hang",                    "duration": "30 sec × 2",  "cue": "Passive hang, decompress shoulders" },
-        { "move": "Overhead tricep stretch",     "duration": "30 sec each side", "cue": "Hand between shoulder blades, opposite hand presses elbow" },
-        { "move": "Thread the needle",           "duration": "30 sec each side", "cue": "Quadruped, rotate one shoulder under" },
-        { "move": "Cobra",                       "duration": "60 sec",           "cue": "Gentle thoracic extension, shoulders down" }
+        { "move": "Cross-body shoulder stretch", "duration": "30 sec each side", "cue": "Pull arm across body",                                              "image_url": null, "video_query": "cross body shoulder stretch how to" },
+        { "move": "Doorway chest stretch",       "duration": "30 sec each side", "cue": "Forearm on frame, step through",                                    "image_url": null, "video_query": "doorway chest stretch how to" },
+        { "move": "Lat hang",                    "duration": "30 sec × 2",      "cue": "Passive hang, decompress shoulders",                                "image_url": null, "video_query": "passive hang pull up bar how to" },
+        { "move": "Overhead tricep stretch",     "duration": "30 sec each side", "cue": "Hand between shoulder blades, opposite hand presses elbow",         "image_url": null, "video_query": "overhead tricep stretch how to" },
+        { "move": "Thread the needle",           "duration": "30 sec each side", "cue": "Quadruped, rotate one shoulder under",                              "image_url": null, "video_query": "thread the needle yoga how to" },
+        { "move": "Cobra",                       "duration": "60 sec",           "cue": "Gentle thoracic extension, shoulders down",                          "image_url": null, "video_query": "cobra pose yoga how to" }
       ]
     },
     "default": {
       "name": "Full-body cooldown",
       "duration_minutes": 6,
       "moves": [
-        { "move": "Child's pose",         "duration": "60 sec",           "cue": "Decompress spine, breathe deep" },
-        { "move": "Cat-cow",              "duration": "60 sec",           "cue": "5–6 slow cycles" },
-        { "move": "Cobra / upward dog",   "duration": "30 sec × 2",  "cue": "Thoracic extension" },
-        { "move": "Pigeon pose",          "duration": "45 sec each side", "cue": "Hip opener" },
-        { "move": "Standing forward fold", "duration": "60 sec",          "cue": "Soft knees, let head and arms hang" }
+        { "move": "Child's pose",          "duration": "60 sec",           "cue": "Decompress spine, breathe deep",                  "image_url": null, "video_query": "childs pose yoga how to" },
+        { "move": "Cat-cow",               "duration": "60 sec",           "cue": "5–6 slow cycles",                                  "image_url": null, "video_query": "cat cow stretch yoga how to" },
+        { "move": "Cobra / upward dog",    "duration": "30 sec × 2",      "cue": "Thoracic extension",                                "image_url": null, "video_query": "cobra pose upward dog yoga how to" },
+        { "move": "Pigeon pose",           "duration": "45 sec each side", "cue": "Hip opener",                                        "image_url": null, "video_query": "pigeon pose yoga how to" },
+        { "move": "Standing forward fold", "duration": "60 sec",           "cue": "Soft knees, let head and arms hang",               "image_url": null, "video_query": "standing forward fold yoga how to" }
       ]
     }
   }
