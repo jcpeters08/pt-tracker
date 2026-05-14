@@ -1,0 +1,38 @@
+{
+  "id": "barbell-bent-over-row",
+  "name": "Barbell Bent-Over Row",
+  "primary_muscle": "back",
+  "secondary_muscles": [
+    "lats",
+    "biceps",
+    "rear-delts"
+  ],
+  "equipment": [
+    "barbell"
+  ],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/0.jpg",
+  "video_url": "https://www.muscleandstrength.com/exercises/bent-over-barbell-row.html",
+  "form_cues": [
+    "Hips back, torso roughly 45° — flat back",
+    "Pull bar to lower chest / upper abs, drive elbows back",
+    "Squeeze shoulder blades together at the top, control the eccentric",
+    "Don't shrug or yank with biceps"
+  ],
+  "default_load_unit": "kg",
+  "notes": "Compound back movement. Complements lat pulldown (vertical pull) with horizontal pull. Use lifting straps if grip fails before back.",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Bent Over Barbell Row",
+  "video_source": "muscleandstrength.com",
+  "video_id": "9efgcAjQe7E",
+  "video_id_query": "Barbell bent over row proper form Jeff Nippard",
+  "info_url": "https://www.muscleandstrength.com/exercises/bent-over-barbell-row.html",
+  "info_source": "muscleandstrength.com",
+  "instructions": [
+    "Stand with feet hip-width, barbell over mid-foot. Grip slightly wider than shoulder width, pronated.",
+    "Hinge at hips, push hips back, keep slight knee bend. Torso roughly 45° to the floor, back flat.",
+    "Brace core. From this hinged position, pull the bar to your lower chest / upper abs by driving the elbows back.",
+    "Squeeze shoulder blades together at the top. Pause briefly.",
+    "Lower under control. Don't let the torso pop up to swing the weight.",
+    "Repeat for the prescribed reps."
+  ]
+}

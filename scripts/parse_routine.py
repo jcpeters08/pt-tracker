@@ -62,13 +62,18 @@ def parse_routine_md(text: str, *, routine_id: str) -> dict:
         if cur_day is None or section_start is None:
             return
         section_lines = lines[section_start:end_idx]
-        # Pull warm-up line
+        # Pull warm-up + cool-down lines (cool-down is optional)
         warmup = ""
+        cooldown = ""
         for ln in section_lines:
             m = re.match(r"^\*\*Warm-?up.*?:?\*\*\s*(.*)$", ln, re.I)
-            if m:
+            if m and not warmup:
                 warmup = m.group(1).strip()
-                break
+                continue
+            m = re.match(r"^\*\*Cool-?down.*?:?\*\*\s*(.*)$", ln, re.I)
+            if m and not cooldown:
+                cooldown = m.group(1).strip()
+                continue
         # First table is the exercise table
         tbl = pc.find_table(section_lines, 0)
         exercises: list[dict] = []
@@ -98,6 +103,7 @@ def parse_routine_md(text: str, *, routine_id: str) -> dict:
         days[cur_day] = {
             "label": cur_label or "",
             "warmup": warmup,
+            "cooldown": cooldown,
             "exercises": exercises,
         }
         cur_day = None

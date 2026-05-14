@@ -42,6 +42,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 import pt_common as pc                       # noqa: E402
 import parse_routine as pr                   # noqa: E402
 import parse_log as pl                       # noqa: E402
+import parse_recovery as pre                 # noqa: E402
 import compute_analytics as ca               # noqa: E402
 
 DEFAULT_VAULT = Path.home() / "Documents" / "Jonathan's Vault"
@@ -85,15 +86,27 @@ def _exercise_display(ex: dict, exercises_index: dict[str, dict]) -> str:
 
 
 def _format_weight(ex: dict) -> str:
-    if ex.get("weight_raw"):
-        return ex["weight_raw"]
+    """Render a workout-log weight cell with both lbs and kg.
+    Primary unit is lbs (Planet Fitness era); kg in parens.
+    If the exercise carries a weight_raw and it already has both units, trust it.
+    """
+    raw = ex.get("weight_raw")
+    if raw:
+        low = raw.lower()
+        if "lb" in low and "kg" in low:
+            return raw  # already dual-unit, trust the source
     sets = ex.get("sets", [])
     if not sets:
-        return ""
-    w = sets[0].get("weight_kg")
-    if w is None or w == 0:
+        return raw or ""
+    w_kg = sets[0].get("weight_kg")
+    if w_kg is None or w_kg == 0:
         return "bodyweight"
-    return f"{int(w) if w == int(w) else w} kg"
+    w_lbs = w_kg * 2.20462
+    # Round lbs to whole numbers (PF plates are 2.5+ lb increments, integer reads cleanest)
+    lbs_str = f"{int(round(w_lbs))} lbs"
+    kg_rounded = round(w_kg, 1)
+    kg_str = f"{int(kg_rounded)} kg" if kg_rounded == int(kg_rounded) else f"{kg_rounded} kg"
+    return f"{lbs_str} ({kg_str})"
 
 
 def _format_reps(ex: dict) -> str:
@@ -253,6 +266,93 @@ def append_skip_index_line(log_md_path: Path, session: dict) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Recovery (sauna / cold plunge) renderers
+# ---------------------------------------------------------------------------
+
+def _filename_for_recovery(session: dict) -> str:
+    date = session["date"]
+    location_slug = pc.slugify(session.get("location") or "recovery")
+    # Capitalize words for filesystem display: "embrace-north" -> "Embrace-North"
+    pretty = "-".join(w.capitalize() for w in location_slug.split("-"))
+    return f"{date}-{pretty}.md"
+
+
+def render_recovery_md(session: dict) -> str:
+    date = session["date"]
+    location = session.get("location") or "Recovery"
+    rounds = session.get("rounds")
+    sauna = session.get("sauna_min")
+    plunge = session.get("plunge_min")
+    total = session.get("total_min")
+    notes = (session.get("notes") or "").strip()
+
+    fm_lines = ["---", "type: recovery-log", "status: completed", "tags:",
+                "  - fitness", "  - recovery", "  - thermocycling"]
+    fm_lines.append("aliases:")
+    fm_lines.append(f"  - {location} {date}")
+    fm_lines.append("---")
+
+    body: list[str] = []
+    body.append(f"# 🧊 {date} — {location}")
+    body.append("")
+    body.append("→ Back to: [[🏋️ Personal Trainer/Overview|Overview]] · [[🏋️ Personal Trainer/Recovery Log|Recovery Log]]")
+    body.append("")
+    body.append(f"**Date:** {date}")
+    body.append(f"**Location:** {location}")
+    if rounds is not None:
+        body.append(f"**Rounds:** {rounds}")
+    if sauna is not None:
+        body.append(f"**Sauna per round:** {sauna} min")
+    if plunge is not None:
+        body.append(f"**Plunge per round:** {plunge} min")
+    if total is not None:
+        body.append(f"**Total time:** ~{total} min")
+    if session.get("submitted_at"):
+        body.append(f"**Submitted:** {session['submitted_at']}")
+    body.append("**Logged via:** PT Tracker web app")
+
+    if notes:
+        body.extend(["", "---", "", "## Notes", ""])
+        for line in notes.splitlines():
+            line = line.strip()
+            if line:
+                body.append(f"- {line}")
+
+    body.extend(["", "---", "",
+                 "## See Also", "",
+                 "- Project: [[🏋️ Personal Trainer/Overview|Personal Trainer Overview]]",
+                 "- Recovery Log: [[🏋️ Personal Trainer/Recovery Log|Recovery Log]]", ""])
+
+    return "\n".join(fm_lines) + "\n\n" + "\n".join(body)
+
+
+def append_recovery_index_line(recovery_md_path: Path, session: dict) -> None:
+    date = session["date"]
+    location = session.get("location") or "Recovery"
+    fname = _filename_for_recovery(session)
+    link = fname[:-3]
+    rounds = session.get("rounds")
+    sauna = session.get("sauna_min")
+    plunge = session.get("plunge_min")
+    summary_bits = []
+    if rounds is not None:
+        summary_bits.append(f"{rounds} rounds")
+    if sauna is not None and plunge is not None:
+        summary_bits.append(f"{sauna}/{plunge} sauna/plunge")
+    summary = " · ".join(summary_bits)
+    line = f"- {date} · [[{link}|{location}]]" + (f" — {summary}" if summary else "")
+
+    existing = recovery_md_path.read_text(encoding="utf-8") if recovery_md_path.exists() else ""
+    if link in existing:
+        return
+    if existing and not existing.endswith("\n"):
+        existing += "\n"
+    if not existing.strip():
+        existing = "# 🧊 Recovery Log\n\n"
+    recovery_md_path.write_text(existing + line + "\n", encoding="utf-8")
+
+
+# ---------------------------------------------------------------------------
 # Append-to-Log.md helper
 # ---------------------------------------------------------------------------
 
@@ -294,7 +394,10 @@ def main() -> int:
     plans_dir = project_dir / "Weekly Plans"
     workout_logs_md_dir = project_dir / "Workout Log"
     workout_logs_md_dir.mkdir(parents=True, exist_ok=True)
+    recovery_md_dir = project_dir / "Recovery Log"
+    recovery_md_dir.mkdir(parents=True, exist_ok=True)
     log_md = project_dir / "Log.md"
+    recovery_index_md = project_dir / "Recovery Log.md"
 
     # Step 1: git pull
     in_git = (repo_root / ".git").exists()
@@ -333,8 +436,17 @@ def main() -> int:
     for entry in entries:
         kind = entry.get("type")
         session = entry.get("session") or {}
-        if not session.get("date") or not session.get("day_of_week"):
-            skipped.append(f"{kind or 'entry'} missing date or day_of_week")
+        # Recovery entries are date-only; workout (log/skip) entries also need day_of_week.
+        if kind in ("log", "skip"):
+            if not session.get("date") or not session.get("day_of_week"):
+                skipped.append(f"{kind} missing date or day_of_week")
+                continue
+        elif kind == "recovery":
+            if not session.get("date"):
+                skipped.append("recovery missing date")
+                continue
+        else:
+            skipped.append(f"unknown entry type: {kind!r}")
             continue
         session.setdefault("submitted_at", entry.get("submitted_at", now_iso()))
         if kind == "log":
@@ -358,8 +470,14 @@ def main() -> int:
             if not existed:
                 append_skip_index_line(log_md, session)
             drained.append(f"{'update-skip' if existed else 'skip'}: {fname}")
-        else:
-            skipped.append(f"unknown entry type: {kind!r}")
+        elif kind == "recovery":
+            fname = _filename_for_recovery(session)
+            target = recovery_md_dir / fname
+            existed = target.exists()
+            target.write_text(render_recovery_md(session), encoding="utf-8")
+            if not existed:
+                append_recovery_index_line(recovery_index_md, session)
+            drained.append(f"{'update-recovery' if existed else 'recovery'}: {fname}")
 
     # Step 3: re-derive routine + log JSONs
     routines_out = repo_root / "data" / "routines"
@@ -387,6 +505,21 @@ def main() -> int:
             )
         except Exception as e:
             print(f"  WARN: bad log MD {f.name}: {e}", file=sys.stderr)
+
+    # Re-derive recovery logs from vault MD
+    recovery_out = repo_root / "data" / "recovery_logs"
+    recovery_out.mkdir(parents=True, exist_ok=True)
+    if recovery_md_dir.exists():
+        for f in sorted(recovery_md_dir.glob("*.md")):
+            try:
+                rec = pre.parse_recovery_md(f.read_text(encoding="utf-8"), filename=f.name)
+                if rec is None:
+                    continue
+                (recovery_out / (rec["id"] + ".json")).write_text(
+                    json.dumps(rec, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+                )
+            except Exception as e:
+                print(f"  WARN: bad recovery MD {f.name}: {e}", file=sys.stderr)
 
     # Step 4: recompute analytics
     analytics = ca.compute(repo_root)

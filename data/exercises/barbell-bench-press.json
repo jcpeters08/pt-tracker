@@ -1,0 +1,38 @@
+{
+  "id": "barbell-bench-press",
+  "name": "Barbell Bench Press",
+  "primary_muscle": "chest",
+  "secondary_muscles": [
+    "triceps",
+    "front-delts"
+  ],
+  "equipment": [
+    "barbell",
+    "bench"
+  ],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/0.jpg",
+  "video_url": "https://www.muscleandstrength.com/exercises/barbell-bench-press.html",
+  "form_cues": [
+    "Shoulder blades retracted and pinned down through the entire set",
+    "Slight arch in upper back, feet planted, full-body tension",
+    "Bar touches lower chest (nipple line), elbows tucked ~45° from torso",
+    "Always use a spotter or safeties when going heavy"
+  ],
+  "default_load_unit": "kg",
+  "notes": "Optional rotation with flat DB bench. Set safety pins to chest level. PF has multiple flat benches with rack uprights.",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Barbell Bench Press",
+  "video_source": "muscleandstrength.com",
+  "video_id": "vcBig73ojpE",
+  "video_id_query": "Barbell bench press proper form Jeff Nippard",
+  "info_url": "https://www.muscleandstrength.com/exercises/barbell-bench-press.html",
+  "info_source": "muscleandstrength.com",
+  "instructions": [
+    "Lie back on the bench with eyes directly under the bar. Grip the bar slightly wider than shoulder-width.",
+    "Retract shoulder blades, plant feet, create full-body tension. Lift the bar off the rack and hold over the chest with locked elbows.",
+    "Inhale, lower the bar under control to the lower chest (around the nipple line). Elbows ~45° from torso, not flared 90°.",
+    "Touch the chest lightly (no bounce), press the bar back up in a slight arc toward the face — finish over the shoulders.",
+    "Exhale at the top, keep shoulder blades retracted throughout.",
+    "Re-rack carefully when the set is done; bring it back to the J-hooks, don't drop it."
+  ]
+}

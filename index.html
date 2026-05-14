@@ -348,10 +348,94 @@
 
   .hidden { display: none !important; }
 
+  /* Unit toggle pill (lbs / kg) */
+  .unit-toggle {
+    display: inline-flex; background: var(--bg-card); border: 1px solid var(--rule);
+    border-radius: 999px; padding: 2px; font-size: 12px; font-weight: 600;
+    flex-shrink: 0;
+  }
+  .unit-toggle button {
+    background: transparent; border: none; padding: 4px 10px; min-height: 0;
+    border-radius: 999px; color: var(--ink-muted); cursor: pointer;
+    font-size: 12px; font-weight: 600;
+  }
+  .unit-toggle button.active {
+    background: var(--accent); color: var(--accent-ink);
+  }
+
+  /* Cooldown card */
+  .cooldown {
+    background: var(--bg-card); border: 1px solid var(--rule); border-radius: var(--radius);
+    padding: 14px 16px; margin: 14px 0; box-shadow: var(--shadow);
+  }
+  .cooldown h3 { margin: 0 0 6px; font-size: 16px; }
+  .cooldown .cd-tabs {
+    display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .cooldown .cd-tab {
+    background: var(--bg-soft); border: 1px solid var(--rule); border-radius: 999px;
+    padding: 4px 12px; font-size: 12px; color: var(--ink-soft);
+    cursor: pointer; min-height: 0; font-weight: 600;
+  }
+  .cooldown .cd-tab.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .cooldown .cd-tab.fitnessplus { color: var(--accent); border-color: var(--accent); background: transparent; }
+  .cooldown .cd-tab.fitnessplus.active { background: var(--accent); color: var(--accent-ink); }
+  .cooldown .cd-body { font-size: 14px; color: var(--ink-soft); }
+  .cooldown .cd-move { padding: 6px 0; border-bottom: 1px dashed var(--rule); }
+  .cooldown .cd-move:last-child { border-bottom: none; }
+  .cooldown .cd-move b { color: var(--ink); }
+  .cooldown .cd-move .cd-cue { font-size: 12px; color: var(--ink-muted); }
+  .cooldown .cd-duration { font-size: 12px; color: var(--accent); margin-bottom: 8px; }
+  .cooldown .cd-fp-link {
+    display: inline-block; margin-top: 8px; color: var(--accent);
+    font-size: 14px; font-weight: 600;
+  }
+  .cooldown .cd-fp-note { font-size: 12px; color: var(--ink-muted); margin-top: 8px; }
+
+  /* Recovery panel */
+  .recovery-panel {
+    background: var(--bg-card); border: 1px solid var(--rule); border-radius: var(--radius);
+    padding: 16px; margin: 18px 0; box-shadow: var(--shadow);
+  }
+  .recovery-panel .rec-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; cursor: pointer; user-select: none;
+  }
+  .recovery-panel h3 { margin: 0; font-size: 17px; }
+  .recovery-panel .rec-head .rec-toggle {
+    font-size: 18px; color: var(--ink-muted);
+  }
+  .recovery-panel .rec-body { margin-top: 12px; }
+  .recovery-panel.collapsed .rec-body { display: none; }
+  .recovery-panel .rec-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .recovery-panel .rec-grid label {
+    font-size: 12px; color: var(--ink-soft); font-weight: 600; display: block;
+  }
+  .recovery-panel .rec-grid input {
+    width: 100%; margin-top: 4px;
+  }
+  .recovery-panel .rec-full { grid-column: 1 / -1; }
+  .recovery-panel .rec-summary {
+    background: var(--bg-soft); border: 1px solid var(--rule); border-radius: 8px;
+    padding: 8px 12px; font-size: 13px; color: var(--ink-soft); margin-top: 10px;
+  }
+  .recovery-panel .rec-summary b { color: var(--ink); }
+  .recovery-panel .rec-submit {
+    margin-top: 12px; width: 100%; padding: 14px; font-size: 15px;
+  }
+  .recovery-panel .rec-status {
+    font-size: 12px; padding: 4px 10px; border-radius: 999px; font-weight: 600;
+  }
+  .recovery-panel .rec-status.logged { background: var(--good); color: white; }
+  .recovery-panel .rec-status.pending { background: var(--warn); color: white; }
+
   @media (max-width: 480px) {
     .ex-img { flex-basis: 64px; height: 64px; width: 64px; font-size: 24px; }
     .ex-meta h3 { font-size: 16px; }
     .set-row { grid-template-columns: 28px 1fr 1fr 80px; }
+    .recovery-panel .rec-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -361,6 +445,10 @@
     <div class="header-row">
       <h1>🏋️ PT Tracker</h1>
       <div class="routine-pill" id="routine-label">Loading…</div>
+      <div class="unit-toggle" id="unit-toggle" role="group" aria-label="Weight unit">
+        <button type="button" data-unit="lbs" class="active">lbs</button>
+        <button type="button" data-unit="kg">kg</button>
+      </div>
       <a class="header-link" href="https://www.muscleandstrength.com/exercises" target="_blank" rel="noopener" title="Open Muscle &amp; Strength exercise database">M&amp;S ↗</a>
       <button id="signout-btn" class="signout-btn hidden" title="Sign out">⏻</button>
     </div>
@@ -411,6 +499,7 @@
   <main id="app" class="hidden">
     <div id="warmup-host"></div>
     <div id="exercises-host"></div>
+    <div id="cooldown-host"></div>
 
     <section class="session-notes hidden" id="session-notes-host">
       <label for="session-notes-input"><b>Session notes</b> (optional)</label>
@@ -427,6 +516,44 @@
         <button class="skip-link" id="skip-btn" type="button">I didn't do this workout — mark as skipped</button>
       </div>
     </div>
+
+    <!-- Recovery panel (sauna / cold plunge) — independent of workout submit -->
+    <section class="recovery-panel collapsed" id="recovery-panel">
+      <div class="rec-head" id="rec-head">
+        <h3>🧊 Log recovery — sauna &amp; cold plunge</h3>
+        <span class="rec-toggle" id="rec-toggle">▾</span>
+      </div>
+      <div class="rec-body">
+        <div class="rec-grid">
+          <div>
+            <label for="rec-date">Date</label>
+            <input type="date" id="rec-date">
+          </div>
+          <div>
+            <label for="rec-location">Location</label>
+            <input type="text" id="rec-location" value="Embrace North" placeholder="Embrace North">
+          </div>
+          <div>
+            <label for="rec-rounds">Rounds</label>
+            <input type="number" id="rec-rounds" min="1" max="6" step="1" value="3" inputmode="numeric">
+          </div>
+          <div>
+            <label for="rec-sauna">Sauna per round (min)</label>
+            <input type="number" id="rec-sauna" min="1" max="30" step="1" value="15" inputmode="numeric">
+          </div>
+          <div>
+            <label for="rec-plunge">Plunge per round (min)</label>
+            <input type="number" id="rec-plunge" min="1" max="15" step="1" value="4" inputmode="numeric">
+          </div>
+          <div class="rec-full">
+            <label for="rec-notes">Notes (optional)</label>
+            <textarea id="rec-notes" placeholder="How did it feel? Any variations?" style="width:100%; min-height:60px;"></textarea>
+          </div>
+        </div>
+        <div class="rec-summary" id="rec-summary"></div>
+        <button class="btn rec-submit" id="rec-submit-btn">Log recovery session</button>
+      </div>
+    </section>
   </main>
 
   <div id="toast" class="toast"></div>
@@ -468,10 +595,15 @@ const REPO_NAME    = "pt-tracker";
 const WORKER_URL   = "https://pt-tracker-auth.ositodelnorte.workers.dev"; // updated post-deploy
 const SID_KEY      = "pt_tracker_sid";
 const ROUTINE_KEY  = "pt_tracker_active_routine";
+const UNIT_KEY     = "pt_tracker_unit_pref";
+const CD_CHOICE_KEY = "pt_tracker_cooldown_choice"; // "library" or "fitnessplus"
 const PENDING_PATH = "data/pending.json";
 
 const DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
 const DAY_LABELS = { monday:"Mon", tuesday:"Tue", wednesday:"Wed", thursday:"Thu", friday:"Fri", saturday:"Sat", sunday:"Sun" };
+
+const KG_PER_LB = 0.453592;
+const LBS_PER_KG = 2.20462;
 
 // ---- State ----------------------------------------------------------------
 
@@ -481,7 +613,10 @@ const state = {
   pat: null,
   routines: [],         // [{id, file}, ...]
   routine: null,        // active routine JSON
+  routineMeta: [],      // [{id, name, start_date, end_date}] for auto-pick by date
   exercises: {},        // id → exercise JSON
+  cooldowns: null,      // data/cooldowns.json (loaded once)
+  recoveryByDate: null, // Map<date, {kind, session, status}>
   selectedDay: null,    // "monday" etc
   workoutDate: null,    // YYYY-MM-DD — defaults to today, user can change via date picker
   sessionLookup: null,  // Map<"date|day|type", { kind, session, status, submitted_at }>
@@ -489,10 +624,62 @@ const state = {
   log: {},              // exercise_id → {sets: [{set, weight_kg, reps, done}], notes}
   sessionNotes: "",
   submitting: false,
+  unitPref: "lbs",      // "lbs" | "kg" — display + input unit; storage is always kg
+  cooldownChoice: "library", // "library" | "fitnessplus" — per-day, persisted globally
+  recoverySubmitting: false,
   // Track which (date|day|type) keys we've already hydrated into state.log so
   // a re-render doesn't clobber the user's in-progress edits.
   hydratedKeys: new Set(),
 };
+
+// ---- Unit conversion helpers ---------------------------------------------
+
+function kgToLbs(kg) { return kg == null ? null : kg * LBS_PER_KG; }
+function lbsToKg(lbs) { return lbs == null ? null : lbs * KG_PER_LB; }
+function roundTo(n, places) {
+  if (n == null || isNaN(n)) return n;
+  const p = Math.pow(10, places);
+  return Math.round(n * p) / p;
+}
+function fmtNum(n, places) {
+  if (n == null || isNaN(n)) return "";
+  const r = roundTo(n, places);
+  return r === Math.trunc(r) ? String(Math.trunc(r)) : String(r);
+}
+// Display a weight stored as kg in the user's preferred unit (rounded).
+function displayWeight(kg) {
+  if (kg == null || kg === 0) return "";
+  if (state.unitPref === "lbs") return fmtNum(kgToLbs(kg), 1);
+  return fmtNum(kg, 1);
+}
+// Convert an input value (in user's pref unit) → kg for storage.
+function inputToKg(val) {
+  if (val === "" || val == null) return null;
+  const n = Number(val);
+  if (isNaN(n)) return null;
+  return state.unitPref === "lbs" ? lbsToKg(n) : n;
+}
+// Build the dual-unit target text from a routine entry: "30 lbs (14 kg) × 12 × 3".
+function formatTargetText(ex) {
+  if (ex.target_weight_kg == null) {
+    return `${ex.target_weight_raw || "?"} × ${ex.target_reps || "?"} × ${ex.target_sets || "?"}`;
+  }
+  const kg = ex.target_weight_kg;
+  if (kg === 0) {
+    return `bodyweight × ${ex.target_reps || "?"} × ${ex.target_sets || "?"}`;
+  }
+  const lbs = roundTo(kgToLbs(kg), 0);
+  const kgRounded = roundTo(kg, 1);
+  const lbsStr = `${fmtNum(lbs, 0)} lbs`;
+  const kgStr = `${fmtNum(kgRounded, 1)} kg`;
+  const primary = state.unitPref === "lbs" ? lbsStr : kgStr;
+  const secondary = state.unitPref === "lbs" ? kgStr : lbsStr;
+  return `${primary} (${secondary}) × ${ex.target_reps || "?"} × ${ex.target_sets || "?"}`;
+}
+// Step value for weight inputs. PF dumbbells go 5 lb; kg side stays 0.5 kg.
+function weightInputStep() {
+  return state.unitPref === "lbs" ? "5" : "0.5";
+}
 
 // ---- Helpers --------------------------------------------------------------
 
@@ -680,14 +867,21 @@ async function loadRoutines() {
   try {
     const list = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/routines`).then(r => r.ok ? r.json() : []);
     const files = (Array.isArray(list) ? list : []).filter(f => f.name.endsWith(".json")).map(f => f.name.replace(/\.json$/, ""));
-    state.routines = files.length ? files : ["2026-W18-CDMX-Phase-1-Closeout"];
+    state.routines = files.length ? files : ["2026-W20-Phase-2-Launch-Reentry"];
   } catch {
-    state.routines = ["2026-W18-CDMX-Phase-1-Closeout"];
+    state.routines = ["2026-W20-Phase-2-Launch-Reentry"];
   }
 
-  // Pick the most recent routine by id (lexically, since they start with YYYY-WXX).
-  const stored = localStorage.getItem(ROUTINE_KEY);
-  const id = (stored && state.routines.includes(stored)) ? stored : state.routines.slice().sort().pop();
+  // Load metadata (start_date, end_date) for all routines so we can auto-pick
+  // the one whose date window covers the active workout date.
+  state.routineMeta = await Promise.all(
+    state.routines.map(id => fetchJson(`data/routines/${id}.json`)
+      .then(r => ({ id, name: r.name || id, start_date: r.start_date || null, end_date: r.end_date || null }))
+      .catch(() => ({ id, name: id, start_date: null, end_date: null }))
+    )
+  );
+
+  const id = pickRoutineForDate(state.workoutDate || localDateIso());
   state.routine = await fetchJson(`data/routines/${id}.json`);
   localStorage.setItem(ROUTINE_KEY, id);
 
@@ -697,6 +891,76 @@ async function loadRoutines() {
     for (const ex of (day.exercises || [])) ids.add(ex.exercise_id);
   }
   await Promise.all([...ids].map(fetchExercise));
+}
+
+// Pick the routine whose [start_date, end_date] covers the given date.
+// Honors a user-pinned localStorage choice only if it's still date-valid.
+// Otherwise falls back to the routine whose start_date is the latest ≤ date,
+// then the lexically-last id.
+function pickRoutineForDate(dateStr) {
+  const stored = localStorage.getItem(ROUTINE_KEY);
+  const meta = state.routineMeta || [];
+  const inWindow = (m, d) => {
+    if (!m.start_date) return false;
+    if (m.start_date > d) return false;
+    if (m.end_date && m.end_date < d) return false;
+    return true;
+  };
+  if (stored && state.routines.includes(stored)) {
+    const m = meta.find(x => x.id === stored);
+    if (m && inWindow(m, dateStr)) return stored;
+  }
+  const covering = meta.filter(m => inWindow(m, dateStr));
+  if (covering.length) {
+    covering.sort((a, b) => (b.start_date || "").localeCompare(a.start_date || ""));
+    return covering[0].id;
+  }
+  // No active window — fall back to whichever started most recently before today
+  const past = meta.filter(m => m.start_date && m.start_date <= dateStr);
+  if (past.length) {
+    past.sort((a, b) => (b.start_date || "").localeCompare(a.start_date || ""));
+    return past[0].id;
+  }
+  return state.routines.slice().sort().pop();
+}
+
+async function loadCooldowns() {
+  if (state.cooldowns) return;
+  try {
+    state.cooldowns = await fetchJson("data/cooldowns.json");
+  } catch (e) {
+    console.warn("cooldowns not loaded", e);
+    state.cooldowns = { library: {}, apple_fitness_plus: null };
+  }
+}
+
+async function loadRecoveryLogs() {
+  state.recoveryByDate = new Map();
+  let ids = [];
+  try {
+    const list = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/recovery_logs`)
+      .then(r => r.ok ? r.json() : []);
+    ids = (Array.isArray(list) ? list : [])
+      .filter(f => f.name && f.name.endsWith(".json"))
+      .map(f => f.name.replace(/\.json$/, ""));
+  } catch {}
+  const recs = await Promise.all(
+    ids.map(id => fetchJson(`data/recovery_logs/${id}.json`).catch(() => null))
+  );
+  for (const r of recs) {
+    if (!r?.date) continue;
+    state.recoveryByDate.set(r.date, { kind: "recovery", status: "synced", session: r });
+  }
+  // Overlay pending recovery entries
+  try {
+    const pending = await fetchJson("data/pending.json");
+    for (const entry of pending?.entries || []) {
+      if (entry.type !== "recovery") continue;
+      const s = entry.session || {};
+      if (!s.date) continue;
+      state.recoveryByDate.set(s.date, { kind: "recovery", status: "pending", session: s });
+    }
+  } catch {}
 }
 
 // ---- Pending append -------------------------------------------------------
@@ -834,6 +1098,92 @@ function renderWarmup(day) {
   }
 }
 
+// Map a day label to a cooldown library key. "Push (...)" → "push", etc.
+function cooldownKeyForDay(day) {
+  const label = (day?.label || "").toLowerCase();
+  if (label.startsWith("push")) return "push";
+  if (label.startsWith("pull")) return "pull";
+  if (label.startsWith("legs")) return "legs";
+  if (label.includes("upper")) return "upper-hybrid";
+  if (label.includes("hybrid")) return "upper-hybrid";
+  return "default";
+}
+
+function renderCooldown(day) {
+  const host = $("#cooldown-host");
+  if (!host) return;
+  host.innerHTML = "";
+  if (!day || !day.exercises?.length) return;          // no cooldown on rest days
+  const cd = state.cooldowns;
+  if (!cd) return;
+
+  const key = cooldownKeyForDay(day);
+  const lib = cd.library?.[key] || cd.library?.default;
+  const fp = cd.apple_fitness_plus;
+  const choice = state.cooldownChoice || "library";
+
+  const dayCooldownText = (day.cooldown || "").trim();
+
+  const card = document.createElement("section");
+  card.className = "cooldown";
+  card.id = "cooldown-card";
+
+  const tabs = `
+    <div class="cd-tabs">
+      <button type="button" class="cd-tab${choice === "library" ? " active" : ""}" data-choice="library">Prescribed cooldown</button>
+      <button type="button" class="cd-tab fitnessplus${choice === "fitnessplus" ? " active" : ""}" data-choice="fitnessplus">Apple Fitness+</button>
+    </div>
+  `;
+
+  let body = "";
+  if (choice === "library") {
+    if (dayCooldownText) {
+      body = `<div class="cd-body"><b>Trainer note:</b> ${escapeHtml(dayCooldownText)}</div>`;
+    } else if (lib) {
+      const moves = (lib.moves || []).map(m => `
+        <div class="cd-move">
+          <b>${escapeHtml(m.move)}</b> · ${escapeHtml(m.duration)}
+          ${m.cue ? `<div class="cd-cue">${escapeHtml(m.cue)}</div>` : ""}
+        </div>
+      `).join("");
+      body = `
+        <div class="cd-duration">~${lib.duration_minutes} min · ${escapeHtml(lib.name)}</div>
+        <div class="cd-body">${moves}</div>
+      `;
+    } else {
+      body = `<div class="cd-body">No cooldown configured for this day.</div>`;
+    }
+  } else {
+    // fitnessplus
+    if (fp?.mindful_cooldown_url) {
+      body = `
+        <div class="cd-body">
+          Open Apple Fitness+ → <b>Mindful Cooldown</b>. Inside the app, filter for Upper Body / Lower Body / Full Body (5–10 min sessions).
+          <div><a class="cd-fp-link" href="${escapeHtml(fp.mindful_cooldown_url)}" target="_blank" rel="noopener">Open Mindful Cooldown ↗</a></div>
+          ${fp.note ? `<div class="cd-fp-note">${escapeHtml(fp.note)}</div>` : ""}
+        </div>
+      `;
+    } else {
+      body = `<div class="cd-body">Apple Fitness+ link not configured.</div>`;
+    }
+  }
+
+  card.innerHTML = `
+    <h3>🧘 Cool-down</h3>
+    ${tabs}
+    ${body}
+  `;
+  host.appendChild(card);
+
+  card.querySelectorAll(".cd-tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      state.cooldownChoice = btn.dataset.choice;
+      localStorage.setItem(CD_CHOICE_KEY, state.cooldownChoice);
+      renderCooldown(day);
+    });
+  });
+}
+
 function ensureLogState(exId, targetWeight, targetReps, targetSets) {
   if (state.log[exId]) return state.log[exId];
   // If there's an existing session for the current view, prefill from it
@@ -906,19 +1256,21 @@ function renderExerciseCard(exDef, ex) {
   const meta = state.exercises[ex.exercise_id] || {};
   const log = ensureLogState(ex.exercise_id, ex.target_weight_kg, ex.target_reps, ex.target_sets);
   const muscles = [meta.primary_muscle, ...(meta.secondary_muscles || [])].filter(Boolean).join(" · ");
-  const targetText = `${ex.target_weight_raw || (ex.target_weight_kg ? ex.target_weight_kg + " kg" : "")} × ${ex.target_reps || "?"} × ${ex.target_sets || "?"}`;
+  const targetText = formatTargetText(ex);
+  const unitLabel = state.unitPref;
+  const step = weightInputStep();
 
   const setsHtml = `
     <div class="set-row set-header">
       <span class="set-num">#</span>
-      <span class="col-label">Weight</span>
+      <span class="col-label">Weight (${unitLabel})</span>
       <span class="col-label">Reps</span>
       <span></span>
     </div>
   ` + log.sets.map((s, i) => `
     <div class="set-row${s.done ? " done" : ""}" data-set="${i}">
       <span class="set-num">${i+1}</span>
-      <input type="number" inputmode="decimal" step="0.5" placeholder="kg" value="${s.weight_kg ?? ""}" data-field="weight">
+      <input type="number" inputmode="decimal" step="${step}" placeholder="${unitLabel}" value="${displayWeight(s.weight_kg)}" data-field="weight">
       <input type="number" inputmode="numeric"  step="1"   placeholder="reps" value="${s.reps ?? ""}" data-field="reps">
       <button class="done-btn" data-action="done">${s.done ? "✓ Done" : "Done"}</button>
     </div>
@@ -977,7 +1329,8 @@ function bindCardEvents(card, exId) {
   card.querySelectorAll(".set-row:not(.set-header)").forEach(row => {
     const idx = Number(row.dataset.set);
     row.querySelector('input[data-field="weight"]').addEventListener("input", e => {
-      log.sets[idx].weight_kg = e.target.value === "" ? null : Number(e.target.value);
+      const kg = inputToKg(e.target.value);
+      log.sets[idx].weight_kg = kg == null ? null : roundTo(kg, 2);
     });
     row.querySelector('input[data-field="reps"]').addEventListener("input", e => {
       log.sets[idx].reps = e.target.value === "" ? null : Number(e.target.value);
@@ -1042,6 +1395,87 @@ function renderApp() {
   renderWarmup(state.routine.days?.[state.selectedDay]);
   renderLogStatus();
   renderExercises();
+  renderCooldown(state.routine.days?.[state.selectedDay]);
+  renderRecoveryPanel();
+}
+
+// ---- Recovery panel -------------------------------------------------------
+
+function recoveryPayloadFromInputs() {
+  const date = $("#rec-date").value || localDateIso();
+  const location = ($("#rec-location").value || "Embrace North").trim();
+  const rounds = Number($("#rec-rounds").value) || 0;
+  const sauna = Number($("#rec-sauna").value) || 0;
+  const plunge = Number($("#rec-plunge").value) || 0;
+  const notes = ($("#rec-notes").value || "").trim();
+  const total_min = rounds * (sauna + plunge);
+  return {
+    type: "recovery",
+    submitted_at: isoNow(),
+    session: { date, location, rounds, sauna_min: sauna, plunge_min: plunge, total_min, notes, submitted_at: isoNow() },
+  };
+}
+
+function renderRecoverySummary() {
+  const el = $("#rec-summary");
+  if (!el) return;
+  const rounds = Number($("#rec-rounds").value) || 0;
+  const sauna = Number($("#rec-sauna").value) || 0;
+  const plunge = Number($("#rec-plunge").value) || 0;
+  const total = rounds * (sauna + plunge);
+  el.innerHTML = `<b>Total:</b> ${rounds} × (${sauna} min sauna + ${plunge} min plunge) ≈ <b>${total} min</b>`;
+}
+
+function renderRecoveryPanel() {
+  const date = state.workoutDate || localDateIso();
+  const dateInput = $("#rec-date");
+  if (dateInput && !dateInput.value) dateInput.value = date;
+  renderRecoverySummary();
+  // If a recovery is already logged for the selected date, show a hint in the
+  // header. The user can still re-submit to update.
+  const head = $("#rec-head");
+  if (!head) return;
+  // Remove any existing status pill
+  const existing = head.querySelector(".rec-status");
+  if (existing) existing.remove();
+  const recDate = dateInput?.value || date;
+  const rec = state.recoveryByDate?.get(recDate);
+  if (rec) {
+    const pill = document.createElement("span");
+    pill.className = `rec-status ${rec.status === "pending" ? "pending" : "logged"}`;
+    pill.textContent = rec.status === "pending" ? "● Submitted (pending sync)" : "✓ Logged";
+    head.querySelector("h3").appendChild(document.createTextNode(" "));
+    head.querySelector("h3").appendChild(pill);
+  }
+}
+
+async function submitRecovery() {
+  const btn = $("#rec-submit-btn");
+  if (state.recoverySubmitting || btn.disabled) return;
+  const payload = recoveryPayloadFromInputs();
+  if (!payload.session.date) { toast("Pick a date for the recovery session.", "err"); return; }
+  if (payload.session.rounds <= 0) { toast("Enter at least 1 round.", "err"); return; }
+  btn.disabled = true;
+  state.recoverySubmitting = true;
+  btn.textContent = "Submitting…";
+  try {
+    await appendPending(payload);
+    toast("✓ Recovery logged. Synced to vault overnight.", "ok");
+    btn.textContent = "✓ Logged";
+    await loadRecoveryLogs().catch(() => {});
+    renderRecoveryPanel();
+    setTimeout(() => { btn.disabled = false; btn.textContent = "Log recovery session"; }, 1800);
+  } catch (e) {
+    console.error("submitRecovery", e);
+    const msg = /403/.test(e.message)
+      ? "Recovery save failed: GitHub denied the write (403). Token needs Contents: Read and write."
+      : `Recovery save failed: ${e.message}`;
+    toast(msg, "err");
+    btn.textContent = "Log recovery session";
+    btn.disabled = false;
+  } finally {
+    state.recoverySubmitting = false;
+  }
 }
 
 // ---- Submit session -------------------------------------------------------
@@ -1188,6 +1622,12 @@ async function submitSession() {
 // ---- Boot ------------------------------------------------------------------
 
 async function bootApp() {
+  // Load unit + cooldown-choice prefs from localStorage before first render
+  const storedUnit = localStorage.getItem(UNIT_KEY);
+  if (storedUnit === "kg" || storedUnit === "lbs") state.unitPref = storedUnit;
+  const storedCD = localStorage.getItem(CD_CHOICE_KEY);
+  if (storedCD === "library" || storedCD === "fitnessplus") state.cooldownChoice = storedCD;
+  syncUnitToggleUI();
   loadSid();
   if (!state.sid) { showPanel("signin"); return; }
   try {
@@ -1195,7 +1635,7 @@ async function bootApp() {
     if (!email) { showPanel("signin"); return; }
     state.pat = await fetchPat();
     if (!state.pat) { showPanel("pat"); return; }
-    await Promise.all([loadRoutines(), loadSessions()]);
+    await Promise.all([loadRoutines(), loadSessions(), loadCooldowns(), loadRecoveryLogs()]);
     renderApp();
     showPanel("app");
   } catch (e) {
@@ -1203,6 +1643,12 @@ async function bootApp() {
     toast(`Boot failed: ${e.message}`, "err");
     showPanel("signin");
   }
+}
+
+function syncUnitToggleUI() {
+  document.querySelectorAll("#unit-toggle button").forEach(b => {
+    b.classList.toggle("active", b.dataset.unit === state.unitPref);
+  });
 }
 
 function openHowto(meta) {
@@ -1279,9 +1725,50 @@ document.addEventListener("DOMContentLoaded", () => {
     state.workoutDate = v;
     state.log = {};
     state.hydratedKeys = new Set();   // every cached hydration is keyed on date; clear all
+    // Re-evaluate routine selection: a different date may belong to a different routine
+    if (state.routineMeta?.length) {
+      const newId = pickRoutineForDate(v);
+      if (newId && newId !== state.routine?.id) {
+        fetchJson(`data/routines/${newId}.json`).then(r => {
+          state.routine = r;
+          localStorage.setItem(ROUTINE_KEY, newId);
+          toast(`Switched to ${r.name || newId}`, "ok");
+          // Pre-fetch new exercises
+          const ids = new Set();
+          for (const day of Object.values(r.days || {})) {
+            for (const ex of (day.exercises || [])) ids.add(ex.exercise_id);
+          }
+          return Promise.all([...ids].map(fetchExercise));
+        }).then(() => renderApp()).catch(() => renderApp());
+        return;
+      }
+    }
     renderApp();
   });
   $("#session-notes-input").addEventListener("input", e => { state.sessionNotes = e.target.value; });
+
+  // Unit toggle (lbs / kg)
+  document.querySelectorAll("#unit-toggle button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const u = btn.dataset.unit;
+      if (u === state.unitPref) return;
+      state.unitPref = u;
+      localStorage.setItem(UNIT_KEY, u);
+      syncUnitToggleUI();
+      renderApp();
+    });
+  });
+
+  // Recovery panel — collapse toggle + live summary + submit
+  $("#rec-head").addEventListener("click", () => {
+    $("#recovery-panel").classList.toggle("collapsed");
+    $("#rec-toggle").textContent = $("#recovery-panel").classList.contains("collapsed") ? "▾" : "▴";
+  });
+  ["rec-rounds", "rec-sauna", "rec-plunge"].forEach(id => {
+    $("#" + id).addEventListener("input", renderRecoverySummary);
+  });
+  $("#rec-date").addEventListener("change", renderRecoveryPanel);
+  $("#rec-submit-btn").addEventListener("click", submitRecovery);
   // Lightbox: backdrop, image, close button — any click closes
   $("#lightbox").addEventListener("click", closeLightbox);
   // Video modal: clicks on backdrop or × close it; clicks on the player don't bubble

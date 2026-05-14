@@ -46,6 +46,7 @@ def _exercise_index(exercises_dir: Path) -> dict[str, dict]:
 def compute(repo_root: Path) -> dict:
     logs_dir = repo_root / "data" / "logs"
     exercises_dir = repo_root / "data" / "exercises"
+    recovery_dir = repo_root / "data" / "recovery_logs"
 
     exercises = _exercise_index(exercises_dir)
     logs: list[dict] = []
@@ -56,6 +57,15 @@ def compute(repo_root: Path) -> dict:
             except Exception as e:
                 print(f"  WARN: bad log json {f.name}: {e}", file=sys.stderr)
     logs.sort(key=lambda x: x.get("date", ""))
+
+    recovery: list[dict] = []
+    if recovery_dir.exists():
+        for f in sorted(recovery_dir.glob("*.json")):
+            try:
+                recovery.append(_load_json(f))
+            except Exception as e:
+                print(f"  WARN: bad recovery json {f.name}: {e}", file=sys.stderr)
+    recovery.sort(key=lambda x: x.get("date", ""))
 
     # lifts_per_week
     lifts_per_week: dict[str, dict] = defaultdict(dict)
@@ -125,15 +135,38 @@ def compute(repo_root: Path) -> dict:
         for w, n in sorted(completed_per_week.items())
     }
 
+    # Recovery aggregations
+    recovery_per_week: dict[str, int] = defaultdict(int)
+    sauna_min_per_week: dict[str, int] = defaultdict(int)
+    plunge_min_per_week: dict[str, int] = defaultdict(int)
+    for r in recovery:
+        if not r.get("date"):
+            continue
+        wk = _iso_week(r["date"])
+        recovery_per_week[wk] += 1
+        rounds = r.get("rounds") or 0
+        sauna_min_per_week[wk] += rounds * (r.get("sauna_min") or 0)
+        plunge_min_per_week[wk] += rounds * (r.get("plunge_min") or 0)
+    recovery_by_week = {
+        w: {
+            "sessions": recovery_per_week[w],
+            "sauna_min_total": sauna_min_per_week[w],
+            "plunge_min_total": plunge_min_per_week[w],
+        }
+        for w in sorted(recovery_per_week)
+    }
+
     return {
         "generated_at": __import__("datetime").datetime.now(__import__("datetime").timezone.utc)
             .replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "log_count": len(logs),
+        "recovery_count": len(recovery),
         "lifts_per_week": dict(sorted(lifts_per_week.items())),
         "weekly_volume_by_muscle": weekly_volume,
         "exercise_progression": dict(progression),
         "prs": prs,
         "session_compliance": session_compliance,
+        "recovery_by_week": recovery_by_week,
     }
 
 

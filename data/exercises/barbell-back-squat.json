@@ -1,0 +1,38 @@
+{
+  "id": "barbell-back-squat",
+  "name": "Barbell Back Squat",
+  "primary_muscle": "quads",
+  "secondary_muscles": [
+    "glutes",
+    "hamstrings"
+  ],
+  "equipment": [
+    "barbell",
+    "squat-rack"
+  ],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Squat/0.jpg",
+  "video_url": "https://www.muscleandstrength.com/exercises/barbell-squat.html",
+  "form_cues": [
+    "Bar on upper traps (high bar) or rear delts (low bar) — pick one and stick with it",
+    "Brace core hard, take a big breath before descent",
+    "Knees track over toes, full depth (hip crease below knee)",
+    "Drive through mid-foot, hips and chest rise together"
+  ],
+  "default_load_unit": "kg",
+  "notes": "PF Minneapolis: use the squat rack with safety pins set at low-squat depth as a fail-safe. Start light to re-baseline.",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Barbell Squat",
+  "video_source": "muscleandstrength.com",
+  "video_id": "ultWZbUMPL8",
+  "video_id_query": "Barbell back squat how to proper form Athlean-X",
+  "info_url": "https://www.muscleandstrength.com/exercises/barbell-squat.html",
+  "info_source": "muscleandstrength.com",
+  "instructions": [
+    "Set the bar in a power rack at about mid-chest height. Load to working weight; clip safety pins just below depth.",
+    "Step under the bar, place it on your upper traps (high bar) or rear delts (low bar). Hands just wider than shoulder width.",
+    "Brace your core, unrack by extending the knees and hips, take two steps back into a stable stance with feet shoulder-width and toes slightly out.",
+    "Inhale, sit hips back and down, keep chest up and the bar over mid-foot. Descend until hip crease passes knee.",
+    "Drive through the mid-foot, push the floor away, exhale at the top. Keep the bar path vertical.",
+    "Repeat for the prescribed reps; re-rack carefully when finished."
+  ]
+}

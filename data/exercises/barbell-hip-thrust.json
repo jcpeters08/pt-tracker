@@ -1,0 +1,37 @@
+{
+  "id": "barbell-hip-thrust",
+  "name": "Barbell Hip Thrust",
+  "primary_muscle": "glutes",
+  "secondary_muscles": [
+    "hamstrings"
+  ],
+  "equipment": [
+    "barbell",
+    "bench"
+  ],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg",
+  "video_url": "https://www.muscleandstrength.com/exercises/barbell-hip-thrust",
+  "form_cues": [
+    "Upper back on the bench, feet flat, knees ~90° at the top",
+    "Tuck chin, ribs down — no lumbar hyperextension",
+    "Drive through heels, squeeze glutes hard at lockout",
+    "Use a bar pad — the bar across your hips will hurt without one"
+  ],
+  "default_load_unit": "kg",
+  "notes": "Use the bar pad PF provides. Roll the bar over your hips before lying back. Start light to dial form.",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Barbell Hip Thrust",
+  "video_source": "muscleandstrength.com",
+  "video_id": "LM8XHLYJoYs",
+  "video_id_query": "Barbell hip thrust proper form Bret Contreras",
+  "info_url": "https://www.muscleandstrength.com/exercises/barbell-hip-thrust",
+  "info_source": "muscleandstrength.com",
+  "instructions": [
+    "Sit on the floor with your upper back against a bench, feet flat shoulder-width.",
+    "Roll a loaded barbell (with a pad) over your hips. Grip the bar lightly to keep it stable.",
+    "Brace core, tuck chin slightly. Drive through your heels, pushing your hips up until your torso is parallel to the floor.",
+    "At the top: knees ~90°, glutes squeezed hard, ribs down. Don't arch the lower back to gain height.",
+    "Lower under control until your hips are just above the floor, then drive back up.",
+    "Repeat for the prescribed reps."
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "id": "barbell-rdl",
+  "name": "Barbell Romanian Deadlift",
+  "primary_muscle": "hamstrings",
+  "secondary_muscles": [
+    "glutes",
+    "lower-back"
+  ],
+  "equipment": [
+    "barbell"
+  ],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg",
+  "video_url": "https://www.muscleandstrength.com/exercises/romanian-deadlift",
+  "form_cues": [
+    "Soft knees, push hips back as the bar slides down the thighs",
+    "Bar travels in a vertical line — close to the legs",
+    "Stop at mid-shin or wherever you lose flat-back; don't chase the floor",
+    "Squeeze glutes hard at the top"
+  ],
+  "default_load_unit": "kg",
+  "notes": "Posterior chain emphasis. Load progressively heavier than DB version once form is dialed.",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Romanian Deadlift",
+  "video_source": "muscleandstrength.com",
+  "video_id": "JCXUYuzwNrM",
+  "video_id_query": "Barbell Romanian Deadlift how to proper form Jeff Nippard",
+  "info_url": "https://www.muscleandstrength.com/exercises/romanian-deadlift",
+  "info_source": "muscleandstrength.com",
+  "instructions": [
+    "Stand with feet hip-width, barbell over mid-foot. Grip just outside the legs, pronated.",
+    "Brace core, pull shoulders back and down. Slight knee bend; chest tall.",
+    "Push your hips back (not down) as the bar slides along the thighs. Keep the back flat.",
+    "Lower until you feel a strong hamstring stretch or the bar is mid-shin — whichever comes first.",
+    "Drive hips forward to stand up. Lockout glutes at the top; don't hyperextend the lumbar.",
+    "Repeat for the prescribed reps."
+  ]
+}
