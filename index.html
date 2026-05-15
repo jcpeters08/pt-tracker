@@ -700,6 +700,8 @@ const state = {
   unitPref: "lbs",      // "lbs" | "kg" — display + input unit; storage is always kg
   cooldownChoice: "library", // "library" | "fitnessplus" — per-day, persisted globally
   recoverySubmitting: false,
+  lastWorkoutSig: null,    // signature of last successfully submitted workout payload
+  lastRecoverySig: null,   // signature of last successfully submitted recovery payload
   // Track which (date|day|type) keys we've already hydrated into state.log so
   // a re-render doesn't clobber the user's in-progress edits.
   hydratedKeys: new Set(),
@@ -782,6 +784,26 @@ function toast(msg, kind) {
 }
 function b64encodeUtf8(s) { return btoa(unescape(encodeURIComponent(s))); }
 function b64decodeUtf8(s) { return decodeURIComponent(escape(atob(s.replace(/\n/g, "")))); }
+
+// Stable fingerprint of a submit payload's session field — used to refuse
+// identical re-submissions when the user accidentally double-taps after the
+// post-submit button re-enable. Strips `submitted_at` since timestamps don't
+// represent user intent.
+function payloadSignature(session) {
+  const clone = { ...session };
+  delete clone.submitted_at;
+  // Recursive sort to make object key order irrelevant
+  const sortKeys = (v) => {
+    if (Array.isArray(v)) return v.map(sortKeys);
+    if (v && typeof v === "object") {
+      const out = {};
+      for (const k of Object.keys(v).sort()) out[k] = sortKeys(v[k]);
+      return out;
+    }
+    return v;
+  };
+  return JSON.stringify(sortKeys(clone));
+}
 
 // ---- Auth -----------------------------------------------------------------
 
@@ -1495,23 +1517,28 @@ function bindCardEvents(card, exId) {
     row.querySelector('input[data-field="weight"]').addEventListener("input", e => {
       const kg = inputToKg(e.target.value);
       log.sets[idx].weight_kg = kg == null ? null : roundTo(kg, 2);
+      clearLastWorkoutSig();
     });
     row.querySelector('input[data-field="reps"]').addEventListener("input", e => {
       log.sets[idx].reps = e.target.value === "" ? null : Number(e.target.value);
+      clearLastWorkoutSig();
     });
     row.querySelector('[data-action="done"]').addEventListener("click", () => {
       log.sets[idx].done = !log.sets[idx].done;
       row.classList.toggle("done", log.sets[idx].done);
       row.querySelector('[data-action="done"]').textContent = log.sets[idx].done ? "✓ Done" : "Done";
+      clearLastWorkoutSig();
     });
   });
   card.querySelector('[data-action="add-set"]').addEventListener("click", () => {
     const last = log.sets[log.sets.length - 1] || {};
     log.sets.push({ weight_kg: last.weight_kg ?? null, reps: last.reps ?? null, done: false });
+    clearLastWorkoutSig();
     renderApp();
   });
   card.querySelector(".ex-notes").addEventListener("input", e => {
     log.notes = e.target.value;
+    clearLastWorkoutSig();
   });
 }
 
@@ -1593,19 +1620,44 @@ function renderRecoveryRounds() {
     const idx = Number(row.dataset.idx);
     row.querySelector('input[data-field="sauna"]').addEventListener("input", e => {
       rounds[idx].sauna_min = e.target.value === "" ? null : Number(e.target.value);
+      clearLastRecoverySig();
       renderRecoverySummary();
     });
     row.querySelector('input[data-field="plunge"]').addEventListener("input", e => {
       rounds[idx].plunge_min = e.target.value === "" ? null : Number(e.target.value);
+      clearLastRecoverySig();
       renderRecoverySummary();
     });
     row.querySelector('[data-action="del"]').addEventListener("click", () => {
       if (rounds.length <= 1) { toast("At least one round required.", "err"); return; }
       rounds.splice(idx, 1);
+      clearLastRecoverySig();
       renderRecoveryRounds();
       renderRecoverySummary();
     });
   });
+}
+
+// When any recovery input changes, drop the duplicate-submission guard so
+// the button re-arms and the next submit goes through.
+function clearLastRecoverySig() {
+  state.lastRecoverySig = null;
+  const btn = $("#rec-submit-btn");
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = "Log recovery session";
+  }
+}
+
+// Same for workout submit — any change to an exercise input or session notes
+// should re-arm the workout submit button.
+function clearLastWorkoutSig() {
+  state.lastWorkoutSig = null;
+  const btn = $("#submit-btn");
+  if (btn && btn.textContent.startsWith("✓")) {
+    btn.disabled = false;
+    btn.textContent = "Submit session";
+  }
 }
 
 function addRecoveryRound() {
@@ -1715,16 +1767,25 @@ async function submitRecovery() {
   if (!payload.session.date) { toast("Pick a date for the recovery session.", "err"); return; }
   if (payload.session.rounds <= 0) { toast("Enter at least 1 round.", "err"); return; }
   if (payload.session.total_min <= 0) { toast("Enter sauna and/or plunge minutes per round.", "err"); return; }
+  const sig = payloadSignature(payload.session);
+  if (sig === state.lastRecoverySig) {
+    toast("Already submitted — change something to log again.", "err");
+    btn.textContent = "✓ Logged";
+    return;
+  }
   btn.disabled = true;
   state.recoverySubmitting = true;
   btn.textContent = "Submitting…";
   try {
     await appendPending(payload);
+    state.lastRecoverySig = sig;
     toast("✓ Recovery logged. Synced to vault overnight.", "ok");
     btn.textContent = "✓ Logged";
     await loadRecoveryLogs().catch(() => {});
     renderRecoveryPanel();
-    setTimeout(() => { btn.disabled = false; btn.textContent = "Log recovery session"; }, 1800);
+    // Keep the button visible but in a "logged" state. It re-enables when the
+    // user changes any input (handled by clearLastRecoverySig wiring below).
+    setTimeout(() => { btn.disabled = false; }, 1000);
   } catch (e) {
     console.error("submitRecovery", e);
     const msg = /403/.test(e.message)
@@ -1856,11 +1917,19 @@ async function submitSession() {
     state.submitting = false;
     return;
   }
+  const sig = payloadSignature(payload.session);
+  if (sig === state.lastWorkoutSig) {
+    toast("Already submitted — change something to log again.", "err");
+    btn.textContent = "✓ Submitted";
+    state.submitting = false;
+    return;
+  }
   btn.textContent = "Submitting…";
   let succeeded = false;
   try {
     await appendPending(payload);
     succeeded = true;
+    state.lastWorkoutSig = sig;
     toast("✓ Saved. Synced to vault overnight.", "ok");
     btn.textContent = "✓ Submitted — log another?";
     // Refresh the local pending overlay so the just-submitted entry shows
@@ -2016,7 +2085,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     renderApp();
   });
-  $("#session-notes-input").addEventListener("input", e => { state.sessionNotes = e.target.value; });
+  $("#session-notes-input").addEventListener("input", e => {
+    state.sessionNotes = e.target.value;
+    clearLastWorkoutSig();
+  });
+  $("#rec-location").addEventListener("input", clearLastRecoverySig);
+  $("#rec-notes").addEventListener("input", clearLastRecoverySig);
 
   // Unit toggle (lbs / kg)
   document.querySelectorAll("#unit-toggle button").forEach(btn => {
@@ -2040,6 +2114,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Reset hydration marker so the new date hydrates fresh from existing log if any
     state._recoveryHydratedFor = null;
     state.recoveryRounds = null;  // forces ensureRecoveryRounds() to seed defaults
+    clearLastRecoverySig();
     renderRecoveryPanel();
   });
   $("#rec-submit-btn").addEventListener("click", submitRecovery);
