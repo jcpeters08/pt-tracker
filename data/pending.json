@@ -1,4 +1,181 @@
 {
   "format_note": "Append-only inbox written by the web app. Daily scheduled task drains entries[] into vault MD files at Workout Log/YYYY-MM-DD-day-type.md and into data/logs/*.json, then resets to []. Schema: {type: 'log', submitted_at: ISO8601, session: {…full log object…}}",
-  "entries": []
+  "entries": [
+    {
+      "type": "log",
+      "submitted_at": "2026-05-15T18:08:36.241Z",
+      "session": {
+        "date": "2026-05-15",
+        "submitted_at": "2026-05-15T18:08:36.241Z",
+        "day_of_week": "monday",
+        "type": "push",
+        "muscle_groups": [
+          "chest",
+          "shoulders",
+          "lateral-delts",
+          "triceps"
+        ],
+        "routine_id": "2026-W20-Phase-2-Launch-Reentry",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "flat-db-bench-press",
+            "display_name": "Flat Dumbbell Bench Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 13.61,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 13.61,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 13.61,
+                "reps": 20
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "incline-db-bench-press",
+            "display_name": "Incline Dumbbell Bench Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 13.61,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 13.61,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 13.61,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "cable-chest-fly",
+            "display_name": "Cable Chest Fly",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 6.8,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 9,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 6.8,
+                "reps": 12
+              }
+            ],
+            "notes": "20 is too much right now and maintain good form"
+          },
+          {
+            "exercise_id": "seated-db-shoulder-press",
+            "display_name": "Seated Dumbbell Shoulder Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 13.61,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 13.61,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 13.61,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-lateral-raise",
+            "display_name": "Dumbbell Lateral Raise",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 4.5,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 4.5,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 4.5,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "rope-tricep-pushdown",
+            "display_name": "Rope Tricep Pushdown (Cable)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 13.61,
+                "reps": 8
+              },
+              {
+                "set": 3,
+                "weight_kg": 14,
+                "reps": 8
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "overhead-db-tricep-extension",
+            "display_name": "Overhead Dumbbell Tricep Extension",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 11.34,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 11.34,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": null,
+        "session_notes": ""
+      }
+    }
+  ]
 }
