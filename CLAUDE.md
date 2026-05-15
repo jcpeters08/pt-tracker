@@ -64,7 +64,7 @@ See `README.md` for deploy and how-to-log details.
 
 ## Operational pointers
 
-- **Daily sync**: Cowork scheduled task at `~/.claude/scheduled-tasks/pt-tracker-daily-sync/SKILL.md`. Cron `3 8 * * *` (8:03 CT local). Pre-conditions: Mac on, vault mounted, repo on `main`.
+- **Daily sync**: Cowork scheduled task `pt-tracker-daily-sync`. Cron `3 8 * * *` (8:03 CT local). The task's authoritative spec is `docs/COWORK_SYNC_TASK.md` (this repo, version-controlled) — Cowork's UI holds only a thin wrapper that pulls latest and reads that file. See `docs/COWORK_WRAPPER_PROMPT.md` for the paste-once wrapper text. Pre-conditions: Mac on, vault mounted, repo on `main`.
 - **Auth Worker**: `worker/` directory. Live at `https://pt-tracker-auth.ositodelnorte.workers.dev`. Cloudflare KV stores encrypted PAT keyed by email. Allowlist: `jcpeters08@gmail.com`.
 - **Vault path**: `~/Documents/Jonathan's Vault/🎯 Projects/🏋️ Personal Trainer/`
 - **Vault MD edits via Cowork**: direct filesystem access to the vault is sandboxed from a Claude Code session in this repo. Use a separate Cowork session (which has full vault access) for MD updates. Pattern:
@@ -88,8 +88,17 @@ See `README.md` for deploy and how-to-log details.
 - `worker/README.md` — auth Worker deploy
 - Vault `Web-App-Build-Brief.md` — original build brief (referenced but not yet ingested into this brief)
 
-## CLAUDE.md update workflow
+## Wrap-up checkpoints (proactive offers at session end)
 
-When something material lands (new feature, new convention, new gotcha, schema change), the active Claude session proactively offers a CLAUDE.md update at session wrap-up. User can also explicitly say "update CLAUDE.md" at any time. Trivial bug fixes / wording tweaks don't trigger an offer.
+When something material lands (new feature, new convention, new gotcha, schema change), the active Claude session **proactively offers** updates at session wrap-up. The user can also explicitly say "update CLAUDE.md" or "check the task doc" at any time. Trivial bug fixes / wording tweaks don't trigger an offer.
+
+1. **CLAUDE.md** — does anything new (feature, convention, gotcha, schema change) need to be reflected here?
+2. **`docs/COWORK_SYNC_TASK.md`** — this file is the authoritative spec for the daily Cowork scheduled task. Cowork's UI holds only a thin wrapper that pulls latest and reads this file, so any change that affects what the daily sync sees, writes, or skips needs to be reflected here. Common triggers:
+   - New `pending.json` entry type (currently: `log`, `skip`, `recovery`)
+   - New vault output path or filename convention
+   - New section in a vault MD that `sync.py` renders (e.g. Cool-down completion)
+   - New `data/<dir>/` snapshot generated or new analytics field
+   - Change to the "hard limits" / "don't touch" list
+   When updating this file, no Cowork UI paste is needed — the next 8:03 AM run picks up the change automatically. If the **wrapper prompt itself** changes (rare — see `docs/COWORK_WRAPPER_PROMPT.md`), the user has to paste the new wrapper into the Cowork UI once.
 
 Don't commit speculative refactors. User vets architectural moves before they're written.
