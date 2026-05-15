@@ -353,6 +353,23 @@
 
   .hidden { display: none !important; }
 
+  /* Draft-modified-after-submit banner */
+  .draft-banner {
+    background: #FFF3D9; color: #5C4406;
+    border: 1px solid #E5C780; border-radius: 8px;
+    padding: 10px 14px; margin-bottom: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 10px; font-size: 13px;
+  }
+  .draft-banner b { color: #4A3700; }
+  .draft-banner button {
+    background: transparent; border: 1px solid #B07514;
+    color: #5C4406; padding: 4px 12px; border-radius: 6px;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    min-height: 0; white-space: nowrap;
+  }
+  .draft-banner button:hover { background: rgba(176,117,20,0.1); }
+
   /* Unit toggle pill (lbs / kg) */
   .unit-toggle {
     display: inline-flex; background: var(--bg-card); border: 1px solid var(--rule);
@@ -573,6 +590,7 @@
   <!-- Main app -->
   <main id="app" class="hidden">
     <div id="warmup-host"></div>
+    <div id="draft-banner-host"></div>
     <div id="exercises-host"></div>
     <div id="cooldown-host"></div>
 
@@ -670,6 +688,9 @@ const SID_KEY      = "pt_tracker_sid";
 const ROUTINE_KEY  = "pt_tracker_active_routine";
 const UNIT_KEY     = "pt_tracker_unit_pref";
 const CD_CHOICE_KEY = "pt_tracker_cooldown_choice"; // "library" or "fitnessplus"
+const DRAFT_PREFIX = "pt_tracker_draft_v1:";          // workout drafts, key: prefix + date|day|type
+const REC_DRAFT_PREFIX = "pt_tracker_recovery_draft_v1:"; // recovery drafts, key: prefix + date
+const DRAFT_GC_DAYS = 5;                              // drafts older than N days dropped on boot
 const PENDING_PATH = "data/pending.json";
 
 const DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
@@ -784,6 +805,107 @@ function toast(msg, kind) {
 }
 function b64encodeUtf8(s) { return btoa(unescape(encodeURIComponent(s))); }
 function b64decodeUtf8(s) { return decodeURIComponent(escape(atob(s.replace(/\n/g, "")))); }
+
+// ---- Draft persistence (localStorage) ------------------------------------
+// Workout drafts: keyed by date|day|type. Cleared on successful submit.
+// Recovery drafts: keyed by date. Cleared on successful submit.
+// On boot, drafts older than DRAFT_GC_DAYS are removed.
+
+function workoutDraftKey() {
+  const dt = state.workoutDate || "";
+  const day = state.selectedDay || "";
+  const type = dayTypeKey(state.routine?.days?.[state.selectedDay]?.label, state.selectedDay) || "";
+  return `${DRAFT_PREFIX}${dt}|${day}|${type}`;
+}
+function recoveryDraftKey() {
+  const date = ($("#rec-date")?.value) || state.workoutDate || localDateIso();
+  return `${REC_DRAFT_PREFIX}${date}`;
+}
+
+function saveWorkoutDraft() {
+  if (!state.workoutDate || !state.selectedDay) return;
+  // Skip empty drafts (nothing entered, no notes, no cooldown) — keeps GC clean.
+  const log = state.log || {};
+  const hasLog = Object.values(log).some(v => v?.sets?.some(s =>
+    s.done || s.weight_kg != null || s.reps != null || (v.notes && v.notes.length)
+  ));
+  const hasNotes = !!(state.sessionNotes && state.sessionNotes.trim());
+  const key = cooldownStateKey();
+  const cd = state.cooldownLog?.[key];
+  const hasCd = !!(cd && (cd.completed_at || cd.fitnessplus_name));
+  if (!hasLog && !hasNotes && !hasCd) {
+    try { localStorage.removeItem(workoutDraftKey()); } catch {}
+    return;
+  }
+  const payload = {
+    version: 1,
+    last_modified_at: isoNow(),
+    log,
+    sessionNotes: state.sessionNotes || "",
+    cooldown: cd || null,
+  };
+  try { localStorage.setItem(workoutDraftKey(), JSON.stringify(payload)); }
+  catch (e) { console.warn("draft save failed", e); }
+}
+function loadWorkoutDraft() {
+  try {
+    const raw = localStorage.getItem(workoutDraftKey());
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+function clearWorkoutDraft() {
+  try { localStorage.removeItem(workoutDraftKey()); } catch {}
+}
+
+function saveRecoveryDraft() {
+  const date = ($("#rec-date")?.value) || "";
+  if (!date) return;
+  const rounds = state.recoveryRounds || [];
+  const location = ($("#rec-location")?.value || "").trim();
+  const notes = ($("#rec-notes")?.value || "").trim();
+  // Skip empty drafts.
+  const hasContent = rounds.some(r => r.sauna_min != null || r.plunge_min != null) || notes;
+  if (!hasContent) {
+    try { localStorage.removeItem(recoveryDraftKey()); } catch {}
+    return;
+  }
+  const payload = {
+    version: 1,
+    last_modified_at: isoNow(),
+    date,
+    location: location || "Embrace North",
+    rounds,
+    notes,
+  };
+  try { localStorage.setItem(recoveryDraftKey(), JSON.stringify(payload)); }
+  catch (e) { console.warn("recovery draft save failed", e); }
+}
+function loadRecoveryDraft() {
+  try {
+    const raw = localStorage.getItem(recoveryDraftKey());
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+function clearRecoveryDraft() {
+  try { localStorage.removeItem(recoveryDraftKey()); } catch {}
+}
+
+// Garbage-collect drafts older than DRAFT_GC_DAYS. Called on boot.
+function gcOldDrafts() {
+  const cutoff = Date.now() - DRAFT_GC_DAYS * 24 * 60 * 60 * 1000;
+  for (let i = localStorage.length - 1; i >= 0; i--) {
+    const k = localStorage.key(i);
+    if (!k) continue;
+    if (!k.startsWith(DRAFT_PREFIX) && !k.startsWith(REC_DRAFT_PREFIX)) continue;
+    try {
+      const v = JSON.parse(localStorage.getItem(k));
+      const t = v?.last_modified_at ? new Date(v.last_modified_at).getTime() : 0;
+      if (!t || t < cutoff) localStorage.removeItem(k);
+    } catch {
+      try { localStorage.removeItem(k); } catch {}
+    }
+  }
+}
 
 // Stable fingerprint of a submit payload's session field — used to refuse
 // identical re-submissions when the user accidentally double-taps after the
@@ -1076,6 +1198,30 @@ async function appendPending(entry) {
     try { parsed = JSON.parse(b64decodeUtf8(cur.content)); }
     catch { parsed = { format_note: "", entries: [] }; }
     if (!Array.isArray(parsed.entries)) parsed.entries = [];
+
+    // Pre-dedupe: remove any stale pending entry for the same slot before
+    // appending the new one. Prevents the queue from carrying multiple
+    // entries when the user re-submits the same date after editing.
+    // Workout (log/skip) → keyed on (date, day_of_week, type). A new log
+    // displaces a pending skip for the same slot and vice versa.
+    // Recovery → keyed on (date, location).
+    const newSession = entry.session || {};
+    parsed.entries = parsed.entries.filter(e => {
+      const s = e.session || {};
+      if (entry.type === "recovery") {
+        if (e.type !== "recovery") return true;
+        return !(s.date === newSession.date && (s.location || "") === (newSession.location || ""));
+      }
+      if (entry.type === "log" || entry.type === "skip") {
+        if (e.type !== "log" && e.type !== "skip") return true;
+        return !(
+          s.date === newSession.date &&
+          s.day_of_week === newSession.day_of_week &&
+          s.type === newSession.type
+        );
+      }
+      return true;
+    });
     parsed.entries.push(entry);
     const body = {
       message: `web app: ${entry.session?.date || ""} ${entry.session?.day_of_week || ""}`,
@@ -1194,6 +1340,30 @@ function renderWarmup(day) {
   } else {
     host.innerHTML = "";
   }
+}
+
+function renderDraftBanner() {
+  const host = $("#draft-banner-host");
+  if (!host) return;
+  if (!state.draftAfterSubmit) { host.innerHTML = ""; return; }
+  host.innerHTML = `
+    <div class="draft-banner" role="status">
+      <span>📝 <b>Draft modified after last submit.</b> Submit again to update the log, or discard to revert.</span>
+      <button type="button" id="discard-draft-btn">Discard draft</button>
+    </div>
+  `;
+  $("#discard-draft-btn").addEventListener("click", () => {
+    if (!confirm("Discard your in-progress edits and revert to the last submitted version?")) return;
+    clearWorkoutDraft();
+    state.draftAfterSubmit = false;
+    state.log = {};
+    state.sessionNotes = state.activeSession?.session?.session_notes || "";
+    $("#session-notes-input").value = state.sessionNotes;
+    if (state.cooldownLog) delete state.cooldownLog[`${state.workoutDate}|${state.selectedDay}`];
+    state.hydratedKeys.delete(`${state.workoutDate}|${state.selectedDay}|${dayTypeKey(state.routine?.days?.[state.selectedDay]?.label, state.selectedDay)}`);
+    renderApp();
+    toast("Draft discarded.", "ok");
+  });
 }
 
 // Map a day label to a cooldown library key. "Push (...)" → "push", etc.
@@ -1350,6 +1520,7 @@ function renderCooldown(day) {
   if (fpInput) {
     fpInput.addEventListener("input", e => {
       cdLog.fitnessplus_name = e.target.value;
+      markWorkoutDirty();
     });
   }
 
@@ -1365,6 +1536,7 @@ function renderCooldown(day) {
         cdLog.source_key = choice === "library" ? key : null;
         cdLog.completed_at = isoNow();
       }
+      markWorkoutDirty();
       renderCooldown(day);
     });
   }
@@ -1412,6 +1584,36 @@ function refreshActiveSession() {
     state.sessionNotes = state.activeSession?.session?.session_notes || "";
     const notesInput = $("#session-notes-input");
     if (notesInput) notesInput.value = state.sessionNotes;
+    // Now check localStorage for a draft. If newer than the synced/pending
+    // session (or no session exists), overlay it.
+    state.draftAfterSubmit = false;
+    const draft = loadWorkoutDraft();
+    if (draft) {
+      const activeSubmittedAt =
+        state.activeSession?.submitted_at ||
+        state.activeSession?.session?.submitted_at ||
+        null;
+      const draftTime = new Date(draft.last_modified_at || 0).getTime();
+      const activeTime = activeSubmittedAt ? new Date(activeSubmittedAt).getTime() : 0;
+      const draftIsNewer = !activeTime || draftTime > activeTime;
+      if (draftIsNewer) {
+        if (draft.log && typeof draft.log === "object") {
+          state.log = JSON.parse(JSON.stringify(draft.log));
+        }
+        if (typeof draft.sessionNotes === "string") {
+          state.sessionNotes = draft.sessionNotes;
+          if (notesInput) notesInput.value = draft.sessionNotes;
+        }
+        if (draft.cooldown) {
+          if (!state.cooldownLog) state.cooldownLog = {};
+          state.cooldownLog[`${state.workoutDate}|${state.selectedDay}`] = draft.cooldown;
+        }
+        state.draftAfterSubmit = !!activeTime;  // banner only when synced log also exists
+      } else {
+        // Draft is stale (synced log is newer) — drop it to avoid future confusion.
+        clearWorkoutDraft();
+      }
+    }
     state.hydratedKeys.add(key);
   }
 }
@@ -1584,6 +1786,7 @@ function renderApp() {
   refreshActiveSession();
   renderDayToggle();
   renderWarmup(state.routine.days?.[state.selectedDay]);
+  renderDraftBanner();
   renderLogStatus();
   renderExercises();
   renderCooldown(state.routine.days?.[state.selectedDay]);
@@ -1638,27 +1841,31 @@ function renderRecoveryRounds() {
   });
 }
 
-// When any recovery input changes, drop the duplicate-submission guard so
-// the button re-arms and the next submit goes through.
-function clearLastRecoverySig() {
-  state.lastRecoverySig = null;
-  const btn = $("#rec-submit-btn");
-  if (btn) {
-    btn.disabled = false;
-    btn.textContent = "Log recovery session";
-  }
-}
-
-// Same for workout submit — any change to an exercise input or session notes
-// should re-arm the workout submit button.
-function clearLastWorkoutSig() {
+// Any change to an exercise input or session notes should re-arm the workout
+// submit button AND persist the current state to localStorage as a draft.
+function markWorkoutDirty() {
   state.lastWorkoutSig = null;
   const btn = $("#submit-btn");
   if (btn && btn.textContent.startsWith("✓")) {
     btn.disabled = false;
     btn.textContent = "Submit session";
   }
+  saveWorkoutDraft();
 }
+
+function markRecoveryDirty() {
+  state.lastRecoverySig = null;
+  const btn = $("#rec-submit-btn");
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = "Log recovery session";
+  }
+  saveRecoveryDraft();
+}
+
+// Backwards-compatible aliases (existing callers may still use these names).
+const clearLastWorkoutSig = markWorkoutDirty;
+const clearLastRecoverySig = markRecoveryDirty;
 
 function addRecoveryRound() {
   const rounds = ensureRecoveryRounds();
@@ -1738,8 +1945,26 @@ function renderRecoveryPanel() {
   // (but only on first render — don't clobber user edits on every renderApp call).
   const recDate = dateInput?.value || date;
   const rec = state.recoveryByDate?.get(recDate);
-  if (rec && !state._recoveryHydratedFor) {
-    hydrateRecoveryFromExisting(rec.session);
+  if (state._recoveryHydratedFor !== recDate) {
+    // Hydration priority: localStorage draft if newer than synced/pending rec,
+    // else the synced/pending rec, else defaults.
+    const draft = loadRecoveryDraft();
+    const recSubmittedAt = rec?.session?.submitted_at;
+    const draftTime = draft ? new Date(draft.last_modified_at || 0).getTime() : 0;
+    const recTime = recSubmittedAt ? new Date(recSubmittedAt).getTime() : 0;
+    if (draft && (draftTime > recTime || !recTime)) {
+      state.recoveryRounds = (draft.rounds || []).map(r => ({ ...r }));
+      if (draft.location && $("#rec-location")) $("#rec-location").value = draft.location;
+      if (typeof draft.notes === "string" && $("#rec-notes")) $("#rec-notes").value = draft.notes;
+      state._recoveryDraftAfterSubmit = !!recTime;
+    } else if (rec) {
+      hydrateRecoveryFromExisting(rec.session);
+      state._recoveryDraftAfterSubmit = false;
+      // Stale draft (older than synced) — drop it
+      if (draft) clearRecoveryDraft();
+    } else {
+      state._recoveryDraftAfterSubmit = false;
+    }
     state._recoveryHydratedFor = recDate;
   }
 
@@ -1779,6 +2004,8 @@ async function submitRecovery() {
   try {
     await appendPending(payload);
     state.lastRecoverySig = sig;
+    clearRecoveryDraft();
+    state._recoveryDraftAfterSubmit = false;
     toast("✓ Recovery logged. Synced to vault overnight.", "ok");
     btn.textContent = "✓ Logged";
     await loadRecoveryLogs().catch(() => {});
@@ -1930,6 +2157,8 @@ async function submitSession() {
     await appendPending(payload);
     succeeded = true;
     state.lastWorkoutSig = sig;
+    clearWorkoutDraft();
+    state.draftAfterSubmit = false;
     toast("✓ Saved. Synced to vault overnight.", "ok");
     btn.textContent = "✓ Submitted — log another?";
     // Refresh the local pending overlay so the just-submitted entry shows
@@ -1968,6 +2197,7 @@ async function bootApp() {
   const storedCD = localStorage.getItem(CD_CHOICE_KEY);
   if (storedCD === "library" || storedCD === "fitnessplus") state.cooldownChoice = storedCD;
   syncUnitToggleUI();
+  gcOldDrafts();
   loadSid();
   if (!state.sid) { showPanel("signin"); return; }
   try {
