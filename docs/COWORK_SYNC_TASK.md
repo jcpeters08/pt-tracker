@@ -37,6 +37,7 @@ If you're editing this file, the rule of thumb: anything that describes *what th
 
 - **`git pull` lock files:** If the wrapper's pull reported a stale lock (`.git/index.lock`, `.git/ORIG_HEAD.lock`, `.git/objects/maintenance.lock`), the wrapper handles its own retry. If a lock appears mid-run from this file, run `rm -f .git/index.lock .git/ORIG_HEAD.lock .git/objects/maintenance.lock` and retry the offending command once.
 - **"Unknown exercise" stderr warnings from sync.py:** Informational — the script slugifies the name and continues. Surface the names so they can be added to the `EXERCISE_ALIASES` dict in `scripts/pt_common.py` later (manual edit, not part of this task).
+- **Vault folder missing or empty** (sync.py reports `ERROR: vault project folder missing`, or `~/Documents/Jonathan's Vault/🎯 Projects/🏋️ Personal Trainer/` doesn't list expected subfolders like `Workout Log/`, `Weekly Plans/`): see the "Vault not mounted / missing" section below. The default rule is **abort and report** — never create the folder, never write empty stand-in MDs. Auto-recreating the vault would silently destroy the source of truth.
 
 ---
 
@@ -54,6 +55,38 @@ If you're editing this file, the rule of thumb: anything that describes *what th
 - Do not touch the worker, secrets, or anything outside `~/Git/pt-tracker/data/` and the vault Personal Trainer folder.
 - Do not refresh exercise images/videos — that is manual maintenance, not part of the daily routine.
 - Do not modify Weekly Plans MD or hand-author Workout Log / Recovery Log MD — those are authored by Jonathan and parsed by sync.py.
+
+---
+
+## Vault not mounted / missing
+
+The vault lives at `~/Documents/Jonathan's Vault/🎯 Projects/🏋️ Personal Trainer/`. `~/Documents/` on this Mac is iCloud Drive–synced, so "mounted" really means "iCloud has the content materialized locally." When sync.py reports the project folder missing, run through these checks in order. **Stop at the first one that matches and report what you did.**
+
+### 1. Check what's actually there
+```
+ls -la "/Users/jonathanpeters/Documents/Jonathan's Vault/🎯 Projects/🏋️ Personal Trainer/"
+```
+Three outcomes:
+- **Folder lists real files** (`Workout Log/`, `Weekly Plans/`, `Log.md`, etc., with non-zero sizes): the vault is fine. Sync.py's "missing" error is misleading — re-read its stderr, the real problem is elsewhere (a permission denial, a file-system encoding issue, etc.). Report and abort.
+- **Folder lists files ending in `.icloud`** (e.g. `.Log.md.icloud`, `.Workout Log/.DS_Store.icloud`): iCloud has metadata but hasn't downloaded the content. Run step 2.
+- **Folder doesn't exist at all** (parent `~/Documents/Jonathan's Vault/` is empty or missing too): run step 3.
+
+### 2. Trigger iCloud download
+The OS-level fix is to make a Finder window visit the folder — that nudges iCloud to materialize. From the CLI, this is the supported equivalent:
+```
+brctl download "/Users/jonathanpeters/Documents/Jonathan's Vault/🎯 Projects/🏋️ Personal Trainer"
+```
+Wait ~30 seconds (longer for first-time download of a large vault). Re-run `ls` from step 1 to verify content is now local, then retry `python3 scripts/sync.py`.
+
+If `brctl` isn't available or fails, fall back to: open the Finder app via `open "/Users/jonathanpeters/Documents/Jonathan's Vault/🎯 Projects/🏋️ Personal Trainer"`, then wait 30s. Even a passive Finder visit triggers the download.
+
+### 3. Vault truly absent
+If `~/Documents/Jonathan's Vault/` itself doesn't exist:
+- Check iCloud sign-in status: `defaults read MobileMeAccounts Accounts 2>/dev/null | grep AccountID` should print at least one account. If empty, iCloud is signed out — this is a user-action problem; abort and report with that detail.
+- If iCloud is signed in but the folder is still missing, the vault has been moved, renamed, or deleted. Abort and report. Do NOT create the folder.
+
+### 4. Different sync mechanism (rare)
+If Jonathan has re-pointed the vault to a different location (external drive, Dropbox, Syncthing, etc.), the path in `scripts/sync.py`'s `DEFAULT_VAULT` constant or in the `PT_TRACKER_VAULT_ROOT` env var needs to be updated. **Don't change paths from this scheduled task** — report the mismatch and let Jonathan update it in a normal commit.
 
 ---
 
