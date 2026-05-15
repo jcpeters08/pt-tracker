@@ -41,7 +41,7 @@
           "target_weight_raw": "20 lbs (9 kg) ea",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Hold 5/1 PR — do NOT push to 12 kg this week"
+          "notes": "Hold 5/1 PR — do NOT push to 25 lbs this week"
         },
         {
           "exercise_id": "db-lateral-raise",
@@ -86,7 +86,7 @@
           "target_weight_raw": "90 lbs (41 kg)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Hold conservative — 45 kg PR was one session only (4/21)"
+          "notes": "Hold conservative — 100 lbs PR was one session only (4/21)"
         },
         {
           "exercise_id": "seated-cable-row",
@@ -94,7 +94,7 @@
           "target_weight_raw": "55 lbs (25 kg)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Slight bump from 4/15 (20 kg) — re-test"
+          "notes": "Slight bump from 4/15 (45 lbs) — re-test"
         },
         {
           "exercise_id": "dual-rope-straight-arm-pulldown",
@@ -126,7 +126,7 @@
           "target_weight_raw": "50 lbs (22.5 kg)",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "**Deload from 5/1 PR (25 kg)** — earn 22.5 × 10/10/10 clean before re-attempting 25"
+          "notes": "**Deload from 5/1 PR (55 lbs)** — earn 50 × 10/10/10 clean before re-attempting 55"
         },
         {
           "exercise_id": "hammer-curl",
@@ -157,7 +157,7 @@
           "target_weight_raw": "220 lbs (100 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Deload from 120 kg PR (4/20) → re-build"
+          "notes": "Deload from 265 lbs PR (4/20) → re-build"
         },
         {
           "exercise_id": "barbell-rdl",
@@ -252,7 +252,7 @@
           "target_weight_raw": "20 lbs (9 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "**Second calf hit, different stimulus** — BW + DB per leg ≈ ~95 kg loaded"
+          "notes": "**Second calf hit, different stimulus** — BW + DB per leg ≈ ~210 lbs loaded"
         },
         {
           "exercise_id": "plank",
