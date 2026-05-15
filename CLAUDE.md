@@ -75,6 +75,7 @@ See `README.md` for deploy and how-to-log details.
 
 ## Known quirks / gotchas
 
+- **`~/Documents/` is iCloud Drive–synced on this Mac** (firmlinked to `~/Library/Mobile Documents/com~apple~CloudDocs/Documents/` via macOS's "Desktop & Documents Folders" feature). The vault lives inside it, so iCloud can evict file content and leave `.icloud` placeholder files that look like real files to `ls` but can't actually be read. The Cowork wrapper has a materialization step (`brctl download` with `open` fallback) before running sync, but ad-hoc scripts that touch the vault should also account for this. Detection: if `ls ~/Documents/Jonathan\'s\ Vault/` shows files starting with `.` and ending in `.icloud`, the content isn't local.
 - **"Back Squat" alone resolves to a volume-summary row** in `scripts/parse_log.py` because `pt_common.VOLUME_SUMMARY_PREFIXES` includes `"back"` (intended to match rows like "Back: 12 sets"). Workaround: always write "Barbell Back Squat" in routine MD. Pre-existing bug, low priority.
 - **`image_url` is null for every move in `data/cooldowns.json`.** The cooldown card shows a 🧘 emoji placeholder. Populate over time using stable URLs (same pattern as `data/exercises/*.json image_url`).
 - **PF doesn't have 22-lb dumbbells.** When picking default weights, use real PF increments (5/10/15/20/25/30/35/40/45/50/55/60/65/70/75/80 lb DBs). Straight kg→lb conversion gives nonsense values.
