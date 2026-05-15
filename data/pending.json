@@ -3,10 +3,10 @@
   "entries": [
     {
       "type": "log",
-      "submitted_at": "2026-05-15T18:08:36.241Z",
+      "submitted_at": "2026-05-15T20:32:28.301Z",
       "session": {
         "date": "2026-05-15",
-        "submitted_at": "2026-05-15T18:08:36.241Z",
+        "submitted_at": "2026-05-15T20:32:28.301Z",
         "day_of_week": "monday",
         "type": "push",
         "muscle_groups": [
@@ -173,7 +173,12 @@
             "notes": ""
           }
         ],
-        "cooldown": null,
+        "cooldown": {
+          "type": "library",
+          "source_key": "push",
+          "fitnessplus_name": "",
+          "completed_at": "2026-05-15T20:32:18.995Z"
+        },
         "session_notes": ""
       }
     }
