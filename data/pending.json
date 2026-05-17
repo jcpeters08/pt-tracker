@@ -202,6 +202,32 @@
         "cooldown": null,
         "session_notes": ""
       }
+    },
+    {
+      "type": "recovery",
+      "submitted_at": "2026-05-17T22:22:38.580Z",
+      "session": {
+        "date": "2026-05-17",
+        "location": "Embrace North",
+        "rounds": 2,
+        "sauna_min": 18,
+        "plunge_min": 4,
+        "total_min": 42,
+        "rounds_detail": [
+          {
+            "round": 1,
+            "sauna_min": 15,
+            "plunge_min": 3
+          },
+          {
+            "round": 2,
+            "sauna_min": 20,
+            "plunge_min": 4
+          }
+        ],
+        "notes": "",
+        "submitted_at": "2026-05-17T22:22:38.580Z"
+      }
     }
   ]
 }
