@@ -760,7 +760,8 @@ const SID_KEY      = "pt_tracker_sid";
 const ROUTINE_KEY  = "pt_tracker_active_routine";
 const UNIT_KEY     = "pt_tracker_unit_pref";
 const CD_CHOICE_KEY = "pt_tracker_cooldown_choice"; // "library" or "fitnessplus"
-const DRAFT_PREFIX = "pt_tracker_draft_v1:";          // workout drafts, key: prefix + date|day|type
+const DRAFT_PREFIX = "pt_tracker_draft_v2:";          // workout drafts, key: prefix + routine_id|date|day|type
+const DRAFT_PREFIX_V1 = "pt_tracker_draft_v1:";       // legacy — orphaned by routine_id-scoped keys, swept on boot
 const REC_DRAFT_PREFIX = "pt_tracker_recovery_draft_v1:"; // recovery drafts, key: prefix + date
 const DRAFT_GC_DAYS = 5;                              // drafts older than N days dropped on boot
 const PENDING_PATH = "data/pending.json";
@@ -885,10 +886,11 @@ function b64decodeUtf8(s) { return decodeURIComponent(escape(atob(s.replace(/\n/
 // On boot, drafts older than DRAFT_GC_DAYS are removed.
 
 function workoutDraftKey() {
+  const routineId = state.routine?.id || "";
   const dt = state.workoutDate || "";
   const day = state.selectedDay || "";
   const type = dayTypeKey(state.routine?.days?.[state.selectedDay]?.label, state.selectedDay) || "";
-  return `${DRAFT_PREFIX}${dt}|${day}|${type}`;
+  return `${DRAFT_PREFIX}${routineId}|${dt}|${day}|${type}`;
 }
 function recoveryDraftKey() {
   const date = ($("#rec-date")?.value) || state.workoutDate || localDateIso();
@@ -964,11 +966,18 @@ function clearRecoveryDraft() {
 }
 
 // Garbage-collect drafts older than DRAFT_GC_DAYS. Called on boot.
+// Also sweeps every legacy v1 workout draft regardless of age — those keys
+// lack the routine_id scoping introduced in v2 and would otherwise persist
+// indefinitely (loadWorkoutDraft no longer reads them).
 function gcOldDrafts() {
   const cutoff = Date.now() - DRAFT_GC_DAYS * 24 * 60 * 60 * 1000;
   for (let i = localStorage.length - 1; i >= 0; i--) {
     const k = localStorage.key(i);
     if (!k) continue;
+    if (k.startsWith(DRAFT_PREFIX_V1)) {
+      try { localStorage.removeItem(k); } catch {}
+      continue;
+    }
     if (!k.startsWith(DRAFT_PREFIX) && !k.startsWith(REC_DRAFT_PREFIX)) continue;
     try {
       const v = JSON.parse(localStorage.getItem(k));
