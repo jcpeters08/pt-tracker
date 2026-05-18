@@ -107,6 +107,22 @@
   .routine-popover-chip.upcoming { background: #c7e6ff; color: #1a4a78; }
   .routine-popover-chip.past { background: var(--bg-soft); color: var(--ink-muted); }
   .routine-popover-dates { font-size: 11px; color: var(--ink-muted); display: block; margin-top: 2px; }
+  .mode-banner {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px; margin: 0 0 12px;
+    border-radius: 10px;
+    font-size: 13px; font-weight: 600;
+  }
+  .mode-banner.past { background: var(--bg-soft); color: var(--ink-soft); border: 1px solid var(--rule); }
+  .mode-banner.upcoming { background: #eaf3ff; color: #1a4a78; border: 1px solid #c7e6ff; }
+  body.mode-past .submit-row,
+  body.mode-upcoming .submit-row { display: none !important; }
+  body.mode-past .recovery-panel { display: none !important; }
+  body.mode-past input,
+  body.mode-past textarea,
+  body.mode-past button:not(.routine-pill):not(.routine-popover-item):not(.signout-btn) {
+    pointer-events: none; opacity: 0.6;
+  }
   .signout-btn {
     background: transparent; border: none; color: var(--ink-muted);
     font-size: 20px; padding: 6px 8px; min-height: 0;
@@ -619,6 +635,7 @@
 
   <!-- Main app -->
   <main id="app" class="hidden">
+    <div id="mode-banner-host"></div>
     <div id="warmup-host"></div>
     <div id="draft-banner-host"></div>
     <div id="exercises-host"></div>
@@ -1838,7 +1855,23 @@ function renderExercises() {
   $("#submit-row").classList.remove("hidden");
 }
 
+function applyModeBanner() {
+  const host = document.getElementById("mode-banner-host");
+  while (host.firstChild) host.removeChild(host.firstChild);
+  const mode = getRoutineMode(state.routine);
+  document.body.classList.remove("mode-past", "mode-current", "mode-upcoming");
+  document.body.classList.add(`mode-${mode}`);
+  if (mode === "current") return;
+  const banner = document.createElement("div");
+  banner.className = "mode-banner " + mode;
+  banner.textContent = mode === "past"
+    ? "📜 Read-only — historical routine"
+    : "🔮 Upcoming routine — pre-tune targets, can't log yet";
+  host.appendChild(banner);
+}
+
 function renderApp() {
+  applyModeBanner();
   // Defensive: if a code path landed here without loading the routine,
   // kick off the load and re-render when it returns. Avoids the all-rest-day
   // state that used to appear on the first sign-in after paste-PAT.
