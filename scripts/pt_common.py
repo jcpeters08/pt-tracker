@@ -164,6 +164,9 @@ EXERCISE_ALIASES: dict[str, str] = {
     "hip thrust":                            "db-hip-thrust",
     "seated leg curl":                       "seated-leg-curl",
     "leg curl":                              "seated-leg-curl",
+    "hip abductor machine":                  "hip-abductor-machine",
+    "hip abductor":                          "hip-abductor-machine",
+    "abductor machine":                      "hip-abductor-machine",
 
     # Core
     "plank":                                 "plank",
@@ -181,6 +184,9 @@ EXERCISE_ALIASES: dict[str, str] = {
     "hyperextension":                        "back-extension",
     "hyper extension":                       "back-extension",
     "45 degree back extension":              "back-extension",
+    "cable rope crunch":                     "cable-rope-crunch",
+    "rope crunch":                           "cable-rope-crunch",
+    "kneeling cable crunch":                 "cable-rope-crunch",
 }
 
 # Volume-summary rows that aren't real exercises. Match by lowercase prefix.
