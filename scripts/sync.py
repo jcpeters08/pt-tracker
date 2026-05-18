@@ -404,6 +404,99 @@ def append_log_index_line(log_md_path: Path, session: dict) -> None:
 
 
 # ---------------------------------------------------------------------------
+# routine_edit — rewrite specific cells in a Weekly Plan MD's day-table.
+# Source of truth is the vault MD; the web app appends routine_edit entries
+# to data/pending.json; this helper applies one entry. Failure modes return
+# {status: "failed", reason} rather than raising.
+# ---------------------------------------------------------------------------
+
+def _apply_routine_edit(md_path: Path, entry: dict) -> dict:
+    """Rewrite specific cells of a routine MD per a routine_edit entry.
+
+    Returns {status, reason?} — 'applied' on success, 'failed' otherwise."""
+    if not md_path.exists():
+        return {"status": "failed", "reason": f"vault MD missing: {md_path}"}
+
+    day_of_week = (entry.get("day_of_week") or "").lower()
+    exercise_id = entry.get("exercise_id") or ""
+    changes = entry.get("changes") or {}
+    if not day_of_week or not exercise_id or not changes:
+        return {"status": "failed", "reason": "entry missing required fields"}
+
+    text = md_path.read_text(encoding="utf-8")
+    lines = text.splitlines(keepends=False)
+
+    # Find the day-header line matching day_of_week.
+    day_header_idx = None
+    for i, line in enumerate(lines):
+        m = pr.DAY_HEADER_RE.match(line)
+        if not m:
+            continue
+        if pc.canonical_day(m.group("day")) == day_of_week:
+            day_header_idx = i
+            break
+    if day_header_idx is None:
+        return {"status": "failed", "reason": f"day not found: {day_of_week}"}
+
+    # Bound the day section at the next "## " header.
+    section_end = len(lines)
+    for j in range(day_header_idx + 1, len(lines)):
+        if lines[j].startswith("## "):
+            section_end = j
+            break
+
+    # Find the first table inside the day section.
+    tbl = pc.find_table(lines, day_header_idx + 1)
+    if tbl is None or tbl[0] >= section_end:
+        return {"status": "failed", "reason": f"no table in day {day_of_week}"}
+
+    header_idx, end_idx = tbl
+    end_idx = min(end_idx, section_end)
+    headers = [h.lower() for h in pc.split_table_row(lines[header_idx])]
+
+    def _col(name: str):
+        try:
+            return headers.index(name)
+        except ValueError:
+            return None
+
+    col_exercise = _col("exercise")
+    col_weight = _col("working weight")
+    col_reps = _col("reps")
+    col_sets = _col("sets")
+    if col_exercise is None:
+        return {"status": "failed", "reason": "table missing 'exercise' column"}
+
+    # Find the row whose exercise resolves to the target id.
+    target_row_idx = None
+    for k in range(header_idx + 2, end_idx):
+        cells = pc.split_table_row(lines[k])
+        if len(cells) <= col_exercise:
+            continue
+        resolved = pc.resolve_exercise_id(cells[col_exercise], warn=False)
+        if resolved is not None and resolved[0] == exercise_id:
+            target_row_idx = k
+            break
+    if target_row_idx is None:
+        return {"status": "failed", "reason": f"exercise not found: {exercise_id}"}
+
+    # Rewrite the cells we have changes for.
+    cells = pc.split_table_row(lines[target_row_idx])
+    while len(cells) < len(headers):
+        cells.append("")
+    if "target_weight_raw" in changes and col_weight is not None:
+        cells[col_weight] = str(changes["target_weight_raw"])
+    if "target_reps" in changes and col_reps is not None:
+        cells[col_reps] = str(changes["target_reps"])
+    if "target_sets" in changes and col_sets is not None:
+        cells[col_sets] = str(changes["target_sets"])
+
+    lines[target_row_idx] = "| " + " | ".join(cells) + " |"
+    md_path.write_text("\n".join(lines) + ("\n" if text.endswith("\n") else ""), encoding="utf-8")
+    return {"status": "applied"}
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
