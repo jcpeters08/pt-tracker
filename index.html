@@ -1143,6 +1143,23 @@ async function loadRoutines() {
   await Promise.all([...ids].map(fetchExercise));
 }
 
+// Assigned by the DOMContentLoaded handler so selectRoutine (module scope) can call it.
+let toggleRoutinePopover = () => {};
+
+async function selectRoutine(id) {
+  if (!state.routines.includes(id)) return;
+  toggleRoutinePopover(false);
+  state.routine = await fetchJson(`data/routines/${id}.json`);
+  localStorage.setItem(ROUTINE_KEY, id);
+  document.getElementById("routine-label-text").textContent = state.routine.name || id;
+  const ids = new Set();
+  for (const day of Object.values(state.routine.days || {})) {
+    for (const ex of (day.exercises || [])) ids.add(ex.exercise_id);
+  }
+  await Promise.all([...ids].map(fetchExercise));
+  renderApp();
+}
+
 // Pick the routine whose [start_date, end_date] covers the given date.
 // Honors a user-pinned localStorage choice only if it's still date-valid.
 // Otherwise falls back to the routine whose start_date is the latest ≤ date,
@@ -1172,6 +1189,34 @@ function pickRoutineForDate(dateStr) {
     return past[0].id;
   }
   return state.routines.slice().sort().pop();
+}
+
+// Return up to 5 routines centered on today's auto-picked routine.
+function pickRoutineWindow() {
+  const meta = (state.routineMeta || []).filter(m => m.start_date);
+  if (!meta.length) return [];
+  const sorted = meta.slice().sort((a, b) => (b.start_date || "").localeCompare(a.start_date || ""));
+  const autoId = pickRoutineForDate(localDateIso());
+  const idx = sorted.findIndex(m => m.id === autoId);
+  if (idx < 0) return sorted.slice(0, 5);
+  const start = Math.max(0, idx - 2);
+  return sorted.slice(start, start + 5);
+}
+
+// Classify a routine's mode relative to today's auto-pick.
+function getRoutineMode(routine) {
+  if (!routine) return "current";
+  const autoId = pickRoutineForDate(localDateIso());
+  if (routine.id === autoId) return "current";
+  const today = localDateIso();
+  if (routine.start_date && routine.start_date > today) return "upcoming";
+  return "past";
+}
+
+function shortDate(iso) {
+  if (!iso) return "?";
+  const parts = iso.split("-");
+  return `${parseInt(parts[1], 10)}/${parseInt(parts[2], 10)}`;
 }
 
 async function loadCooldowns() {
@@ -2323,13 +2368,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const _routinePop = document.getElementById("routine-popover");
   let _routinePopOpen = false;
 
-  function toggleRoutinePopover(force) {
+  toggleRoutinePopover = function(force) {
     const open = force === undefined ? !_routinePopOpen : !!force;
     _routinePopOpen = open;
     _routineBtn.setAttribute("aria-expanded", open ? "true" : "false");
     _routinePop.classList.toggle("hidden", !open);
     if (open) renderRoutinePopover();
-  }
+  };
 
   _routineBtn.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -2342,15 +2387,44 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function renderRoutinePopover() {
-    // Placeholder — populated in Task 8.
     while (_routinePop.firstChild) _routinePop.removeChild(_routinePop.firstChild);
-    const ph = document.createElement("div");
-    ph.className = "routine-popover-item";
-    const name = document.createElement("span");
-    name.className = "routine-popover-name";
-    name.textContent = "(populated next task)";
-    ph.appendChild(name);
-    _routinePop.appendChild(ph);
+    const window_ = pickRoutineWindow();
+    const currentId = state.routine?.id;
+    if (!window_.length) {
+      const empty = document.createElement("div");
+      empty.className = "routine-popover-item";
+      const name = document.createElement("span");
+      name.className = "routine-popover-name";
+      name.textContent = "No routines available";
+      empty.appendChild(name);
+      _routinePop.appendChild(empty);
+      return;
+    }
+    for (const m of window_) {
+      const mode = getRoutineMode(m);
+      const range = m.end_date ? `${shortDate(m.start_date)} – ${shortDate(m.end_date)}` : `${shortDate(m.start_date)} – ?`;
+      const item = document.createElement("div");
+      item.className = "routine-popover-item" + (m.id === currentId ? " active" : "");
+      item.setAttribute("data-id", m.id);
+      item.setAttribute("role", "option");
+
+      const name = document.createElement("span");
+      name.className = "routine-popover-name";
+      name.textContent = m.name || m.id;
+      const dates = document.createElement("span");
+      dates.className = "routine-popover-dates";
+      dates.textContent = range;
+      name.appendChild(dates);
+
+      const chip = document.createElement("span");
+      chip.className = "routine-popover-chip " + mode;
+      chip.textContent = mode;
+
+      item.appendChild(name);
+      item.appendChild(chip);
+      item.addEventListener("click", () => selectRoutine(m.id));
+      _routinePop.appendChild(item);
+    }
   }
   $("#submit-btn").addEventListener("click", submitSession);
   $("#skip-btn").addEventListener("click", submitSkip);
