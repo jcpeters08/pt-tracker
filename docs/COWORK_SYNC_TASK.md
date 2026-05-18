@@ -55,7 +55,7 @@ If you're editing this file, the rule of thumb: anything that describes *what th
 
 - Do not touch the worker, secrets, or anything outside `~/Git/pt-tracker/data/` and the vault Personal Trainer folder.
 - Do not refresh exercise images/videos — that is manual maintenance, not part of the daily routine.
-- Do not modify Weekly Plans MD or hand-author Workout Log / Recovery Log MD — those are authored by Jonathan and parsed by sync.py.
+- Do not hand-author or free-edit any vault MD yourself. Weekly Plans, Workout Log, and Recovery Log are authored by Jonathan or written by `sync.py` (the latter rewrites specific Weekly Plan cells for `routine_edit` pending entries, and writes Workout/Recovery Log files for `log`/`skip`/`recovery` entries). You only invoke `sync.py` — never edit the MDs directly from this task.
 
 ---
 
