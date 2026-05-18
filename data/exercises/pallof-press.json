@@ -1,0 +1,30 @@
+{
+  "id": "pallof-press",
+  "name": "Pallof Press",
+  "primary_muscle": "core",
+  "secondary_muscles": [
+    "obliques",
+    "shoulders"
+  ],
+  "equipment": [
+    "cable"
+  ],
+  "image_url": null,
+  "video_url": "https://www.youtube.com/results?search_query=Pallof+Press+proper+form",
+  "form_cues": [
+    "Cable at sternum height, single handle",
+    "Stand perpendicular to the stack, feet shoulder-width",
+    "Press straight out from chest — resist rotation back toward the stack"
+  ],
+  "default_load_unit": "kg",
+  "notes": "Anti-rotation core. Do prescribed reps each side. Hold each press 1–2 sec at extension.",
+  "video_source": "youtube_search_fallback",
+  "video_id_query": "Pallof Press how to proper form",
+  "instructions": [
+    "Set the cable to roughly sternum height with a single D-handle attached.",
+    "Grasp the handle with both hands at your chest, then step away from the stack until there's tension on the cable.",
+    "Stand perpendicular to the cable, feet shoulder-width, knees soft, ribs down.",
+    "Press the handle straight out in front of your chest. The cable will try to rotate you back toward the stack — resist it.",
+    "Hold the extended position for a beat, then return to chest under control. Complete all reps, switch sides."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "back-extension",
+  "name": "Back Extension",
+  "primary_muscle": "lower-back",
+  "secondary_muscles": [
+    "glutes",
+    "hamstrings"
+  ],
+  "equipment": [
+    "hyperextension-bench"
+  ],
+  "image_url": null,
+  "video_url": "https://www.youtube.com/results?search_query=Back+Extension+proper+form",
+  "form_cues": [
+    "Hinge from the hips, neutral spine",
+    "Squeeze glutes at the top — don't hyperextend",
+    "Hold a plate to chest for added load once 15/15/15 feels easy"
+  ],
+  "default_load_unit": "kg",
+  "notes": "Spinal erector + posterior chain. Pairs with cable rope crunch (anti-flexion balance).",
+  "video_source": "youtube_search_fallback",
+  "video_id_query": "Back Extension hyperextension bench how to proper form",
+  "instructions": [
+    "Set the hyperextension bench pad just below your hip crease so you can hinge freely.",
+    "Anchor your heels under the foot pads. Hands behind head, crossed on chest, or holding a plate.",
+    "Brace core, hinge at the hips and lower your torso until you feel a stretch in the hamstrings.",
+    "Drive back up by squeezing glutes — stop at a straight line (don't hyperextend the lumbar spine).",
+    "Repeat for prescribed reps."
+  ]
+}

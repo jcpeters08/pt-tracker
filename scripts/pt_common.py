@@ -167,10 +167,20 @@ EXERCISE_ALIASES: dict[str, str] = {
 
     # Core
     "plank":                                 "plank",
+    "side plank":                            "side-plank",
     "butterfly crunch":                      "butterfly-crunch",
     "candlestick":                           "candlestick",
     "v-up":                                  "v-up",
     "v up":                                  "v-up",
+    "pallof press":                          "pallof-press",
+    "cable pallof press":                    "pallof-press",
+    "suitcase carry":                        "suitcase-carry",
+    "db suitcase carry":                     "suitcase-carry",
+    "dumbbell suitcase carry":               "suitcase-carry",
+    "back extension":                        "back-extension",
+    "hyperextension":                        "back-extension",
+    "hyper extension":                       "back-extension",
+    "45 degree back extension":              "back-extension",
 }
 
 # Volume-summary rows that aren't real exercises. Match by lowercase prefix.
@@ -207,7 +217,14 @@ def slugify(s: str) -> str:
 
 def is_volume_summary_row(name: str) -> bool:
     n = name.strip().lower()
-    return any(n.startswith(p) for p in VOLUME_SUMMARY_PREFIXES)
+    for p in VOLUME_SUMMARY_PREFIXES:
+        if n == p:
+            return True
+        if n.startswith(p + ":") or n.startswith(p + " :"):
+            return True
+        if n.startswith(p + " —") or n.startswith(p + " -") or n.startswith(p + " –"):
+            return True
+    return False
 
 
 _unknown_reported: set[str] = set()

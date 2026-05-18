@@ -1,0 +1,30 @@
+{
+  "id": "suitcase-carry",
+  "name": "Suitcase Carry",
+  "primary_muscle": "core",
+  "secondary_muscles": [
+    "obliques",
+    "forearms",
+    "traps"
+  ],
+  "equipment": [
+    "dumbbells"
+  ],
+  "image_url": null,
+  "video_url": "https://www.youtube.com/results?search_query=Suitcase+Carry+proper+form",
+  "form_cues": [
+    "Brace core, ribs down",
+    "Don't lean toward the load — stay tall",
+    "Walk slow, controlled, full grip"
+  ],
+  "default_load_unit": "kg",
+  "notes": "Anti-lateral flexion + grip + obliques. Time-based, not rep-based — target_reps stores seconds per side.",
+  "video_source": "youtube_search_fallback",
+  "video_id_query": "Suitcase Carry how to proper form",
+  "instructions": [
+    "Hold a single dumbbell in one hand at your side. The other hand stays empty.",
+    "Stand tall, brace your core, pull shoulder blades down and back.",
+    "Walk slowly forward without leaning — the loaded side wants to pull you over; resist it.",
+    "Walk for the prescribed time, then switch sides."
+  ]
+}
