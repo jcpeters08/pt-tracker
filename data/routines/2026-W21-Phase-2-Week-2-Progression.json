@@ -3,7 +3,7 @@
   "name": "W21 MPLS Planet Fitness — Solo",
   "phase": "2",
   "start_date": "2026-05-18",
-  "end_date": "null",
+  "end_date": null,
   "source_md": "Weekly Plans/2026-W21-Phase-2-Week-2-Progression.md",
   "days": {
     "monday": {
