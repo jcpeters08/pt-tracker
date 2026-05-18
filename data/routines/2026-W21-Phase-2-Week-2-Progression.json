@@ -129,13 +129,21 @@
           "target_reps": 12,
           "target_sets": 3,
           "notes": "Hold 4/15 baseline"
+        },
+        {
+          "exercise_id": "suitcase-carry",
+          "target_weight_kg": 18.0,
+          "target_weight_raw": "40 lbs (18 kg) ea",
+          "target_reps": 30,
+          "target_sets": 3,
+          "notes": "**NEW** — anti-lateral flexion + grip. 30 sec each side. Brace core, don't lean toward the load"
         }
       ]
     },
     "wednesday": {
       "label": "Legs (Quads / Hams / Glutes / Calves)",
       "warmup": "Treadmill incline walk 5 min + bodyweight squats × 15 × 2 + glute bridges × 15",
-      "cooldown": "",
+      "cooldown": "90/90 hip stretch 60s ea side + couch stretch 60s ea side + child's pose 60s",
       "exercises": [
         {
           "exercise_id": "barbell-back-squat",
@@ -170,12 +178,12 @@
           "notes": "Hold Phase 1 ceiling"
         },
         {
-          "exercise_id": "barbell-hip-thrust",
-          "target_weight_kg": 43.0,
-          "target_weight_raw": "95 lbs (43 kg)",
+          "exercise_id": "db-hip-thrust",
+          "target_weight_kg": 22.5,
+          "target_weight_raw": "50 lbs (22.5 kg)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "**Use bar pad.** Roll bar over hips before lying back. Upper back on bench, drive through heels, squeeze top 1 sec"
+          "notes": "**Defer barbell hip thrust to W22.** DB on hips this week — keep squat + RDL as the two new BB patterns. Drive through heels, squeeze top 1 sec"
         },
         {
           "exercise_id": "calf-raise",
@@ -188,7 +196,7 @@
       ]
     },
     "thursday": {
-      "label": "Upper Hybrid (Shoulders / Back / Arms / Core)",
+      "label": "Upper Hybrid (Shoulders / Chest / Back / Arms / Core)",
       "warmup": "Rower or cardio 5 min + scap circles + band pull-aparts × 15 × 2",
       "cooldown": "",
       "exercises": [
@@ -199,6 +207,14 @@
           "target_reps": 12,
           "target_sets": 3,
           "notes": "**Second shoulder hit** — confirm 5/15 load holds. Don't push past Mon's reps"
+        },
+        {
+          "exercise_id": "incline-db-bench-press",
+          "target_weight_kg": 14.0,
+          "target_weight_raw": "30 lbs (14 kg) ea",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "**NEW for Thu** — fixes chest 1×/week gap. 30 lbs (Mon already hit 35×10) — lighter intensity, second exposure"
         },
         {
           "exercise_id": "db-lateral-raise",
@@ -241,12 +257,20 @@
           "notes": "Control eccentric — lower to forehead, not nose"
         },
         {
-          "exercise_id": "plank",
+          "exercise_id": "side-plank",
           "target_weight_kg": 0.0,
           "target_weight_raw": "bodyweight",
-          "target_reps": 60,
+          "target_reps": 30,
           "target_sets": 3,
-          "notes": "Core finisher"
+          "notes": "**Swap from plank** — 30 sec each side. Hits obliques the program was missing"
+        },
+        {
+          "exercise_id": "pallof-press",
+          "target_weight_kg": 9.0,
+          "target_weight_raw": "20 lbs (9 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "**NEW** — anti-rotation. Cable at sternum height, press straight out, resist rotation. 12 each side"
         }
       ]
     },
@@ -264,12 +288,12 @@
           "notes": "**Quad second hit — higher reps than Wed.** Pause 1 sec at bottom, no bounce"
         },
         {
-          "exercise_id": "leg-extension",
-          "target_weight_kg": 23.0,
-          "target_weight_raw": "50 lbs (23 kg)",
-          "target_reps": 15,
+          "exercise_id": "db-walking-lunge",
+          "target_weight_kg": 9.0,
+          "target_weight_raw": "20 lbs (9 kg) ea",
+          "target_reps": 12,
           "target_sets": 3,
-          "notes": "**NEW** — direct quad isolation. Start light, find clean range"
+          "notes": "**Swap from leg extension** — fixes no-unilateral-lower gap. 12 steps each leg, knee tracks toe, back knee almost touches floor"
         },
         {
           "exercise_id": "seated-leg-curl",
@@ -289,11 +313,11 @@
         },
         {
           "exercise_id": "single-leg-calf-raise",
-          "target_weight_kg": 11.0,
-          "target_weight_raw": "25 lbs (11 kg) ea",
+          "target_weight_kg": 9.0,
+          "target_weight_raw": "20 lbs (9 kg) ea",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "**Bump from 5/14 (20 lbs × 12).** Different stimulus than Wed machine"
+          "notes": "**Hold at 20 lbs** — 5/13 attempt at 25 lbs only got 9/9/10. Earn 15/15/15 clean before bump"
         },
         {
           "exercise_id": "cable-rope-crunch",
@@ -304,12 +328,12 @@
           "notes": "**NEW** — kneeling, pull rope to forehead, contract abs (don't pull with arms)"
         },
         {
-          "exercise_id": "hanging-knee-raise",
+          "exercise_id": "back-extension",
           "target_weight_kg": 0.0,
           "target_weight_raw": "bodyweight",
-          "target_reps": 12,
+          "target_reps": 15,
           "target_sets": 3,
-          "notes": "**NEW** — control the swing, don't kip. Sub: lying leg raise if grip fails"
+          "notes": "**Swap from hanging knee raise** — balances Fri's spinal flexion bias (cable rope crunch). Spinal erector work to support new BB hinge load. Add a plate to chest once 15/15/15 feels easy"
         }
       ]
     }

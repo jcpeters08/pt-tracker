@@ -1,0 +1,27 @@
+{
+  "id": "side-plank",
+  "name": "Side Plank",
+  "primary_muscle": "obliques",
+  "secondary_muscles": [
+    "core",
+    "glutes"
+  ],
+  "equipment": [],
+  "image_url": null,
+  "video_url": "https://www.youtube.com/results?search_query=Side+Plank+proper+form",
+  "form_cues": [
+    "Stack feet, straight line from ankle to head",
+    "Elbow directly below shoulder",
+    "Lift hips — don't let them sag"
+  ],
+  "default_load_unit": "sec",
+  "notes": "Anti-lateral flexion. Target_reps stores seconds per side; do both sides per set.",
+  "video_source": "youtube_search_fallback",
+  "video_id_query": "Side Plank how to proper form",
+  "instructions": [
+    "Lie on your side with legs stacked, prop yourself on the forearm of the bottom arm.",
+    "Elbow goes directly under the shoulder. Top arm can rest on hip or extend toward ceiling.",
+    "Lift your hips off the floor so your body forms a straight line from ankles to shoulders.",
+    "Hold for the prescribed time, then switch sides."
+  ]
+}
