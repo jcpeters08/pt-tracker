@@ -111,6 +111,75 @@ class TestApplyRoutineEdit(unittest.TestCase):
             text = md_path.read_text(encoding="utf-8")
             self.assertIn("Earn 10-12 reps before bumping", text)
 
+    def test_missing_md_file_returns_failed(self):
+        entry = {
+            "type": "routine_edit",
+            "routine_id": "Nonexistent",
+            "day_of_week": "monday",
+            "exercise_id": "flat-db-bench-press",
+            "changes": {"target_reps": 10},
+        }
+        result = sync._apply_routine_edit(Path("/tmp/does-not-exist-zzz.md"), entry)
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("missing", result["reason"].lower())
+
+    def test_day_not_found_returns_failed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            md_path = self._load_fixture(Path(tmp))
+            original = md_path.read_text(encoding="utf-8")
+            entry = {
+                "type": "routine_edit",
+                "routine_id": "Sample",
+                "day_of_week": "saturday",
+                "exercise_id": "flat-db-bench-press",
+                "changes": {"target_reps": 10},
+            }
+            result = sync._apply_routine_edit(md_path, entry)
+            self.assertEqual(result["status"], "failed")
+            self.assertIn("day", result["reason"].lower())
+            self.assertEqual(md_path.read_text(encoding="utf-8"), original)
+
+    def test_exercise_not_found_returns_failed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            md_path = self._load_fixture(Path(tmp))
+            original = md_path.read_text(encoding="utf-8")
+            entry = {
+                "type": "routine_edit",
+                "routine_id": "Sample",
+                "day_of_week": "monday",
+                "exercise_id": "barbell-back-squat",
+                "changes": {"target_reps": 10},
+            }
+            result = sync._apply_routine_edit(md_path, entry)
+            self.assertEqual(result["status"], "failed")
+            self.assertIn("exercise", result["reason"].lower())
+            self.assertEqual(md_path.read_text(encoding="utf-8"), original)
+
+    def test_missing_required_fields_returns_failed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            md_path = self._load_fixture(Path(tmp))
+            entry = {
+                "type": "routine_edit",
+                "routine_id": "Sample",
+                "day_of_week": "monday",
+                "changes": {"target_reps": 10},
+            }
+            result = sync._apply_routine_edit(md_path, entry)
+            self.assertEqual(result["status"], "failed")
+
+    def test_empty_changes_returns_failed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            md_path = self._load_fixture(Path(tmp))
+            entry = {
+                "type": "routine_edit",
+                "routine_id": "Sample",
+                "day_of_week": "monday",
+                "exercise_id": "flat-db-bench-press",
+                "changes": {},
+            }
+            result = sync._apply_routine_edit(md_path, entry)
+            self.assertEqual(result["status"], "failed")
+
 
 if __name__ == "__main__":
     unittest.main()
