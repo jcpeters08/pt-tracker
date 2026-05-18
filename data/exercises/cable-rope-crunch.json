@@ -1,0 +1,32 @@
+{
+  "id": "cable-rope-crunch",
+  "name": "Cable Rope Crunch",
+  "primary_muscle": "core",
+  "secondary_muscles": [
+    "obliques"
+  ],
+  "equipment": [
+    "cable",
+    "rope"
+  ],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Rope_Crunch/0.jpg",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Rope Crunch",
+  "video_url": "https://www.muscleandstrength.com/exercises/kneeling-cable-rope-crunch",
+  "form_cues": [
+    "Kneel facing the cable stack; pull rope to forehead",
+    "Contract abs to crunch down — don't pull with arms",
+    "Hips stay anchored; movement comes from spinal flexion"
+  ],
+  "default_load_unit": "kg",
+  "notes": "Kneeling cable rope crunch — flexes the spine against resistance.",
+  "video_source": "muscleandstrength.com",
+  "video_id_query": "Cable Rope Crunch kneeling how to proper form",
+  "instructions": [
+    "Attach a rope to the high pulley of a cable machine. Grab the rope with both hands and kneel facing the stack.",
+    "Hold the rope at your forehead with elbows tucked.",
+    "Crunch down by flexing your spine — pull your sternum toward your pelvis. The arms stay locked; movement comes from the abs.",
+    "Pause at full contraction.",
+    "Slowly extend back up under control. Don't let the stack pull you upright."
+  ]
+}
