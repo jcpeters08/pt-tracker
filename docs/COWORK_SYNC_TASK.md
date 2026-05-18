@@ -12,7 +12,8 @@ If you're editing this file, the rule of thumb: anything that describes *what th
 
 2. **Drain pending + re-derive snapshots.** Run `python3 scripts/sync.py` from the working directory `/Users/jonathanpeters/Git/pt-tracker`. The script does the following in order:
 
-   - Drains `data/pending.json`:
+   - Drains `data/pending.json`. **Drain order matters**: `routine_edit` entries are applied first so the re-derive step that follows picks up any edited Weekly Plan MDs.
+     - **Routine edit entries** (`type: "routine_edit"`, in-app target tweaks) — applied before log/skip/recovery. For each entry, `sync.py` opens `Weekly Plans/{routine_id}.md`, locates the matching day section and exercise row, and rewrites the `working weight`, `reps`, and/or `sets` cells for whichever fields appear in `changes`. The `notes` column is never touched. Failures (missing file, day-not-found, exercise-not-found, malformed table) are non-fatal: the entry is recorded to `data/failed_routine_edits.json` and sync continues. Successfully applied edits are recorded to `data/applied_routine_edits.json` for audit. Both audit files are committed by the daily sync.
      - **Workout log entries** (`type: "log"`) → `~/Documents/Jonathan's Vault/🎯 Projects/🏋️ Personal Trainer/Workout Log/YYYY-MM-DD-Day-Type.md` (one file per session, dual-unit weights: `95 lbs (43 kg)`). When the session captured cooldown completion data, the MD also includes a **Cool-down** section (type: library or fitnessplus, source_key, optional fitnessplus_name, completed_at).
      - **Skip entries** (`type: "skip"`) → `Workout Log/YYYY-MM-DD-Day-Type-Skipped.md`.
      - **Recovery entries** (`type: "recovery"`, sauna/cold plunge sessions) → `Recovery Log/YYYY-MM-DD-Location.md`. These can land on any day, including rest days. When `rounds_detail` is present, the MD renders a per-round breakdown (sauna/plunge minutes per round).
