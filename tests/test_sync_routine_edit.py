@@ -181,5 +181,66 @@ class TestApplyRoutineEdit(unittest.TestCase):
             self.assertEqual(result["status"], "failed")
 
 
+class TestDrainIntegration(unittest.TestCase):
+    """Verify routine_edit entries flow through sync.main() to the MD."""
+
+    def test_main_applies_routine_edit_and_writes_audit(self):
+        import json
+        import os
+        import shutil
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            # Build fake vault layout matching sync.py's expectations
+            vault = tmp_path / "vault"
+            project = vault / "🎯 Projects" / "🏋️ Personal Trainer"
+            plans = project / "Weekly Plans"
+            plans.mkdir(parents=True)
+            (project / "Workout Log").mkdir()
+            (project / "Recovery Log").mkdir()
+            (project / "Log.md").write_text("# Log\n", encoding="utf-8")
+            (project / "Recovery Log.md").write_text("# Recovery\n", encoding="utf-8")
+            shutil.copy(FIXTURE, plans / "Sample.md")
+
+            repo = tmp_path / "repo"
+            (repo / "data" / "routines").mkdir(parents=True)
+            (repo / "data" / "exercises").mkdir(parents=True)
+            (repo / "data" / "logs").mkdir(parents=True)
+            (repo / "data" / "recovery_logs").mkdir(parents=True)
+            pending = {
+                "entries": [
+                    {
+                        "type": "routine_edit",
+                        "routine_id": "Sample",
+                        "day_of_week": "monday",
+                        "exercise_id": "flat-db-bench-press",
+                        "changes": {
+                            "target_weight_kg": 18.0,
+                            "target_weight_raw": "40 lbs (18 kg) ea",
+                        },
+                        "created_at": "2026-05-17T15:42:10Z",
+                    }
+                ]
+            }
+            (repo / "data" / "pending.json").write_text(json.dumps(pending), encoding="utf-8")
+
+            os.environ["PT_TRACKER_VAULT_ROOT"] = str(vault)
+            os.environ["PT_TRACKER_REPO_ROOT"] = str(repo)
+            try:
+                rc = sync.main()
+            finally:
+                del os.environ["PT_TRACKER_VAULT_ROOT"]
+                del os.environ["PT_TRACKER_REPO_ROOT"]
+
+            self.assertEqual(rc, 0)
+            text = (plans / "Sample.md").read_text(encoding="utf-8")
+            self.assertIn("| Flat Dumbbell Bench Press | 40 lbs (18 kg) ea | 10 | 3 |", text)
+            applied = json.loads((repo / "data" / "applied_routine_edits.json").read_text())
+            self.assertEqual(len(applied["entries"]), 1)
+            self.assertEqual(applied["entries"][0]["exercise_id"], "flat-db-bench-press")
+            # Pending should be reset
+            pending_after = json.loads((repo / "data" / "pending.json").read_text())
+            self.assertEqual(pending_after["entries"], [])
+
+
 if __name__ == "__main__":
     unittest.main()

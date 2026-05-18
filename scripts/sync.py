@@ -554,8 +554,35 @@ def main() -> int:
     drained: list[str] = []
     skipped: list[str] = []
 
+    # routine_edit entries are processed BEFORE log/skip/recovery so that
+    # the subsequent re-derive step picks up the freshly-edited MD.
+    applied_routine_edits: list[dict] = []
+    failed_routine_edits: list[dict] = []
+    for entry in entries:
+        if entry.get("type") != "routine_edit":
+            continue
+        routine_id = entry.get("routine_id") or ""
+        md_path = plans_dir / f"{routine_id}.md"
+        result = _apply_routine_edit(md_path, entry)
+        audit = {
+            "routine_id": routine_id,
+            "day_of_week": entry.get("day_of_week"),
+            "exercise_id": entry.get("exercise_id"),
+            "changes": entry.get("changes") or {},
+            "applied_at": now_iso(),
+        }
+        if result["status"] == "applied":
+            applied_routine_edits.append(audit)
+            drained.append(f"routine_edit: {routine_id} {entry.get('day_of_week')} {entry.get('exercise_id')}")
+        else:
+            audit["reason"] = result.get("reason", "unknown")
+            failed_routine_edits.append(audit)
+            skipped.append(f"routine_edit failed: {audit['reason']}")
+
     for entry in entries:
         kind = entry.get("type")
+        if kind == "routine_edit":
+            continue  # already handled above
         session = entry.get("session") or {}
         # Recovery entries are date-only; workout (log/skip) entries also need day_of_week.
         if kind in ("log", "skip"):
@@ -599,6 +626,26 @@ def main() -> int:
             if not existed:
                 append_recovery_index_line(recovery_index_md, session)
             drained.append(f"{'update-recovery' if existed else 'recovery'}: {fname}")
+
+    # Persist audit files for routine_edit outcomes.
+    if applied_routine_edits:
+        applied_path = repo_root / "data" / "applied_routine_edits.json"
+        existing = []
+        if applied_path.exists():
+            try:
+                existing = json.loads(applied_path.read_text()).get("entries", [])
+            except Exception:
+                existing = []
+        write_json(applied_path, {"entries": existing + applied_routine_edits})
+    if failed_routine_edits:
+        failed_path = repo_root / "data" / "failed_routine_edits.json"
+        existing = []
+        if failed_path.exists():
+            try:
+                existing = json.loads(failed_path.read_text()).get("entries", [])
+            except Exception:
+                existing = []
+        write_json(failed_path, {"entries": existing + failed_routine_edits})
 
     # Step 3: re-derive routine + log JSONs
     routines_out = repo_root / "data" / "routines"
