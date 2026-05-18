@@ -4,7 +4,9 @@
   "primary_muscle": "quads",
   "secondary_muscles": [],
   "equipment": [],
-  "image_url": null,
+  "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c4/Airline_position.svg",
+  "image_source": "Wikimedia Commons — File:Airline_position.svg (Evan Mason, CC BY-SA 4.0)",
+  "image_match": "Imaginary Chair / Airline Position — same pose as wall sit. yuhonas/free-exercise-db has no wall_sit entry (searched 4500+ folders + direct URL probes for Wall_Sit / Wall_Squat / Static_Squat / Isometric_Squat / Squat_Hold — all 404).",
   "video_url": "https://www.muscleandstrength.com/exercises/bodyweight-wall-squat",
   "form_cues": [
     "Thighs parallel to the floor",

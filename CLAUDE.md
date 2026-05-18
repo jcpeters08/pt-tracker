@@ -43,6 +43,13 @@ See `README.md` for deploy and how-to-log details.
 
 7. **Identical-payload re-submission is refused.** Each submitter compares the current payload's signature against the last successful submission; identical payloads get a toast ("Already submitted — change something to log again") instead of silently writing a duplicate.
 
+8. **Every `data/exercises/*.json` entry must have a non-null `image_url`.** No new exercise file may be committed with `image_url: null`. The only way to leave it null is:
+   1. Explicitly search at least the canonical source (`yuhonas/free-exercise-db`) — direct URL probes for likely folder names and a folder-listing keyword search.
+   2. Explicitly search at least one fallback (Wikimedia Commons, Wikipedia article for the exercise, or another stable public-domain / CC source).
+   3. Document the searches in the exercise file's `image_match` field (what was tried, what 404'd, what was inappropriate).
+   4. Obtain explicit user permission to leave it null.
+   Without all four steps, `image_url: null` is not allowed. When committing a new or updated exercise file, also populate `image_source` (license + attribution) and `image_match` (the source folder name or alternative title used). Prefer SVG when only Wikimedia thumb sizes are unavailable — browsers render SVG natively.
+
 ## Glossary
 
 - **W18 / W20** — ISO week number prefix on routine ids (e.g. `2026-W18-CDMX-Phase-1-Closeout`, `2026-W20-Phase-2-Launch-Reentry`)

@@ -9,7 +9,9 @@
   "equipment": [
     "cable"
   ],
-  "image_url": null,
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pallof_Press/0.jpg",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Pallof Press",
   "video_url": "https://www.youtube.com/results?search_query=Pallof+Press+proper+form",
   "form_cues": [
     "Cable at sternum height, single handle",
