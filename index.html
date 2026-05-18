@@ -1812,7 +1812,7 @@ function buildActualText(log, exerciseId) {
   const ex = (log.exercises || []).find(e => e.exercise_id === exerciseId);
   if (!ex || !Array.isArray(ex.sets) || !ex.sets.length) return "actual: —";
   const parts = ex.sets.map(s => {
-    const lbs = s.weight_kg != null ? Math.round(s.weight_kg / 0.4536) : "?";
+    const lbs = s.weight_kg != null ? Math.round(kgToLbs(s.weight_kg)) : "?";
     return `${lbs} lbs × ${s.reps ?? "?"}`;
   });
   return "actual: " + parts.join(", ");
