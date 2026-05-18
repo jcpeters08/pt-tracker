@@ -37,7 +37,7 @@ See `README.md` for deploy and how-to-log details.
 
 4. **Routine MDs support optional `**Warm-up:**` and `**Cool-down:**` lines** per day. When `Cool-down` is absent, the app falls back to the curated library in `data/cooldowns.json` keyed by muscle group.
 
-5. **Pre-dedupe on append**: the web app's `appendPending()` removes any existing pending entry for the same slot before pushing a new one. Workouts dedupe by `(date, day_of_week, type)`; recovery by `(date, location)`.
+5. **Pre-dedupe on append**: the web app's `appendPending()` removes any existing pending entry for the same slot before pushing a new one. Workouts dedupe by `(date, day_of_week, type)`; recovery by `(date, location)`; routine_edit by `(routine_id, day_of_week, exercise_id)`.
 
 6. **localStorage drafts auto-save** on every Done click, weight input, rep edit, exercise note, session note, cooldown completion, and recovery round change. Keyed by `pt_tracker_draft_v1:<date>|<day>|<type>` (workout) or `pt_tracker_recovery_draft_v1:<date>` (recovery). Cleared on successful submit. GC'd at 5 days.
 
@@ -57,10 +57,11 @@ See `README.md` for deploy and how-to-log details.
 
 ## Schema highlights
 
-- **Pending entry types**: `log` (workout), `skip` (didn't do the workout), `recovery` (sauna/plunge)
+- **Pending entry types**: `log` (workout), `skip` (didn't do the workout), `recovery` (sauna/plunge), `routine_edit` (in-app target tweak — rewrites a cell in the Weekly Plan MD on next sync)
 - **Recovery has `rounds_detail`** — array of `{round, sauna_min, plunge_min}`. Summary fields (`rounds`, `sauna_min`, `plunge_min`, `total_min`) are derived from it. Backward-compatible with old uniform-round entries.
 - **Workout logs have an optional `cooldown` field**: `{type: "library"|"fitnessplus", source_key, fitnessplus_name, completed_at}` — populated when user clicks "Mark cool-down complete" in the app. Renders as a `## Cool-down` section in vault MD.
 - **Weight rendering in vault MD**: `_format_weight` in `sync.py` outputs `"<lbs> lbs (<kg> kg)"` (lbs primary, integer-rounded). Routine MDs use the same format.
+- **`routine_edit` entry shape**: `{type: "routine_edit", routine_id, day_of_week, exercise_id, changes: {target_weight_kg?, target_weight_raw?, target_reps?, target_sets?}, created_at}`. `changes` is partial — only edited fields are present. `target_weight_raw` is included whenever `target_weight_kg` changes (web app pre-formats the lbs/kg string and preserves any `ea` suffix from the prior raw value).
 
 ## Operational pointers
 
@@ -95,7 +96,7 @@ When something material lands (new feature, new convention, new gotcha, schema c
 
 1. **CLAUDE.md** — does anything new (feature, convention, gotcha, schema change) need to be reflected here?
 2. **`docs/COWORK_SYNC_TASK.md`** — this file is the authoritative spec for the daily Cowork scheduled task. Cowork's UI holds only a thin wrapper that pulls latest and reads this file, so any change that affects what the daily sync sees, writes, or skips needs to be reflected here. Common triggers:
-   - New `pending.json` entry type (currently: `log`, `skip`, `recovery`)
+   - New `pending.json` entry type (currently: `log`, `skip`, `recovery`, `routine_edit`)
    - New vault output path or filename convention
    - New section in a vault MD that `sync.py` renders (e.g. Cool-down completion)
    - New `data/<dir>/` snapshot generated or new analytics field

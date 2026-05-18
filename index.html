@@ -77,6 +77,51 @@
     padding: 6px 12px; border-radius: 999px;
     max-width: 100%;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    cursor: pointer; font-family: inherit; font-weight: 500;
+    text-align: left;
+  }
+  .routine-pill:hover { background: var(--bg-card); }
+  .routine-pill[aria-expanded="true"] { background: var(--bg-card); }
+  .routine-popover {
+    position: absolute; z-index: 60; top: 100%; left: 0;
+    margin-top: 6px;
+    background: var(--bg-card); border: 1px solid var(--rule); border-radius: 12px;
+    box-shadow: var(--shadow);
+    min-width: 280px; max-width: calc(100vw - 32px);
+    padding: 6px;
+  }
+  .routine-popover-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; border-radius: 8px;
+    cursor: pointer; user-select: none;
+  }
+  .routine-popover-item:hover { background: var(--bg-soft); }
+  .routine-popover-item.active { background: var(--accent-soft); }
+  .routine-popover-name { flex: 1; font-size: 13px; color: var(--ink); }
+  .routine-popover-chip {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 999px;
+    background: var(--bg-soft); color: var(--ink-muted);
+  }
+  .routine-popover-chip.current { background: var(--accent); color: var(--accent-ink); }
+  .routine-popover-chip.upcoming { background: #c7e6ff; color: #1a4a78; }
+  .routine-popover-chip.past { background: var(--bg-soft); color: var(--ink-muted); }
+  .routine-popover-dates { font-size: 11px; color: var(--ink-muted); display: block; margin-top: 2px; }
+  .mode-banner {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px; margin: 0 0 12px;
+    border-radius: 10px;
+    font-size: 13px; font-weight: 600;
+  }
+  .mode-banner.past { background: var(--bg-soft); color: var(--ink-soft); border: 1px solid var(--rule); }
+  .mode-banner.upcoming { background: #eaf3ff; color: #1a4a78; border: 1px solid #c7e6ff; }
+  body.mode-past .submit-row,
+  body.mode-upcoming .submit-row { display: none !important; }
+  body.mode-past .recovery-panel { display: none !important; }
+  body.mode-past input,
+  body.mode-past textarea,
+  body.mode-past button:not(.routine-pill):not(.routine-popover-item):not(.signout-btn) {
+    pointer-events: none; opacity: 0.6;
   }
   .signout-btn {
     background: transparent; border: none; color: var(--ink-muted);
@@ -527,6 +572,31 @@
     .set-row { grid-template-columns: 28px 1fr 1fr 80px; }
     .recovery-panel .rec-grid { grid-template-columns: 1fr; }
   }
+
+  body.mode-current .target-line,
+  body.mode-upcoming .target-line {
+    cursor: pointer; text-decoration: underline dotted var(--ink-muted);
+  }
+  body.mode-past .target-line { cursor: default; }
+  .actual-line {
+    font-size: 12px; color: var(--ink-muted);
+    margin-top: 4px; font-style: italic;
+  }
+  .target-editor {
+    display: inline-flex; gap: 6px; align-items: center;
+    background: var(--bg-soft); border: 1px solid var(--rule);
+    border-radius: 8px; padding: 4px 8px; flex-wrap: wrap;
+  }
+  .target-editor input {
+    width: 56px; padding: 4px 6px; font-size: 13px;
+    border: 1px solid var(--rule); border-radius: 6px; background: var(--bg-card);
+  }
+  .target-editor .editor-btn {
+    background: var(--accent); color: var(--accent-ink);
+    border: none; border-radius: 6px; padding: 4px 8px; font-size: 12px;
+    cursor: pointer;
+  }
+  .target-editor .editor-btn.cancel { background: var(--bg-soft); color: var(--ink-muted); }
 </style>
 </head>
 <body>
@@ -541,8 +611,9 @@
       <a class="header-link" href="https://www.muscleandstrength.com/exercises" target="_blank" rel="noopener" title="Open Muscle &amp; Strength exercise database">M&amp;S ↗</a>
       <button id="signout-btn" class="signout-btn hidden" title="Sign out">⏻</button>
     </div>
-    <div class="routine-row">
-      <div class="routine-pill" id="routine-label" title="Active routine">Loading…</div>
+    <div class="routine-row" style="position: relative;">
+      <button type="button" class="routine-pill" id="routine-label" title="Switch routine" aria-haspopup="listbox" aria-expanded="false"><span id="routine-label-text">Loading…</span></button>
+      <div class="routine-popover hidden" id="routine-popover" role="listbox"></div>
     </div>
     <nav class="day-toggle" id="day-toggle"></nav>
     <div class="date-row">
@@ -589,6 +660,7 @@
 
   <!-- Main app -->
   <main id="app" class="hidden">
+    <div id="mode-banner-host"></div>
     <div id="warmup-host"></div>
     <div id="draft-banner-host"></div>
     <div id="exercises-host"></div>
@@ -726,6 +798,7 @@ const state = {
   // Track which (date|day|type) keys we've already hydrated into state.log so
   // a re-render doesn't clobber the user's in-progress edits.
   hydratedKeys: new Set(),
+  pastLogsByDay: null,  // day_of_week → log JSON, populated when viewing a past routine
 };
 
 // ---- Unit conversion helpers ---------------------------------------------
@@ -1081,6 +1154,41 @@ function dayTypeKey(dayLabel, fallback) {
   return (dayLabel || "").toLowerCase().split("(")[0].trim().replace(/\s+/g, "-") || fallback;
 }
 
+async function loadPastLogsForRoutine(routine) {
+  if (!routine || !routine.start_date) return {};
+  const startDate = routine.start_date;
+  let endDate = routine.end_date;
+  if (!endDate) {
+    const d = new Date(startDate + "T00:00:00Z");
+    d.setUTCDate(d.getUTCDate() + 6);
+    endDate = d.toISOString().slice(0, 10);
+  }
+  let logsListing;
+  try {
+    logsListing = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/logs`).then(r => r.ok ? r.json() : []);
+  } catch (e) {
+    console.warn("logs listing failed", e);
+    return {};
+  }
+  const files = (Array.isArray(logsListing) ? logsListing : [])
+    .filter(f => f.name && f.name.endsWith(".json"))
+    .map(f => f.name.replace(/\.json$/, ""));
+  const matching = files.filter(name => {
+    const date = name.slice(0, 10);
+    return date >= startDate && date <= endDate;
+  });
+  const byDay = {};
+  for (const fileId of matching) {
+    try {
+      const log = await fetchJson(`data/logs/${fileId}.json`);
+      if (log && log.day_of_week) byDay[log.day_of_week] = log;
+    } catch (e) {
+      // skip a single bad log
+    }
+  }
+  return byDay;
+}
+
 async function loadRoutines() {
   // Discover routine files via the GitHub Contents API (anonymous on a public repo).
   // Falls back to a known seed file path if the listing fails.
@@ -1105,12 +1213,36 @@ async function loadRoutines() {
   state.routine = await fetchJson(`data/routines/${id}.json`);
   localStorage.setItem(ROUTINE_KEY, id);
 
+  state.pastLogsByDay = getRoutineMode(state.routine) === "past"
+    ? await loadPastLogsForRoutine(state.routine)
+    : null;
+
   // Pre-fetch all exercises referenced by the routine.
   const ids = new Set();
   for (const day of Object.values(state.routine.days || {})) {
     for (const ex of (day.exercises || [])) ids.add(ex.exercise_id);
   }
   await Promise.all([...ids].map(fetchExercise));
+}
+
+// Assigned by the DOMContentLoaded handler so selectRoutine (module scope) can call it.
+let toggleRoutinePopover = () => {};
+
+async function selectRoutine(id) {
+  if (!state.routines.includes(id)) return;
+  toggleRoutinePopover(false);
+  state.routine = await fetchJson(`data/routines/${id}.json`);
+  localStorage.setItem(ROUTINE_KEY, id);
+  document.getElementById("routine-label-text").textContent = state.routine.name || id;
+  const ids = new Set();
+  for (const day of Object.values(state.routine.days || {})) {
+    for (const ex of (day.exercises || [])) ids.add(ex.exercise_id);
+  }
+  await Promise.all([...ids].map(fetchExercise));
+  state.pastLogsByDay = getRoutineMode(state.routine) === "past"
+    ? await loadPastLogsForRoutine(state.routine)
+    : null;
+  renderApp();
 }
 
 // Pick the routine whose [start_date, end_date] covers the given date.
@@ -1142,6 +1274,34 @@ function pickRoutineForDate(dateStr) {
     return past[0].id;
   }
   return state.routines.slice().sort().pop();
+}
+
+// Return up to 5 routines centered on today's auto-picked routine.
+function pickRoutineWindow() {
+  const meta = (state.routineMeta || []).filter(m => m.start_date);
+  if (!meta.length) return [];
+  const sorted = meta.slice().sort((a, b) => (b.start_date || "").localeCompare(a.start_date || ""));
+  const autoId = pickRoutineForDate(localDateIso());
+  const idx = sorted.findIndex(m => m.id === autoId);
+  if (idx < 0) return sorted.slice(0, 5);
+  const start = Math.max(0, idx - 2);
+  return sorted.slice(start, start + 5);
+}
+
+// Classify a routine's mode relative to today's auto-pick.
+function getRoutineMode(routine) {
+  if (!routine) return "current";
+  const autoId = pickRoutineForDate(localDateIso());
+  if (routine.id === autoId) return "current";
+  const today = localDateIso();
+  if (routine.start_date && routine.start_date > today) return "upcoming";
+  return "past";
+}
+
+function shortDate(iso) {
+  if (!iso) return "?";
+  const parts = iso.split("-");
+  return `${parseInt(parts[1], 10)}/${parseInt(parts[2], 10)}`;
 }
 
 async function loadCooldowns() {
@@ -1220,11 +1380,18 @@ async function appendPending(entry) {
           s.type === newSession.type
         );
       }
+      if (entry.type === "routine_edit") {
+        if (e.type !== "routine_edit") return true;
+        const sig = `${entry.routine_id}|${entry.day_of_week}|${entry.exercise_id}`;
+        return !(`${e.routine_id}|${e.day_of_week}|${e.exercise_id}` === sig);
+      }
       return true;
     });
     parsed.entries.push(entry);
     const body = {
-      message: `web app: ${entry.session?.date || ""} ${entry.session?.day_of_week || ""}`,
+      message: entry.type === "routine_edit"
+        ? `web app: routine_edit ${entry.routine_id || ""} ${entry.day_of_week || ""} ${entry.exercise_id || ""}`
+        : `web app: ${entry.session?.date || ""} ${entry.session?.day_of_week || ""}`,
       content: b64encodeUtf8(JSON.stringify(parsed, null, 2) + "\n"),
       sha: cur.sha,
     };
@@ -1640,6 +1807,17 @@ function renderLogStatus() {
   }
 }
 
+function buildActualText(log, exerciseId) {
+  if (!log) return "actual: —";
+  const ex = (log.exercises || []).find(e => e.exercise_id === exerciseId);
+  if (!ex || !Array.isArray(ex.sets) || !ex.sets.length) return "actual: —";
+  const parts = ex.sets.map(s => {
+    const lbs = s.weight_kg != null ? Math.round(kgToLbs(s.weight_kg)) : "?";
+    return `${lbs} lbs × ${s.reps ?? "?"}`;
+  });
+  return "actual: " + parts.join(", ");
+}
+
 function renderExerciseCard(exDef, ex) {
   const meta = state.exercises[ex.exercise_id] || {};
   const log = ensureLogState(ex.exercise_id, ex.target_weight_kg, ex.target_reps, ex.target_sets);
@@ -1675,7 +1853,7 @@ function renderExerciseCard(exDef, ex) {
       <div class="ex-meta">
         <h3>${escapeHtml(meta.name || ex.exercise_id)}</h3>
         <div class="muscles">${escapeHtml(muscles)}</div>
-        <div class="target"><b>Target:</b> ${escapeHtml(targetText)}${ex.notes ? ` · <span style="color:var(--ink-muted)">${escapeHtml(ex.notes)}</span>` : ""}</div>
+        <div class="target"><b>Target:</b> </div>
         <div class="pill-row">
           ${meta.video_id
               ? `<button class="pill video" type="button" data-action="play-video">▶ Watch demo</button>`
@@ -1691,6 +1869,36 @@ function renderExerciseCard(exDef, ex) {
       <textarea class="ex-notes" placeholder="Notes for this exercise…">${escapeHtml(log.notes)}</textarea>
     </div>
   `;
+
+  // Inject the tappable target-line span (avoids innerHTML for user data).
+  const targetDiv = card.querySelector(".target");
+  const targetLine = document.createElement("span");
+  targetLine.className = "target-line";
+  targetLine.dataset.routineId = exDef.id || "";
+  targetLine.dataset.day = state.selectedDay || "";
+  targetLine.dataset.exerciseId = ex.exercise_id;
+  targetLine.dataset.weightKg = ex.target_weight_kg ?? 0;
+  targetLine.dataset.weightRaw = ex.target_weight_raw ?? "";
+  targetLine.dataset.reps = ex.target_reps ?? 0;
+  targetLine.dataset.sets = ex.target_sets ?? 0;
+  targetLine.textContent = targetText;
+  targetDiv.appendChild(targetLine);
+  if (ex.notes) {
+    targetDiv.appendChild(document.createTextNode(" · "));
+    const notesSpan = document.createElement("span");
+    notesSpan.style.color = "var(--ink-muted)";
+    notesSpan.textContent = ex.notes;
+    targetDiv.appendChild(notesSpan);
+  }
+
+  if (getRoutineMode(state.routine) === "past") {
+    const pastLog = state.pastLogsByDay?.[state.selectedDay];
+    const actualEl = document.createElement("div");
+    actualEl.className = "actual-line";
+    actualEl.textContent = buildActualText(pastLog, ex.exercise_id);
+    targetDiv.appendChild(actualEl);
+  }
+
   return card;
 }
 
@@ -1763,20 +1971,36 @@ function renderExercises() {
   $("#submit-row").classList.remove("hidden");
 }
 
+function applyModeBanner() {
+  const host = document.getElementById("mode-banner-host");
+  while (host.firstChild) host.removeChild(host.firstChild);
+  const mode = getRoutineMode(state.routine);
+  document.body.classList.remove("mode-past", "mode-current", "mode-upcoming");
+  document.body.classList.add(`mode-${mode}`);
+  if (mode === "current") return;
+  const banner = document.createElement("div");
+  banner.className = "mode-banner " + mode;
+  banner.textContent = mode === "past"
+    ? "📜 Read-only — historical routine"
+    : "🔮 Upcoming routine — pre-tune targets, can't log yet";
+  host.appendChild(banner);
+}
+
 function renderApp() {
+  applyModeBanner();
   // Defensive: if a code path landed here without loading the routine,
   // kick off the load and re-render when it returns. Avoids the all-rest-day
   // state that used to appear on the first sign-in after paste-PAT.
   if (!state.routine) {
-    $("#routine-label").textContent = "Loading routine…";
+    $("#routine-label-text").textContent = "Loading routine…";
     loadRoutines().then(() => renderApp()).catch(e => {
       console.error("loadRoutines failed", e);
-      $("#routine-label").textContent = "(no routine)";
+      $("#routine-label-text").textContent = "(no routine)";
       toast(`Couldn't load routine: ${e.message}`, "err");
     });
     return;
   }
-  $("#routine-label").textContent = state.routine.name || state.routine.id || "(no routine)";
+  $("#routine-label-text").textContent = state.routine.name || state.routine.id || "(no routine)";
   if (!state.selectedDay) {
     state.selectedDay = (state.routine.days?.[todayKey()]?.exercises?.length) ? todayKey() : (Object.keys(state.routine.days || {})[0] || "monday");
   }
@@ -2283,10 +2507,165 @@ function closeLightbox() {
   setTimeout(() => { $("#lb-img").src = ""; }, 250);
 }
 
+// ---- Tap-to-edit target lines ---------------------------------------------
+
+document.addEventListener("click", (e) => {
+  const el = e.target.closest(".target-line");
+  if (!el) return;
+  const mode = getRoutineMode(state.routine);
+  if (mode === "past") return;
+  if (el.querySelector(".target-editor")) return;
+  openTargetEditor(el);
+});
+
+function openTargetEditor(el) {
+  const weightRaw = el.dataset.weightRaw || "";
+  const weightKg = parseFloat(el.dataset.weightKg || "0");
+  const reps = parseInt(el.dataset.reps || "0", 10);
+  const sets = parseInt(el.dataset.sets || "0", 10);
+
+  const lbsMatch = weightRaw.match(/(\d+(?:\.\d+)?)\s*lbs?/i);
+  const lbs = lbsMatch ? parseFloat(lbsMatch[1]) : Math.round(kgToLbs(weightKg));
+  const hasEaSuffix = / ea$/i.test(weightRaw);
+  const originalText = el.textContent;
+
+  while (el.firstChild) el.removeChild(el.firstChild);
+  const editor = document.createElement("span");
+  editor.className = "target-editor";
+
+  const lbsIn = document.createElement("input");
+  lbsIn.type = "number"; lbsIn.step = "0.5"; lbsIn.min = "0"; lbsIn.value = String(lbs);
+  lbsIn.dataset.field = "lbs";
+
+  const repsIn = document.createElement("input");
+  repsIn.type = "number"; repsIn.step = "1"; repsIn.min = "0"; repsIn.value = String(reps);
+  repsIn.dataset.field = "reps";
+
+  const setsIn = document.createElement("input");
+  setsIn.type = "number"; setsIn.step = "1"; setsIn.min = "0"; setsIn.value = String(sets);
+  setsIn.dataset.field = "sets";
+
+  const saveBtn = document.createElement("button");
+  saveBtn.type = "button"; saveBtn.className = "editor-btn save"; saveBtn.textContent = "Save";
+  const cancelBtn = document.createElement("button");
+  cancelBtn.type = "button"; cancelBtn.className = "editor-btn cancel"; cancelBtn.textContent = "Cancel";
+
+  editor.append(lbsIn, document.createTextNode(" lbs × "), repsIn, document.createTextNode(" × "), setsIn, saveBtn, cancelBtn);
+  el.appendChild(editor);
+
+  cancelBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    el.textContent = originalText;
+  });
+  saveBtn.addEventListener("click", async (e) => {
+    e.stopPropagation();
+    const newLbs = parseFloat(lbsIn.value);
+    const newReps = parseInt(repsIn.value, 10);
+    const newSets = parseInt(setsIn.value, 10);
+    const newKgRaw = lbsToKg(newLbs);
+    const newKg = Math.round(newKgRaw * 2) / 2;
+    const kgStr = newKg % 1 === 0 ? newKg.toFixed(0) : newKg.toFixed(1);
+    const newRaw = `${Math.round(newLbs)} lbs (${kgStr} kg)${hasEaSuffix ? " ea" : ""}`;
+    await saveRoutineEdit({
+      routine_id: el.dataset.routineId,
+      day_of_week: el.dataset.day,
+      exercise_id: el.dataset.exerciseId,
+      changes: {
+        target_weight_kg: newKg,
+        target_weight_raw: newRaw,
+        target_reps: newReps,
+        target_sets: newSets,
+      },
+    });
+    el.dataset.weightKg = String(newKg);
+    el.dataset.weightRaw = newRaw;
+    el.dataset.reps = String(newReps);
+    el.dataset.sets = String(newSets);
+    el.textContent = `${newRaw} × ${newReps} × ${newSets}`;
+  });
+}
+
+async function saveRoutineEdit(payload) {
+  const entry = {
+    type: "routine_edit",
+    routine_id: payload.routine_id,
+    day_of_week: payload.day_of_week,
+    exercise_id: payload.exercise_id,
+    changes: payload.changes,
+    created_at: isoNow(),
+    client_id: "web",
+  };
+  await appendPending(entry);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   bindSigninPanel();
   bindPatPanel();
   $("#signout-btn").addEventListener("click", signOut);
+
+  // Routine picker popover
+  const _routineBtn = document.getElementById("routine-label");
+  const _routinePop = document.getElementById("routine-popover");
+  let _routinePopOpen = false;
+
+  toggleRoutinePopover = function(force) {
+    const open = force === undefined ? !_routinePopOpen : !!force;
+    _routinePopOpen = open;
+    _routineBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    _routinePop.classList.toggle("hidden", !open);
+    if (open) renderRoutinePopover();
+  };
+
+  _routineBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleRoutinePopover();
+  });
+  document.addEventListener("click", (e) => {
+    if (_routinePopOpen && !_routinePop.contains(e.target) && e.target !== _routineBtn) {
+      toggleRoutinePopover(false);
+    }
+  });
+
+  function renderRoutinePopover() {
+    while (_routinePop.firstChild) _routinePop.removeChild(_routinePop.firstChild);
+    const window_ = pickRoutineWindow();
+    const currentId = state.routine?.id;
+    if (!window_.length) {
+      const empty = document.createElement("div");
+      empty.className = "routine-popover-item";
+      const name = document.createElement("span");
+      name.className = "routine-popover-name";
+      name.textContent = "No routines available";
+      empty.appendChild(name);
+      _routinePop.appendChild(empty);
+      return;
+    }
+    for (const m of window_) {
+      const mode = getRoutineMode(m);
+      const range = m.end_date ? `${shortDate(m.start_date)} – ${shortDate(m.end_date)}` : `${shortDate(m.start_date)} – ?`;
+      const item = document.createElement("div");
+      item.className = "routine-popover-item" + (m.id === currentId ? " active" : "");
+      item.setAttribute("data-id", m.id);
+      item.setAttribute("role", "option");
+
+      const name = document.createElement("span");
+      name.className = "routine-popover-name";
+      name.textContent = m.name || m.id;
+      const dates = document.createElement("span");
+      dates.className = "routine-popover-dates";
+      dates.textContent = range;
+      name.appendChild(dates);
+
+      const chip = document.createElement("span");
+      chip.className = "routine-popover-chip " + mode;
+      chip.textContent = mode;
+
+      item.appendChild(name);
+      item.appendChild(chip);
+      item.addEventListener("click", () => selectRoutine(m.id));
+      _routinePop.appendChild(item);
+    }
+  }
   $("#submit-btn").addEventListener("click", submitSession);
   $("#skip-btn").addEventListener("click", submitSkip);
   $("#workout-date").addEventListener("change", e => {

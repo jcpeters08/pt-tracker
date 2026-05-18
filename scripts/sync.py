@@ -404,6 +404,99 @@ def append_log_index_line(log_md_path: Path, session: dict) -> None:
 
 
 # ---------------------------------------------------------------------------
+# routine_edit — rewrite specific cells in a Weekly Plan MD's day-table.
+# Source of truth is the vault MD; the web app appends routine_edit entries
+# to data/pending.json; this helper applies one entry. Failure modes return
+# {status: "failed", reason} rather than raising.
+# ---------------------------------------------------------------------------
+
+def _apply_routine_edit(md_path: Path, entry: dict) -> dict:
+    """Rewrite specific cells of a routine MD per a routine_edit entry.
+
+    Returns {status, reason?} — 'applied' on success, 'failed' otherwise."""
+    if not md_path.exists():
+        return {"status": "failed", "reason": f"vault MD missing: {md_path}"}
+
+    day_of_week = (entry.get("day_of_week") or "").lower()
+    exercise_id = entry.get("exercise_id") or ""
+    changes = entry.get("changes") or {}
+    if not day_of_week or not exercise_id or not changes:
+        return {"status": "failed", "reason": "entry missing required fields"}
+
+    text = md_path.read_text(encoding="utf-8")
+    lines = text.splitlines(keepends=False)
+
+    # Find the day-header line matching day_of_week.
+    day_header_idx = None
+    for i, line in enumerate(lines):
+        m = pr.DAY_HEADER_RE.match(line)
+        if not m:
+            continue
+        if pc.canonical_day(m.group("day")) == day_of_week:
+            day_header_idx = i
+            break
+    if day_header_idx is None:
+        return {"status": "failed", "reason": f"day not found: {day_of_week}"}
+
+    # Bound the day section at the next "## " header.
+    section_end = len(lines)
+    for j in range(day_header_idx + 1, len(lines)):
+        if lines[j].startswith("## "):
+            section_end = j
+            break
+
+    # Find the first table inside the day section.
+    tbl = pc.find_table(lines, day_header_idx + 1)
+    if tbl is None or tbl[0] >= section_end:
+        return {"status": "failed", "reason": f"no table in day {day_of_week}"}
+
+    header_idx, end_idx = tbl
+    end_idx = min(end_idx, section_end)
+    headers = [h.lower() for h in pc.split_table_row(lines[header_idx])]
+
+    def _col(name: str):
+        try:
+            return headers.index(name)
+        except ValueError:
+            return None
+
+    col_exercise = _col("exercise")
+    col_weight = _col("working weight")
+    col_reps = _col("reps")
+    col_sets = _col("sets")
+    if col_exercise is None:
+        return {"status": "failed", "reason": "table missing 'exercise' column"}
+
+    # Find the row whose exercise resolves to the target id.
+    target_row_idx = None
+    for k in range(header_idx + 2, end_idx):
+        cells = pc.split_table_row(lines[k])
+        if len(cells) <= col_exercise:
+            continue
+        resolved = pc.resolve_exercise_id(cells[col_exercise], warn=False)
+        if resolved is not None and resolved[0] == exercise_id:
+            target_row_idx = k
+            break
+    if target_row_idx is None:
+        return {"status": "failed", "reason": f"exercise not found: {exercise_id}"}
+
+    # Rewrite the cells we have changes for.
+    cells = pc.split_table_row(lines[target_row_idx])
+    while len(cells) < len(headers):
+        cells.append("")
+    if "target_weight_raw" in changes and col_weight is not None:
+        cells[col_weight] = str(changes["target_weight_raw"])
+    if "target_reps" in changes and col_reps is not None:
+        cells[col_reps] = str(changes["target_reps"])
+    if "target_sets" in changes and col_sets is not None:
+        cells[col_sets] = str(changes["target_sets"])
+
+    lines[target_row_idx] = "| " + " | ".join(cells) + " |"
+    md_path.write_text("\n".join(lines) + ("\n" if text.endswith("\n") else ""), encoding="utf-8")
+    return {"status": "applied"}
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -461,8 +554,35 @@ def main() -> int:
     drained: list[str] = []
     skipped: list[str] = []
 
+    # routine_edit entries are processed BEFORE log/skip/recovery so that
+    # the subsequent re-derive step picks up the freshly-edited MD.
+    applied_routine_edits: list[dict] = []
+    failed_routine_edits: list[dict] = []
+    for entry in entries:
+        if entry.get("type") != "routine_edit":
+            continue
+        routine_id = entry.get("routine_id") or ""
+        md_path = plans_dir / f"{routine_id}.md"
+        result = _apply_routine_edit(md_path, entry)
+        audit = {
+            "routine_id": routine_id,
+            "day_of_week": entry.get("day_of_week"),
+            "exercise_id": entry.get("exercise_id"),
+            "changes": entry.get("changes") or {},
+            "applied_at": now_iso(),
+        }
+        if result["status"] == "applied":
+            applied_routine_edits.append(audit)
+            drained.append(f"routine_edit: {routine_id} {entry.get('day_of_week')} {entry.get('exercise_id')}")
+        else:
+            audit["reason"] = result.get("reason", "unknown")
+            failed_routine_edits.append(audit)
+            skipped.append(f"routine_edit failed: {audit['reason']}")
+
     for entry in entries:
         kind = entry.get("type")
+        if kind == "routine_edit":
+            continue  # already handled above
         session = entry.get("session") or {}
         # Recovery entries are date-only; workout (log/skip) entries also need day_of_week.
         if kind in ("log", "skip"):
@@ -506,6 +626,26 @@ def main() -> int:
             if not existed:
                 append_recovery_index_line(recovery_index_md, session)
             drained.append(f"{'update-recovery' if existed else 'recovery'}: {fname}")
+
+    # Persist audit files for routine_edit outcomes.
+    if applied_routine_edits:
+        applied_path = repo_root / "data" / "applied_routine_edits.json"
+        existing = []
+        if applied_path.exists():
+            try:
+                existing = json.loads(applied_path.read_text()).get("entries", [])
+            except Exception:
+                existing = []
+        write_json(applied_path, {"entries": existing + applied_routine_edits})
+    if failed_routine_edits:
+        failed_path = repo_root / "data" / "failed_routine_edits.json"
+        existing = []
+        if failed_path.exists():
+            try:
+                existing = json.loads(failed_path.read_text()).get("entries", [])
+            except Exception:
+                existing = []
+        write_json(failed_path, {"entries": existing + failed_routine_edits})
 
     # Step 3: re-derive routine + log JSONs
     routines_out = repo_root / "data" / "routines"
