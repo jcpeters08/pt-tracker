@@ -578,6 +578,10 @@
     cursor: pointer; text-decoration: underline dotted var(--ink-muted);
   }
   body.mode-past .target-line { cursor: default; }
+  .actual-line {
+    font-size: 12px; color: var(--ink-muted);
+    margin-top: 4px; font-style: italic;
+  }
   .target-editor {
     display: inline-flex; gap: 6px; align-items: center;
     background: var(--bg-soft); border: 1px solid var(--rule);
@@ -794,6 +798,7 @@ const state = {
   // Track which (date|day|type) keys we've already hydrated into state.log so
   // a re-render doesn't clobber the user's in-progress edits.
   hydratedKeys: new Set(),
+  pastLogsByDay: null,  // day_of_week → log JSON, populated when viewing a past routine
 };
 
 // ---- Unit conversion helpers ---------------------------------------------
@@ -1149,6 +1154,41 @@ function dayTypeKey(dayLabel, fallback) {
   return (dayLabel || "").toLowerCase().split("(")[0].trim().replace(/\s+/g, "-") || fallback;
 }
 
+async function loadPastLogsForRoutine(routine) {
+  if (!routine || !routine.start_date) return {};
+  const startDate = routine.start_date;
+  let endDate = routine.end_date;
+  if (!endDate) {
+    const d = new Date(startDate + "T00:00:00Z");
+    d.setUTCDate(d.getUTCDate() + 6);
+    endDate = d.toISOString().slice(0, 10);
+  }
+  let logsListing;
+  try {
+    logsListing = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/logs`).then(r => r.ok ? r.json() : []);
+  } catch (e) {
+    console.warn("logs listing failed", e);
+    return {};
+  }
+  const files = (Array.isArray(logsListing) ? logsListing : [])
+    .filter(f => f.name && f.name.endsWith(".json"))
+    .map(f => f.name.replace(/\.json$/, ""));
+  const matching = files.filter(name => {
+    const date = name.slice(0, 10);
+    return date >= startDate && date <= endDate;
+  });
+  const byDay = {};
+  for (const fileId of matching) {
+    try {
+      const log = await fetchJson(`data/logs/${fileId}.json`);
+      if (log && log.day_of_week) byDay[log.day_of_week] = log;
+    } catch (e) {
+      // skip a single bad log
+    }
+  }
+  return byDay;
+}
+
 async function loadRoutines() {
   // Discover routine files via the GitHub Contents API (anonymous on a public repo).
   // Falls back to a known seed file path if the listing fails.
@@ -1173,6 +1213,10 @@ async function loadRoutines() {
   state.routine = await fetchJson(`data/routines/${id}.json`);
   localStorage.setItem(ROUTINE_KEY, id);
 
+  state.pastLogsByDay = getRoutineMode(state.routine) === "past"
+    ? await loadPastLogsForRoutine(state.routine)
+    : null;
+
   // Pre-fetch all exercises referenced by the routine.
   const ids = new Set();
   for (const day of Object.values(state.routine.days || {})) {
@@ -1195,6 +1239,9 @@ async function selectRoutine(id) {
     for (const ex of (day.exercises || [])) ids.add(ex.exercise_id);
   }
   await Promise.all([...ids].map(fetchExercise));
+  state.pastLogsByDay = getRoutineMode(state.routine) === "past"
+    ? await loadPastLogsForRoutine(state.routine)
+    : null;
   renderApp();
 }
 
@@ -1760,6 +1807,17 @@ function renderLogStatus() {
   }
 }
 
+function buildActualText(log, exerciseId) {
+  if (!log) return "actual: —";
+  const ex = (log.exercises || []).find(e => e.exercise_id === exerciseId);
+  if (!ex || !Array.isArray(ex.sets) || !ex.sets.length) return "actual: —";
+  const parts = ex.sets.map(s => {
+    const lbs = s.weight_kg != null ? Math.round(s.weight_kg / 0.4536) : "?";
+    return `${lbs} lbs × ${s.reps ?? "?"}`;
+  });
+  return "actual: " + parts.join(", ");
+}
+
 function renderExerciseCard(exDef, ex) {
   const meta = state.exercises[ex.exercise_id] || {};
   const log = ensureLogState(ex.exercise_id, ex.target_weight_kg, ex.target_reps, ex.target_sets);
@@ -1831,6 +1889,14 @@ function renderExerciseCard(exDef, ex) {
     notesSpan.style.color = "var(--ink-muted)";
     notesSpan.textContent = ex.notes;
     targetDiv.appendChild(notesSpan);
+  }
+
+  if (getRoutineMode(state.routine) === "past") {
+    const pastLog = state.pastLogsByDay?.[state.selectedDay];
+    const actualEl = document.createElement("div");
+    actualEl.className = "actual-line";
+    actualEl.textContent = buildActualText(pastLog, ex.exercise_id);
+    targetDiv.appendChild(actualEl);
   }
 
   return card;
