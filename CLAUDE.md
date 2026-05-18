@@ -43,12 +43,21 @@ See `README.md` for deploy and how-to-log details.
 
 7. **Identical-payload re-submission is refused.** Each submitter compares the current payload's signature against the last successful submission; identical payloads get a toast ("Already submitted — change something to log again") instead of silently writing a duplicate.
 
-8. **Every `data/exercises/*.json` entry must have a non-null `image_url`.** No new exercise file may be committed with `image_url: null`. The only way to leave it null is:
-   1. Explicitly search at least the canonical source (`yuhonas/free-exercise-db`) — direct URL probes for likely folder names and a folder-listing keyword search.
+8. **Every exercise referenced in `data/routines/` or `data/logs/` must have a corresponding `data/exercises/<id>.json` file with a non-null `image_url`.** Two failure modes to guard against:
+   - **Missing file**: an `exercise_id` appears in a routine or log JSON but no file at `data/exercises/<that-id>.json` exists. The app has no metadata to show — no thumbnail, no instructions, no video link.
+   - **File exists, null image_url**: a file is present but `image_url` is `null` or empty. The app falls through to a placeholder.
+
+   Both are violations of this rule. When introducing a new exercise (whether through a routine update, a logged workout, or any other path), create the matching `data/exercises/<id>.json` in the same commit, fully populated.
+
+   The only way to leave `image_url` null is:
+   1. Explicitly search at least the canonical source (`yuhonas/free-exercise-db`) — direct URL probes for likely folder names AND a folder-listing keyword search.
    2. Explicitly search at least one fallback (Wikimedia Commons, Wikipedia article for the exercise, or another stable public-domain / CC source).
    3. Document the searches in the exercise file's `image_match` field (what was tried, what 404'd, what was inappropriate).
    4. Obtain explicit user permission to leave it null.
+
    Without all four steps, `image_url: null` is not allowed. When committing a new or updated exercise file, also populate `image_source` (license + attribution) and `image_match` (the source folder name or alternative title used). Prefer SVG when only Wikimedia thumb sizes are unavailable — browsers render SVG natively.
+
+   To audit the whole repo for either failure mode, run the audit snippet against `data/exercises/` + `data/routines/` + `data/logs/` (set difference of referenced IDs vs file basenames, plus a sweep for `image_url: null`).
 
 ## Glossary
 
