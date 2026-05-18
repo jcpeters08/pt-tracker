@@ -1242,6 +1242,13 @@ async function selectRoutine(id) {
   state.pastLogsByDay = getRoutineMode(state.routine) === "past"
     ? await loadPastLogsForRoutine(state.routine)
     : null;
+  // Switching routines shares the same (date|day|type) hydration key for any
+  // routine where the day label slugifies to the same type (e.g. W20 Monday
+  // "Push (...)" and W21 Monday "Push (...)" both → "push"). Clear hydratedKeys
+  // so refreshActiveSession re-hydrates state.log from the new routine's
+  // targets instead of returning the prior routine's per-set values.
+  state.hydratedKeys.clear();
+  state.log = {};
   renderApp();
 }
 
