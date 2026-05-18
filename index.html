@@ -2525,7 +2525,7 @@ function openTargetEditor(el) {
   const sets = parseInt(el.dataset.sets || "0", 10);
 
   const lbsMatch = weightRaw.match(/(\d+(?:\.\d+)?)\s*lbs?/i);
-  const lbs = lbsMatch ? parseFloat(lbsMatch[1]) : Math.round(weightKg / 0.4536);
+  const lbs = lbsMatch ? parseFloat(lbsMatch[1]) : Math.round(kgToLbs(weightKg));
   const hasEaSuffix = / ea$/i.test(weightRaw);
   const originalText = el.textContent;
 
@@ -2562,7 +2562,7 @@ function openTargetEditor(el) {
     const newLbs = parseFloat(lbsIn.value);
     const newReps = parseInt(repsIn.value, 10);
     const newSets = parseInt(setsIn.value, 10);
-    const newKgRaw = newLbs * 0.4536;
+    const newKgRaw = lbsToKg(newLbs);
     const newKg = Math.round(newKgRaw * 2) / 2;
     const kgStr = newKg % 1 === 0 ? newKg.toFixed(0) : newKg.toFixed(1);
     const newRaw = `${Math.round(newLbs)} lbs (${kgStr} kg)${hasEaSuffix ? " ea" : ""}`;
