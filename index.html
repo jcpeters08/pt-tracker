@@ -2690,6 +2690,18 @@ document.addEventListener("DOMContentLoaded", () => {
     state.workoutDate = v;
     state.log = {};
     state.hydratedKeys = new Set();   // every cached hydration is keyed on date; clear all
+    // Sync the recovery date input to follow the workout date. Without this, the
+    // recovery panel's date stays stuck on whatever it was first initialized to
+    // (today, in practice), so its "✓ Logged" pill keeps reflecting that earlier
+    // date even after the user has navigated to a future workout. Reset hydration
+    // markers so renderRecoveryPanel re-evaluates against the new date.
+    const recInput = $("#rec-date");
+    if (recInput) {
+      recInput.value = v;
+      state._recoveryHydratedFor = null;
+      state.recoveryRounds = null;
+      clearLastRecoverySig();
+    }
     // Re-evaluate routine selection: a different date may belong to a different routine
     if (state.routineMeta?.length) {
       const newId = pickRoutineForDate(v);
