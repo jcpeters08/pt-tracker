@@ -572,6 +572,27 @@
     .set-row { grid-template-columns: 28px 1fr 1fr 80px; }
     .recovery-panel .rec-grid { grid-template-columns: 1fr; }
   }
+
+  body.mode-current .target-line,
+  body.mode-upcoming .target-line {
+    cursor: pointer; text-decoration: underline dotted var(--ink-muted);
+  }
+  body.mode-past .target-line { cursor: default; }
+  .target-editor {
+    display: inline-flex; gap: 6px; align-items: center;
+    background: var(--bg-soft); border: 1px solid var(--rule);
+    border-radius: 8px; padding: 4px 8px; flex-wrap: wrap;
+  }
+  .target-editor input {
+    width: 56px; padding: 4px 6px; font-size: 13px;
+    border: 1px solid var(--rule); border-radius: 6px; background: var(--bg-card);
+  }
+  .target-editor .editor-btn {
+    background: var(--accent); color: var(--accent-ink);
+    border: none; border-radius: 6px; padding: 4px 8px; font-size: 12px;
+    cursor: pointer;
+  }
+  .target-editor .editor-btn.cancel { background: var(--bg-soft); color: var(--ink-muted); }
 </style>
 </head>
 <body>
@@ -1312,11 +1333,18 @@ async function appendPending(entry) {
           s.type === newSession.type
         );
       }
+      if (entry.type === "routine_edit") {
+        if (e.type !== "routine_edit") return true;
+        const sig = `${entry.routine_id}|${entry.day_of_week}|${entry.exercise_id}`;
+        return !(`${e.routine_id}|${e.day_of_week}|${e.exercise_id}` === sig);
+      }
       return true;
     });
     parsed.entries.push(entry);
     const body = {
-      message: `web app: ${entry.session?.date || ""} ${entry.session?.day_of_week || ""}`,
+      message: entry.type === "routine_edit"
+        ? `web app: routine_edit ${entry.routine_id || ""} ${entry.day_of_week || ""} ${entry.exercise_id || ""}`
+        : `web app: ${entry.session?.date || ""} ${entry.session?.day_of_week || ""}`,
       content: b64encodeUtf8(JSON.stringify(parsed, null, 2) + "\n"),
       sha: cur.sha,
     };
@@ -1767,7 +1795,7 @@ function renderExerciseCard(exDef, ex) {
       <div class="ex-meta">
         <h3>${escapeHtml(meta.name || ex.exercise_id)}</h3>
         <div class="muscles">${escapeHtml(muscles)}</div>
-        <div class="target"><b>Target:</b> ${escapeHtml(targetText)}${ex.notes ? ` · <span style="color:var(--ink-muted)">${escapeHtml(ex.notes)}</span>` : ""}</div>
+        <div class="target"><b>Target:</b> </div>
         <div class="pill-row">
           ${meta.video_id
               ? `<button class="pill video" type="button" data-action="play-video">▶ Watch demo</button>`
@@ -1783,6 +1811,28 @@ function renderExerciseCard(exDef, ex) {
       <textarea class="ex-notes" placeholder="Notes for this exercise…">${escapeHtml(log.notes)}</textarea>
     </div>
   `;
+
+  // Inject the tappable target-line span (avoids innerHTML for user data).
+  const targetDiv = card.querySelector(".target");
+  const targetLine = document.createElement("span");
+  targetLine.className = "target-line";
+  targetLine.dataset.routineId = exDef.id || "";
+  targetLine.dataset.day = state.selectedDay || "";
+  targetLine.dataset.exerciseId = ex.exercise_id;
+  targetLine.dataset.weightKg = ex.target_weight_kg ?? 0;
+  targetLine.dataset.weightRaw = ex.target_weight_raw ?? "";
+  targetLine.dataset.reps = ex.target_reps ?? 0;
+  targetLine.dataset.sets = ex.target_sets ?? 0;
+  targetLine.textContent = targetText;
+  targetDiv.appendChild(targetLine);
+  if (ex.notes) {
+    targetDiv.appendChild(document.createTextNode(" · "));
+    const notesSpan = document.createElement("span");
+    notesSpan.style.color = "var(--ink-muted)";
+    notesSpan.textContent = ex.notes;
+    targetDiv.appendChild(notesSpan);
+  }
+
   return card;
 }
 
@@ -2389,6 +2439,97 @@ function closeLightbox() {
   $("#lightbox").classList.remove("show");
   document.body.style.overflow = "";
   setTimeout(() => { $("#lb-img").src = ""; }, 250);
+}
+
+// ---- Tap-to-edit target lines ---------------------------------------------
+
+document.addEventListener("click", (e) => {
+  const el = e.target.closest(".target-line");
+  if (!el) return;
+  const mode = getRoutineMode(state.routine);
+  if (mode === "past") return;
+  if (el.querySelector(".target-editor")) return;
+  openTargetEditor(el);
+});
+
+function openTargetEditor(el) {
+  const weightRaw = el.dataset.weightRaw || "";
+  const weightKg = parseFloat(el.dataset.weightKg || "0");
+  const reps = parseInt(el.dataset.reps || "0", 10);
+  const sets = parseInt(el.dataset.sets || "0", 10);
+
+  const lbsMatch = weightRaw.match(/(\d+(?:\.\d+)?)\s*lbs?/i);
+  const lbs = lbsMatch ? parseFloat(lbsMatch[1]) : Math.round(weightKg / 0.4536);
+  const hasEaSuffix = / ea$/i.test(weightRaw);
+  const originalText = el.textContent;
+
+  while (el.firstChild) el.removeChild(el.firstChild);
+  const editor = document.createElement("span");
+  editor.className = "target-editor";
+
+  const lbsIn = document.createElement("input");
+  lbsIn.type = "number"; lbsIn.step = "0.5"; lbsIn.min = "0"; lbsIn.value = String(lbs);
+  lbsIn.dataset.field = "lbs";
+
+  const repsIn = document.createElement("input");
+  repsIn.type = "number"; repsIn.step = "1"; repsIn.min = "0"; repsIn.value = String(reps);
+  repsIn.dataset.field = "reps";
+
+  const setsIn = document.createElement("input");
+  setsIn.type = "number"; setsIn.step = "1"; setsIn.min = "0"; setsIn.value = String(sets);
+  setsIn.dataset.field = "sets";
+
+  const saveBtn = document.createElement("button");
+  saveBtn.type = "button"; saveBtn.className = "editor-btn save"; saveBtn.textContent = "Save";
+  const cancelBtn = document.createElement("button");
+  cancelBtn.type = "button"; cancelBtn.className = "editor-btn cancel"; cancelBtn.textContent = "Cancel";
+
+  editor.append(lbsIn, document.createTextNode(" lbs × "), repsIn, document.createTextNode(" × "), setsIn, saveBtn, cancelBtn);
+  el.appendChild(editor);
+
+  cancelBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    el.textContent = originalText;
+  });
+  saveBtn.addEventListener("click", async (e) => {
+    e.stopPropagation();
+    const newLbs = parseFloat(lbsIn.value);
+    const newReps = parseInt(repsIn.value, 10);
+    const newSets = parseInt(setsIn.value, 10);
+    const newKgRaw = newLbs * 0.4536;
+    const newKg = Math.round(newKgRaw * 2) / 2;
+    const kgStr = newKg % 1 === 0 ? newKg.toFixed(0) : newKg.toFixed(1);
+    const newRaw = `${Math.round(newLbs)} lbs (${kgStr} kg)${hasEaSuffix ? " ea" : ""}`;
+    await saveRoutineEdit({
+      routine_id: el.dataset.routineId,
+      day_of_week: el.dataset.day,
+      exercise_id: el.dataset.exerciseId,
+      changes: {
+        target_weight_kg: newKg,
+        target_weight_raw: newRaw,
+        target_reps: newReps,
+        target_sets: newSets,
+      },
+    });
+    el.dataset.weightKg = String(newKg);
+    el.dataset.weightRaw = newRaw;
+    el.dataset.reps = String(newReps);
+    el.dataset.sets = String(newSets);
+    el.textContent = `${newRaw} × ${newReps} × ${newSets}`;
+  });
+}
+
+async function saveRoutineEdit(payload) {
+  const entry = {
+    type: "routine_edit",
+    routine_id: payload.routine_id,
+    day_of_week: payload.day_of_week,
+    exercise_id: payload.exercise_id,
+    changes: payload.changes,
+    created_at: isoNow(),
+    client_id: "web",
+  };
+  await appendPending(entry);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
