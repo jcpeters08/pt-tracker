@@ -193,6 +193,19 @@
         "cooldown": null,
         "session_notes": ""
       }
+    },
+    {
+      "type": "skip",
+      "submitted_at": "2026-05-26T20:24:24.407Z",
+      "session": {
+        "date": "2026-05-26",
+        "submitted_at": "2026-05-26T20:24:24.407Z",
+        "day_of_week": "monday",
+        "type": "push",
+        "routine_id": "2026-W21-Phase-2-Week-2-Progression",
+        "phase": "2",
+        "reason": ""
+      }
     }
   ]
 }
