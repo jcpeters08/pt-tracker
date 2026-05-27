@@ -1,0 +1,24 @@
+{
+  "id": "2026-05-26-embrace-north",
+  "date": "2026-05-26",
+  "location": "Embrace North",
+  "rounds": 2,
+  "sauna_min": 15,
+  "plunge_min": 3,
+  "total_min": 36,
+  "rounds_detail": [
+    {
+      "round": 1,
+      "sauna_min": 15,
+      "plunge_min": 3
+    },
+    {
+      "round": 2,
+      "sauna_min": 15,
+      "plunge_min": 3
+    }
+  ],
+  "submitted_at": "2026-05-26T23:56:14.023Z",
+  "notes": "",
+  "source_md": "Recovery Log/2026-05-26-Embrace-North.md"
+}
