@@ -232,6 +232,160 @@
         "notes": "",
         "submitted_at": "2026-05-26T23:56:14.023Z"
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-05-27T20:01:49.543Z",
+      "session": {
+        "date": "2026-05-27",
+        "submitted_at": "2026-05-27T20:01:49.543Z",
+        "day_of_week": "wednesday",
+        "type": "legs",
+        "muscle_groups": [
+          "quads",
+          "hamstrings",
+          "glutes",
+          "calves"
+        ],
+        "routine_id": "2026-W21-Phase-2-Week-2-Progression",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "barbell-back-squat",
+            "display_name": "Barbell Back Squat",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 40.82,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 45.36,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 45.36,
+                "reps": 10
+              }
+            ],
+            "notes": "Weight is fine but out of breath by 3 set"
+          },
+          {
+            "exercise_id": "leg-press",
+            "display_name": "45-Degree Incline Leg Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 104.33,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 104.33,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 104.33,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "barbell-rdl",
+            "display_name": "Barbell Romanian Deadlift",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 43,
+                "reps": 8
+              },
+              {
+                "set": 2,
+                "weight_kg": 43,
+                "reps": 9
+              },
+              {
+                "set": 3,
+                "weight_kg": 43,
+                "reps": 6
+              }
+            ],
+            "notes": "Grip strength training on last set was limiting factor"
+          },
+          {
+            "exercise_id": "seated-leg-curl",
+            "display_name": "Seated Leg Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 25,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 25,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 25,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-hip-thrust",
+            "display_name": "Dumbbell Hip Thrust",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 22.5,
+                "reps": 6
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.5,
+                "reps": 4
+              },
+              {
+                "set": 3,
+                "weight_kg": 22.5,
+                "reps": 10
+              }
+            ],
+            "notes": "The issue was the bench - it kept slipping - used Glute Trainer smith machine for past set "
+          },
+          {
+            "exercise_id": "calf-raise",
+            "display_name": "Standing Calf Raise (Machine)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 41,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 41,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 41,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": null,
+        "session_notes": ""
+      }
     }
   ]
 }
