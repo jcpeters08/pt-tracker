@@ -24,19 +24,29 @@ If you're editing this file, the rule of thumb: anything that describes *what th
    - Re-derives `data/recovery_logs/*.json` from vault `Recovery Log/*.md` (idempotent).
    - Recomputes `data/analytics.json` (weekly volume, lift progression, PRs, compliance, plus `recovery_count` and `recovery_by_week`).
    - Resets `data/pending.json` to `{entries: []}` if anything was drained.
-   - Auto-commits with message `sync: drain N pending entries (YYYY-MM-DD)` and pushes if anything changed.
+   - Auto-commits with message `sync: drain N pending entries (YYYY-MM-DD)`. **Does NOT push** — the sandbox has no GitHub credentials and earlier push attempts from here failed silently and let unpushed commits accumulate. `sync.py` prints `PUSH PENDING: ...` to stdout when it commits; surface that line in the summary so it's obvious the commit is local-only.
 
    If the script exits non-zero, capture stderr and abort. Do not swallow errors silently. If the vault project folder is missing, the script's own error message (`ERROR: vault project folder missing`) is sufficient — surface it verbatim.
 
 3. **Verify.** Run `git log -1 --oneline data/` and report the latest commit. Run `git status` to confirm there are no leftover staged changes.
 
-4. **Summary.** Print a brief summary: pending entries drained (with filenames, broken out by type — workout / skip / recovery), total logs aggregated, recovery sessions aggregated, PRs detected since the last run, latest commit hash if pushed. Keep it under 10 lines.
+4. **Summary.** Print a brief summary: pending entries drained (with filenames, broken out by type — workout / skip / recovery), total logs aggregated, recovery sessions aggregated, PRs detected since the last run, latest commit hash, and **whether `sync.py` printed `PUSH PENDING`** (it will whenever it committed). Keep it under 10 lines.
+
+---
+
+## Push is the host's job, not yours
+
+The Cowork sandbox cannot push to GitHub (no credentials, no SSH agent). It also can't always remove its own `.git/**/*.lock` files (virtiofs read-only behavior on certain paths). Both jobs belong to `scripts/host_push.sh`, which runs on the host Mac outside the sandbox.
+
+This task **must not** attempt `git push`, **must not** try `rm` on `.git/*.lock` files, and **must not** install/run any retry logic for either. If you see unpushed commits or stale locks in `.git/`, that's fine — it's the host's responsibility, not yours. Just report the state and exit.
+
+If `scripts/host_push.sh` doesn't get run regularly (manually or via launchd/cron), commits will pile up locally and the next sandbox sync will see a `git pull` divergence. That's not catastrophic — the wrapper's pull handles it — but it's a signal the user should be made aware of in the summary.
 
 ---
 
 ## Common failure recovery
 
-- **`git pull` lock files:** If the wrapper's pull reported a stale lock (`.git/index.lock`, `.git/ORIG_HEAD.lock`, `.git/objects/maintenance.lock`), the wrapper handles its own retry. If a lock appears mid-run from this file, run `rm -f .git/index.lock .git/ORIG_HEAD.lock .git/objects/maintenance.lock` and retry the offending command once.
+- **`git pull` lock files:** If the wrapper's pull reported a stale lock (`.git/index.lock`, `.git/ORIG_HEAD.lock`, `.git/objects/maintenance.lock`), the wrapper handles its own retry. If a lock appears mid-run, retry the offending command once. **Do NOT** try `rm -f` on lock files from this task — the sandbox often can't (virtiofs returns "Operation not permitted") and the rename-to-`.delete` workaround just creates more leftover garbage for the host to clean. If a lock won't release, report it and exit; `scripts/host_push.sh` will clean it on the next host run.
 - **"Unknown exercise" stderr warnings from sync.py:** Informational — the script slugifies the name and continues. Surface the names so they can be added to the `EXERCISE_ALIASES` dict in `scripts/pt_common.py` later (manual edit, not part of this task).
 - **Vault folder missing or empty** (sync.py reports `ERROR: vault project folder missing`, or `~/Documents/Jonathan's Vault/🎯 Projects/🏋️ Personal Trainer/` doesn't list expected subfolders like `Workout Log/`, `Weekly Plans/`): see the "Vault not mounted / missing" section below. The default rule is **abort and report** — never create the folder, never write empty stand-in MDs. Auto-recreating the vault would silently destroy the source of truth.
 

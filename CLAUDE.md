@@ -82,6 +82,7 @@ See `README.md` for deploy and how-to-log details.
 ## Operational pointers
 
 - **Daily sync**: Cowork scheduled task `pt-tracker-daily-sync`. Cron `3 8 * * *` (8:03 CT local). The task's authoritative spec is `docs/COWORK_SYNC_TASK.md` (this repo, version-controlled) — Cowork's UI holds only a thin wrapper that pulls latest and reads that file. See `docs/COWORK_WRAPPER_PROMPT.md` for the paste-once wrapper text. Pre-conditions: Mac on, vault mounted, repo on `main`.
+- **Host-side push + lock cleanup**: `scripts/host_push.sh`. The sandbox sync commits locally but can't push (no GitHub credentials inside the sandbox) and can't always remove its own `.git/**/*.lock` files (virtiofs). This script — run from the host Mac — cleans stale locks, fetches, and pushes if local is ahead. Idempotent; safe to run anytime. Wire it up to a launchd LaunchAgent, a cron entry, or run manually. Cue: look for the `PUSH PENDING: ...` line in sync output.
 - **Auth Worker**: `worker/` directory. Live at `https://pt-tracker-auth.ositodelnorte.workers.dev`. Cloudflare KV stores encrypted PAT keyed by email. Allowlist: `jcpeters08@gmail.com`.
 - **Vault path**: `~/Documents/Jonathan's Vault/🎯 Projects/🏋️ Personal Trainer/`
 - **Vault MD edits via Cowork**: direct filesystem access to the vault is sandboxed from a Claude Code session in this repo. Use a separate Cowork session (which has full vault access) for MD updates. Pattern:
