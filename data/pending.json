@@ -545,6 +545,187 @@
         },
         "session_notes": ""
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-05-28T18:43:12.018Z",
+      "session": {
+        "date": "2026-05-28",
+        "submitted_at": "2026-05-28T18:43:12.018Z",
+        "day_of_week": "monday",
+        "type": "push",
+        "muscle_groups": [
+          "chest",
+          "shoulders",
+          "lateral-delts",
+          "triceps"
+        ],
+        "routine_id": "2026-W21-Phase-2-Week-2-Progression",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "flat-db-bench-press",
+            "display_name": "Flat Dumbbell Bench Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 16,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 16,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 16,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "incline-db-bench-press",
+            "display_name": "Incline Dumbbell Bench Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 16,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 16,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 16,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "cable-chest-fly",
+            "display_name": "Cable Chest Fly",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 7,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 7,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 7,
+                "reps": 14
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-db-shoulder-press",
+            "display_name": "Seated Dumbbell Shoulder Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 15.88,
+                "reps": 9
+              },
+              {
+                "set": 2,
+                "weight_kg": 13.61,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 13.61,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-lateral-raise",
+            "display_name": "Dumbbell Lateral Raise",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 4.5,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 4.5,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 4.5,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "rope-tricep-pushdown",
+            "display_name": "Rope Tricep Pushdown (Cable)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 9,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 9,
+                "reps": 13
+              },
+              {
+                "set": 3,
+                "weight_kg": 9,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "overhead-db-tricep-extension",
+            "display_name": "Overhead Dumbbell Tricep Extension",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 14
+              },
+              {
+                "set": 2,
+                "weight_kg": 11,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 11,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": {
+          "type": "library",
+          "source_key": "push",
+          "fitnessplus_name": "",
+          "completed_at": "2026-05-28T18:43:10.782Z"
+        },
+        "session_notes": ""
+      }
     }
   ]
 }
