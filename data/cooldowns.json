@@ -9,60 +9,300 @@
       "name": "Push-day cooldown (chest / shoulders / triceps)",
       "duration_minutes": 6,
       "moves": [
-        { "move": "Doorway chest stretch",        "duration": "45 sec each side", "cue": "Forearm on door frame, elbow at shoulder height, step through until you feel chest stretch", "image_url": null, "video_query": "doorway chest stretch how to proper form" },
-        { "move": "Cross-body shoulder stretch",  "duration": "30 sec each side", "cue": "Pull arm across body at chest height, use opposite hand at elbow",                                  "image_url": null, "video_query": "cross body shoulder stretch how to" },
-        { "move": "Sleeper stretch",              "duration": "30 sec each side", "cue": "Side-lying, shoulder and elbow 90°, gently press forearm toward floor",                            "image_url": null, "video_query": "sleeper stretch shoulder internal rotation how to" },
-        { "move": "Overhead tricep stretch",      "duration": "30 sec each side", "cue": "Reach hand down between shoulder blades, use opposite hand to gently press elbow back",            "image_url": null, "video_query": "overhead tricep stretch how to" },
-        { "move": "Child's pose with arm reach",  "duration": "60 sec",           "cue": "Walk hands forward, sink hips back, feel lat + shoulder opening",                                  "image_url": null, "video_query": "childs pose arm reach yoga how to" },
-        { "move": "Cat-cow",                      "duration": "60 sec",           "cue": "5–6 slow cycles, big breath each direction",                                                       "image_url": null, "video_query": "cat cow stretch yoga how to" }
+        {
+          "move": "Doorway chest stretch",
+          "duration": "45 sec each side",
+          "cue": "Forearm on door frame, elbow at shoulder height, step through until you feel chest stretch",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_And_Front_Of_Shoulder_Stretch/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Chest And Front Of Shoulder Stretch — same target muscle; doorway is the wall-supported variation. Wikimedia did not have a doorway-specific image.",
+          "video_query": "doorway chest stretch how to proper form"
+        },
+        {
+          "move": "Cross-body shoulder stretch",
+          "duration": "30 sec each side",
+          "cue": "Pull arm across body at chest height, use opposite hand at elbow",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Shoulder_Stretch/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Shoulder Stretch — this is the cross-body horizontal-adduction stretch.",
+          "video_query": "cross body shoulder stretch how to"
+        },
+        {
+          "move": "Sleeper stretch",
+          "duration": "30 sec each side",
+          "cue": "Side-lying, shoulder and elbow 90°, gently press forearm toward floor",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Shoulder_Stretch/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: closest available shoulder stretch — sleeper stretch (side-lying internal rotation) not separately illustrated. Wikimedia search for 'sleeper stretch shoulder' returned no useful images.",
+          "video_query": "sleeper stretch shoulder internal rotation how to"
+        },
+        {
+          "move": "Overhead tricep stretch",
+          "duration": "30 sec each side",
+          "cue": "Reach hand down between shoulder blades, use opposite hand to gently press elbow back",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Triceps/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Overhead Triceps — direct match.",
+          "video_query": "overhead tricep stretch how to"
+        },
+        {
+          "move": "Child's pose with arm reach",
+          "duration": "60 sec",
+          "cue": "Walk hands forward, sink hips back, feel lat + shoulder opening",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Childs Pose — base pose; arm-reach is a variation of the same form.",
+          "video_query": "childs pose arm reach yoga how to"
+        },
+        {
+          "move": "Cat-cow",
+          "duration": "60 sec",
+          "cue": "5–6 slow cycles, big breath each direction",
+          "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/be/Yoga_at_Your_Park_-_Bitilasana.jpg",
+          "image_source": "Wikimedia Commons — 'Yoga at Your Park - Bitilasana' (CC-licensed)",
+          "image_match": "Wikipedia Cat/Cow pose article (Marjariasana / Bitilasana). yuhonas has only 'Cat Stretch' (the cat half) — Wikimedia better captures the full cat-cow cycle.",
+          "video_query": "cat cow stretch yoga how to"
+        }
       ]
     },
     "pull": {
       "name": "Pull-day cooldown (back / lats / rear delts / biceps)",
       "duration_minutes": 6,
       "moves": [
-        { "move": "Lat hang (DB rack or pull-up bar)", "duration": "30 sec × 2",      "cue": "Passive hang, let shoulders decompress",                                                        "image_url": null, "video_query": "passive hang pull up bar how to" },
-        { "move": "Child's pose with side reach",      "duration": "30 sec each side", "cue": "From child's pose, walk both hands to one side to stretch the opposite lat",                  "image_url": null, "video_query": "childs pose side reach lat stretch how to" },
-        { "move": "Cobra / upward dog",                "duration": "30 sec × 2",      "cue": "Press chest up, shoulders down and back, gentle thoracic extension",                          "image_url": null, "video_query": "cobra pose upward dog yoga how to" },
-        { "move": "Doorway biceps stretch",            "duration": "30 sec each side", "cue": "Arm extended back at shoulder height, palm on wall, rotate body away",                        "image_url": null, "video_query": "doorway biceps stretch how to" },
-        { "move": "Thread the needle",                 "duration": "30 sec each side", "cue": "Quadruped, thread one arm under the body, rotate gently into the shoulder",                  "image_url": null, "video_query": "thread the needle yoga how to" },
-        { "move": "Cat-cow",                           "duration": "60 sec",           "cue": "5–6 slow cycles",                                                                              "image_url": null, "video_query": "cat cow stretch yoga how to" }
+        {
+          "move": "Lat hang (DB rack or pull-up bar)",
+          "duration": "30 sec × 2",
+          "cue": "Passive hang, let shoulders decompress",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One_Handed_Hang/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: One Handed Hang — closest passive-hang illustration; two-handed variant not separately illustrated.",
+          "video_query": "passive hang pull up bar how to"
+        },
+        {
+          "move": "Child's pose with side reach",
+          "duration": "30 sec each side",
+          "cue": "From child's pose, walk both hands to one side to stretch the opposite lat",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Childs Pose — base pose; side-reach is a variation.",
+          "video_query": "childs pose side reach lat stretch how to"
+        },
+        {
+          "move": "Cobra / upward dog",
+          "duration": "30 sec × 2",
+          "cue": "Press chest up, shoulders down and back, gentle thoracic extension",
+          "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Bhujangasana_Yoga-Asana_Nina-Mel.jpg",
+          "image_source": "Wikimedia Commons — Bhujangasana by Nina Mel (CC-licensed)",
+          "image_match": "Wikipedia Cobra pose article (Bhujangasana). yuhonas stretching category has no cobra / upward-dog entry.",
+          "video_query": "cobra pose upward dog yoga how to"
+        },
+        {
+          "move": "Doorway biceps stretch",
+          "duration": "30 sec each side",
+          "cue": "Arm extended back at shoulder height, palm on wall, rotate body away",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Biceps_Stretch/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Standing Biceps Stretch — closest illustration; doorway-anchored variation not separately illustrated.",
+          "video_query": "doorway biceps stretch how to"
+        },
+        {
+          "move": "Thread the needle",
+          "duration": "30 sec each side",
+          "cue": "Quadruped, thread one arm under the body, rotate gently into the shoulder",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Spinal_Stretch/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Spinal Stretch — closest thoracic-rotation illustration. Wikimedia Commons did not return a clean thread-the-needle pose image.",
+          "video_query": "thread the needle yoga how to"
+        },
+        {
+          "move": "Cat-cow",
+          "duration": "60 sec",
+          "cue": "5–6 slow cycles",
+          "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/be/Yoga_at_Your_Park_-_Bitilasana.jpg",
+          "image_source": "Wikimedia Commons — 'Yoga at Your Park - Bitilasana' (CC-licensed)",
+          "image_match": "Wikipedia Cat/Cow pose article (Marjariasana / Bitilasana). yuhonas has only 'Cat Stretch' (the cat half) — Wikimedia better captures the full cat-cow cycle.",
+          "video_query": "cat cow stretch yoga how to"
+        }
       ]
     },
     "legs": {
       "name": "Legs-day cooldown (quads / hams / glutes / calves)",
       "duration_minutes": 8,
       "moves": [
-        { "move": "Couch stretch",                  "duration": "45 sec each side", "cue": "Rear shin against bench/wall, front leg in lunge, sink hips and squeeze glute of stretching leg", "image_url": null, "video_query": "couch stretch Kelly Starrett how to" },
-        { "move": "Pigeon pose",                    "duration": "60 sec each side", "cue": "Front shin perpendicular to body, sink hips, walk hands forward for deeper stretch",              "image_url": null, "video_query": "pigeon pose yoga how to" },
-        { "move": "Standing hamstring stretch",     "duration": "45 sec each side", "cue": "Foot on bench, hinge from hips with flat back, don't round",                                       "image_url": null, "video_query": "standing hamstring stretch foot on bench how to" },
-        { "move": "90/90 hip stretch",              "duration": "45 sec each side", "cue": "Front and back leg both at 90°, lean forward over front leg",                                    "image_url": null, "video_query": "90 90 hip stretch how to" },
-        { "move": "Standing calf stretch",          "duration": "30 sec each side", "cue": "Hands on wall, rear leg straight, heel down, press hips forward",                                "image_url": null, "video_query": "standing calf stretch wall how to" },
-        { "move": "Figure-4 glute stretch (supine)","duration": "45 sec each side", "cue": "Lying on back, ankle on opposite knee, pull thigh toward chest",                                  "image_url": null, "video_query": "figure 4 glute stretch supine how to" },
-        { "move": "Child's pose",                   "duration": "60 sec",           "cue": "Big toes touching, knees wide, sink hips toward heels",                                          "image_url": null, "video_query": "childs pose yoga how to" }
+        {
+          "move": "Couch stretch",
+          "duration": "45 sec each side",
+          "cue": "Rear shin against bench/wall, front leg in lunge, sink hips and squeeze glute of stretching leg",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Kneeling Hip Flexor — the couch stretch is a kneeling hip flexor with the rear shin elevated against a couch/wall. Closest available illustration.",
+          "video_query": "couch stretch Kelly Starrett how to"
+        },
+        {
+          "move": "Pigeon pose",
+          "duration": "60 sec each side",
+          "cue": "Front shin perpendicular to body, sink hips, walk hands forward for deeper stretch",
+          "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Yoga_shaktipat_rajakapotasana_by_alexey_baykov.jpg",
+          "image_source": "Wikimedia Commons — Yoga Shaktipat Rajakapotasana by Alexey Baykov (CC-licensed)",
+          "image_match": "Wikipedia Eka Pada Rajakapotasana article. yuhonas stretching category has no pigeon pose.",
+          "video_query": "pigeon pose yoga how to"
+        },
+        {
+          "move": "Standing hamstring stretch",
+          "duration": "45 sec each side",
+          "cue": "Foot on bench, hinge from hips with flat back, don't round",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Toe_Touches/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Standing Toe Touches — same target (standing hamstring stretch). Foot-on-bench variation not separately illustrated.",
+          "video_query": "standing hamstring stretch foot on bench how to"
+        },
+        {
+          "move": "90/90 hip stretch",
+          "duration": "45 sec each side",
+          "cue": "Front and back leg both at 90°, lean forward over front leg",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Glute/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Seated Glute — closest seated hip-rotation illustration. yuhonas '90/90 Hamstring' is a different move (hamstring stretch). Wikimedia did not return a clean 90/90 hip stretch image.",
+          "video_query": "90 90 hip stretch how to"
+        },
+        {
+          "move": "Standing calf stretch",
+          "duration": "30 sec each side",
+          "cue": "Hands on wall, rear leg straight, heel down, press hips forward",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Gastrocnemius_Calf_Stretch/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Standing Gastrocnemius Calf Stretch — direct match.",
+          "video_query": "standing calf stretch wall how to"
+        },
+        {
+          "move": "Figure-4 glute stretch (supine)",
+          "duration": "45 sec each side",
+          "cue": "Lying on back, ankle on opposite knee, pull thigh toward chest",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Glute/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Lying Glute — direct match for supine figure-4 (ankle on opposite knee, pull thigh toward chest).",
+          "video_query": "figure 4 glute stretch supine how to"
+        },
+        {
+          "move": "Child's pose",
+          "duration": "60 sec",
+          "cue": "Big toes touching, knees wide, sink hips toward heels",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Childs Pose — direct match.",
+          "video_query": "childs pose yoga how to"
+        }
       ]
     },
     "upper-hybrid": {
       "name": "Upper-hybrid cooldown (shoulders / rear delts / arms / core)",
       "duration_minutes": 6,
       "moves": [
-        { "move": "Cross-body shoulder stretch", "duration": "30 sec each side", "cue": "Pull arm across body",                                              "image_url": null, "video_query": "cross body shoulder stretch how to" },
-        { "move": "Doorway chest stretch",       "duration": "30 sec each side", "cue": "Forearm on frame, step through",                                    "image_url": null, "video_query": "doorway chest stretch how to" },
-        { "move": "Lat hang",                    "duration": "30 sec × 2",      "cue": "Passive hang, decompress shoulders",                                "image_url": null, "video_query": "passive hang pull up bar how to" },
-        { "move": "Overhead tricep stretch",     "duration": "30 sec each side", "cue": "Hand between shoulder blades, opposite hand presses elbow",         "image_url": null, "video_query": "overhead tricep stretch how to" },
-        { "move": "Thread the needle",           "duration": "30 sec each side", "cue": "Quadruped, rotate one shoulder under",                              "image_url": null, "video_query": "thread the needle yoga how to" },
-        { "move": "Cobra",                       "duration": "60 sec",           "cue": "Gentle thoracic extension, shoulders down",                          "image_url": null, "video_query": "cobra pose yoga how to" }
+        {
+          "move": "Cross-body shoulder stretch",
+          "duration": "30 sec each side",
+          "cue": "Pull arm across body",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Shoulder_Stretch/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Shoulder Stretch — this is the cross-body horizontal-adduction stretch.",
+          "video_query": "cross body shoulder stretch how to"
+        },
+        {
+          "move": "Doorway chest stretch",
+          "duration": "30 sec each side",
+          "cue": "Forearm on frame, step through",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_And_Front_Of_Shoulder_Stretch/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Chest And Front Of Shoulder Stretch — same target muscle; doorway is the wall-supported variation. Wikimedia did not have a doorway-specific image.",
+          "video_query": "doorway chest stretch how to"
+        },
+        {
+          "move": "Lat hang",
+          "duration": "30 sec × 2",
+          "cue": "Passive hang, decompress shoulders",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One_Handed_Hang/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: One Handed Hang — closest passive-hang illustration.",
+          "video_query": "passive hang pull up bar how to"
+        },
+        {
+          "move": "Overhead tricep stretch",
+          "duration": "30 sec each side",
+          "cue": "Hand between shoulder blades, opposite hand presses elbow",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Triceps/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Overhead Triceps — direct match.",
+          "video_query": "overhead tricep stretch how to"
+        },
+        {
+          "move": "Thread the needle",
+          "duration": "30 sec each side",
+          "cue": "Quadruped, rotate one shoulder under",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Spinal_Stretch/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Spinal Stretch — closest thoracic-rotation illustration. Wikimedia Commons did not return a clean thread-the-needle pose image.",
+          "video_query": "thread the needle yoga how to"
+        },
+        {
+          "move": "Cobra",
+          "duration": "60 sec",
+          "cue": "Gentle thoracic extension, shoulders down",
+          "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Bhujangasana_Yoga-Asana_Nina-Mel.jpg",
+          "image_source": "Wikimedia Commons — Bhujangasana by Nina Mel (CC-licensed)",
+          "image_match": "Wikipedia Cobra pose article (Bhujangasana). yuhonas stretching category has no cobra entry.",
+          "video_query": "cobra pose yoga how to"
+        }
       ]
     },
     "default": {
       "name": "Full-body cooldown",
       "duration_minutes": 6,
       "moves": [
-        { "move": "Child's pose",          "duration": "60 sec",           "cue": "Decompress spine, breathe deep",                  "image_url": null, "video_query": "childs pose yoga how to" },
-        { "move": "Cat-cow",               "duration": "60 sec",           "cue": "5–6 slow cycles",                                  "image_url": null, "video_query": "cat cow stretch yoga how to" },
-        { "move": "Cobra / upward dog",    "duration": "30 sec × 2",      "cue": "Thoracic extension",                                "image_url": null, "video_query": "cobra pose upward dog yoga how to" },
-        { "move": "Pigeon pose",           "duration": "45 sec each side", "cue": "Hip opener",                                        "image_url": null, "video_query": "pigeon pose yoga how to" },
-        { "move": "Standing forward fold", "duration": "60 sec",           "cue": "Soft knees, let head and arms hang",               "image_url": null, "video_query": "standing forward fold yoga how to" }
+        {
+          "move": "Child's pose",
+          "duration": "60 sec",
+          "cue": "Decompress spine, breathe deep",
+          "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/0.jpg",
+          "image_source": "yuhonas/free-exercise-db (public domain)",
+          "image_match": "yuhonas: Childs Pose — direct match.",
+          "video_query": "childs pose yoga how to"
+        },
+        {
+          "move": "Cat-cow",
+          "duration": "60 sec",
+          "cue": "5–6 slow cycles",
+          "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/be/Yoga_at_Your_Park_-_Bitilasana.jpg",
+          "image_source": "Wikimedia Commons — 'Yoga at Your Park - Bitilasana' (CC-licensed)",
+          "image_match": "Wikipedia Cat/Cow pose article (Marjariasana / Bitilasana). yuhonas has only 'Cat Stretch' (the cat half) — Wikimedia better captures the full cat-cow cycle.",
+          "video_query": "cat cow stretch yoga how to"
+        },
+        {
+          "move": "Cobra / upward dog",
+          "duration": "30 sec × 2",
+          "cue": "Thoracic extension",
+          "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Bhujangasana_Yoga-Asana_Nina-Mel.jpg",
+          "image_source": "Wikimedia Commons — Bhujangasana by Nina Mel (CC-licensed)",
+          "image_match": "Wikipedia Cobra pose article (Bhujangasana). yuhonas stretching category has no cobra / upward-dog entry.",
+          "video_query": "cobra pose upward dog yoga how to"
+        },
+        {
+          "move": "Pigeon pose",
+          "duration": "45 sec each side",
+          "cue": "Hip opener",
+          "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Yoga_shaktipat_rajakapotasana_by_alexey_baykov.jpg",
+          "image_source": "Wikimedia Commons — Yoga Shaktipat Rajakapotasana by Alexey Baykov (CC-licensed)",
+          "image_match": "Wikipedia Eka Pada Rajakapotasana article. yuhonas stretching category has no pigeon pose.",
+          "video_query": "pigeon pose yoga how to"
+        },
+        {
+          "move": "Standing forward fold",
+          "duration": "60 sec",
+          "cue": "Soft knees, let head and arms hang",
+          "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Fb1.jpg",
+          "image_source": "Wikimedia Commons — Uttanasana (file Fb1.jpg, CC-licensed)",
+          "image_match": "Wikipedia Uttanasana article — canonical standing forward-fold illustration. yuhonas 'Standing Toe Touches' is a close move but Uttanasana is the named pose.",
+          "video_query": "standing forward fold yoga how to"
+        }
       ]
     }
   }
