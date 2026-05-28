@@ -703,10 +703,7 @@ def main() -> int:
             "entries": [],
         })
 
-    # Step 6: git status / commit (push is handled by scripts/host_push.sh,
-    # NOT here — the Cowork sandbox has no push credentials, and earlier
-    # attempts from here failed silently and let unpushed commits pile up).
-    committed = False
+    # Step 6: git status / commit / push
     if in_git:
         status = run(["git", "status", "--porcelain", "data/"], cwd=repo_root)
         dirty = bool(status.stdout.strip())
@@ -715,17 +712,17 @@ def main() -> int:
             n = len(drained)
             commit_msg = f"sync: drain {n} pending entries ({datetime.now().date().isoformat()})"
             run(["git", "commit", "-m", commit_msg], cwd=repo_root)
-            committed = True
+            if has_remote:
+                try:
+                    run(["git", "push"], cwd=repo_root)
+                except subprocess.CalledProcessError as e:
+                    print(f"WARN: git push failed (commit was made locally): {e.stderr}", file=sys.stderr)
 
     print(f"Synced {len(drained)} session(s) to vault; {analytics['log_count']} total logs, {len(analytics['prs'])} PRs.")
     for d in drained:
         print(f"  + {d}")
     for s in skipped:
         print(f"  ~ skipped: {s}")
-    if committed and has_remote:
-        # Make the unpushed-commits state explicit. scripts/host_push.sh on
-        # the host (outside the sandbox) is responsible for the actual push.
-        print("PUSH PENDING: commit was made locally. Run scripts/host_push.sh from the host Mac to push + clean stale locks.")
     return 0
 
 
