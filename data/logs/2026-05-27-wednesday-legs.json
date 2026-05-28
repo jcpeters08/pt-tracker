@@ -1,0 +1,163 @@
+{
+  "id": "2026-05-27-wednesday-legs",
+  "date": "2026-05-27",
+  "day_of_week": "wednesday",
+  "type": "legs",
+  "muscle_groups": [
+    "quads",
+    "hamstrings",
+    "glutes",
+    "calves"
+  ],
+  "phase": "2",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "barbell-back-squat",
+      "display_name": "Barbell Back Squat",
+      "weight_raw": "90 lbs (40.8 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 40.8,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 40.8,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 40.8,
+          "reps": 10
+        }
+      ],
+      "notes": "Weight is fine but out of breath by 3 set"
+    },
+    {
+      "exercise_id": "leg-press",
+      "display_name": "45-Degree Incline Leg Press",
+      "weight_raw": "230 lbs (104.3 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 104.3,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 104.3,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 104.3,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "barbell-rdl",
+      "display_name": "Barbell Romanian Deadlift",
+      "weight_raw": "95 lbs (43 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 43.0,
+          "reps": 8
+        },
+        {
+          "set": 2,
+          "weight_kg": 43.0,
+          "reps": 9
+        },
+        {
+          "set": 3,
+          "weight_kg": 43.0,
+          "reps": 6
+        }
+      ],
+      "notes": "Grip strength training on last set was limiting factor"
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "display_name": "Seated Leg Curl",
+      "weight_raw": "55 lbs (25 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 25.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 25.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 25.0,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-hip-thrust",
+      "display_name": "Dumbbell Hip Thrust",
+      "weight_raw": "50 lbs (22.5 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 22.5,
+          "reps": 6
+        },
+        {
+          "set": 2,
+          "weight_kg": 22.5,
+          "reps": 4
+        },
+        {
+          "set": 3,
+          "weight_kg": 22.5,
+          "reps": 10
+        }
+      ],
+      "notes": "The issue was the bench - it kept slipping - used Glute Trainer smith machine for past set"
+    },
+    {
+      "exercise_id": "calf-raise",
+      "display_name": "Standing Calf Raise (Machine)",
+      "weight_raw": "90 lbs (41 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 41.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 41.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 41.0,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "cooldown": null,
+  "session_notes": "",
+  "submitted_at": "2026-05-27T20:01:49.543Z",
+  "source_md": "Workout Log/2026-05-27-Wednesday-Legs.md"
+}

@@ -1,0 +1,190 @@
+{
+  "id": "2026-05-28-monday-push",
+  "date": "2026-05-28",
+  "day_of_week": "monday",
+  "type": "push",
+  "muscle_groups": [
+    "chest",
+    "shoulders",
+    "lateral-delts",
+    "triceps"
+  ],
+  "phase": "2",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "flat-db-bench-press",
+      "display_name": "Flat Dumbbell Bench Press",
+      "weight_raw": "35 lbs (16 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 16.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 16.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 16.0,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "incline-db-bench-press",
+      "display_name": "Incline Dumbbell Bench Press",
+      "weight_raw": "35 lbs (16 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 16.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 16.0,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 16.0,
+          "reps": 10
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "cable-chest-fly",
+      "display_name": "Cable Chest Fly",
+      "weight_raw": "15 lbs (7 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 7.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 7.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 7.0,
+          "reps": 14
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "seated-db-shoulder-press",
+      "display_name": "Seated Dumbbell Shoulder Press",
+      "weight_raw": "35 lbs (15.9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 15.9,
+          "reps": 9
+        },
+        {
+          "set": 2,
+          "weight_kg": 15.9,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 15.9,
+          "reps": 10
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-lateral-raise",
+      "display_name": "Dumbbell Lateral Raise",
+      "weight_raw": "10 lbs (4.5 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 4.5,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 4.5,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 4.5,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "rope-tricep-pushdown",
+      "display_name": "Rope Tricep Pushdown (Cable)",
+      "weight_raw": "20 lbs (9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 9.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 9.0,
+          "reps": 13
+        },
+        {
+          "set": 3,
+          "weight_kg": 9.0,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "overhead-db-tricep-extension",
+      "display_name": "Overhead Dumbbell Tricep Extension",
+      "weight_raw": "25 lbs (11.3 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 11.3,
+          "reps": 14
+        },
+        {
+          "set": 2,
+          "weight_kg": 11.3,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 11.3,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "cooldown": {
+    "type": "library",
+    "source_key": "push",
+    "completed_at": "2026-05-28T18:43:10.782Z"
+  },
+  "session_notes": "",
+  "submitted_at": "2026-05-28T18:43:12.018Z",
+  "source_md": "Workout Log/2026-05-28-Monday-Push.md"
+}
