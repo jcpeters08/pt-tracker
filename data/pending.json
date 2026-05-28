@@ -386,6 +386,165 @@
         "cooldown": null,
         "session_notes": ""
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-05-28T17:02:50.786Z",
+      "session": {
+        "date": "2026-05-28",
+        "submitted_at": "2026-05-28T17:02:50.786Z",
+        "day_of_week": "wednesday",
+        "type": "legs",
+        "muscle_groups": [
+          "quads",
+          "hamstrings",
+          "glutes",
+          "calves"
+        ],
+        "routine_id": "2026-W21-Phase-2-Week-2-Progression",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "barbell-back-squat",
+            "display_name": "Barbell Back Squat",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 43,
+                "reps": 8
+              },
+              {
+                "set": 2,
+                "weight_kg": 43,
+                "reps": 8
+              },
+              {
+                "set": 3,
+                "weight_kg": 43,
+                "reps": 8
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "leg-press",
+            "display_name": "45-Degree Incline Leg Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 100,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 100,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 100,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "barbell-rdl",
+            "display_name": "Barbell Romanian Deadlift",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 43,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 43,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 43,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-leg-curl",
+            "display_name": "Seated Leg Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 25,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 25,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 25,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-hip-thrust",
+            "display_name": "Dumbbell Hip Thrust",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 22.5,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.5,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 22.5,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "calf-raise",
+            "display_name": "Standing Calf Raise (Machine)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 41,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 41,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 41,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": {
+          "type": "library",
+          "source_key": "legs",
+          "fitnessplus_name": "",
+          "completed_at": "2026-05-28T17:02:46.888Z"
+        },
+        "session_notes": ""
+      }
     }
   ]
 }
