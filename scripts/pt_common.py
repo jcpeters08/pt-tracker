@@ -111,6 +111,7 @@ EXERCISE_ALIASES: dict[str, str] = {
     "dumbbell curl":                         "db-curl",
     "barbell curl":                          "barbell-curl",
     "barbell curls":                         "barbell-curl",
+    "barbell biceps curl":                   "barbell-curl",
     "barbell biceps curls":                  "barbell-curl",
     "standing straight-bar biceps curl":     "barbell-curl",
     "hammer curl":                           "hammer-curl",
