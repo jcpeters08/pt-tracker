@@ -16,6 +16,7 @@ __pycache__/
 .venv/
 
 # Node / Wrangler
+/node_modules/
 worker/node_modules/
 worker/.wrangler/
 worker/.dev.vars

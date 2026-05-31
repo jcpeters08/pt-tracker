@@ -748,7 +748,11 @@
   </div>
 </div>
 
-<script>
+<script type="module">
+import {
+  KG_PER_LB, LBS_PER_KG, kgToLbs, lbsToKg, roundTo, fmtNum,
+  escapeHtml, isoNow, localDateIso, dayTypeKey,
+} from "./js/util.js";
 "use strict";
 
 // ---- Config ---------------------------------------------------------------
@@ -768,9 +772,6 @@ const PENDING_PATH = "data/pending.json";
 
 const DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
 const DAY_LABELS = { monday:"Mon", tuesday:"Tue", wednesday:"Wed", thursday:"Thu", friday:"Fri", saturday:"Sat", sunday:"Sun" };
-
-const KG_PER_LB = 0.453592;
-const LBS_PER_KG = 2.20462;
 
 // ---- State ----------------------------------------------------------------
 
@@ -804,18 +805,7 @@ const state = {
 
 // ---- Unit conversion helpers ---------------------------------------------
 
-function kgToLbs(kg) { return kg == null ? null : kg * LBS_PER_KG; }
-function lbsToKg(lbs) { return lbs == null ? null : lbs * KG_PER_LB; }
-function roundTo(n, places) {
-  if (n == null || isNaN(n)) return n;
-  const p = Math.pow(10, places);
-  return Math.round(n * p) / p;
-}
-function fmtNum(n, places) {
-  if (n == null || isNaN(n)) return "";
-  const r = roundTo(n, places);
-  return r === Math.trunc(r) ? String(Math.trunc(r)) : String(r);
-}
+// kgToLbs / lbsToKg / roundTo / fmtNum → imported from ./js/util.js
 // Display a weight stored as kg in the user's preferred unit.
 // lbs display rounds to whole numbers (PF plates are integer-friendly,
 // and 94.8 lbs reading is just visual noise from kg roundtripping).
@@ -859,14 +849,7 @@ function weightInputStep() {
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-function isoNow() { return new Date().toISOString(); }
-function localDateIso(d = new Date()) {
-  const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,"0"), day = String(d.getDate()).padStart(2,"0");
-  return `${y}-${m}-${day}`;
-}
+// escapeHtml / isoNow / localDateIso → imported from ./js/util.js
 function todayKey() { return DAYS[(new Date().getDay() + 6) % 7]; }
 function toast(msg, kind) {
   const t = $("#toast");
@@ -1159,9 +1142,7 @@ async function loadSessions() {
   } catch {}
 }
 
-function dayTypeKey(dayLabel, fallback) {
-  return (dayLabel || "").toLowerCase().split("(")[0].trim().replace(/\s+/g, "-") || fallback;
-}
+// dayTypeKey → imported from ./js/util.js
 
 async function loadPastLogsForRoutine(routine) {
   if (!routine || !routine.start_date) return {};

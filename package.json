@@ -1,0 +1,13 @@
+{
+  "name": "pt-tracker-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Frontend (index.html / reports.html) pure-helper unit tests.",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.7"
+  }
+}
