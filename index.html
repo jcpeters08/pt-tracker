@@ -760,7 +760,7 @@ import { mergePending } from "./js/pending.js";
 import { toast, shortDate, openHowto, closeHowto, openVideo, closeVideo, openLightbox, closeLightbox } from "./js/ui.js";
 import { ensureRecoveryRounds, renderRecoveryRounds, renderRecoverySummary } from "./js/recovery.js";
 import { state, hooks, todayKey, CD_CHOICE_KEY } from "./js/app-context.js";
-import { dayLabel, renderDayToggle, renderCooldown, cooldownStateKey } from "./js/workout.js";
+import { dayLabel, renderDayToggle, renderCooldown, cooldownStateKey, renderExercises } from "./js/workout.js";
 "use strict";
 
 // ---- Config ---------------------------------------------------------------
@@ -791,39 +791,7 @@ const PENDING_PATH = "data/pending.json";
 // lbs display rounds to whole numbers (PF plates are integer-friendly,
 // and 94.8 lbs reading is just visual noise from kg roundtripping).
 // kg display rounds to 1 decimal.
-function displayWeight(kg) {
-  if (kg == null || kg === 0) return "";
-  if (state.unitPref === "lbs") return String(Math.round(kgToLbs(kg)));
-  return fmtNum(kg, 1);
-}
-// Convert an input value (in user's pref unit) → kg for storage.
-function inputToKg(val) {
-  if (val === "" || val == null) return null;
-  const n = Number(val);
-  if (isNaN(n)) return null;
-  return state.unitPref === "lbs" ? lbsToKg(n) : n;
-}
-// Build the dual-unit target text from a routine entry: "30 lbs (14 kg) × 12 × 3".
-function formatTargetText(ex) {
-  if (ex.target_weight_kg == null) {
-    return `${ex.target_weight_raw || "?"} × ${ex.target_reps || "?"} × ${ex.target_sets || "?"}`;
-  }
-  const kg = ex.target_weight_kg;
-  if (kg === 0) {
-    return `bodyweight × ${ex.target_reps || "?"} × ${ex.target_sets || "?"}`;
-  }
-  const lbs = roundTo(kgToLbs(kg), 0);
-  const kgRounded = roundTo(kg, 1);
-  const lbsStr = `${fmtNum(lbs, 0)} lbs`;
-  const kgStr = `${fmtNum(kgRounded, 1)} kg`;
-  const primary = state.unitPref === "lbs" ? lbsStr : kgStr;
-  const secondary = state.unitPref === "lbs" ? kgStr : lbsStr;
-  return `${primary} (${secondary}) × ${ex.target_reps || "?"} × ${ex.target_sets || "?"}`;
-}
-// Step value for weight inputs. PF dumbbells go 5 lb; kg side stays 0.5 kg.
-function weightInputStep() {
-  return state.unitPref === "lbs" ? "5" : "0.5";
-}
+// weight helpers (displayWeight/inputToKg/formatTargetText/weightInputStep) → js/workout.js
 
 // ---- Helpers --------------------------------------------------------------
 
@@ -1400,30 +1368,7 @@ function renderDraftBanner() {
 
 // renderCooldown → js/workout.js
 
-function ensureLogState(exId, targetWeight, targetReps, targetSets) {
-  if (state.log[exId]) return state.log[exId];
-  // If there's an existing session for the current view, prefill from it
-  // (sets carry their logged weight/reps and are marked Done).
-  const active = state.activeSession;
-  if (active && active.kind === "log") {
-    const logged = (active.session?.exercises || []).find(e => e.exercise_id === exId);
-    if (logged) {
-      const sets = (logged.sets || []).map(s => ({
-        weight_kg: s.weight_kg ?? null,
-        reps: s.reps ?? null,
-        done: true,                   // it's in the saved log → it counted
-      }));
-      state.log[exId] = { sets, notes: logged.notes || "" };
-      return state.log[exId];
-    }
-  }
-  const sets = [];
-  for (let i = 0; i < (targetSets || 1); i++) {
-    sets.push({ weight_kg: targetWeight ?? null, reps: targetReps ?? null, done: false });
-  }
-  state.log[exId] = { sets, notes: "" };
-  return state.log[exId];
-}
+// ensureLogState → js/workout.js
 
 function refreshActiveSession() {
   if (!state.workoutDate || !state.selectedDay || !state.routine) {
@@ -1498,169 +1443,11 @@ function renderLogStatus() {
   }
 }
 
-function buildActualText(log, exerciseId) {
-  if (!log) return "actual: —";
-  const ex = (log.exercises || []).find(e => e.exercise_id === exerciseId);
-  if (!ex || !Array.isArray(ex.sets) || !ex.sets.length) return "actual: —";
-  const parts = ex.sets.map(s => {
-    const lbs = s.weight_kg != null ? Math.round(kgToLbs(s.weight_kg)) : "?";
-    return `${lbs} lbs × ${s.reps ?? "?"}`;
-  });
-  return "actual: " + parts.join(", ");
-}
+// buildActualText → js/workout.js
 
-function renderExerciseCard(exDef, ex) {
-  const meta = state.exercises[ex.exercise_id] || {};
-  const log = ensureLogState(ex.exercise_id, ex.target_weight_kg, ex.target_reps, ex.target_sets);
-  const muscles = [meta.primary_muscle, ...(meta.secondary_muscles || [])].filter(Boolean).join(" · ");
-  const targetText = formatTargetText(ex);
-  const unitLabel = state.unitPref;
-  const step = weightInputStep();
+// renderExerciseCard + bindCardEvents → js/workout.js
 
-  const setsHtml = `
-    <div class="set-row set-header">
-      <span class="set-num">#</span>
-      <span class="col-label">Weight (${unitLabel})</span>
-      <span class="col-label">Reps</span>
-      <span></span>
-    </div>
-  ` + log.sets.map((s, i) => `
-    <div class="set-row${s.done ? " done" : ""}" data-set="${i}">
-      <span class="set-num">${i+1}</span>
-      <input type="number" inputmode="decimal" step="${step}" placeholder="${unitLabel}" value="${displayWeight(s.weight_kg)}" data-field="weight">
-      <input type="number" inputmode="numeric"  step="1"   placeholder="reps" value="${s.reps ?? ""}" data-field="reps">
-      <button class="done-btn" data-action="done">${s.done ? "✓ Done" : "Done"}</button>
-    </div>
-  `).join("");
-
-  const card = document.createElement("section");
-  card.className = "ex-card";
-  card.dataset.exid = ex.exercise_id;
-  card.innerHTML = `
-    <div class="ex-head">
-      <div class="ex-img">
-        ${meta.image_url ? `<img src="${escapeHtml(meta.image_url)}" alt="${escapeHtml(meta.name)}" loading="lazy">` : "🏋️"}
-      </div>
-      <div class="ex-meta">
-        <h3>${escapeHtml(meta.name || ex.exercise_id)}</h3>
-        <div class="muscles">${escapeHtml(muscles)}</div>
-        <div class="target"><b>Target:</b> </div>
-        <div class="pill-row">
-          ${meta.video_id
-              ? `<button class="pill video" type="button" data-action="play-video">▶ Watch demo</button>`
-              : (meta.video_url ? `<a class="pill video" href="${escapeHtml(meta.video_url)}" target="_blank" rel="noopener">▶ Watch demo</a>` : "")}
-          ${(meta.instructions?.length || meta.form_cues?.length) ? `<button class="pill" type="button" data-action="show-howto">ℹ How to</button>` : ""}
-          ${meta.info_url ? `<a class="pill" href="${escapeHtml(meta.info_url)}" target="_blank" rel="noopener">↗ M&S</a>` : ""}
-        </div>
-      </div>
-    </div>
-    <div class="ex-body">
-      <div class="set-list">${setsHtml}</div>
-      <button class="add-set" data-action="add-set">+ Add set</button>
-      <textarea class="ex-notes" placeholder="Notes for this exercise…">${escapeHtml(log.notes)}</textarea>
-    </div>
-  `;
-
-  // Inject the tappable target-line span (avoids innerHTML for user data).
-  const targetDiv = card.querySelector(".target");
-  const targetLine = document.createElement("span");
-  targetLine.className = "target-line";
-  targetLine.dataset.routineId = exDef.id || "";
-  targetLine.dataset.day = state.selectedDay || "";
-  targetLine.dataset.exerciseId = ex.exercise_id;
-  targetLine.dataset.weightKg = ex.target_weight_kg ?? 0;
-  targetLine.dataset.weightRaw = ex.target_weight_raw ?? "";
-  targetLine.dataset.reps = ex.target_reps ?? 0;
-  targetLine.dataset.sets = ex.target_sets ?? 0;
-  targetLine.textContent = targetText;
-  targetDiv.appendChild(targetLine);
-  if (ex.notes) {
-    targetDiv.appendChild(document.createTextNode(" · "));
-    const notesSpan = document.createElement("span");
-    notesSpan.style.color = "var(--ink-muted)";
-    notesSpan.textContent = ex.notes;
-    targetDiv.appendChild(notesSpan);
-  }
-
-  if (getRoutineMode(state.routine) === "past") {
-    const pastLog = state.pastLogsByDay?.[state.selectedDay];
-    const actualEl = document.createElement("div");
-    actualEl.className = "actual-line";
-    actualEl.textContent = buildActualText(pastLog, ex.exercise_id);
-    targetDiv.appendChild(actualEl);
-  }
-
-  return card;
-}
-
-function bindCardEvents(card, exId) {
-  const log = state.log[exId];
-  // Lightbox on image tap
-  const imgWrap = card.querySelector(".ex-img");
-  const meta = state.exercises[exId] || {};
-  if (meta.image_url) {
-    imgWrap.addEventListener("click", () => openLightbox(meta.image_url, meta.name || exId));
-  } else {
-    imgWrap.style.cursor = "default";
-  }
-  // Inline video player
-  const playBtn = card.querySelector('[data-action="play-video"]');
-  if (playBtn && meta.video_id) {
-    playBtn.addEventListener("click", () => openVideo(meta.video_id, meta.name || exId));
-  }
-  // How-to inline modal
-  const howtoBtn = card.querySelector('[data-action="show-howto"]');
-  if (howtoBtn) {
-    howtoBtn.addEventListener("click", () => openHowto(meta));
-  }
-  card.querySelectorAll(".set-row:not(.set-header)").forEach(row => {
-    const idx = Number(row.dataset.set);
-    row.querySelector('input[data-field="weight"]').addEventListener("input", e => {
-      const kg = inputToKg(e.target.value);
-      log.sets[idx].weight_kg = kg == null ? null : roundTo(kg, 2);
-      clearLastWorkoutSig();
-    });
-    row.querySelector('input[data-field="reps"]').addEventListener("input", e => {
-      log.sets[idx].reps = e.target.value === "" ? null : Number(e.target.value);
-      clearLastWorkoutSig();
-    });
-    row.querySelector('[data-action="done"]').addEventListener("click", () => {
-      log.sets[idx].done = !log.sets[idx].done;
-      row.classList.toggle("done", log.sets[idx].done);
-      row.querySelector('[data-action="done"]').textContent = log.sets[idx].done ? "✓ Done" : "Done";
-      clearLastWorkoutSig();
-    });
-  });
-  card.querySelector('[data-action="add-set"]').addEventListener("click", () => {
-    const last = log.sets[log.sets.length - 1] || {};
-    log.sets.push({ weight_kg: last.weight_kg ?? null, reps: last.reps ?? null, done: false });
-    clearLastWorkoutSig();
-    renderApp();
-  });
-  card.querySelector(".ex-notes").addEventListener("input", e => {
-    log.notes = e.target.value;
-    clearLastWorkoutSig();
-  });
-}
-
-function renderExercises() {
-  const host = $("#exercises-host");
-  host.innerHTML = "";
-  const day = state.routine?.days?.[state.selectedDay];
-  if (!day || !day.exercises?.length) {
-    host.innerHTML = `<div class="rest-day-msg">Rest day — no scheduled exercises.<br>Use the day toggle to see another day.</div>`;
-    $("#session-notes-host").classList.add("hidden");
-    $("#submit-row").classList.add("hidden");
-    return;
-  }
-  for (const ex of day.exercises) {
-    const card = renderExerciseCard(state.routine, ex);
-    host.appendChild(card);
-    bindCardEvents(card, ex.exercise_id);
-  }
-  $("#session-notes-host").classList.remove("hidden");
-  $("#submit-row").classList.remove("hidden");
-}
+// renderExercises → js/workout.js
 
 function applyModeBanner() {
   const host = document.getElementById("mode-banner-host");
@@ -2104,7 +1891,7 @@ async function saveRoutineEdit(payload) {
 document.addEventListener("DOMContentLoaded", () => {
   // Register shared callbacks so render modules (js/*.js) can call back into
   // the app without a circular import on index.html.
-  Object.assign(hooks, { renderApp, markWorkoutDirty, saveWorkoutDraft });
+  Object.assign(hooks, { renderApp, markWorkoutDirty, saveWorkoutDraft, getRoutineMode });
   bindSigninPanel();
   bindPatPanel();
   $("#signout-btn").addEventListener("click", signOut);

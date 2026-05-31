@@ -3,7 +3,8 @@
 // instead of innerHTML. renderApp orchestration stays in index.html and calls
 // these; the day-pill click re-renders via hooks.renderApp.
 import { state, hooks, DAYS, DAY_LABELS, todayKey, CD_CHOICE_KEY } from "./app-context.js";
-import { isoNow } from "./util.js";
+import { isoNow, kgToLbs, lbsToKg, roundTo, fmtNum } from "./util.js";
+import { openHowto, openVideo, openLightbox } from "./ui.js";
 
 // Tiny DOM builder: el("div", {class, text, href, dataset…}, ...children).
 // Keeps the render functions readable without innerHTML.
@@ -193,4 +194,247 @@ export function renderCooldown(day) {
       renderCooldown(day);
     });
   }
+}
+
+// ---- Exercise cards -------------------------------------------------------
+
+// Display a stored kg weight in the user's preferred unit (blank for 0/null).
+function displayWeight(kg) {
+  if (kg == null || kg === 0) return "";
+  if (state.unitPref === "lbs") return String(Math.round(kgToLbs(kg)));
+  return fmtNum(kg, 1);
+}
+
+// Convert an input value (in the user's pref unit) → kg for storage.
+function inputToKg(val) {
+  if (val === "" || val == null) return null;
+  const n = Number(val);
+  if (isNaN(n)) return null;
+  return state.unitPref === "lbs" ? lbsToKg(n) : n;
+}
+
+// Dual-unit target text from a routine entry: "30 lbs (14 kg) × 12 × 3".
+function formatTargetText(ex) {
+  if (ex.target_weight_kg == null) {
+    return `${ex.target_weight_raw || "?"} × ${ex.target_reps || "?"} × ${ex.target_sets || "?"}`;
+  }
+  const kg = ex.target_weight_kg;
+  if (kg === 0) {
+    return `bodyweight × ${ex.target_reps || "?"} × ${ex.target_sets || "?"}`;
+  }
+  const lbs = roundTo(kgToLbs(kg), 0);
+  const kgRounded = roundTo(kg, 1);
+  const lbsStr = `${fmtNum(lbs, 0)} lbs`;
+  const kgStr = `${fmtNum(kgRounded, 1)} kg`;
+  const primary = state.unitPref === "lbs" ? lbsStr : kgStr;
+  const secondary = state.unitPref === "lbs" ? kgStr : lbsStr;
+  return `${primary} (${secondary}) × ${ex.target_reps || "?"} × ${ex.target_sets || "?"}`;
+}
+
+// Step value for weight inputs. PF dumbbells go 5 lb; kg side stays 0.5 kg.
+function weightInputStep() {
+  return state.unitPref === "lbs" ? "5" : "0.5";
+}
+
+// "actual: 135 lbs × 8, …" line for a past-routine log (read-only view).
+function buildActualText(log, exerciseId) {
+  if (!log) return "actual: —";
+  const ex = (log.exercises || []).find(e => e.exercise_id === exerciseId);
+  if (!ex || !Array.isArray(ex.sets) || !ex.sets.length) return "actual: —";
+  const parts = ex.sets.map(s => {
+    const lbs = s.weight_kg != null ? Math.round(kgToLbs(s.weight_kg)) : "?";
+    return `${lbs} lbs × ${s.reps ?? "?"}`;
+  });
+  return "actual: " + parts.join(", ");
+}
+
+// Lazily create (or prefill from a saved session) the in-progress log slot.
+export function ensureLogState(exId, targetWeight, targetReps, targetSets) {
+  if (state.log[exId]) return state.log[exId];
+  // If there's an existing session for the current view, prefill from it
+  // (sets carry their logged weight/reps and are marked Done).
+  const active = state.activeSession;
+  if (active && active.kind === "log") {
+    const logged = (active.session?.exercises || []).find(e => e.exercise_id === exId);
+    if (logged) {
+      const sets = (logged.sets || []).map(s => ({
+        weight_kg: s.weight_kg ?? null,
+        reps: s.reps ?? null,
+        done: true,                   // it's in the saved log → it counted
+      }));
+      state.log[exId] = { sets, notes: logged.notes || "" };
+      return state.log[exId];
+    }
+  }
+  const sets = [];
+  for (let i = 0; i < (targetSets || 1); i++) {
+    sets.push({ weight_kg: targetWeight ?? null, reps: targetReps ?? null, done: false });
+  }
+  state.log[exId] = { sets, notes: "" };
+  return state.log[exId];
+}
+
+export function renderExerciseCard(exDef, ex) {
+  const meta = state.exercises[ex.exercise_id] || {};
+  const log = ensureLogState(ex.exercise_id, ex.target_weight_kg, ex.target_reps, ex.target_sets);
+  const muscles = [meta.primary_muscle, ...(meta.secondary_muscles || [])].filter(Boolean).join(" · ");
+  const targetText = formatTargetText(ex);
+  const unitLabel = state.unitPref;
+  const step = weightInputStep();
+
+  // image (or emoji fallback)
+  const imgInner = meta.image_url
+    ? el("img", { src: meta.image_url, alt: meta.name || ex.exercise_id, loading: "lazy" })
+    : document.createTextNode("🏋️");
+  const exImg = el("div", { class: "ex-img" }, imgInner);
+
+  // target line — tappable; user data via textContent + dataset (no innerHTML)
+  const targetDiv = el("div", { class: "target" }, el("b", { text: "Target:" }), document.createTextNode(" "));
+  const targetLine = el("span", {
+    class: "target-line",
+    text: targetText,
+    dataset: {
+      routineId: exDef.id || "",
+      day: state.selectedDay || "",
+      exerciseId: ex.exercise_id,
+      weightKg: ex.target_weight_kg ?? 0,
+      weightRaw: ex.target_weight_raw ?? "",
+      reps: ex.target_reps ?? 0,
+      sets: ex.target_sets ?? 0,
+    },
+  });
+  targetDiv.append(targetLine);
+  if (ex.notes) {
+    targetDiv.append(document.createTextNode(" · "));
+    const ns = el("span", { text: ex.notes });
+    ns.style.color = "var(--ink-muted)";
+    targetDiv.append(ns);
+  }
+  if (hooks.getRoutineMode(state.routine) === "past") {
+    const pastLog = state.pastLogsByDay?.[state.selectedDay];
+    targetDiv.append(el("div", { class: "actual-line", text: buildActualText(pastLog, ex.exercise_id) }));
+  }
+
+  // pills (video / how-to / external link)
+  const pillRow = el("div", { class: "pill-row" });
+  if (meta.video_id) {
+    pillRow.append(el("button", { class: "pill video", type: "button", dataset: { action: "play-video" }, text: "▶ Watch demo" }));
+  } else if (meta.video_url) {
+    pillRow.append(el("a", { class: "pill video", href: meta.video_url, target: "_blank", rel: "noopener", text: "▶ Watch demo" }));
+  }
+  if (meta.instructions?.length || meta.form_cues?.length) {
+    pillRow.append(el("button", { class: "pill", type: "button", dataset: { action: "show-howto" }, text: "ℹ How to" }));
+  }
+  if (meta.info_url) {
+    pillRow.append(el("a", { class: "pill", href: meta.info_url, target: "_blank", rel: "noopener", text: "↗ M&S" }));
+  }
+
+  const exMeta = el("div", { class: "ex-meta" },
+    el("h3", { text: meta.name || ex.exercise_id }),
+    el("div", { class: "muscles", text: muscles }),
+    targetDiv,
+    pillRow,
+  );
+
+  // set list (header row + one row per logged set)
+  const setList = el("div", { class: "set-list" },
+    el("div", { class: "set-row set-header" },
+      el("span", { class: "set-num", text: "#" }),
+      el("span", { class: "col-label", text: `Weight (${unitLabel})` }),
+      el("span", { class: "col-label", text: "Reps" }),
+      el("span"),
+    ),
+  );
+  log.sets.forEach((s, i) => {
+    setList.append(el("div", { class: "set-row" + (s.done ? " done" : ""), dataset: { set: String(i) } },
+      el("span", { class: "set-num", text: String(i + 1) }),
+      el("input", { type: "number", inputmode: "decimal", step, placeholder: unitLabel, value: displayWeight(s.weight_kg), dataset: { field: "weight" } }),
+      el("input", { type: "number", inputmode: "numeric", step: "1", placeholder: "reps", value: s.reps ?? "", dataset: { field: "reps" } }),
+      el("button", { class: "done-btn", dataset: { action: "done" }, text: s.done ? "✓ Done" : "Done" }),
+    ));
+  });
+
+  const exBody = el("div", { class: "ex-body" },
+    setList,
+    el("button", { class: "add-set", dataset: { action: "add-set" }, text: "+ Add set" }),
+    el("textarea", { class: "ex-notes", placeholder: "Notes for this exercise…", value: log.notes }),
+  );
+
+  return el("section", { class: "ex-card", dataset: { exid: ex.exercise_id } },
+    el("div", { class: "ex-head" }, exImg, exMeta),
+    exBody,
+  );
+}
+
+function bindCardEvents(card, exId) {
+  const log = state.log[exId];
+  const meta = state.exercises[exId] || {};
+  // Lightbox on image tap
+  const imgWrap = card.querySelector(".ex-img");
+  if (meta.image_url) {
+    imgWrap.addEventListener("click", () => openLightbox(meta.image_url, meta.name || exId));
+  } else {
+    imgWrap.style.cursor = "default";
+  }
+  // Inline video player
+  const playBtn = card.querySelector('[data-action="play-video"]');
+  if (playBtn && meta.video_id) {
+    playBtn.addEventListener("click", () => openVideo(meta.video_id, meta.name || exId));
+  }
+  // How-to inline modal
+  const howtoBtn = card.querySelector('[data-action="show-howto"]');
+  if (howtoBtn) howtoBtn.addEventListener("click", () => openHowto(meta));
+  // Per-set inputs
+  card.querySelectorAll(".set-row:not(.set-header)").forEach(row => {
+    const idx = Number(row.dataset.set);
+    row.querySelector('input[data-field="weight"]').addEventListener("input", e => {
+      const kg = inputToKg(e.target.value);
+      log.sets[idx].weight_kg = kg == null ? null : roundTo(kg, 2);
+      hooks.markWorkoutDirty();
+    });
+    row.querySelector('input[data-field="reps"]').addEventListener("input", e => {
+      log.sets[idx].reps = e.target.value === "" ? null : Number(e.target.value);
+      hooks.markWorkoutDirty();
+    });
+    row.querySelector('[data-action="done"]').addEventListener("click", () => {
+      log.sets[idx].done = !log.sets[idx].done;
+      row.classList.toggle("done", log.sets[idx].done);
+      row.querySelector('[data-action="done"]').textContent = log.sets[idx].done ? "✓ Done" : "Done";
+      hooks.markWorkoutDirty();
+    });
+  });
+  card.querySelector('[data-action="add-set"]').addEventListener("click", () => {
+    const last = log.sets[log.sets.length - 1] || {};
+    log.sets.push({ weight_kg: last.weight_kg ?? null, reps: last.reps ?? null, done: false });
+    hooks.markWorkoutDirty();
+    hooks.renderApp();
+  });
+  card.querySelector(".ex-notes").addEventListener("input", e => {
+    log.notes = e.target.value;
+    hooks.markWorkoutDirty();
+  });
+}
+
+export function renderExercises() {
+  const host = document.querySelector("#exercises-host");
+  if (!host) return;
+  host.replaceChildren();
+  const day = state.routine?.days?.[state.selectedDay];
+  if (!day || !day.exercises?.length) {
+    host.append(el("div", { class: "rest-day-msg" },
+      document.createTextNode("Rest day — no scheduled exercises."),
+      el("br"),
+      document.createTextNode("Use the day toggle to see another day."),
+    ));
+    document.querySelector("#session-notes-host")?.classList.add("hidden");
+    document.querySelector("#submit-row")?.classList.add("hidden");
+    return;
+  }
+  for (const ex of day.exercises) {
+    const card = renderExerciseCard(state.routine, ex);
+    host.appendChild(card);
+    bindCardEvents(card, ex.exercise_id);
+  }
+  document.querySelector("#session-notes-host")?.classList.remove("hidden");
+  document.querySelector("#submit-row")?.classList.remove("hidden");
 }
