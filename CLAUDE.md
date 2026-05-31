@@ -27,6 +27,31 @@ The web app appends to `data/pending.json` via the GitHub Contents API using a P
 
 See `README.md` for deploy and how-to-log details.
 
+## Frontend module layout
+
+`index.html` is the orchestrator (boot, sign-in, `renderApp`, submit handlers, draft I/O, the document-level target-editor handler). Everything reusable lives in ES modules under `js/`, imported at the top of the inline `<script type="module">`. The split took `index.html` from ~2780 → ~2060 lines.
+
+Two interop patterns, by module type:
+
+- **Pure-logic modules use real DI** — they take arguments and return values, touch no globals: `util`, `storage`, `payloads`, `routines`, `pending`. Trivially unit-testable.
+- **Render modules share `state` + `hooks`** via `app-context.js`. `state` is the single mutable app-state object — every importer shares the same reference, so in-place mutation propagates (this deliberately relaxes pure DI for the render layer, which reads/writes state on nearly every line). `hooks` is a registry `index.html` fills at boot — `Object.assign(hooks, { renderApp, markWorkoutDirty, saveWorkoutDraft, getRoutineMode })` — so render modules can call back into index **without** a circular import.
+
+| Module | Owns | Key exports |
+|---|---|---|
+| `app-context.js` | shared `state` singleton, `hooks` registry, day constants | `state`, `hooks`, `DAYS`, `DAY_LABELS`, `todayKey`, `CD_CHOICE_KEY` |
+| `util.js` | pure helpers (kg↔lbs, rounding, formatting, escaping, dates) | `kgToLbs`, `lbsToKg`, `roundTo`, `fmtNum`, `escapeHtml`, `isoNow`, `localDateIso`, `dayTypeKey` |
+| `storage.js` | dupe-submit guard + draft GC | `payloadSignature`, `gcOldDrafts` |
+| `payloads.js` | pending-entry builders | `buildSessionPayload`, `buildSkipPayload`, `buildRecoveryPayload` |
+| `routines.js` | date → active-routine selection | `selectRoutineForDate` |
+| `pending.js` | pre-dedupe append (the slot-replace logic) | `mergePending` |
+| `ui.js` | toasts + modal open/close (howto, video, lightbox) | `toast`, `shortDate`, `openHowto`/`closeHowto`, `openVideo`/`closeVideo`, `openLightbox`/`closeLightbox` |
+| `recovery.js` | recovery-panel renderers (take `state` + an `onDirty` callback) | `ensureRecoveryRounds`, `renderRecoverySummary`, `renderRecoveryRounds` |
+| `workout.js` | workout day-view renderers (day toggle, exercise cards, cool-down) | `renderDayToggle`, `renderExercises`, `renderCooldown`, `renderExerciseCard`, `ensureLogState`, `dayLabel`, `cooldownStateKey` |
+
+**No `innerHTML` in render modules** — a PreToolUse hook blocks it, and it's the right call for user data anyway. Build DOM imperatively: `workout.js` uses a small `el(tag, props, ...kids)` helper; `ui.js`/`recovery.js` use `createElement` + `replaceChildren`/`textContent`. User data (exercise names, notes, cool-down moves) flows through `textContent`/`dataset`, never string interpolation.
+
+Tests: unit specs are co-located (`js/*.test.js`, run via `npm test` → vitest); browser flows live in `e2e/*.spec.js` (`npx playwright test`). The auth Worker has its own vitest suite under `worker/`.
+
 ## Critical conventions — DON'T BREAK
 
 1. **Storage canonical = kg. Display = lbs (user preference, kg toggle available).** Every `weight_kg` field is the truth. lbs is derived at render time. Don't refactor to lbs-canonical — analytics, parsers, and sync all depend on kg.
