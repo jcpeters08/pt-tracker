@@ -758,6 +758,7 @@ import { buildSessionPayload, buildSkipPayload, buildRecoveryPayload } from "./j
 import { selectRoutineForDate } from "./js/routines.js";
 import { mergePending } from "./js/pending.js";
 import { toast, shortDate, openHowto, closeHowto, openVideo, closeVideo, openLightbox, closeLightbox } from "./js/ui.js";
+import { ensureRecoveryRounds, renderRecoveryRounds, renderRecoverySummary } from "./js/recovery.js";
 "use strict";
 
 // ---- Config ---------------------------------------------------------------
@@ -1931,50 +1932,9 @@ function renderApp() {
 // ---- Recovery panel -------------------------------------------------------
 
 // Recovery panel state — rounds is a per-row [{sauna_min, plunge_min}, ...]
-function ensureRecoveryRounds() {
-  if (!state.recoveryRounds || !state.recoveryRounds.length) {
-    state.recoveryRounds = [
-      { sauna_min: 15, plunge_min: 4 },
-      { sauna_min: 15, plunge_min: 4 },
-      { sauna_min: 15, plunge_min: 4 },
-    ];
-  }
-  return state.recoveryRounds;
-}
+// ensureRecoveryRounds / renderRecoveryRounds / renderRecoverySummary → js/recovery.js
 
-function renderRecoveryRounds() {
-  const host = $("#rec-rounds-host");
-  if (!host) return;
-  const rounds = ensureRecoveryRounds();
-  host.innerHTML = rounds.map((r, i) => `
-    <div class="round-row" data-idx="${i}">
-      <span class="rnd-num">${i + 1}</span>
-      <input type="number" inputmode="numeric" min="0" max="60" step="1" value="${r.sauna_min ?? ""}" data-field="sauna" placeholder="15">
-      <input type="number" inputmode="numeric" min="0" max="30" step="1" value="${r.plunge_min ?? ""}" data-field="plunge" placeholder="4">
-      <button type="button" class="rnd-del" data-action="del" title="Remove round">×</button>
-    </div>
-  `).join("");
-  host.querySelectorAll(".round-row").forEach(row => {
-    const idx = Number(row.dataset.idx);
-    row.querySelector('input[data-field="sauna"]').addEventListener("input", e => {
-      rounds[idx].sauna_min = e.target.value === "" ? null : Number(e.target.value);
-      clearLastRecoverySig();
-      renderRecoverySummary();
-    });
-    row.querySelector('input[data-field="plunge"]').addEventListener("input", e => {
-      rounds[idx].plunge_min = e.target.value === "" ? null : Number(e.target.value);
-      clearLastRecoverySig();
-      renderRecoverySummary();
-    });
-    row.querySelector('[data-action="del"]').addEventListener("click", () => {
-      if (rounds.length <= 1) { toast("At least one round required.", "err"); return; }
-      rounds.splice(idx, 1);
-      clearLastRecoverySig();
-      renderRecoveryRounds();
-      renderRecoverySummary();
-    });
-  });
-}
+// renderRecoveryRounds → js/recovery.js
 
 // Any change to an exercise input or session notes should re-arm the workout
 // submit button AND persist the current state to localStorage as a draft.
@@ -2003,11 +1963,11 @@ const clearLastWorkoutSig = markWorkoutDirty;
 const clearLastRecoverySig = markRecoveryDirty;
 
 function addRecoveryRound() {
-  const rounds = ensureRecoveryRounds();
+  const rounds = ensureRecoveryRounds(state);
   const last = rounds[rounds.length - 1] || { sauna_min: 15, plunge_min: 4 };
   rounds.push({ sauna_min: last.sauna_min, plunge_min: last.plunge_min });
-  renderRecoveryRounds();
-  renderRecoverySummary();
+  renderRecoveryRounds(state, markRecoveryDirty);
+  renderRecoverySummary(state);
 }
 
 function hydrateRecoveryFromExisting(rec) {
@@ -2030,16 +1990,7 @@ function hydrateRecoveryFromExisting(rec) {
 // recoveryPayloadFromInputs → buildRecoveryPayload in js/payloads.js
 // (the submit handler gathers the DOM fields and passes them in).
 
-function renderRecoverySummary() {
-  const el = $("#rec-summary");
-  if (!el) return;
-  const rounds = state.recoveryRounds || [];
-  const total = rounds.reduce((s, r) => s + (r.sauna_min || 0) + (r.plunge_min || 0), 0);
-  const breakdown = rounds
-    .map((r, i) => `R${i+1}: ${r.sauna_min ?? 0}/${r.plunge_min ?? 0}`)
-    .join(" · ");
-  el.innerHTML = `<b>Total:</b> ${rounds.length} rounds, ${total} min &nbsp;<span style="color:var(--ink-muted)">${escapeHtml(breakdown)}</span>`;
-}
+// renderRecoverySummary → js/recovery.js
 
 function renderRecoveryPanel() {
   const date = state.workoutDate || localDateIso();
@@ -2073,8 +2024,8 @@ function renderRecoveryPanel() {
     state._recoveryHydratedFor = recDate;
   }
 
-  renderRecoveryRounds();
-  renderRecoverySummary();
+  renderRecoveryRounds(state, markRecoveryDirty);
+  renderRecoverySummary(state);
 
   // Status pill
   const head = $("#rec-head");
