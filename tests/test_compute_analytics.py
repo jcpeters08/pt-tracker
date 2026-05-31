@@ -162,5 +162,47 @@ class TestSessionCompliance(unittest.TestCase):
         self.assertNotIn("2026-W18", out["session_compliance"])
 
 
+class TestPersonalRecords(unittest.TestCase):
+    @staticmethod
+    def _log(date, weight, reps, ex="flat-db-bench-press"):
+        return {"id": f"{date}-monday-push", "date": date, "day_of_week": "monday",
+                "type": "push",
+                "exercises": [{"exercise_id": ex, "sets": [{"set": 1, "weight_kg": weight, "reps": reps}]}]}
+
+    def _records(self, logs, ex="flat-db-bench-press"):
+        out = _compute_repo(logs=logs)
+        return [r for r in out["personal_records"] if r["exercise_id"] == ex], out
+
+    def test_load_rep_and_volume_prs(self):
+        # 16x10 (baseline) -> 16x12 (rep_pr + volume_pr) -> 18x8 (load_pr).
+        logs = [self._log("2026-05-01", 16, 10),
+                self._log("2026-05-08", 16, 12),
+                self._log("2026-05-15", 18, 8)]
+        recs, _ = self._records(logs)
+        self.assertTrue(any(r["type"] == "rep_pr" and r["date"] == "2026-05-08" and r["delta_reps"] == 2 for r in recs))
+        self.assertTrue(any(r["type"] == "volume_pr" and r["date"] == "2026-05-08" and r["delta_volume_kg"] == 32 for r in recs))
+        self.assertTrue(any(r["type"] == "load_pr" and r["date"] == "2026-05-15" and r["delta_kg"] == 2 for r in recs))
+        # First session establishes baselines — no records on it.
+        self.assertFalse(any(r["date"] == "2026-05-01" for r in recs))
+
+    def test_legacy_prs_remains_load_only(self):
+        logs = [self._log("2026-05-01", 16, 10),
+                self._log("2026-05-08", 16, 12),   # rep gain — NOT a legacy PR
+                self._log("2026-05-15", 18, 8)]    # load gain — the only legacy PR
+        _, out = self._records(logs)
+        prs = [r for r in out["prs"] if r["exercise_id"] == "flat-db-bench-press"]
+        self.assertEqual(len(prs), 1)
+        self.assertEqual(prs[0]["date"], "2026-05-15")
+        self.assertEqual(prs[0]["weight_kg"], 18)
+
+    def test_lighter_weight_more_reps_is_not_a_rep_pr(self):
+        # After hitting 20kg, doing 16kg for more reps is backoff volume, not a rep PR.
+        logs = [self._log("2026-05-01", 20, 5),
+                self._log("2026-05-08", 16, 20)]
+        recs, _ = self._records(logs)
+        self.assertFalse(any(r["type"] == "rep_pr" for r in recs))
+        self.assertFalse(any(r["type"] == "load_pr" for r in recs))  # 16 < 20
+
+
 if __name__ == "__main__":
     unittest.main()

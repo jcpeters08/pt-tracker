@@ -7,7 +7,9 @@ Aggregates (see Web-App-Build-Brief for schema):
   - lifts_per_week:        ISO week → {day_of_week: type}
   - weekly_volume_by_muscle: list of {week, muscle, sets}
   - exercise_progression:   id → list of {date, top_set_weight_kg, top_set_reps, total_volume_kg}
-  - prs:                   list of {exercise_id, date, weight_kg, reps, delta_kg}
+  - prs:                   list of {exercise_id, date, weight_kg, reps, delta_kg} (load PRs; legacy)
+  - personal_records:      list of {exercise_id, date, type, ...}, type ∈
+                           load_pr / rep_pr / volume_pr (richer progress semantics)
   - session_compliance:    week → {planned, completed, completion_rate}; planned =
                            training days (days with exercises) in the routine whose
                            start_date falls in that ISO week (None if no routine maps)
@@ -127,6 +129,46 @@ def compute(repo_root: Path) -> dict:
                 best_kg = w
     prs.sort(key=lambda x: x["date"], reverse=True)
 
+    # personal_records: richer PR semantics alongside the legacy load-only `prs`.
+    #   load_pr   — heavier top-set weight than any prior session for the lift.
+    #   rep_pr    — same top-set weight as the current heaviest, but more reps.
+    #   volume_pr — higher total session volume for the lift than any prior.
+    # A single session can produce more than one record type. The first session
+    # for a lift establishes baselines and yields no records.
+    personal_records: list[dict] = []
+    for ex_id, entries in progression.items():
+        best_w: float | None = None
+        best_reps_at_top = 0
+        best_vol: float | None = None
+        for e in entries:
+            w = e["top_set_weight_kg"] or 0
+            r = e["top_set_reps"] or 0
+            v = e["total_volume_kg"] or 0
+            if best_w is None:
+                best_w, best_reps_at_top = w, r
+            elif w > best_w:
+                personal_records.append({
+                    "exercise_id": ex_id, "date": e["date"], "type": "load_pr",
+                    "weight_kg": w, "reps": r, "delta_kg": round(w - best_w, 1),
+                })
+                best_w, best_reps_at_top = w, r
+            elif w == best_w and r > best_reps_at_top:
+                personal_records.append({
+                    "exercise_id": ex_id, "date": e["date"], "type": "rep_pr",
+                    "weight_kg": w, "reps": r, "delta_reps": r - best_reps_at_top,
+                })
+                best_reps_at_top = r
+            if best_vol is None:
+                best_vol = v
+            elif v > best_vol:
+                personal_records.append({
+                    "exercise_id": ex_id, "date": e["date"], "type": "volume_pr",
+                    "weight_kg": w, "reps": r, "total_volume_kg": v,
+                    "delta_volume_kg": round(v - best_vol, 1),
+                })
+                best_vol = v
+    personal_records.sort(key=lambda x: x["date"], reverse=True)
+
     # session_compliance: planned vs completed per ISO week.
     #   planned   = training days (days with exercises) in the routine whose
     #               start_date falls in that ISO week. None when no routine maps
@@ -208,6 +250,7 @@ def compute(repo_root: Path) -> dict:
         "weekly_volume_by_muscle": weekly_volume,
         "exercise_progression": dict(progression),
         "prs": prs,
+        "personal_records": personal_records,
         "session_compliance": session_compliance,
         "recovery_by_week": recovery_by_week,
     }

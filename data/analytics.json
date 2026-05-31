@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-31T04:11:14Z",
+  "generated_at": "2026-05-31T04:28:17Z",
   "log_count": 25,
   "recovery_count": 6,
   "lifts_per_week": {
@@ -1664,6 +1664,518 @@
       "weight_kg": 40.0,
       "reps": 10,
       "delta_kg": 35.0
+    }
+  ],
+  "personal_records": [
+    {
+      "exercise_id": "single-leg-calf-raise",
+      "date": "2026-05-29",
+      "type": "volume_pr",
+      "weight_kg": 9.0,
+      "reps": 15,
+      "total_volume_kg": 405.0,
+      "delta_volume_kg": 69.0
+    },
+    {
+      "exercise_id": "db-skullcrusher",
+      "date": "2026-05-29",
+      "type": "load_pr",
+      "weight_kg": 13.6,
+      "reps": 15,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "db-skullcrusher",
+      "date": "2026-05-29",
+      "type": "volume_pr",
+      "weight_kg": 13.6,
+      "reps": 15,
+      "total_volume_kg": 408.0,
+      "delta_volume_kg": 1.2
+    },
+    {
+      "exercise_id": "seated-db-shoulder-press",
+      "date": "2026-05-28",
+      "type": "load_pr",
+      "weight_kg": 15.9,
+      "reps": 12,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "cable-chest-fly",
+      "date": "2026-05-28",
+      "type": "volume_pr",
+      "weight_kg": 7.0,
+      "reps": 15,
+      "total_volume_kg": 308.0,
+      "delta_volume_kg": 35.0
+    },
+    {
+      "exercise_id": "overhead-db-tricep-extension",
+      "date": "2026-05-28",
+      "type": "rep_pr",
+      "weight_kg": 11.3,
+      "reps": 14,
+      "delta_reps": 2
+    },
+    {
+      "exercise_id": "overhead-db-tricep-extension",
+      "date": "2026-05-28",
+      "type": "volume_pr",
+      "weight_kg": 11.3,
+      "reps": 14,
+      "total_volume_kg": 429.4,
+      "delta_volume_kg": 45.2
+    },
+    {
+      "exercise_id": "barbell-back-squat",
+      "date": "2026-05-28",
+      "type": "load_pr",
+      "weight_kg": 43.0,
+      "reps": 8,
+      "delta_kg": 2.2
+    },
+    {
+      "exercise_id": "barbell-rdl",
+      "date": "2026-05-28",
+      "type": "rep_pr",
+      "weight_kg": 43.0,
+      "reps": 10,
+      "delta_reps": 1
+    },
+    {
+      "exercise_id": "barbell-rdl",
+      "date": "2026-05-28",
+      "type": "volume_pr",
+      "weight_kg": 43.0,
+      "reps": 10,
+      "total_volume_kg": 1290.0,
+      "delta_volume_kg": 301.0
+    },
+    {
+      "exercise_id": "db-hip-thrust",
+      "date": "2026-05-28",
+      "type": "rep_pr",
+      "weight_kg": 22.5,
+      "reps": 12,
+      "delta_reps": 2
+    },
+    {
+      "exercise_id": "db-hip-thrust",
+      "date": "2026-05-28",
+      "type": "volume_pr",
+      "weight_kg": 22.5,
+      "reps": 12,
+      "total_volume_kg": 810.0,
+      "delta_volume_kg": 360.0
+    },
+    {
+      "exercise_id": "calf-raise",
+      "date": "2026-05-27",
+      "type": "load_pr",
+      "weight_kg": 41.0,
+      "reps": 15,
+      "delta_kg": 1.0
+    },
+    {
+      "exercise_id": "calf-raise",
+      "date": "2026-05-27",
+      "type": "volume_pr",
+      "weight_kg": 41.0,
+      "reps": 15,
+      "total_volume_kg": 1845.0,
+      "delta_volume_kg": 45.0
+    },
+    {
+      "exercise_id": "seated-cable-row",
+      "date": "2026-05-26",
+      "type": "load_pr",
+      "weight_kg": 25.0,
+      "reps": 20,
+      "delta_kg": 5.0
+    },
+    {
+      "exercise_id": "seated-cable-row",
+      "date": "2026-05-26",
+      "type": "volume_pr",
+      "weight_kg": 25.0,
+      "reps": 20,
+      "total_volume_kg": 1300.0,
+      "delta_volume_kg": 580.0
+    },
+    {
+      "exercise_id": "cable-face-pull",
+      "date": "2026-05-26",
+      "type": "load_pr",
+      "weight_kg": 15.9,
+      "reps": 15,
+      "delta_kg": 4.6
+    },
+    {
+      "exercise_id": "cable-face-pull",
+      "date": "2026-05-26",
+      "type": "volume_pr",
+      "weight_kg": 15.9,
+      "reps": 15,
+      "total_volume_kg": 715.5,
+      "delta_volume_kg": 207.0
+    },
+    {
+      "exercise_id": "incline-db-bench-press",
+      "date": "2026-05-18",
+      "type": "load_pr",
+      "weight_kg": 16.0,
+      "reps": 15,
+      "delta_kg": 2.0
+    },
+    {
+      "exercise_id": "incline-db-bench-press",
+      "date": "2026-05-18",
+      "type": "volume_pr",
+      "weight_kg": 16.0,
+      "reps": 15,
+      "total_volume_kg": 720.0,
+      "delta_volume_kg": 90.0
+    },
+    {
+      "exercise_id": "cable-chest-fly",
+      "date": "2026-05-18",
+      "type": "load_pr",
+      "weight_kg": 7.0,
+      "reps": 15,
+      "delta_kg": 0.2
+    },
+    {
+      "exercise_id": "cable-chest-fly",
+      "date": "2026-05-18",
+      "type": "volume_pr",
+      "weight_kg": 7.0,
+      "reps": 15,
+      "total_volume_kg": 273.0,
+      "delta_volume_kg": 41.8
+    },
+    {
+      "exercise_id": "seated-db-shoulder-press",
+      "date": "2026-05-14",
+      "type": "load_pr",
+      "weight_kg": 13.6,
+      "reps": 15,
+      "delta_kg": 3.6
+    },
+    {
+      "exercise_id": "seated-db-shoulder-press",
+      "date": "2026-05-14",
+      "type": "volume_pr",
+      "weight_kg": 13.6,
+      "reps": 15,
+      "total_volume_kg": 612.0,
+      "delta_volume_kg": 162.0
+    },
+    {
+      "exercise_id": "db-curl",
+      "date": "2026-05-14",
+      "type": "load_pr",
+      "weight_kg": 11.3,
+      "reps": 10,
+      "delta_kg": 1.3
+    },
+    {
+      "exercise_id": "cable-face-pull",
+      "date": "2026-05-14",
+      "type": "load_pr",
+      "weight_kg": 11.3,
+      "reps": 15,
+      "delta_kg": 1.3
+    },
+    {
+      "exercise_id": "cable-face-pull",
+      "date": "2026-05-14",
+      "type": "volume_pr",
+      "weight_kg": 11.3,
+      "reps": 15,
+      "total_volume_kg": 508.5,
+      "delta_volume_kg": 58.5
+    },
+    {
+      "exercise_id": "single-arm-db-row",
+      "date": "2026-05-14",
+      "type": "volume_pr",
+      "weight_kg": 15.9,
+      "reps": 15,
+      "total_volume_kg": 715.5,
+      "delta_volume_kg": 475.5
+    },
+    {
+      "exercise_id": "seated-db-shoulder-press",
+      "date": "2026-05-01",
+      "type": "load_pr",
+      "weight_kg": 10.0,
+      "reps": 15,
+      "delta_kg": 5.0
+    },
+    {
+      "exercise_id": "seated-db-shoulder-press",
+      "date": "2026-05-01",
+      "type": "volume_pr",
+      "weight_kg": 10.0,
+      "reps": 15,
+      "total_volume_kg": 450.0,
+      "delta_volume_kg": 150.0
+    },
+    {
+      "exercise_id": "barbell-curl",
+      "date": "2026-05-01",
+      "type": "load_pr",
+      "weight_kg": 25.0,
+      "reps": 10,
+      "delta_kg": 5.0
+    },
+    {
+      "exercise_id": "barbell-curl",
+      "date": "2026-05-01",
+      "type": "volume_pr",
+      "weight_kg": 25.0,
+      "reps": 10,
+      "total_volume_kg": 700.0,
+      "delta_volume_kg": 100.0
+    },
+    {
+      "exercise_id": "incline-db-bench-press",
+      "date": "2026-04-29",
+      "type": "load_pr",
+      "weight_kg": 14.0,
+      "reps": 15,
+      "delta_kg": 2.0
+    },
+    {
+      "exercise_id": "incline-db-bench-press",
+      "date": "2026-04-29",
+      "type": "volume_pr",
+      "weight_kg": 14.0,
+      "reps": 15,
+      "total_volume_kg": 630.0,
+      "delta_volume_kg": 90.0
+    },
+    {
+      "exercise_id": "flat-db-bench-press",
+      "date": "2026-04-29",
+      "type": "load_pr",
+      "weight_kg": 18.0,
+      "reps": 15,
+      "delta_kg": 2.0
+    },
+    {
+      "exercise_id": "flat-db-bench-press",
+      "date": "2026-04-29",
+      "type": "volume_pr",
+      "weight_kg": 18.0,
+      "reps": 15,
+      "total_volume_kg": 810.0,
+      "delta_volume_kg": 90.0
+    },
+    {
+      "exercise_id": "lat-pulldown",
+      "date": "2026-04-28",
+      "type": "volume_pr",
+      "weight_kg": 40.0,
+      "reps": 12,
+      "total_volume_kg": 1440.0,
+      "delta_volume_kg": 90.0
+    },
+    {
+      "exercise_id": "barbell-curl",
+      "date": "2026-04-28",
+      "type": "rep_pr",
+      "weight_kg": 20.0,
+      "reps": 10,
+      "delta_reps": 2
+    },
+    {
+      "exercise_id": "barbell-curl",
+      "date": "2026-04-28",
+      "type": "volume_pr",
+      "weight_kg": 20.0,
+      "reps": 10,
+      "total_volume_kg": 600.0,
+      "delta_volume_kg": 120.0
+    },
+    {
+      "exercise_id": "incline-db-bench-press",
+      "date": "2026-04-22",
+      "type": "load_pr",
+      "weight_kg": 12.0,
+      "reps": 15,
+      "delta_kg": 2.0
+    },
+    {
+      "exercise_id": "incline-db-bench-press",
+      "date": "2026-04-22",
+      "type": "volume_pr",
+      "weight_kg": 12.0,
+      "reps": 15,
+      "total_volume_kg": 540.0,
+      "delta_volume_kg": 90.0
+    },
+    {
+      "exercise_id": "flat-db-bench-press",
+      "date": "2026-04-22",
+      "type": "load_pr",
+      "weight_kg": 16.0,
+      "reps": 15,
+      "delta_kg": 2.0
+    },
+    {
+      "exercise_id": "flat-db-bench-press",
+      "date": "2026-04-22",
+      "type": "volume_pr",
+      "weight_kg": 16.0,
+      "reps": 15,
+      "total_volume_kg": 720.0,
+      "delta_volume_kg": 90.0
+    },
+    {
+      "exercise_id": "rope-tricep-pushdown",
+      "date": "2026-04-22",
+      "type": "load_pr",
+      "weight_kg": 20.0,
+      "reps": 15,
+      "delta_kg": 5.0
+    },
+    {
+      "exercise_id": "rope-tricep-pushdown",
+      "date": "2026-04-22",
+      "type": "volume_pr",
+      "weight_kg": 20.0,
+      "reps": 15,
+      "total_volume_kg": 900.0,
+      "delta_volume_kg": 450.0
+    },
+    {
+      "exercise_id": "lat-pulldown",
+      "date": "2026-04-21",
+      "type": "load_pr",
+      "weight_kg": 45.0,
+      "reps": 10,
+      "delta_kg": 20.0
+    },
+    {
+      "exercise_id": "lat-pulldown",
+      "date": "2026-04-21",
+      "type": "volume_pr",
+      "weight_kg": 45.0,
+      "reps": 10,
+      "total_volume_kg": 1350.0,
+      "delta_volume_kg": 450.0
+    },
+    {
+      "exercise_id": "plate-loaded-deadlift-machine",
+      "date": "2026-04-20",
+      "type": "load_pr",
+      "weight_kg": 50.0,
+      "reps": 15,
+      "delta_kg": 10.0
+    },
+    {
+      "exercise_id": "plate-loaded-deadlift-machine",
+      "date": "2026-04-20",
+      "type": "volume_pr",
+      "weight_kg": 50.0,
+      "reps": 15,
+      "total_volume_kg": 2250.0,
+      "delta_volume_kg": 450.0
+    },
+    {
+      "exercise_id": "machine-squat",
+      "date": "2026-04-20",
+      "type": "load_pr",
+      "weight_kg": 53.0,
+      "reps": 12,
+      "delta_kg": 3.0
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "date": "2026-04-20",
+      "type": "load_pr",
+      "weight_kg": 28.0,
+      "reps": 15,
+      "delta_kg": 3.0
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "date": "2026-04-20",
+      "type": "volume_pr",
+      "weight_kg": 28.0,
+      "reps": 15,
+      "total_volume_kg": 1260.0,
+      "delta_volume_kg": 135.0
+    },
+    {
+      "exercise_id": "leg-press",
+      "date": "2026-04-20",
+      "type": "load_pr",
+      "weight_kg": 120.0,
+      "reps": 20,
+      "delta_kg": 10.0
+    },
+    {
+      "exercise_id": "leg-press",
+      "date": "2026-04-20",
+      "type": "volume_pr",
+      "weight_kg": 120.0,
+      "reps": 20,
+      "total_volume_kg": 7200.0,
+      "delta_volume_kg": 2250.0
+    },
+    {
+      "exercise_id": "plate-loaded-deadlift-machine",
+      "date": "2026-04-16",
+      "type": "rep_pr",
+      "weight_kg": 40.0,
+      "reps": 15,
+      "delta_reps": 5
+    },
+    {
+      "exercise_id": "plate-loaded-deadlift-machine",
+      "date": "2026-04-16",
+      "type": "volume_pr",
+      "weight_kg": 40.0,
+      "reps": 15,
+      "total_volume_kg": 1800.0,
+      "delta_volume_kg": 1000.0
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "date": "2026-04-16",
+      "type": "rep_pr",
+      "weight_kg": 25.0,
+      "reps": 15,
+      "delta_reps": 3
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "date": "2026-04-16",
+      "type": "volume_pr",
+      "weight_kg": 25.0,
+      "reps": 15,
+      "total_volume_kg": 1125.0,
+      "delta_volume_kg": 225.0
+    },
+    {
+      "exercise_id": "plate-loaded-deadlift-machine",
+      "date": "2026-04-14",
+      "type": "load_pr",
+      "weight_kg": 40.0,
+      "reps": 10,
+      "delta_kg": 35.0
+    },
+    {
+      "exercise_id": "plate-loaded-deadlift-machine",
+      "date": "2026-04-14",
+      "type": "volume_pr",
+      "weight_kg": 40.0,
+      "reps": 10,
+      "total_volume_kg": 800.0,
+      "delta_volume_kg": 700.0
     }
   ],
   "session_compliance": {
