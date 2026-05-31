@@ -5,9 +5,11 @@
   "type": "module",
   "description": "Frontend (index.html / reports.html) pure-helper unit tests.",
   "scripts": {
-    "test": "vitest run"
+    "test": "vitest run",
+    "e2e": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "vitest": "^4.1.7"
   }
 }
