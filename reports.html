@@ -94,7 +94,7 @@
 
   <section class="section">
     <h2>Session compliance</h2>
-    <p class="subtle">Sessions logged per ISO week.</p>
+    <p class="subtle">Planned vs completed sessions per ISO week (hover for completion rate).</p>
     <div class="chart-host" style="height:200px"><canvas id="compliance-chart"></canvas></div>
   </section>
 
@@ -237,17 +237,37 @@ function renderComplianceChart(analytics) {
     type: "bar",
     data: {
       labels: weeks,
-      datasets: [{
-        label: "Sessions logged",
-        data: weeks.map(w => compliance[w].completed || 0),
-        backgroundColor: "#B23A3A",
-      }],
+      datasets: [
+        {
+          label: "Planned",
+          // null (no routine maps to the week) renders as a gap, not a 0 bar.
+          data: weeks.map(w => compliance[w].planned ?? null),
+          backgroundColor: "#D9A6A6",
+        },
+        {
+          label: "Completed",
+          data: weeks.map(w => compliance[w].completed || 0),
+          backgroundColor: "#B23A3A",
+        },
+      ],
     },
     options: {
       maintainAspectRatio: false,
       responsive: true,
       scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
-      plugins: { legend: { display: false } },
+      plugins: {
+        legend: { display: true },
+        tooltip: {
+          callbacks: {
+            afterBody: (items) => {
+              const c = compliance[items[0]?.label] || {};
+              return c.completion_rate == null
+                ? ""
+                : `Completion: ${Math.round(c.completion_rate * 100)}%`;
+            },
+          },
+        },
+      },
     },
   });
 }
