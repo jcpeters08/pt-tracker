@@ -759,7 +759,8 @@ import { selectRoutineForDate } from "./js/routines.js";
 import { mergePending } from "./js/pending.js";
 import { toast, shortDate, openHowto, closeHowto, openVideo, closeVideo, openLightbox, closeLightbox } from "./js/ui.js";
 import { ensureRecoveryRounds, renderRecoveryRounds, renderRecoverySummary } from "./js/recovery.js";
-import { state, hooks } from "./js/app-context.js";
+import { state, hooks, todayKey } from "./js/app-context.js";
+import { dayLabel, renderDayToggle } from "./js/workout.js";
 "use strict";
 
 // ---- Config ---------------------------------------------------------------
@@ -777,8 +778,7 @@ const REC_DRAFT_PREFIX = "pt_tracker_recovery_draft_v1:"; // recovery drafts, ke
 const DRAFT_GC_DAYS = 5;                              // drafts older than N days dropped on boot
 const PENDING_PATH = "data/pending.json";
 
-const DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
-const DAY_LABELS = { monday:"Mon", tuesday:"Tue", wednesday:"Wed", thursday:"Thu", friday:"Fri", saturday:"Sat", sunday:"Sun" };
+// DAYS / DAY_LABELS / todayKey → js/app-context.js
 
 // ---- State ----------------------------------------------------------------
 
@@ -831,7 +831,7 @@ const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
 // escapeHtml / isoNow / localDateIso → imported from ./js/util.js
-function todayKey() { return DAYS[(new Date().getDay() + 6) % 7]; }
+// todayKey → js/app-context.js
 // toast → js/ui.js
 function b64encodeUtf8(s) { return btoa(unescape(encodeURIComponent(s))); }
 function b64decodeUtf8(s) { return decodeURIComponent(escape(atob(s.replace(/\n/g, "")))); }
@@ -1358,34 +1358,9 @@ function bindPatPanel() {
 
 // ---- UI: day toggle + exercise cards --------------------------------------
 
-function dayLabel(key) {
-  const day = state.routine?.days?.[key];
-  return day?.label?.split("(")[0]?.trim() || (day?.exercises?.length ? "Workout" : "Rest");
-}
+// dayLabel → js/workout.js
 
-function renderDayToggle() {
-  const today = todayKey();
-  const host = $("#day-toggle");
-  host.innerHTML = "";
-  for (const key of DAYS) {
-    const day = state.routine?.days?.[key];
-    const hasExercises = !!(day?.exercises?.length);
-    const btn = document.createElement("button");
-    btn.className = "day-pill";
-    if (key === state.selectedDay) btn.classList.add("active");
-    if (key === today) btn.classList.add("today");
-    if (!hasExercises) btn.classList.add("rest");
-    btn.innerHTML = `${DAY_LABELS[key]}<span class="day-label">${escapeHtml(hasExercises ? dayLabel(key) : "—")}</span>`;
-    btn.addEventListener("click", () => {
-      state.selectedDay = key;
-      // Clear in-progress edits so cards re-hydrate from whatever's logged
-      // (or routine targets) for the newly-selected day.
-      state.log = {};
-      renderApp();
-    });
-    host.appendChild(btn);
-  }
-}
+// renderDayToggle → js/workout.js
 
 function renderWarmup(day) {
   const host = $("#warmup-host");

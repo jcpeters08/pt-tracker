@@ -39,3 +39,8 @@ export const state = {
 
 // Populated by index.html at boot (see Object.assign(hooks, {...})).
 export const hooks = {};
+
+// Day-of-week constants + helper, shared by index.html and the render modules.
+export const DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+export const DAY_LABELS = { monday: "Mon", tuesday: "Tue", wednesday: "Wed", thursday: "Thu", friday: "Fri", saturday: "Sat", sunday: "Sun" };
+export function todayKey() { return DAYS[(new Date().getDay() + 6) % 7]; }
