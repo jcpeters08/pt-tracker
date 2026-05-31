@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-31T04:09:05Z",
+  "generated_at": "2026-05-31T04:11:14Z",
   "log_count": 25,
   "recovery_count": 6,
   "lifts_per_week": {
@@ -1669,27 +1669,38 @@
   "session_compliance": {
     "2026-W16": {
       "planned": null,
-      "completed": 5
+      "completed": 5,
+      "completion_rate": null
     },
     "2026-W17": {
       "planned": null,
-      "completed": 4
+      "completed": 4,
+      "completion_rate": null
     },
     "2026-W18": {
       "planned": null,
-      "completed": 5
+      "completed": 5,
+      "completion_rate": null
+    },
+    "2026-W19": {
+      "planned": 4,
+      "completed": 0,
+      "completion_rate": 0.0
     },
     "2026-W20": {
-      "planned": null,
-      "completed": 4
+      "planned": 4,
+      "completed": 4,
+      "completion_rate": 1.0
     },
     "2026-W21": {
-      "planned": null,
-      "completed": 1
+      "planned": 5,
+      "completed": 1,
+      "completion_rate": 0.2
     },
     "2026-W22": {
-      "planned": null,
-      "completed": 6
+      "planned": 5,
+      "completed": 6,
+      "completion_rate": 1.2
     }
   },
   "recovery_by_week": {

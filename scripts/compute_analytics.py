@@ -8,7 +8,9 @@ Aggregates (see Web-App-Build-Brief for schema):
   - weekly_volume_by_muscle: list of {week, muscle, sets}
   - exercise_progression:   id → list of {date, top_set_weight_kg, top_set_reps, total_volume_kg}
   - prs:                   list of {exercise_id, date, weight_kg, reps, delta_kg}
-  - session_compliance:    week → {planned, completed} (planned filled by sync from routine)
+  - session_compliance:    week → {planned, completed, completion_rate}; planned =
+                           training days (days with exercises) in the routine whose
+                           start_date falls in that ISO week (None if no routine maps)
 """
 
 from __future__ import annotations
@@ -125,15 +127,47 @@ def compute(repo_root: Path) -> dict:
                 best_kg = w
     prs.sort(key=lambda x: x["date"], reverse=True)
 
-    # session_compliance: completed = number of distinct days logged that week.
-    # planned is filled by sync.py from routine JSONs (left empty here).
+    # session_compliance: planned vs completed per ISO week.
+    #   planned   = training days (days with exercises) in the routine whose
+    #               start_date falls in that ISO week. None when no routine maps
+    #               to the week (Phase 1 trainer weeks, historical logs, etc.).
+    #   completed = number of (non-skip) workout logs whose date falls in the week.
+    #               Skip markers produce no log JSON, so they are not counted here;
+    #               a dedicated `skipped` count needs skip snapshots (future work).
+    #   completion_rate = completed / planned, when planned is known and > 0.
     completed_per_week: dict[str, int] = defaultdict(int)
     for log in logs:
         completed_per_week[_iso_week(log["date"])] += 1
-    session_compliance = {
-        w: {"planned": None, "completed": n}
-        for w, n in sorted(completed_per_week.items())
-    }
+
+    planned_per_week: dict[str, int] = {}
+    routines_dir = repo_root / "data" / "routines"
+    if routines_dir.exists():
+        for f in sorted(routines_dir.glob("*.json")):
+            try:
+                routine = _load_json(f)
+            except Exception as e:
+                print(f"  WARN: bad routine json {f.name}: {e}", file=sys.stderr)
+                continue
+            start = routine.get("start_date")
+            if not start:
+                continue
+            n_planned = sum(
+                1 for day in (routine.get("days") or {}).values() if day.get("exercises")
+            )
+            wk = _iso_week(start)
+            # Defensive: if two routines map to one ISO week, keep the larger count.
+            planned_per_week[wk] = max(planned_per_week.get(wk, 0), n_planned)
+
+    session_compliance = {}
+    for w in sorted(set(completed_per_week) | set(planned_per_week)):
+        planned = planned_per_week.get(w)
+        completed = completed_per_week.get(w, 0)
+        completion_rate = round(completed / planned, 2) if planned else None
+        session_compliance[w] = {
+            "planned": planned,
+            "completed": completed,
+            "completion_rate": completion_rate,
+        }
 
     # Recovery aggregations
     recovery_per_week: dict[str, int] = defaultdict(int)

@@ -33,6 +33,22 @@ def _compute_with_recovery(entries: list[dict]) -> dict:
         return ca.compute(root)
 
 
+def _compute_repo(routines: list[dict] | None = None, logs: list[dict] | None = None,
+                  recovery: list[dict] | None = None) -> dict:
+    """Run ca.compute against a temp repo built from the given JSON entries."""
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        for sub in ("routines", "logs", "recovery_logs", "exercises"):
+            (root / "data" / sub).mkdir(parents=True)
+        for r in routines or []:
+            (root / "data" / "routines" / f"{r['id']}.json").write_text(json.dumps(r), encoding="utf-8")
+        for lg in logs or []:
+            (root / "data" / "logs" / f"{lg['id']}.json").write_text(json.dumps(lg), encoding="utf-8")
+        for rec in recovery or []:
+            (root / "data" / "recovery_logs" / f"{rec['id']}.json").write_text(json.dumps(rec), encoding="utf-8")
+        return ca.compute(root)
+
+
 class TestRecoveryAnalytics(unittest.TestCase):
     def test_uneven_rounds_detail_uses_direct_sum_not_rounds_times_average(self):
         # rounds_detail sums to (35, 8). The rounded per-round averages are
@@ -93,6 +109,57 @@ class TestRecoveryAnalytics(unittest.TestCase):
         rbw = out["recovery_by_week"][wk]
         self.assertEqual(rbw["sauna_min_total"], 45)   # 3 * 15
         self.assertEqual(rbw["plunge_min_total"], 12)  # 3 * 4
+
+
+class TestSessionCompliance(unittest.TestCase):
+    @staticmethod
+    def _routine(rid, start_date, exercise_days, empty_days=()):
+        days = {}
+        for d in exercise_days:
+            days[d] = {"label": d, "exercises": [
+                {"exercise_id": "plank", "sets": [{"set": 1, "weight_kg": 0, "reps": 10}]}]}
+        for d in empty_days:
+            days[d] = {"label": d, "exercises": []}
+        return {"id": rid, "name": rid, "start_date": start_date, "end_date": None, "days": days}
+
+    @staticmethod
+    def _log(date, day, type_="push"):
+        return {"id": f"{date}-{day}-{type_}", "date": date, "day_of_week": day,
+                "type": type_, "exercises": []}
+
+    def test_planned_counts_nonempty_days_only(self):
+        r = self._routine("2026-W21-x", "2026-05-18",
+                           ["monday", "wednesday", "thursday", "friday"], empty_days=["tuesday"])
+        out = _compute_repo(routines=[r])
+        wk = ca._iso_week("2026-05-18")  # 2026-W21
+        self.assertEqual(out["session_compliance"][wk]["planned"], 4)  # Tue OFF excluded
+
+    def test_completed_and_completion_rate(self):
+        r = self._routine("2026-W21-x", "2026-05-18",
+                           ["monday", "wednesday", "thursday", "friday"])
+        logs = [self._log("2026-05-18", "monday"), self._log("2026-05-20", "wednesday")]
+        out = _compute_repo(routines=[r], logs=logs)
+        sc = out["session_compliance"][ca._iso_week("2026-05-18")]
+        self.assertEqual(sc["planned"], 4)
+        self.assertEqual(sc["completed"], 2)
+        self.assertEqual(sc["completion_rate"], 0.5)
+
+    def test_week_with_logs_but_no_routine_has_null_planned(self):
+        logs = [self._log("2026-04-27", "monday", "legs")]  # ISO W18 — no routine maps here
+        out = _compute_repo(logs=logs)
+        sc = out["session_compliance"][ca._iso_week("2026-04-27")]
+        self.assertIsNone(sc["planned"])
+        self.assertEqual(sc["completed"], 1)
+        self.assertIsNone(sc["completion_rate"])
+
+    def test_planned_keys_by_iso_week_of_start_date_w18_lands_on_w19(self):
+        # A routine named W18 but starting 2026-05-04 maps to ISO W19 (post-C8 fix),
+        # not W18 — planned follows the calendar week of start_date.
+        r = self._routine("2026-W18-CDMX", "2026-05-04",
+                           ["monday", "tuesday", "wednesday", "thursday"])
+        out = _compute_repo(routines=[r])
+        self.assertEqual(out["session_compliance"]["2026-W19"]["planned"], 4)
+        self.assertNotIn("2026-W18", out["session_compliance"])
 
 
 if __name__ == "__main__":
