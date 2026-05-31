@@ -757,6 +757,7 @@ import { payloadSignature, gcOldDrafts } from "./js/storage.js";
 import { buildSessionPayload, buildSkipPayload, buildRecoveryPayload } from "./js/payloads.js";
 import { selectRoutineForDate } from "./js/routines.js";
 import { mergePending } from "./js/pending.js";
+import { toast, shortDate, openHowto, closeHowto, openVideo, closeVideo, openLightbox, closeLightbox } from "./js/ui.js";
 "use strict";
 
 // ---- Config ---------------------------------------------------------------
@@ -855,15 +856,7 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
 // escapeHtml / isoNow / localDateIso → imported from ./js/util.js
 function todayKey() { return DAYS[(new Date().getDay() + 6) % 7]; }
-function toast(msg, kind) {
-  const t = $("#toast");
-  t.textContent = msg;
-  t.classList.toggle("err", kind === "err");
-  t.classList.toggle("ok",  kind === "ok");
-  t.classList.add("show");
-  clearTimeout(toast._t);
-  toast._t = setTimeout(() => t.classList.remove("show"), 2400);
-}
+// toast → js/ui.js
 function b64encodeUtf8(s) { return btoa(unescape(encodeURIComponent(s))); }
 function b64decodeUtf8(s) { return decodeURIComponent(escape(atob(s.replace(/\n/g, "")))); }
 
@@ -1242,11 +1235,7 @@ function getRoutineMode(routine) {
   return "past";
 }
 
-function shortDate(iso) {
-  if (!iso) return "?";
-  const parts = iso.split("-");
-  return `${parseInt(parts[1], 10)}/${parseInt(parts[2], 10)}`;
-}
+// shortDate → js/ui.js
 
 async function loadCooldowns() {
   if (state.cooldowns) return;
@@ -2285,67 +2274,11 @@ function syncUnitToggleUI() {
   });
 }
 
-function openHowto(meta) {
-  const modal = $("#howto-modal");
-  $("#ht-title").textContent = meta.name || meta.id || "";
-  const muscles = [meta.primary_muscle, ...(meta.secondary_muscles || [])].filter(Boolean).join(" · ");
-  $("#ht-muscles").textContent = muscles;
-  const parts = [];
-  if (meta.instructions?.length) {
-    parts.push("<h4>Steps</h4><ol>" + meta.instructions.map(s => `<li>${escapeHtml(s)}</li>`).join("") + "</ol>");
-  }
-  if (meta.form_cues?.length) {
-    parts.push("<h4>Form cues</h4><ul>" + meta.form_cues.map(s => `<li>${escapeHtml(s)}</li>`).join("") + "</ul>");
-  }
-  if (meta.equipment?.length) {
-    parts.push(`<h4>Equipment</h4><p style="margin:4px 0">${escapeHtml(meta.equipment.join(", "))}</p>`);
-  }
-  if (meta.info_url) {
-    parts.push(`<a class="ht-link" href="${escapeHtml(meta.info_url)}" target="_blank" rel="noopener">Read full article on muscleandstrength.com →</a>`);
-  }
-  $("#ht-body").innerHTML = parts.join("");
-  modal.classList.add("show");
-  document.body.style.overflow = "hidden";
-}
-function closeHowto() {
-  $("#howto-modal").classList.remove("show");
-  document.body.style.overflow = "";
-}
+// openHowto / closeHowto → js/ui.js
 
-function openVideo(videoId, caption) {
-  const modal = $("#video-modal");
-  const host = $("#vm-iframe-host");
-  // Build the iframe fresh each time so prior video stops cleanly.
-  host.innerHTML = `<iframe
-    src="https://www.youtube.com/embed/${encodeURIComponent(videoId)}?autoplay=1&playsinline=1&rel=0&modestbranding=1"
-    title="${escapeHtml(caption)}"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen></iframe>`;
-  $("#vm-caption").textContent = caption || "";
-  modal.classList.add("show");
-  document.body.style.overflow = "hidden";
-}
-function closeVideo() {
-  const modal = $("#video-modal");
-  modal.classList.remove("show");
-  document.body.style.overflow = "";
-  // Tearing down the iframe is what actually stops audio on iOS.
-  setTimeout(() => { $("#vm-iframe-host").innerHTML = ""; }, 250);
-}
+// openVideo / closeVideo → js/ui.js
 
-function openLightbox(src, caption) {
-  const lb = $("#lightbox");
-  $("#lb-img").src = src;
-  $("#lb-img").alt = caption || "";
-  $("#lb-caption").textContent = caption || "";
-  lb.classList.add("show");
-  document.body.style.overflow = "hidden";
-}
-function closeLightbox() {
-  $("#lightbox").classList.remove("show");
-  document.body.style.overflow = "";
-  setTimeout(() => { $("#lb-img").src = ""; }, 250);
-}
+// openLightbox / closeLightbox → js/ui.js
 
 // ---- Tap-to-edit target lines ---------------------------------------------
 
