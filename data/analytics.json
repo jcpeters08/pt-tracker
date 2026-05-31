@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-31T03:18:15Z",
+  "generated_at": "2026-05-31T04:09:05Z",
   "log_count": 25,
   "recovery_count": 6,
   "lifts_per_week": {
@@ -1695,12 +1695,12 @@
   "recovery_by_week": {
     "2026-W20": {
       "sessions": 3,
-      "sauna_min_total": 102,
-      "plunge_min_total": 24
+      "sauna_min_total": 100,
+      "plunge_min_total": 23
     },
     "2026-W21": {
       "sessions": 1,
-      "sauna_min_total": 39,
+      "sauna_min_total": 38,
       "plunge_min_total": 6
     },
     "2026-W22": {

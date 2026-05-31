@@ -144,9 +144,18 @@ def compute(repo_root: Path) -> dict:
             continue
         wk = _iso_week(r["date"])
         recovery_per_week[wk] += 1
-        rounds = r.get("rounds") or 0
-        sauna_min_per_week[wk] += rounds * (r.get("sauna_min") or 0)
-        plunge_min_per_week[wk] += rounds * (r.get("plunge_min") or 0)
+        # Prefer per-round detail totals. The summary sauna_min/plunge_min are
+        # rounded per-round averages (parse_recovery), so rounds * avg overcounts
+        # when rounds are uneven. Fall back to the legacy product only when no
+        # rounds_detail is present (older uniform-round entries).
+        detail = r.get("rounds_detail") or []
+        if detail:
+            sauna_min_per_week[wk] += sum((x.get("sauna_min") or 0) for x in detail)
+            plunge_min_per_week[wk] += sum((x.get("plunge_min") or 0) for x in detail)
+        else:
+            rounds = r.get("rounds") or 0
+            sauna_min_per_week[wk] += rounds * (r.get("sauna_min") or 0)
+            plunge_min_per_week[wk] += rounds * (r.get("plunge_min") or 0)
     recovery_by_week = {
         w: {
             "sessions": recovery_per_week[w],
