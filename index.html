@@ -2325,7 +2325,7 @@ async function submitSkip() {
   const day = state.routine?.days?.[state.selectedDay];
   if (!day) return;
   const dayLabel = day.label || state.selectedDay;
-  const dateStr = localDateIso();
+  const dateStr = state.workoutDate || localDateIso();
   const reason = (state.sessionNotes || "").trim();
   const reasonNote = reason ? `\n\nReason saved from Session Notes: "${reason}"` : "\n\n(No reason — leave the Session Notes blank if that's intentional, or add one and click Skip again.)";
   if (!confirm(`Mark ${dayLabel} as SKIPPED for ${dateStr}?${reasonNote}`)) return;
