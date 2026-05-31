@@ -139,7 +139,7 @@ Vault checks (C5, C12, C15–C17) read files under `~/Documents/Jonathan's Vault
 - **File:** `data/analytics.json` (derived).
 
 ### C15 — W20 rear-delt summary 6 vs 9 (vault)
-- **Fix:** W20 Weekly Volume Summary rear delts `**6**` → `**9**` (Wed: face pull 3 + reverse fly 3 = 6; Fri: face pull 3 = 3).
+- **Fix:** W20 Weekly Volume Summary rear delts `**6**` → `**9**` (Wed: face pull 3 + reverse fly 3 = 6; Fri: face pull 3 = 3). Also reconciled the two upstream narrative rows carrying the same stale 6 — the "What This Plan Optimizes" rear-delt row (was "…on BOTH pull-style days — 6 sets/wk") and the Fri face-pull row note ("6 sets rear delts/wk") → both now 9 (face pulls Wed + Fri; reverse fly Wed only).
 - **File:** vault `Weekly Plans/2026-W20-Phase-2-Launch-Reentry.md`.
 
 ### C16 — W21 rear-delt summary 6 vs 9 (vault)
@@ -147,7 +147,7 @@ Vault checks (C5, C12, C15–C17) read files under `~/Documents/Jonathan's Vault
 - **File:** vault `Weekly Plans/2026-W21-Phase-2-Week-2-Progression.md`.
 
 ### C17 — W21 summary stale exercise names + core count (vault)
-- **Fix:** Quads label `(squat + leg press + ext)` → `(squat + leg press + lunge)` (Fri programs DB Walking Lunge, "swap from leg extension"). Core row `6 | Thu (plank) + Fri (cable crunch + hanging raise)` → `9 | Thu (Pallof press + side plank iso) + Fri (cable rope crunch + back extension)` — reflects the actual programmed movements (side plank swapped from plank; back extension swapped from hanging knee raise; Pallof press added) and counts the working sets (Pallof 3 + cable crunch 3 + back ext 3 = 9; side plank counted as the 3 isometric per the plan's own Thursday accounting).
+- **Fix:** Quads label `(squat + leg press + ext)` → `(squat + leg press + lunge)` (Fri programs DB Walking Lunge, "swap from leg extension"). Core row `6 | Thu (plank) + Fri (cable crunch + hanging raise)` → `9 | Thu (Pallof press + side plank iso) + Fri (cable rope crunch + back extension)` — reflects the actual programmed movements (side plank swapped from plank; back extension swapped from hanging knee raise; Pallof press added) and counts the working sets (Pallof 3 + cable crunch 3 + back ext 3 = 9; side plank counted as the 3 isometric per the plan's own Thursday accounting). Also fixed the upstream "What This Plan Changes vs W20" intent row: "Add leg extension … hanging knee raise" → "Add DB walking lunge … back extension", so the intent row matches the programmed table + summary. (The day-table "Swap from leg extension/hanging knee raise" notes are left as-is — they correctly document the swap.)
 - **File:** vault `Weekly Plans/2026-W21-Phase-2-Week-2-Progression.md`.
 
 ### C18 — `AGENTS.md` untracked (git)
