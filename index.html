@@ -755,6 +755,7 @@ import {
 } from "./js/util.js";
 import { payloadSignature, gcOldDrafts } from "./js/storage.js";
 import { buildSessionPayload, buildSkipPayload, buildRecoveryPayload } from "./js/payloads.js";
+import { selectRoutineForDate } from "./js/routines.js";
 "use strict";
 
 // ---- Config ---------------------------------------------------------------
@@ -1209,30 +1210,13 @@ async function selectRoutine(id) {
 // Otherwise falls back to the routine whose start_date is the latest ≤ date,
 // then the lexically-last id.
 function pickRoutineForDate(dateStr) {
-  const stored = localStorage.getItem(ROUTINE_KEY);
-  const meta = state.routineMeta || [];
-  const inWindow = (m, d) => {
-    if (!m.start_date) return false;
-    if (m.start_date > d) return false;
-    if (m.end_date && m.end_date < d) return false;
-    return true;
-  };
-  if (stored && state.routines.includes(stored)) {
-    const m = meta.find(x => x.id === stored);
-    if (m && inWindow(m, dateStr)) return stored;
-  }
-  const covering = meta.filter(m => inWindow(m, dateStr));
-  if (covering.length) {
-    covering.sort((a, b) => (b.start_date || "").localeCompare(a.start_date || ""));
-    return covering[0].id;
-  }
-  // No active window — fall back to whichever started most recently before today
-  const past = meta.filter(m => m.start_date && m.start_date <= dateStr);
-  if (past.length) {
-    past.sort((a, b) => (b.start_date || "").localeCompare(a.start_date || ""));
-    return past[0].id;
-  }
-  return state.routines.slice().sort().pop();
+  // Thin wrapper — pure selection logic lives in js/routines.js.
+  return selectRoutineForDate({
+    date: dateStr,
+    routines: state.routines || [],
+    meta: state.routineMeta || [],
+    pinned: localStorage.getItem(ROUTINE_KEY),
+  });
 }
 
 // Return up to 5 routines centered on today's auto-picked routine.

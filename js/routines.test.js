@@ -1,0 +1,52 @@
+import { describe, it, expect } from "vitest";
+import { selectRoutineForDate } from "./routines.js";
+
+// All four current routines have end_date null (open-ended) — the C9 case.
+const ROUTINES = [
+  "2026-W18-CDMX-Phase-1-Closeout",
+  "2026-W20-Phase-2-Launch-Reentry",
+  "2026-W21-Phase-2-Week-2-Progression",
+  "2026-W22-Phase-2-Week-3-Reentry",
+];
+const META = [
+  { id: "2026-W18-CDMX-Phase-1-Closeout", start_date: "2026-05-04", end_date: null },
+  { id: "2026-W20-Phase-2-Launch-Reentry", start_date: "2026-05-11", end_date: null },
+  { id: "2026-W21-Phase-2-Week-2-Progression", start_date: "2026-05-18", end_date: null },
+  { id: "2026-W22-Phase-2-Week-3-Reentry", start_date: "2026-05-25", end_date: null },
+];
+
+const pick = (date, extra = {}) => selectRoutineForDate({ date, routines: ROUTINES, meta: META, ...extra });
+
+describe("selectRoutineForDate", () => {
+  it("picks the latest routine whose start_date <= date (open-ended)", () => {
+    expect(pick("2026-05-20")).toBe("2026-W21-Phase-2-Week-2-Progression");
+    expect(pick("2026-05-30")).toBe("2026-W22-Phase-2-Week-3-Reentry");
+    expect(pick("2026-05-04")).toBe("2026-W18-CDMX-Phase-1-Closeout");
+  });
+
+  it("a future routine does not become active before its start_date", () => {
+    expect(pick("2026-05-12")).toBe("2026-W20-Phase-2-Launch-Reentry"); // W21 (5/18) not yet active
+  });
+
+  it("honors a valid pin but ignores a pin outside its window", () => {
+    expect(pick("2026-05-26", { pinned: "2026-W20-Phase-2-Launch-Reentry" }))
+      .toBe("2026-W20-Phase-2-Launch-Reentry"); // pinned + still date-valid (open-ended)
+    const withEnd = META.map(m => m.id.startsWith("2026-W20")
+      ? { ...m, end_date: "2026-05-17" } : m);
+    expect(selectRoutineForDate({ date: "2026-05-26", routines: ROUTINES, meta: withEnd, pinned: "2026-W20-Phase-2-Launch-Reentry" }))
+      .toBe("2026-W22-Phase-2-Week-3-Reentry"); // pin expired (end < date) → ignored
+  });
+
+  it("respects end_date windows", () => {
+    const bounded = [
+      { id: "a", start_date: "2026-05-01", end_date: "2026-05-07" },
+      { id: "b", start_date: "2026-05-15", end_date: "2026-05-21" },
+    ];
+    expect(selectRoutineForDate({ date: "2026-05-10", routines: ["a", "b"], meta: bounded })).toBe("a"); // gap → latest past
+    expect(selectRoutineForDate({ date: "2026-05-16", routines: ["a", "b"], meta: bounded })).toBe("b");
+  });
+
+  it("falls back to the lexically-last id when nothing has a start_date", () => {
+    expect(selectRoutineForDate({ date: "2026-01-01", routines: ["a", "z", "m"], meta: [] })).toBe("z");
+  });
+});
