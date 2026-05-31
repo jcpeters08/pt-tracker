@@ -759,8 +759,8 @@ import { selectRoutineForDate } from "./js/routines.js";
 import { mergePending } from "./js/pending.js";
 import { toast, shortDate, openHowto, closeHowto, openVideo, closeVideo, openLightbox, closeLightbox } from "./js/ui.js";
 import { ensureRecoveryRounds, renderRecoveryRounds, renderRecoverySummary } from "./js/recovery.js";
-import { state, hooks, todayKey } from "./js/app-context.js";
-import { dayLabel, renderDayToggle } from "./js/workout.js";
+import { state, hooks, todayKey, CD_CHOICE_KEY } from "./js/app-context.js";
+import { dayLabel, renderDayToggle, renderCooldown, cooldownStateKey } from "./js/workout.js";
 "use strict";
 
 // ---- Config ---------------------------------------------------------------
@@ -771,7 +771,7 @@ const WORKER_URL   = "https://pt-tracker-auth.ositodelnorte.workers.dev"; // upd
 const SID_KEY      = "pt_tracker_sid";
 const ROUTINE_KEY  = "pt_tracker_active_routine";
 const UNIT_KEY     = "pt_tracker_unit_pref";
-const CD_CHOICE_KEY = "pt_tracker_cooldown_choice"; // "library" or "fitnessplus"
+// CD_CHOICE_KEY → js/app-context.js
 const DRAFT_PREFIX = "pt_tracker_draft_v2:";          // workout drafts, key: prefix + routine_id|date|day|type
 const DRAFT_PREFIX_V1 = "pt_tracker_draft_v1:";       // legacy — orphaned by routine_id-scoped keys, swept on boot
 const REC_DRAFT_PREFIX = "pt_tracker_recovery_draft_v1:"; // recovery drafts, key: prefix + date
@@ -1396,180 +1396,9 @@ function renderDraftBanner() {
 }
 
 // Map a day label to a cooldown library key. "Push (...)" → "push", etc.
-function cooldownKeyForDay(day) {
-  const label = (day?.label || "").toLowerCase();
-  if (label.startsWith("push")) return "push";
-  if (label.startsWith("pull")) return "pull";
-  if (label.startsWith("legs")) return "legs";
-  if (label.includes("upper")) return "upper-hybrid";
-  if (label.includes("hybrid")) return "upper-hybrid";
-  return "default";
-}
+// cooldownKeyForDay / cooldownStateKey / getCooldownLog / ytSearchUrl → js/workout.js
 
-// Get the cooldown completion state for the current view (date|day).
-function cooldownStateKey() {
-  return `${state.workoutDate || ""}|${state.selectedDay || ""}`;
-}
-function getCooldownLog() {
-  const key = cooldownStateKey();
-  if (!state.cooldownLog) state.cooldownLog = {};
-  if (!state.cooldownLog[key]) {
-    // Hydrate from active session if it carried a cooldown
-    const fromSession = state.activeSession?.session?.cooldown;
-    if (fromSession) {
-      state.cooldownLog[key] = {
-        type: fromSession.type || null,
-        source_key: fromSession.source_key || null,
-        fitnessplus_name: fromSession.fitnessplus_name || "",
-        completed_at: fromSession.completed_at || null,
-      };
-    } else {
-      state.cooldownLog[key] = { type: null, source_key: null, fitnessplus_name: "", completed_at: null };
-    }
-  }
-  return state.cooldownLog[key];
-}
-
-function ytSearchUrl(query) {
-  return `https://www.youtube.com/results?search_query=${encodeURIComponent(query || "")}`;
-}
-
-function renderCooldown(day) {
-  const host = $("#cooldown-host");
-  if (!host) return;
-  host.innerHTML = "";
-  if (!day || !day.exercises?.length) return;          // no cooldown on rest days
-  const cd = state.cooldowns;
-  if (!cd) return;
-
-  const key = cooldownKeyForDay(day);
-  const lib = cd.library?.[key] || cd.library?.default;
-  const fp = cd.apple_fitness_plus;
-  const choice = state.cooldownChoice || "library";
-
-  const dayCooldownText = (day.cooldown || "").trim();
-  const cdLog = getCooldownLog();
-  const isDone = !!cdLog.completed_at && cdLog.type === choice;
-
-  const card = document.createElement("section");
-  card.className = "cooldown";
-  card.id = "cooldown-card";
-
-  const tabs = `
-    <div class="cd-tabs">
-      <button type="button" class="cd-tab${choice === "library" ? " active" : ""}" data-choice="library">Prescribed cooldown</button>
-      <button type="button" class="cd-tab fitnessplus${choice === "fitnessplus" ? " active" : ""}" data-choice="fitnessplus">Apple Fitness+</button>
-    </div>
-  `;
-
-  let body = "";
-  if (choice === "library") {
-    if (lib) {
-      const moves = (lib.moves || []).map(m => {
-        const imgHtml = m.image_url
-          ? `<img src="${escapeHtml(m.image_url)}" alt="${escapeHtml(m.move)}" loading="lazy">`
-          : "🧘";
-        const videoHref = m.video_url || ytSearchUrl(m.video_query || m.move);
-        return `
-          <div class="cd-move">
-            <div class="cd-move-img">${imgHtml}</div>
-            <div class="cd-move-meta">
-              <b>${escapeHtml(m.move)}</b> · ${escapeHtml(m.duration)}
-              ${m.cue ? `<div class="cd-cue">${escapeHtml(m.cue)}</div>` : ""}
-              <div class="cd-pills">
-                <a class="cd-pill" href="${escapeHtml(videoHref)}" target="_blank" rel="noopener">▶ Watch ↗</a>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join("");
-      const trainerNote = dayCooldownText
-        ? `<div class="cd-body" style="margin-bottom:8px"><b>Trainer note:</b> ${escapeHtml(dayCooldownText)}</div>`
-        : "";
-      body = `
-        <div class="cd-duration">~${lib.duration_minutes} min · ${escapeHtml(lib.name)}</div>
-        ${trainerNote}
-        <div class="cd-body">${moves}</div>
-      `;
-    } else if (dayCooldownText) {
-      body = `<div class="cd-body"><b>Trainer note:</b> ${escapeHtml(dayCooldownText)}</div>`;
-    } else {
-      body = `<div class="cd-body">No cooldown configured for this day.</div>`;
-    }
-  } else {
-    // fitnessplus
-    const fpName = cdLog.fitnessplus_name || "";
-    if (fp?.mindful_cooldown_url) {
-      body = `
-        <div class="cd-body">
-          Open Apple Fitness+ → <b>Mindful Cooldown</b>. Filter inside the app for Upper Body / Lower Body / Full Body (5–10 min sessions).
-          <div><a class="cd-fp-link" href="${escapeHtml(fp.mindful_cooldown_url)}" target="_blank" rel="noopener">Open Mindful Cooldown ↗</a></div>
-          ${fp.note ? `<div class="cd-fp-note">${escapeHtml(fp.note)}</div>` : ""}
-          <div class="cd-fp-name">
-            <label for="cd-fp-name-input">Which Apple Fitness+ cooldown did you do?</label>
-            <input id="cd-fp-name-input" type="text" placeholder="e.g. Mindful Cooldown · Jessica · 10 min" value="${escapeHtml(fpName)}">
-          </div>
-        </div>
-      `;
-    } else {
-      body = `<div class="cd-body">Apple Fitness+ link not configured.</div>`;
-    }
-  }
-
-  const completedAtStr = cdLog.completed_at
-    ? new Date(cdLog.completed_at).toLocaleString([], { hour: "2-digit", minute: "2-digit" })
-    : "";
-
-  const completeRow = `
-    <div class="cd-complete-row">
-      <button type="button" class="cd-complete-btn${isDone ? " done" : ""}" id="cd-complete-btn">
-        ${isDone ? "✓ Cool-down logged" : "Mark cool-down complete"}
-      </button>
-      ${isDone ? `<span class="cd-complete-meta">at ${escapeHtml(completedAtStr)}</span>` : ""}
-    </div>
-  `;
-
-  card.innerHTML = `
-    <h3>🧘 Cool-down</h3>
-    ${tabs}
-    ${body}
-    ${completeRow}
-  `;
-  host.appendChild(card);
-
-  card.querySelectorAll(".cd-tab").forEach(btn => {
-    btn.addEventListener("click", () => {
-      state.cooldownChoice = btn.dataset.choice;
-      localStorage.setItem(CD_CHOICE_KEY, state.cooldownChoice);
-      renderCooldown(day);
-    });
-  });
-
-  const fpInput = card.querySelector("#cd-fp-name-input");
-  if (fpInput) {
-    fpInput.addEventListener("input", e => {
-      cdLog.fitnessplus_name = e.target.value;
-      markWorkoutDirty();
-    });
-  }
-
-  const completeBtn = card.querySelector("#cd-complete-btn");
-  if (completeBtn) {
-    completeBtn.addEventListener("click", () => {
-      if (cdLog.completed_at && cdLog.type === choice) {
-        // Toggle off
-        cdLog.completed_at = null;
-        cdLog.type = null;
-      } else {
-        cdLog.type = choice;
-        cdLog.source_key = choice === "library" ? key : null;
-        cdLog.completed_at = isoNow();
-      }
-      markWorkoutDirty();
-      renderCooldown(day);
-    });
-  }
-}
+// renderCooldown → js/workout.js
 
 function ensureLogState(exId, targetWeight, targetReps, targetSets) {
   if (state.log[exId]) return state.log[exId];

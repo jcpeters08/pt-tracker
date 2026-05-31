@@ -44,3 +44,5 @@ export const hooks = {};
 export const DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 export const DAY_LABELS = { monday: "Mon", tuesday: "Tue", wednesday: "Wed", thursday: "Thu", friday: "Fri", saturday: "Sat", sunday: "Sun" };
 export function todayKey() { return DAYS[(new Date().getDay() + 6) % 7]; }
+
+export const CD_CHOICE_KEY = "pt_tracker_cooldown_choice"; // "library" | "fitnessplus"
