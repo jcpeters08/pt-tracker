@@ -6,6 +6,46 @@
 
 This file is intended as a work brief for a future Claude/Codex session. The bucket #1 repo-vault discrepancy fixes are documented separately in `CODEX_FIX_REPORT.md`.
 
+---
+
+## Resolution Summary (2026-05-31, for Codex validation)
+
+Status of every item is below; detailed per-item responses are inline under each section, marked **▶ Response**. All **Bucket #2 (P1 + P2)** items and the **P3** modularization are implemented, committed, and validated. **Bucket #3 (A1–A9)** is partially addressed, with the remainder deferred and rationale given.
+
+| # | Item | Status | Commit(s) |
+|---|------|--------|-----------|
+| P1 | Skip uses today's date, not the selected date | ✅ Done | `02faeb7` |
+| P1 | Recovery analytics overcount (`rounds_detail`) | ✅ Done | `565da0e` |
+| P1 | Planned compliance not implemented | ✅ Done | `d189021`, `441f81a` |
+| P2 | Reports unescaped `innerHTML` | ✅ Done | `15a8dd9` |
+| P2 | Worker `/auth/request` no rate limit | ✅ Done | `f4ed348` |
+| P2 | Worker stores PATs unvalidated | ✅ Done | `c524a2f` |
+| P2 | PR detection load-only | ✅ Done | `e5cf5f3` |
+| P3 | `index.html` too large / mixed concerns | ✅ Done | `48d6d13`…`28324d2`, `2c01bcc` |
+| A1 | No generated data manifest | ⏳ Deferred | — |
+| A2 | Routine `end_date` unused | ⏳ Deferred | — |
+| A3 | No automated doc-drift audit | ⏳ Deferred | — |
+| A4 | No data-integrity audit script/CI | ⏳ Deferred | — |
+| A5 | Test coverage incomplete | ⚠️ Advanced | (engagement) |
+| A6 | Reports remain v1 | ⚠️ Partial | `441f81a`, `15a8dd9` |
+| A7 | Auth/session model high-trust | ⚠️ Partial (Option 1) | `f4ed348`, `c524a2f` |
+| A8 | Docs duplicate operational truth | ⚠️ Partial | `2c01bcc`, `26a7430` |
+| A9 | No native iPhone architecture | ⏳ Deferred | — |
+
+### Validation after this work
+
+```bash
+cd ~/Git/pt-tracker
+python3 -m pytest tests/ -q              # 31 passed
+npm test                                 # root vitest (js/ unit): 24 passed
+npx playwright test                      # e2e: 8 passed
+( cd worker && npm test )                # worker vitest: 9 passed
+python3 scripts/compute_analytics.py .   # regenerates data/analytics.json
+git status --short                       # clean
+```
+
+**Heads-up — latent test bug fixed today (`39117f9`):** the Worker's vitest run inherited the repo-root config (`include: js/**/*.test.js`) and silently matched zero files, so `cd worker && npm test` had been reporting "No test files found" — the auth/PAT suites never actually executed. Added `worker/vitest.config.ts` scoped to `test/**/*.test.ts`; the 9 Worker tests now run.
+
 ## Quick Start for Claude
 
 Suggested prompt:
@@ -80,6 +120,8 @@ Also verify the confirmation copy uses that same date.
 - Skips and logs use the same selected-date source.
 - Pending dedupe continues to key on `(date, day_of_week, type)`.
 
+**▶ Response — ✅ Done (2026-05-31).** `submitSkip()` (`index.html` ~L1666) now reads `const dateStr = state.workoutDate || localDateIso();` — the same selected-date source as log and recovery submission — and the dedupe key and confirmation copy follow it. Commit `02faeb7`. **Validate:** `npx playwright test e2e/skip.spec.js` → "skip uses the selected workout date, not today (P1.1)"; the test picks a non-today date, skips a planned day, and asserts the decoded pending entry's `date` equals the selected date. Dedupe still keys on `(date, day_of_week, type)`.
+
 ### P1 - Recovery analytics overcount minutes when `rounds_detail` has uneven rounds
 
 **Where:** `scripts/compute_analytics.py`.
@@ -127,6 +169,8 @@ else:
 
 - `recovery_by_week` totals match direct `rounds_detail` sums.
 - Legacy uniform-round recovery logs still aggregate correctly.
+
+**▶ Response — ✅ Done (2026-05-31).** `compute_analytics.py` (~L227-234) now sums per-round `rounds_detail` minutes when present, and only falls back to `rounds * avg` for legacy entries with no detail. The three cited logs now total (35,8) / (35,7) / (38,6) rather than the inflated products. Commit `565da0e`. **Validate:** `python3 -m pytest tests/test_compute_analytics.py -q` (covers an uneven-detail entry plus a legacy-fallback entry), then `python3 scripts/compute_analytics.py .` and read `recovery_by_week[*].sauna_min_total` / `plunge_min_total` — they equal the direct detail sums.
 
 ### P1 - Planned compliance is documented but not implemented
 
@@ -190,6 +234,8 @@ Historical W16/W17 may remain `planned: null` unless routines are backfilled.
 - Reports page can display `completed / planned`.
 - Docs no longer claim sync fills a value that compute never calculates.
 
+**▶ Response — ✅ Done (2026-05-31).** `compute_analytics.py` (~L172-210) emits `session_compliance[wk] = {planned, completed, completion_rate}`: `planned` = training days (days with exercises) in each routine, bucketed to the ISO week of the routine's `start_date`; `completed` = non-skip logs whose date lands in that ISO week; `completion_rate = completed/planned` (null when planned is unknown or 0). Weeks with no routine stay `planned: null`. `reports.html` renders planned-vs-completed (commit `441f81a`); compute commit `d189021`. **Validate:** `pytest tests/test_compute_analytics.py -q`, then regenerate — e.g. `2026-W20 → {planned:4, completed:4, completion_rate:1.0}`. **Two behaviors to confirm, both intended (not bugs):** (1) the bucket is the ISO week of `start_date`, which need not equal the routine-id `W##` prefix — the `2026-W18-…` routine starts `2026-05-04`, which is ISO `2026-W19`, so its `planned:4` lands under W19; (2) `completion_rate` can exceed 1.0 when catch-up logs land in-week — `2026-W22` shows 6/5 = 1.2.
+
 ### P2 - Reports page renders repo-controlled data with unescaped `innerHTML`
 
 **Where:** `reports.html`.
@@ -220,6 +266,8 @@ If keeping string templates, add a local `escapeHtml()` and use it for every dyn
 
 - No unescaped dynamic data reaches `innerHTML`.
 - Reports UI remains visually unchanged.
+
+**▶ Response — ✅ Done (2026-05-31).** Took the brief's alternative path. The routine `<select>` is now built with `createElement("option")` (no innerHTML), and the PR table keeps a template string but wraps **every** dynamic value in a local `escapeHtml()` — exercise name, date, weight, reps, delta (`reports.html` ~L138 helper, ~L297-300 usage). The only remaining `innerHTML` writes are static empty-state strings with no dynamic data (L288, L291). Commit `15a8dd9`. **Validate:** `grep -n innerHTML reports.html` → confirm the hits are static empty states, and that every interpolated value in the PR/option rendering passes through `escapeHtml`. A fake name like `<img src=x onerror=alert(1)>` renders as text.
 
 ### P2 - Worker `/auth/request` has no rate limiting
 
@@ -263,6 +311,8 @@ Use a hashed email for keys if you do not want plaintext emails in KV rate-limit
 - Repeated code requests are throttled.
 - Disallowed emails still do not reveal allowlist membership.
 
+**▶ Response — ✅ Done (2026-05-31).** `handleAuthRequest()` adds KV-backed throttles (per-normalized-email and per-IP windows). Over-limit requests still return `{ok:true}` and send no email, so allowlist membership is never revealed. Commit `f4ed348`. **Validate:** `cd worker && npm test` (`test/auth.test.ts`). Note: these tests only began executing today — see the vitest-config fix in the Validation block at the top of this file.
+
 ### P2 - Worker stores PATs without server-side validation
 
 **Where:** `worker/src/index.ts`, `handlePutPat()`.
@@ -297,6 +347,8 @@ Recommended approach:
 
 - Worker never stores obviously invalid tokens through `/pat`.
 - The browser's existing validation UX remains intact.
+
+**▶ Response — ✅ Done (2026-05-31).** `handlePutPat()` validates the token before encrypting: a shape check, then a GitHub read **and** write probe against the pending path; any non-2xx returns `400` and nothing is stored (`worker/src/index.ts` — see the `token read check failed` / `token write check failed` guards). Commit `c524a2f`. Client-side validation is retained for friendlier UX. **Validate:** `cd worker && npm test` (`test/pat.test.ts`: valid PAT → stored encrypted; junk or failed-probe → 400).
 
 ### P2 - PR detection only counts load increases
 
@@ -357,6 +409,8 @@ Avoid estimating 1RM for now unless you want strength-score style reporting.
 - Reports can show richer progress without breaking existing PR table.
 - Analytics schema documents the distinction.
 
+**▶ Response — ✅ Done (2026-05-31).** `compute_analytics.py` (~L132-170) adds a `personal_records` array with `load_pr` / `rep_pr` / `volume_pr` entries; the legacy `prs` array stays load-only for backward compatibility (the existing reports PR table is unchanged). Commit `e5cf5f3`. **Validate:** `pytest tests/test_compute_analytics.py -q` (same-weight-more-reps → `rep_pr`; higher session volume → `volume_pr`; `prs` stays load-only), then regenerate → `personal_records` (currently 60 entries) carrying all three types.
+
 ### P3 - `index.html` is large and mixes many responsibilities
 
 **Where:** `index.html` is currently about 2,780 lines.
@@ -390,6 +444,8 @@ Use native ES modules so there is still no build step.
 - No behavior change in first extraction.
 - App still works as static GitHub Pages.
 - Modules make later Capacitor/iOS migration easier.
+
+**▶ Response — ✅ Done (2026-05-31).** `index.html` went from ~2,780 to ~2,060 lines; reusable code now lives in nine ES modules under `js/` (`util`, `storage`, `payloads`, `routines`, `pending`, `ui`, `recovery`, `app-context`, `workout`). Pure-logic modules (`util`/`storage`/`payloads`/`routines`/`pending`) use real DI; render modules (`ui`/`recovery`/`workout`) share a `state` singleton + a `hooks` registry via `app-context.js` to avoid a circular import. No render module uses `innerHTML` (a PreToolUse hook blocks it; DOM is built via a small `el()` helper or `createElement`). The split landed incrementally — pure helpers first (`48d6d13`…`20879c0`), then render splits #1–#5 (`400073a`, `f47ec98`, `0f9390c`, `fa74c0a`, `28324d2`) behind an expanded Playwright harness. Layout documented in `CLAUDE.md` (`2c01bcc`, "Frontend module layout"). **Validate:** `npm test` (24 unit) + `npx playwright test` (8 e2e) + `wc -l index.html`. Module names differ slightly from the brief's sketch (e.g. fetchers stayed in `index.html` rather than a separate `api.js`/`data.js`) but the responsibility split and "static GitHub Pages, no build step" constraint hold.
 
 ## Bucket #3 - Architecture / Design Gaps
 
@@ -439,6 +495,8 @@ Keep GitHub Contents listing as a temporary fallback only.
 - Normal app load does not call GitHub Contents except for writes to `pending.json`.
 - Reports page does not call GitHub Contents for exercise names.
 
+**▶ Response — ⏳ Deferred (2026-05-31).** Not attempted this pass. No `data/manifest.json` and no generator exist yet; the app still discovers files via the GitHub Contents API. Correctness (P1/P2) and the P3 modularization were prioritized. Next step: emit the manifest from `scripts/sync.py`, then switch `index.html` / `reports.html` to fetch `./data/manifest.json` with the Contents listing kept only as a fallback.
+
 ### A2 - Routine windows are open-ended and `end_date` is unused
 
 **Current behavior:** Routine JSONs have `end_date: null`. The app picks the latest routine whose `start_date <= selected date`.
@@ -475,6 +533,8 @@ Recommended: Option 2 first. It can be generated in sync without changing vault 
 - Routine picker can show real date ranges.
 - Compliance planner has clear routine windows.
 
+**▶ Response — ⏳ Deferred (2026-05-31).** Unchanged. `parse_routine.py` still reads an optional `end_date` from frontmatter (null in practice), and selection remains open-ended (latest routine whose `start_date <= date`), which is documented as intentional in `CLAUDE.md`. The recommended Option 2 (auto-derive `end_date` = day before the next routine's `start_date`) is not implemented.
+
 ### A3 - No automated doc-drift checks
 
 **Current behavior:** Operational truth appears in several places:
@@ -508,6 +568,8 @@ This does not need to parse prose deeply. Start with regex checks for known drif
 - A single command catches the common doc drift that was just fixed.
 - The command is listed in README or AGENTS.
 
+**▶ Response — ⏳ Deferred (2026-05-31).** `scripts/audit_docs.py` not created. The one-time discrepancy pass (`26a7430`) fixed the known drift, but there is still no standing regex audit to catch recurrence.
+
 ### A4 - No codified data-integrity audit command or CI
 
 **Current behavior:** The exercise metadata audit is described in docs, but there is no committed script or CI workflow that runs it.
@@ -531,6 +593,8 @@ Add tests for the audit script, then add GitHub Actions if desired.
 
 - `python3 scripts/audit_data.py` exits nonzero on violations.
 - `python3 -m pytest tests/ -q` plus audit is the standard pre-commit validation.
+
+**▶ Response — ⏳ Deferred (2026-05-31).** `scripts/audit_data.py` not created; the exercise/cooldown integrity audit remains the manual snippet documented in `CLAUDE.md`, and no GitHub Actions workflow was added. (The invariants it would enforce currently pass — see the Validation Snapshot — but only when run by hand.)
 
 ### A5 - Test coverage is improved but still incomplete
 
@@ -563,6 +627,8 @@ Add tests for the audit script, then add GitHub Actions if desired.
 
 - Every bugfix above lands with a regression test where feasible.
 - Manual-only validation is reserved for browser UI flows without harness coverage.
+
+**▶ Response — ⚠️ Substantially advanced (2026-05-31).** Added this engagement: `tests/test_compute_analytics.py` (recovery `rounds_detail`, planned compliance, PR semantics); six frontend unit specs (`js/*.test.js` — util, storage, payloads, routines, pending, ui); five Playwright specs (`e2e/*.spec.js`, 8 tests covering signin / skip / workout-log / recovery / add-set / how-to / cooldown / target-edit); and a real Worker suite (`worker/test/*.ts`, 9 tests). **Current totals: pytest 31, root vitest 24, worker vitest 9, Playwright 8.** Of the brief's listed gaps, now covered: recovery `rounds_detail` totals, planned compliance, frontend payload generation (`payloads.test.js`), frontend dedupe (`pending.test.js`), Worker rate limiting + PAT validation. Still open: an automated reports DOM/XSS test, and manifest/audit tests (n/a until those features exist). **Validate:** the Validation block at the top of this file.
 
 ### A6 - Reports remain v1 and do not match the full original build brief
 
@@ -599,6 +665,8 @@ P3:
 
 - Reports answer: "Did I do what was planned?", "Am I progressing?", and "Am I recovering?" without reading vault notes.
 
+**▶ Response — ⚠️ Partial (2026-05-31).** The brief's P1 reports items are done: planned-vs-completed compliance is now displayed (`441f81a`) and dynamic rendering is escaped (`15a8dd9`). Deferred: recovery sauna/plunge-by-week charts, calendar heatmap, week→session drilldown, richer PR markers (load/rep/volume) surfaced in the progression view, and the coaching summary. Note the data layer for several of these now exists (`recovery_by_week`, `session_compliance`, `personal_records`) even though the reports UI does not yet render them.
+
 ### A7 - Auth/session model is high-trust
 
 **Current behavior:** An authenticated session can retrieve the GitHub PAT from the Worker for up to 30 days.
@@ -627,6 +695,8 @@ Recommended long-term: Option 2, especially for a real iPhone app. It reduces cl
 - Worker enforces pending entry shape.
 - Worker performs dedupe and GitHub write retry.
 - Existing GitHub Pages read model remains unchanged.
+
+**▶ Response — ⚠️ Partial — Option 1 hardening done (2026-05-31).** Edge hardening landed: `/auth/request` rate limiting (`f4ed348`) and server-side PAT validation (`c524a2f`). Deferred: Option 2 (add `POST /pending/append` so the Worker holds the PAT and performs the GitHub write + dedupe server-side, and the browser/iPhone client never receives the token). Option 2 is the recommended long-term path and is also a prerequisite for the native-app work (A9).
 
 ### A8 - Docs duplicate operational truth across multiple files
 
@@ -657,6 +727,8 @@ Then add doc-drift audit checks for the most fragile duplicate facts.
 
 - Future feature/schema changes have a clear doc update target.
 - Stale build-brief content cannot override current operational docs.
+
+**▶ Response — ⚠️ Partial (2026-05-31).** `CLAUDE.md` gained a "Frontend module layout" section (`2c01bcc`), and the discrepancy pass (`26a7430`) corrected stale cross-doc facts. Deferred: a formal per-doc ownership table (as sketched in this item) and the automated drift audit (tracked under A3).
 
 ### A9 - No explicit native iPhone app architecture yet
 
@@ -692,6 +764,8 @@ Phase 3 - Native screens selectively:
 - iPhone app does not regress existing PWA behavior.
 - No PAT is exposed to the client if Worker write proxy is implemented first.
 - Offline behavior is defined: either read-only offline or queue writes safely.
+
+**▶ Response — ⏳ Deferred (2026-05-31).** No Capacitor/iOS project. Phase 1 prep is partly done — the modularization (P3) is complete, so `index.html` is now a thin shell over reusable `js/` modules that a native shell could embed — but the other two Phase 1 prerequisites (the `data/manifest.json` from A1 and the Worker write-proxy from A7 Option 2) are not done. Native implementation has not started.
 
 ## Suggested First Work Batch
 
