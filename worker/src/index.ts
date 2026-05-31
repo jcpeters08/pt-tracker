@@ -33,6 +33,13 @@ const CODE_TTL_SECONDS    = 15 * 60;
 const SESSION_TTL_SECONDS = 30 * 24 * 60 * 60;
 const MAX_CODE_ATTEMPTS   = 5;
 
+// Rate limiting for /auth/request — KV-backed sliding window. Over-limit
+// requests still return {ok:true} (no allowlist-enumeration signal) but send
+// no email. KV is eventually consistent, so this is approximate abuse-dampening.
+const RL_WINDOW_SECONDS       = 15 * 60;
+const RL_EMAIL_MAX_PER_WINDOW = 3;
+const RL_IP_MAX_PER_WINDOW    = 10;
+
 // ---- Entry point ------------------------------------------------------------
 
 export default {
@@ -67,6 +74,19 @@ async function handleAuthRequest(request: Request, env: Env): Promise<Response> 
   // Always return ok to avoid leaking which emails are allowed; only actually
   // send when the email is on the allowlist.
   if (!allowed.includes(email)) return json({ ok: true });
+
+  // Throttle code requests per email and per IP. Over-limit → return ok but
+  // send nothing (so the allowlist still isn't observable from the response).
+  const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+  const emailKey = `rl:email:${email}`;
+  const ipKey = `rl:ip:${ip}`;
+  const emailCount = Number(await env.KV.get(emailKey)) || 0;
+  const ipCount = Number(await env.KV.get(ipKey)) || 0;
+  if (emailCount >= RL_EMAIL_MAX_PER_WINDOW || ipCount >= RL_IP_MAX_PER_WINDOW) {
+    return json({ ok: true });
+  }
+  await env.KV.put(emailKey, String(emailCount + 1), { expirationTtl: RL_WINDOW_SECONDS });
+  await env.KV.put(ipKey, String(ipCount + 1), { expirationTtl: RL_WINDOW_SECONDS });
 
   const code = generateCode();
   await env.KV.put(`code:${email}`, JSON.stringify({ code, attempts: 0 }), { expirationTtl: CODE_TTL_SECONDS });
