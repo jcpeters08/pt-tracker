@@ -753,6 +753,7 @@ import {
   KG_PER_LB, LBS_PER_KG, kgToLbs, lbsToKg, roundTo, fmtNum,
   escapeHtml, isoNow, localDateIso, dayTypeKey,
 } from "./js/util.js";
+import { payloadSignature, gcOldDrafts } from "./js/storage.js";
 "use strict";
 
 // ---- Config ---------------------------------------------------------------
@@ -948,49 +949,9 @@ function clearRecoveryDraft() {
   try { localStorage.removeItem(recoveryDraftKey()); } catch {}
 }
 
-// Garbage-collect drafts older than DRAFT_GC_DAYS. Called on boot.
-// Also sweeps every legacy v1 workout draft regardless of age — those keys
-// lack the routine_id scoping introduced in v2 and would otherwise persist
-// indefinitely (loadWorkoutDraft no longer reads them).
-function gcOldDrafts() {
-  const cutoff = Date.now() - DRAFT_GC_DAYS * 24 * 60 * 60 * 1000;
-  for (let i = localStorage.length - 1; i >= 0; i--) {
-    const k = localStorage.key(i);
-    if (!k) continue;
-    if (k.startsWith(DRAFT_PREFIX_V1)) {
-      try { localStorage.removeItem(k); } catch {}
-      continue;
-    }
-    if (!k.startsWith(DRAFT_PREFIX) && !k.startsWith(REC_DRAFT_PREFIX)) continue;
-    try {
-      const v = JSON.parse(localStorage.getItem(k));
-      const t = v?.last_modified_at ? new Date(v.last_modified_at).getTime() : 0;
-      if (!t || t < cutoff) localStorage.removeItem(k);
-    } catch {
-      try { localStorage.removeItem(k); } catch {}
-    }
-  }
-}
+// gcOldDrafts → js/storage.js (DI: storage + config passed at the call site).
 
-// Stable fingerprint of a submit payload's session field — used to refuse
-// identical re-submissions when the user accidentally double-taps after the
-// post-submit button re-enable. Strips `submitted_at` since timestamps don't
-// represent user intent.
-function payloadSignature(session) {
-  const clone = { ...session };
-  delete clone.submitted_at;
-  // Recursive sort to make object key order irrelevant
-  const sortKeys = (v) => {
-    if (Array.isArray(v)) return v.map(sortKeys);
-    if (v && typeof v === "object") {
-      const out = {};
-      for (const k of Object.keys(v).sort()) out[k] = sortKeys(v[k]);
-      return out;
-    }
-    return v;
-  };
-  return JSON.stringify(sortKeys(clone));
-}
+// payloadSignature → js/storage.js
 
 // ---- Auth -----------------------------------------------------------------
 
@@ -2418,7 +2379,13 @@ async function bootApp() {
   const storedCD = localStorage.getItem(CD_CHOICE_KEY);
   if (storedCD === "library" || storedCD === "fitnessplus") state.cooldownChoice = storedCD;
   syncUnitToggleUI();
-  gcOldDrafts();
+  gcOldDrafts(localStorage, {
+    now: Date.now(),
+    draftPrefix: DRAFT_PREFIX,
+    draftPrefixV1: DRAFT_PREFIX_V1,
+    recDraftPrefix: REC_DRAFT_PREFIX,
+    gcDays: DRAFT_GC_DAYS,
+  });
   loadSid();
   if (!state.sid) { showPanel("signin"); return; }
   try {
