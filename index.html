@@ -756,6 +756,7 @@ import {
 import { payloadSignature, gcOldDrafts } from "./js/storage.js";
 import { buildSessionPayload, buildSkipPayload, buildRecoveryPayload } from "./js/payloads.js";
 import { selectRoutineForDate } from "./js/routines.js";
+import { mergePending } from "./js/pending.js";
 "use strict";
 
 // ---- Config ---------------------------------------------------------------
@@ -1308,29 +1309,7 @@ async function appendPending(entry) {
     // Workout (log/skip) → keyed on (date, day_of_week, type). A new log
     // displaces a pending skip for the same slot and vice versa.
     // Recovery → keyed on (date, location).
-    const newSession = entry.session || {};
-    parsed.entries = parsed.entries.filter(e => {
-      const s = e.session || {};
-      if (entry.type === "recovery") {
-        if (e.type !== "recovery") return true;
-        return !(s.date === newSession.date && (s.location || "") === (newSession.location || ""));
-      }
-      if (entry.type === "log" || entry.type === "skip") {
-        if (e.type !== "log" && e.type !== "skip") return true;
-        return !(
-          s.date === newSession.date &&
-          s.day_of_week === newSession.day_of_week &&
-          s.type === newSession.type
-        );
-      }
-      if (entry.type === "routine_edit") {
-        if (e.type !== "routine_edit") return true;
-        const sig = `${entry.routine_id}|${entry.day_of_week}|${entry.exercise_id}`;
-        return !(`${e.routine_id}|${e.day_of_week}|${e.exercise_id}` === sig);
-      }
-      return true;
-    });
-    parsed.entries.push(entry);
+    parsed.entries = mergePending(parsed.entries, entry);
     const body = {
       message: entry.type === "routine_edit"
         ? `web app: routine_edit ${entry.routine_id || ""} ${entry.day_of_week || ""} ${entry.exercise_id || ""}`
