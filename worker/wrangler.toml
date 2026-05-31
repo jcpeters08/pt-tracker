@@ -7,6 +7,9 @@ compatibility_date = "2026-01-15"
 ALLOWED_ORIGIN = "https://jcpeters08.github.io"
 APP_URL = "https://jcpeters08.github.io/pt-tracker/"
 ALLOWED_EMAILS = "jcpeters08@gmail.com"
+# Repo targeted by server-side PAT validation in /pat (PUT).
+GITHUB_REPO_OWNER = "jcpeters08"
+GITHUB_REPO_NAME = "pt-tracker"
 
 # KV namespace for email codes, sessions, and the encrypted PAT.
 # Run `wrangler kv namespace create pt_tracker_auth_kv` and paste the returned id below.

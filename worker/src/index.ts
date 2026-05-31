@@ -27,6 +27,9 @@ interface Env {
   ALLOWED_EMAILS: string;       // comma-separated
   RESEND_API_KEY: string;       // secret
   PAT_ENC_KEY: string;          // secret, base64-encoded 32 bytes
+  GITHUB_REPO_OWNER: string;    // for server-side PAT validation
+  GITHUB_REPO_NAME: string;
+  GITHUB_PENDING_PATH?: string; // defaults to data/pending.json
 }
 
 const CODE_TTL_SECONDS    = 15 * 60;
@@ -155,6 +158,39 @@ async function handlePutPat(request: Request, env: Env): Promise<Response> {
   const body = await safeJson(request);
   const pat = String(body?.pat ?? "").trim();
   if (!pat) return json({ error: "missing pat" }, 400);
+
+  // Shape check — fine-grained (github_pat_) or classic (ghp_) tokens only.
+  if (!/^(github_pat_|ghp_)[A-Za-z0-9_]+$/.test(pat)) {
+    return json({ error: "invalid token format" }, 400);
+  }
+
+  // Server-side validation (mirrors the browser): confirm the token can READ
+  // and WRITE the repo's pending.json before storing it. The write is a no-op
+  // (PUT identical content + sha → GitHub creates no commit) but still enforces
+  // Contents:write, so a read-only token is rejected here instead of silently
+  // stored and failing on first real submit.
+  const owner = env.GITHUB_REPO_OWNER;
+  const repo = env.GITHUB_REPO_NAME;
+  const path = env.GITHUB_PENDING_PATH || "data/pending.json";
+  const ghUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+  const ghHeaders: Record<string, string> = {
+    "Authorization": `Bearer ${pat}`,
+    "Accept": "application/vnd.github+json",
+    "User-Agent": "pt-tracker-auth",   // GitHub API requires a User-Agent
+  };
+  const getRes = await fetch(ghUrl, { headers: ghHeaders });
+  if (!getRes.ok) return json({ error: `token read check failed (${getRes.status})` }, 400);
+  const cur = await getRes.json() as { content?: string; sha?: string };
+  const putRes = await fetch(ghUrl, {
+    method: "PUT",
+    headers: { ...ghHeaders, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      message: "PAT write validation (no-op)",
+      content: (cur.content || "").replace(/\s+/g, ""),
+      sha: cur.sha,
+    }),
+  });
+  if (!putRes.ok) return json({ error: `token write check failed (${putRes.status})` }, 400);
 
   const ciphertext = await encryptString(env.PAT_ENC_KEY, pat);
   await env.KV.put(`pat:${session.email}`, ciphertext);
