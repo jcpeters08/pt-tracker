@@ -15,8 +15,156 @@
   "training_partner": "Jacob",
   "thermocycling": false,
   "fasted": true,
-  "warmup_exercises": [],
-  "exercises": [],
+  "warmup_exercises": [
+    {
+      "exercise_id": "incline-db-bench-press",
+      "display_name": "Incline Dumbbell Bench Press (warmup)",
+      "weight_raw": "5 kg (11 lbs) each",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 5.0,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 5.0,
+          "reps": 12
+        }
+      ],
+      "notes": "Warmup — not counted in working volume"
+    }
+  ],
+  "exercises": [
+    {
+      "exercise_id": "v-up",
+      "display_name": "V-up / Toe-Touch Hybrid",
+      "weight_raw": "bodyweight",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 15
+        }
+      ],
+      "notes": "**NEW exercise.** Jacob same"
+    },
+    {
+      "exercise_id": "plank",
+      "display_name": "Plank",
+      "weight_raw": "bodyweight",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 60
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 60
+        }
+      ],
+      "notes": "Hold. Jacob same"
+    },
+    {
+      "exercise_id": "incline-db-bench-press",
+      "display_name": "Incline Dumbbell Bench Press",
+      "weight_raw": "12 kg (26.5 lbs) each",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 12.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 12.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 12.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Set 3 ran long to 20 reps — load has room. **Jacob:** 8 kg × 15"
+    },
+    {
+      "exercise_id": "flat-db-bench-press",
+      "display_name": "Flat Dumbbell Bench Press",
+      "weight_raw": "16 kg (35 lbs) each",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 16.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 16.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 16.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Intake labeled \"barbell\" — confirmed DB each hand. **Jacob:** 12 kg × 10 × 3"
+    },
+    {
+      "exercise_id": "rope-tricep-pushdown",
+      "display_name": "Rope Triceps Pushdown (Cable)",
+      "weight_raw": "20 kg (44 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 20.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 20.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 20.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Standing, rope to waist. **Jacob:** same load"
+    },
+    {
+      "exercise_id": "overhead-cable-tricep-extension",
+      "display_name": "Overhead Cable Triceps Extension (Rope)",
+      "weight_raw": "29 kg (64 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 29.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 29.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 29.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Face-away-from-stack, split-stance, rope overhead. **Jacob:** same load"
+    }
+  ],
   "cooldown": null,
   "session_notes": "",
   "submitted_at": null,

@@ -40,13 +40,13 @@ The web app reads JSON same-origin, fetches a GitHub PAT from the auth Worker, a
 
 ## How to add a new exercise
 
-1. Create `data/exercises/<id>.json` (see existing files for shape). Fill in `image_url` and `video_url` if you have stable URLs.
+1. Create `data/exercises/<id>.json` (see existing files for shape). Populate `image_url` (required — non-null) and `video_url` with verified URLs in the same commit, plus `image_source`/`image_match`.
 2. If the exercise gets used in a routine MD or workout log MD, add an alias entry to the dict at the top of `scripts/pt_common.py` mapping the free-text name(s) → the canonical id.
 3. Commit + push. The web app picks it up on next load.
 
-## How to populate exercise images and videos
+## Exercise images and videos
 
-See `TODO_EXERCISES.md` — every exercise has `image_url: null` and `video_url: null` by default. Populate them with verified URLs (Wikimedia Commons for images; Athlean-X / Jeff Nippard YouTube for videos) and the day-view cards become much more useful.
+All exercise files in `data/exercises/` currently have populated `image_url` (images from `yuhonas/free-exercise-db`, Wikimedia Commons fallback) and `video_url` (YouTube / muscleandstrength). When adding a new exercise, populate both with verified URLs in the same commit — a non-null `image_url` is required (see the "every exercise … must have a non-null `image_url`" convention in `CLAUDE.md` / `AGENTS.md`), and document the source in `image_source` + `image_match`.
 
 ## Daily sync — Cowork scheduled task
 
@@ -54,10 +54,10 @@ A Cowork scheduled task fires daily at 8:03 CT (mirrors the TV Concierge setup).
 
 - **Task id:** `pt-tracker-daily-sync`
 - **Cron:** `3 8 * * *` (local time)
-- **Skill file:** `~/.claude/scheduled-tasks/pt-tracker-daily-sync/SKILL.md`
+- **Authoritative spec:** `docs/COWORK_SYNC_TASK.md` (version-controlled in this repo). Cowork's UI holds only a thin wrapper that does `git pull` then reads and runs that file — see `docs/COWORK_WRAPPER_PROMPT.md` for the paste-once wrapper text.
 - **Manage:** the "Scheduled" section in the Claude sidebar — pause, disable, or run on demand from there
 
-The task body is the prompt stored in the SKILL.md file. The high-level steps it runs:
+The high-level steps it runs:
 
 1. `git pull --ff-only` in `~/Git/pt-tracker`
 2. `python3 scripts/sync.py` — drains `data/pending.json` into vault MD, re-derives JSON snapshots from vault MD, recomputes `data/analytics.json`, resets pending, auto-commits and pushes
@@ -109,10 +109,10 @@ Allowlist: `jcpeters08@gmail.com`. Update `ALLOWED_EMAILS` in `worker/wrangler.t
 - **PAT 401 in submit** — your PAT expired or got revoked. Sign out (⏻ in the header), sign back in, paste a fresh PAT.
 - **Day shows "Rest" but you have a workout planned** — the routine MD's day section header (`## Mon 5/4 — Push (...)`) didn't parse. Verify the format matches `2026-W18-CDMX-Phase-1-Closeout.md`.
 - **Pages deploy stuck** — check the **Actions** tab on GitHub. The deploy workflow is in `.github/workflows/deploy.yml`.
-- **Sync skipped a session as "already exists"** — the vault MD for that date already exists, by design. To re-sync, delete the MD and re-run.
+- **Re-submitting a session** — a `log`/`skip`/`recovery` resubmit OVERWRITES the existing vault MD by design (correction/edit workflow); you no longer need to delete the MD to re-sync. The `Log.md` index line is appended only on the first write.
 - **Unknown exercise in sync output** — add an entry to `EXERCISE_ALIASES` in `scripts/pt_common.py` and re-run sync.
 
 ## See also
 
-- Build brief: `🎯 Projects/🏋️ Personal Trainer/Web-App-Build-Brief.md` in the vault
+- Build brief (historical): `🎯 Projects/🏋️ Personal Trainer/Web-App-Build-Brief.md` in the vault
 - Worker docs: `worker/README.md`

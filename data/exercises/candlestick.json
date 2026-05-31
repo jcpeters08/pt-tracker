@@ -1,0 +1,25 @@
+{
+  "id": "candlestick",
+  "name": "Candlestick",
+  "primary_muscle": "core",
+  "secondary_muscles": [],
+  "equipment": [],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Flat_Bench_Lying_Leg_Raise/0.jpg",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Flat Bench Lying Leg Raise — the candlestick drives the legs vertical and lifts the hips, the same lower-ab / hip-lift pattern as a lying leg/hip raise. yuhonas has no 'candlestick'; Flat_Bench_Lying_Leg_Raise (HTTP 200) is the closest match.",
+  "video_url": "https://www.youtube.com/results?search_query=candlestick+exercise+abs+proper+form",
+  "form_cues": [
+    "Legs vertical, lift the hips off the floor",
+    "Control the descent; don't swing"
+  ],
+  "default_load_unit": "reps",
+  "notes": "Phase 1 PT core move — legs vertical, hip lift.",
+  "video_source": "youtube_search_fallback",
+  "video_id_query": "candlestick exercise abs how to",
+  "instructions": [
+    "Lie on your back with legs extended straight up toward the ceiling.",
+    "Press through and lift the hips off the floor, driving the feet upward.",
+    "Pause briefly at the top.",
+    "Lower the hips back down under control without letting the legs drop."
+  ]
+}

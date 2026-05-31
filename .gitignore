@@ -5,6 +5,10 @@
 .vscode/
 .idea/
 
+# Claude Code / local tooling (machine-local — never committed)
+.claude/
+.pytest_cache/
+
 # Python
 __pycache__/
 *.pyc

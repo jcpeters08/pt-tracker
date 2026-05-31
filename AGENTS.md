@@ -1,6 +1,6 @@
-# CLAUDE.md — PT Tracker
+# AGENTS.md — PT Tracker
 
-If you're a new Claude session opening this repo, read this first.
+If you're a new Codex session opening this repo, read this first.
 
 ## What this is
 
@@ -84,7 +84,7 @@ See `README.md` for deploy and how-to-log details.
 - **Daily sync**: Cowork scheduled task `pt-tracker-daily-sync`. Cron `3 8 * * *` (8:03 CT local). The task's authoritative spec is `docs/COWORK_SYNC_TASK.md` (this repo, version-controlled) — Cowork's UI holds only a thin wrapper that pulls latest and reads that file. See `docs/COWORK_WRAPPER_PROMPT.md` for the paste-once wrapper text. Pre-conditions: Mac on, vault mounted, repo on `main`.
 - **Auth Worker**: `worker/` directory. Live at `https://pt-tracker-auth.ositodelnorte.workers.dev`. Cloudflare KV stores encrypted PAT keyed by email. Allowlist: `jcpeters08@gmail.com`.
 - **Vault path**: `~/Documents/Jonathan's Vault/🎯 Projects/🏋️ Personal Trainer/`
-- **Vault MD edits via Cowork**: direct filesystem access to the vault is sandboxed from a Claude Code session in this repo. Use a separate Cowork session (which has full vault access) for MD updates. Pattern:
+- **Vault MD edits via Cowork**: direct filesystem access to the vault is sandboxed from a Codex session in this repo. Use a separate Cowork session (which has full vault access) for MD updates. Pattern:
   1. Specify the exact file path
   2. List the precise edits to make (use `Edit`, not `Write`, to preserve hand-edits)
   3. Provide a verification command (parser invocation)
@@ -108,9 +108,9 @@ See `README.md` for deploy and how-to-log details.
 
 ## Wrap-up checkpoints (proactive offers at session end)
 
-When something material lands (new feature, new convention, new gotcha, schema change), the active Claude session **proactively offers** updates at session wrap-up. The user can also explicitly say "update CLAUDE.md" or "check the task doc" at any time. Trivial bug fixes / wording tweaks don't trigger an offer.
+When something material lands (new feature, new convention, new gotcha, schema change), the active Codex session **proactively offers** updates at session wrap-up. The user can also explicitly say "update AGENTS.md" or "check the task doc" at any time. Trivial bug fixes / wording tweaks don't trigger an offer.
 
-1. **CLAUDE.md** — does anything new (feature, convention, gotcha, schema change) need to be reflected here?
+1. **AGENTS.md** — does anything new (feature, convention, gotcha, schema change) need to be reflected here?
 2. **`docs/COWORK_SYNC_TASK.md`** — this file is the authoritative spec for the daily Cowork scheduled task. Cowork's UI holds only a thin wrapper that pulls latest and reads this file, so any change that affects what the daily sync sees, writes, or skips needs to be reflected here. Common triggers:
    - New `pending.json` entry type (currently: `log`, `skip`, `recovery`, `routine_edit`)
    - New vault output path or filename convention

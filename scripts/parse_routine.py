@@ -47,6 +47,34 @@ def _start_date_from_id(routine_id: str, fallback: str | None) -> str | None:
         return None
 
 
+def _start_date_from_day_header(routine_id: str, first_dm: str | None) -> str | None:
+    """Derive start date from the first day-header's M/D (e.g. '5/4'), taking the
+    year from the routine id's `YYYY-WXX` prefix. Preferred over the
+    ISO-week-of-id fallback: the routine's dated day headers are the source of
+    truth, so a file named ...-W18-... whose days run 5/4-5/7 starts 2026-05-04,
+    not the ISO-week-18 Monday (2026-04-27)."""
+    if not first_dm:
+        return None
+    m = re.match(r"(\d{4})-W(\d{1,2})", routine_id)
+    if not m:
+        return None
+    year, week = int(m.group(1)), int(m.group(2))
+    try:
+        mo, dy = (int(x) for x in first_dm.split("/"))
+    except (ValueError, AttributeError):
+        return None
+    # Year-boundary guard: a January day in a high-week file rolls to year+1;
+    # a December day in a low-week file rolls to year-1.
+    if mo == 1 and week >= 50:
+        year += 1
+    elif mo == 12 and week <= 2:
+        year -= 1
+    try:
+        return _date(year, mo, dy).isoformat()
+    except ValueError:
+        return None
+
+
 def parse_routine_md(text: str, *, routine_id: str) -> dict:
     fm, body = pc.parse_frontmatter(text)
     lines = body.splitlines()
@@ -56,6 +84,7 @@ def parse_routine_md(text: str, *, routine_id: str) -> dict:
     cur_label: str | None = None
     cur_warmup = ""
     section_start: int | None = None
+    first_dm: str | None = None
 
     def _flush(end_idx: int) -> None:
         nonlocal cur_day, cur_label, cur_warmup, section_start
@@ -120,6 +149,8 @@ def parse_routine_md(text: str, *, routine_id: str) -> dict:
             canonical = pc.canonical_day(day_token)
             if canonical is None:
                 continue
+            if first_dm is None:
+                first_dm = m.group("dm")
             cur_day = canonical
             cur_label = m.group("label").strip()
             section_start = i + 1
@@ -128,7 +159,11 @@ def parse_routine_md(text: str, *, routine_id: str) -> dict:
     if cur_day is not None:
         _flush(len(lines))
 
-    start_date = _start_date_from_id(routine_id, fm.get("start_date"))
+    start_date = (
+        fm.get("start_date")
+        or _start_date_from_day_header(routine_id, first_dm)
+        or _start_date_from_id(routine_id, None)
+    )
     name = fm.get("aliases")
     display_name = name[0] if isinstance(name, list) and name else routine_id
 

@@ -11,9 +11,9 @@ Run from anywhere — paths resolve from env or sensible defaults.
 Algorithm:
   1. git pull --ff-only
   2. Drain data/pending.json. For each "log" entry:
-       - Write Workout Log/YYYY-MM-DD-Day-Type.md (canonical template) iff
-         no MD file exists for that id. Otherwise skip with a warning.
-       - Append a one-line entry to vault Log.md.
+       - Write Workout Log/YYYY-MM-DD-Day-Type.md (canonical template). A
+         re-submitted session OVERWRITES the existing MD (correction workflow);
+         the Log.md index line is appended only on first write.
   3. Re-derive snapshots:
        - Parse Weekly Plans/*.md → data/routines/*.json
        - Parse Workout Log/*.md → data/logs/*.json
@@ -43,6 +43,7 @@ import pt_common as pc                       # noqa: E402
 import parse_routine as pr                   # noqa: E402
 import parse_log as pl                       # noqa: E402
 import parse_recovery as pre                 # noqa: E402
+import parse_overview as po                   # noqa: E402
 import compute_analytics as ca               # noqa: E402
 
 DEFAULT_VAULT = Path.home() / "Documents" / "Jonathan's Vault"
@@ -688,6 +689,20 @@ def main() -> int:
                 )
             except Exception as e:
                 print(f"  WARN: bad recovery MD {f.name}: {e}", file=sys.stderr)
+
+    # Re-derive profile from Overview.md (light: phase, gym, goals, protein target)
+    overview_md = project_dir / "Overview.md"
+    if overview_md.exists():
+        try:
+            prof = po.parse_overview_md(overview_md.read_text(encoding="utf-8"))
+            prof_out = {
+                "source": "Parsed from vault Overview.md (\U0001f3af Projects/\U0001f3cb️ Personal Trainer/Overview.md) by scripts/parse_overview.py. Re-synced by the daily scheduled task.",
+                "synced_at": now_iso(),
+                **prof,
+            }
+            write_json(repo_root / "data" / "profile.json", prof_out)
+        except Exception as e:
+            print(f"  WARN: bad Overview.md: {e}", file=sys.stderr)
 
     # Step 4: recompute analytics
     analytics = ca.compute(repo_root)

@@ -1,0 +1,25 @@
+{
+  "id": "butterfly-crunch",
+  "name": "Butterfly Crunch",
+  "primary_muscle": "core",
+  "secondary_muscles": [],
+  "equipment": [],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/0.jpg",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Crunches — a butterfly crunch is a crunch performed with soles together and knees dropped out. yuhonas has no butterfly-specific entry (Butterfly_Stretch 404'd and is a stretch, not a crunch); Crunches (HTTP 200) is the closest crunch illustration.",
+  "video_url": "https://www.youtube.com/results?search_query=butterfly+crunch+abs+proper+form",
+  "form_cues": [
+    "Soles together, knees dropped out wide",
+    "Crunch the rib cage toward the pelvis"
+  ],
+  "default_load_unit": "reps",
+  "notes": "Phase 1 PT core move — soles together, knees out.",
+  "video_source": "youtube_search_fallback",
+  "video_id_query": "butterfly crunch abs how to",
+  "instructions": [
+    "Lie on your back, bring the soles of your feet together and let your knees fall open.",
+    "Place hands behind the head or across the chest.",
+    "Crunch up, lifting the shoulder blades off the floor and contracting the abs.",
+    "Lower under control."
+  ]
+}

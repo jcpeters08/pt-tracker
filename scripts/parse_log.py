@@ -30,6 +30,14 @@ SECTION_PATTERNS = {
     "cooldown":    re.compile(r"^##\s+cool-?down\s*$", re.I),
 }
 
+# Headings that contain tables but are NOT working-exercise tables. Used by the
+# legacy-log fallback (parse_log_md) to avoid pulling Volume Summary /
+# Progression / Targets / Notes tables into the exercise list.
+_NON_EXERCISE_HEADING = re.compile(
+    r"^##\s+(volume\s+summary|session\s+notes|notes|targets?|progression|see\s+also|reason|cool-?down|warm-?up)\b",
+    re.I,
+)
+
 META_KEYS = {
     "Location": "location",
     "Phase": "phase",
@@ -62,6 +70,14 @@ def _section_bounds(lines: list[str], pattern: re.Pattern) -> tuple[int, int] | 
     return start, end
 
 
+def _iter_table_sections(lines: list[str]):
+    """Yield (heading_line, body_start, body_end) for every '## ' section."""
+    idxs = [i for i, ln in enumerate(lines) if ln.startswith("## ")]
+    for n, i in enumerate(idxs):
+        end = idxs[n + 1] if n + 1 < len(idxs) else len(lines)
+        yield lines[i], i + 1, end
+
+
 def _parse_meta(lines: list[str]) -> dict:
     """Pull the bullet/colon-style meta block at the top of the log."""
     meta: dict = {}
@@ -91,6 +107,31 @@ def _normalize_meta_value(key: str, val: str):
     return val
 
 
+def _exercise_from_row(row: dict) -> dict | None:
+    """Parse one exercise-table row → exercise dict, or None to skip the row."""
+    name = row.get("exercise", "") or row.get("exercise ", "")
+    if not name:
+        return None
+    resolved = pc.resolve_exercise_id(name)
+    if resolved is None:
+        return None
+    ex_id, display = resolved
+    weight_kg, weight_raw = pc.parse_weight(row.get("weight", ""))
+    sets_n = pc.parse_sets(row.get("sets", ""))
+    reps_list = pc.parse_reps(row.get("reps", ""), sets_n)
+    sets = [
+        {"set": i + 1, "weight_kg": weight_kg, "reps": reps_list[i] if i < len(reps_list) else 0}
+        for i in range(sets_n)
+    ]
+    return {
+        "exercise_id": ex_id,
+        "display_name": display,
+        "weight_raw": weight_raw,
+        "sets": sets,
+        "notes": (row.get("notes") or "").strip(),
+    }
+
+
 def _parse_exercise_table(section_lines: list[str]) -> list[dict]:
     tbl = pc.find_table(section_lines, 0)
     if not tbl:
@@ -98,28 +139,18 @@ def _parse_exercise_table(section_lines: list[str]) -> list[dict]:
     rows = pc.parse_table_rows(section_lines, tbl[0], tbl[1])
     out: list[dict] = []
     for row in rows:
-        name = row.get("exercise", "") or row.get("exercise ", "")
-        if not name:
-            continue
-        resolved = pc.resolve_exercise_id(name)
-        if resolved is None:
-            continue
-        ex_id, display = resolved
-        weight_kg, weight_raw = pc.parse_weight(row.get("weight", ""))
-        sets_n = pc.parse_sets(row.get("sets", ""))
-        reps_list = pc.parse_reps(row.get("reps", ""), sets_n)
-        sets = [
-            {"set": i + 1, "weight_kg": weight_kg, "reps": reps_list[i] if i < len(reps_list) else 0}
-            for i in range(sets_n)
-        ]
-        out.append({
-            "exercise_id": ex_id,
-            "display_name": display,
-            "weight_raw": weight_raw,
-            "sets": sets,
-            "notes": (row.get("notes") or "").strip(),
-        })
+        ex = _exercise_from_row(row)
+        if ex is not None:
+            out.append(ex)
     return out
+
+
+def _row_is_warmup(row: dict) -> bool:
+    """A working-table row that is actually a warm-up set (legacy logs inline
+    a '(warmup)' row in the block table instead of a separate ## Warm-up)."""
+    name = (row.get("exercise", "") or row.get("exercise ", "")).lower()
+    notes = (row.get("notes") or "").strip().lower()
+    return "warmup" in name or "warm-up" in name or notes.startswith("warmup")
 
 
 def _parse_cooldown(section_lines: list[str]) -> dict | None:
@@ -199,6 +230,29 @@ def parse_log_md(text: str, *, filename: str) -> dict | None:
     wu_bounds = _section_bounds(lines, SECTION_PATTERNS["warmup"])
     if wu_bounds:
         warmup_exercises = _parse_exercise_table(lines[wu_bounds[0]:wu_bounds[1]])
+
+    # Fallback for legacy hand-authored logs that use descriptive block headings
+    # (e.g. "## Core Block", "## Chest / Triceps Block") instead of the canonical
+    # "## Exercises". Only runs when no "## Exercises" section was found, so modern
+    # logs are unaffected. Collects every '## ' section whose table has an
+    # "exercise" column (skipping summary/progression/notes tables), routing rows
+    # marked as warm-ups to warmup_exercises.
+    if not exercises:
+        for heading, s, e in _iter_table_sections(lines):
+            if _NON_EXERCISE_HEADING.match(heading):
+                continue
+            section = lines[s:e]
+            tbl = pc.find_table(section, 0)
+            if not tbl:
+                continue
+            headers = [h.lower() for h in pc.split_table_row(section[tbl[0]])]
+            if "exercise" not in headers:
+                continue
+            for row in pc.parse_table_rows(section, tbl[0], tbl[1]):
+                ex = _exercise_from_row(row)
+                if ex is None:
+                    continue
+                (warmup_exercises if _row_is_warmup(row) else exercises).append(ex)
 
     sn_bounds = _section_bounds(lines, SECTION_PATTERNS["session"])
     session_notes = _parse_session_notes(lines[sn_bounds[0]:sn_bounds[1]]) if sn_bounds else ""

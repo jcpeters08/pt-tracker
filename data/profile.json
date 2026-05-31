@@ -1,6 +1,15 @@
 {
-  "source": "Parsed from vault Overview.md (🎯 Projects/🏋️ Personal Trainer/Overview.md). Re-synced by the daily scheduled task.",
-  "synced_at": null,
-  "phase": "1-closeout",
-  "notes": "Bootstrap placeholder. Sync run will populate phase, gym location, weekly target, and active goals from Overview.md."
+  "source": "Parsed from vault Overview.md (🎯 Projects/🏋️ Personal Trainer/Overview.md) by scripts/parse_overview.py. Re-synced by the daily scheduled task.",
+  "synced_at": "2026-05-31T03:18:09Z",
+  "status": "Phase 2 active — launched Mon 5/11 at Planet Fitness NE. CDMX hold-the-line week 5/4–5/8 was skipped (vacation in Mexico City) → re-entry week 5/11–5/15 holds Phase 1 ceilings.",
+  "phase": "2",
+  "active_routine": "2026-W22-Phase-2-Week-3-Reentry",
+  "gym": "Planet Fitness NE",
+  "goals": [
+    "Weight: ~180 lbs (secondary to body composition)",
+    "Body fat: ≤17% (primary target)",
+    "Muscle: +5 lbs lean mass",
+    "Foundation: Build a sustainable strength training habit that outlasts the current sprint"
+  ],
+  "protein_target": "150–160g"
 }

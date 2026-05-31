@@ -16,7 +16,192 @@
   "thermocycling": false,
   "fasted": true,
   "warmup_exercises": [],
-  "exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "plank",
+      "display_name": "Plank",
+      "weight_raw": "bodyweight",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 60
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 60
+        },
+        {
+          "set": 3,
+          "weight_kg": 0.0,
+          "reps": 60
+        }
+      ],
+      "notes": "Hold"
+    },
+    {
+      "exercise_id": "stick-crunch",
+      "display_name": "Stick Crunch",
+      "weight_raw": "bodyweight (stick)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 0.0,
+          "reps": 10
+        }
+      ],
+      "notes": "Stick slides up thighs for form"
+    },
+    {
+      "exercise_id": "butterfly-crunch",
+      "display_name": "Butterfly Crunch",
+      "weight_raw": "bodyweight",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 0.0,
+          "reps": 10
+        }
+      ],
+      "notes": "Soles together, knees out"
+    },
+    {
+      "exercise_id": "candlestick",
+      "display_name": "Candlestick",
+      "weight_raw": "bodyweight",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 0.0,
+          "reps": 10
+        }
+      ],
+      "notes": "Legs vertical, hip lift"
+    },
+    {
+      "exercise_id": "plate-loaded-chest-press",
+      "display_name": "Plate-Loaded Chest Press",
+      "weight_raw": "60 kg (132 lbs)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 60.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 60.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 60.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Working sets. **Jacob:** 40 kg × 10 × 3"
+    },
+    {
+      "exercise_id": "db-reverse-fly",
+      "display_name": "Bent-Over Reverse Fly",
+      "weight_raw": "10 kg → 0 kg → 5 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 10.0,
+          "reps": 8
+        },
+        {
+          "set": 2,
+          "weight_kg": 10.0,
+          "reps": 8
+        },
+        {
+          "set": 3,
+          "weight_kg": 10.0,
+          "reps": 8
+        }
+      ],
+      "notes": "10 kg too heavy → dropped to 0 kg to learn correct form → added 5 kg once form was locked in. **Jacob:** same progression"
+    },
+    {
+      "exercise_id": "plate-loaded-shoulder-press",
+      "display_name": "Plate-Loaded Shoulder Press",
+      "weight_raw": "10 kg → 20 kg → 20 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 10.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 10.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 10.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Ramped up. **Jacob:** 10 kg × 10 × 3"
+    },
+    {
+      "exercise_id": "db-front-raise",
+      "display_name": "Seated Dumbbell Front Raise",
+      "weight_raw": "4 kg",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 4.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 4.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 4.0,
+          "reps": 15
+        }
+      ],
+      "notes": "Last set AMRAP-style. **Jacob:** 15 reps each set"
+    }
+  ],
   "cooldown": null,
   "session_notes": "",
   "submitted_at": null,

@@ -1,0 +1,24 @@
+{
+  "id": "stick-crunch",
+  "name": "Stick Crunch",
+  "primary_muscle": "core",
+  "secondary_muscles": [],
+  "equipment": [],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/0.jpg",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Crunches — a stick crunch is a standard crunch with a dowel slid up the thighs to standardize range of motion. yuhonas has no 'stick crunch'; Crunches (HTTP 200) is the direct movement match.",
+  "video_url": "https://www.youtube.com/results?search_query=stick+crunch+abs+proper+form",
+  "form_cues": [
+    "Slide the stick up the thighs to guide range",
+    "Crunch from the abs; don't pull on the neck"
+  ],
+  "default_load_unit": "reps",
+  "notes": "Phase 1 PT core move — stick slides up thighs for form feedback.",
+  "video_source": "youtube_search_fallback",
+  "video_id_query": "stick crunch abs how to",
+  "instructions": [
+    "Lie on your back with knees bent, holding a light stick or dowel resting across the thighs.",
+    "Crunch up, sliding the stick up toward the knees as the shoulder blades leave the floor.",
+    "Pause at the top, then lower under control."
+  ]
+}
