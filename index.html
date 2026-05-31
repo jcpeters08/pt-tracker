@@ -754,6 +754,7 @@ import {
   escapeHtml, isoNow, localDateIso, dayTypeKey,
 } from "./js/util.js";
 import { payloadSignature, gcOldDrafts } from "./js/storage.js";
+import { buildSessionPayload, buildSkipPayload, buildRecoveryPayload } from "./js/payloads.js";
 "use strict";
 
 // ---- Config ---------------------------------------------------------------
@@ -2074,38 +2075,8 @@ function hydrateRecoveryFromExisting(rec) {
   if (rec.notes) $("#rec-notes").value = rec.notes;
 }
 
-function recoveryPayloadFromInputs() {
-  const date = $("#rec-date").value || localDateIso();
-  const location = ($("#rec-location").value || "Embrace North").trim();
-  const notes = ($("#rec-notes").value || "").trim();
-  const rounds = (state.recoveryRounds || []).map((r, i) => ({
-    round: i + 1,
-    sauna_min: r.sauna_min ?? 0,
-    plunge_min: r.plunge_min ?? 0,
-  }));
-  const total_min = rounds.reduce((s, r) => s + (r.sauna_min || 0) + (r.plunge_min || 0), 0);
-  // Keep summary fields for backward compatibility with old parsers / analytics.
-  // sauna_min / plunge_min as the per-round average (rounded).
-  const n = rounds.length || 1;
-  const sauna_avg = Math.round(rounds.reduce((s, r) => s + (r.sauna_min || 0), 0) / n);
-  const plunge_avg = Math.round(rounds.reduce((s, r) => s + (r.plunge_min || 0), 0) / n);
-  const submittedAt = isoNow();
-  return {
-    type: "recovery",
-    submitted_at: submittedAt,
-    session: {
-      date,
-      location,
-      rounds: rounds.length,
-      sauna_min: sauna_avg,
-      plunge_min: plunge_avg,
-      total_min,
-      rounds_detail: rounds,
-      notes,
-      submitted_at: submittedAt,
-    },
-  };
-}
+// recoveryPayloadFromInputs → buildRecoveryPayload in js/payloads.js
+// (the submit handler gathers the DOM fields and passes them in).
 
 function renderRecoverySummary() {
   const el = $("#rec-summary");
@@ -2170,7 +2141,12 @@ function renderRecoveryPanel() {
 async function submitRecovery() {
   const btn = $("#rec-submit-btn");
   if (state.recoverySubmitting || btn.disabled) return;
-  const payload = recoveryPayloadFromInputs();
+  const payload = buildRecoveryPayload({
+    date: $("#rec-date").value || localDateIso(),
+    location: ($("#rec-location").value || "Embrace North").trim(),
+    notes: ($("#rec-notes").value || "").trim(),
+    rounds: state.recoveryRounds || [],
+  });
   if (!payload.session.date) { toast("Pick a date for the recovery session.", "err"); return; }
   if (payload.session.rounds <= 0) { toast("Enter at least 1 round.", "err"); return; }
   if (payload.session.total_min <= 0) { toast("Enter sauna and/or plunge minutes per round.", "err"); return; }
@@ -2210,56 +2186,7 @@ async function submitRecovery() {
 
 // ---- Submit session -------------------------------------------------------
 
-function buildSessionPayload() {
-  const day = state.routine?.days?.[state.selectedDay];
-  const muscleSet = new Set();
-  const exercises = [];
-  for (const planEx of (day?.exercises || [])) {
-    const log = state.log[planEx.exercise_id];
-    if (!log) continue;
-    // Only sets explicitly marked Done count as work that actually happened.
-    // Prefilled targets that were never confirmed (and skipped exercises
-    // entirely) are dropped, matching the user's expectation that "if I
-    // didn't click Done it didn't happen."
-    const doneSets = log.sets
-      .filter(s => s.done && s.weight_kg !== null && s.reps !== null && (s.weight_kg !== 0 || s.reps !== 0))
-      .map((s, i) => ({ set: i + 1, weight_kg: s.weight_kg, reps: s.reps }));
-    if (!doneSets.length) continue;
-    const meta = state.exercises[planEx.exercise_id];
-    if (meta?.primary_muscle) muscleSet.add(meta.primary_muscle);
-    exercises.push({
-      exercise_id: planEx.exercise_id,
-      display_name: meta?.name || planEx.exercise_id,
-      sets: doneSets,
-      notes: log.notes || "",
-    });
-  }
-  const submittedAt = isoNow();
-  // Attach cooldown completion if the user marked it done
-  const cdLog = state.cooldownLog?.[`${state.workoutDate || ""}|${state.selectedDay || ""}`];
-  const cooldown = (cdLog && cdLog.completed_at) ? {
-    type: cdLog.type,
-    source_key: cdLog.source_key || null,
-    fitnessplus_name: cdLog.fitnessplus_name || "",
-    completed_at: cdLog.completed_at,
-  } : null;
-  return {
-    type: "log",
-    submitted_at: submittedAt,
-    session: {
-      date: state.workoutDate || localDateIso(),
-      submitted_at: submittedAt,        // also denormalized inside session
-      day_of_week: state.selectedDay,
-      type: dayTypeKey(state.routine?.days?.[state.selectedDay]?.label, state.selectedDay),
-      muscle_groups: [...muscleSet],
-      routine_id: state.routine?.id,
-      phase: state.routine?.phase || null,
-      exercises,
-      cooldown,
-      session_notes: state.sessionNotes || "",
-    },
-  };
-}
+// buildSessionPayload → js/payloads.js (call: buildSessionPayload(state))
 
 async function submitSkip() {
   const btn = $("#skip-btn");
@@ -2274,21 +2201,7 @@ async function submitSkip() {
 
   btn.disabled = true;
   state.submitting = true;
-  const sessionType = dayTypeKey(day.label, state.selectedDay);
-  const submittedAt = isoNow();
-  const payload = {
-    type: "skip",
-    submitted_at: submittedAt,
-    session: {
-      date: dateStr,
-      submitted_at: submittedAt,
-      day_of_week: state.selectedDay,
-      type: sessionType,
-      routine_id: state.routine?.id,
-      phase: state.routine?.phase || null,
-      reason,
-    },
-  };
+  const payload = buildSkipPayload(state);
   try {
     await appendPending(payload);
     toast("✓ Marked skipped. Synced to vault overnight.", "ok");
@@ -2319,7 +2232,7 @@ async function submitSession() {
   if (state.submitting || btn.disabled) return;
   btn.disabled = true;
   state.submitting = true;
-  const payload = buildSessionPayload();
+  const payload = buildSessionPayload(state);
   if (!payload.session.exercises.length) {
     toast("Log at least one set before submitting.", "err");
     btn.disabled = false;
