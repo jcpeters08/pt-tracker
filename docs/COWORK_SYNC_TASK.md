@@ -22,7 +22,7 @@ If you're editing this file, the rule of thumb: anything that describes *what th
    - Re-derives `data/routines/*.json` from vault `Weekly Plans/*.md` (reads optional `**Cool-down:**` line per day in addition to `**Warm-up:**`).
    - Re-derives `data/logs/*.json` from vault `Workout Log/*.md` (idempotent).
    - Re-derives `data/recovery_logs/*.json` from vault `Recovery Log/*.md` (idempotent).
-   - Recomputes `data/analytics.json` (weekly volume, lift progression, PRs, compliance, plus `recovery_count` and `recovery_by_week`).
+   - Recomputes `data/analytics.json` (weekly volume, lift progression, legacy `prs` plus the richer `personal_records` load/rep/volume PRs, `session_compliance` with planned-vs-completed, `recovery_count`, and `recovery_by_week`).
    - Resets `data/pending.json` to `{entries: []}` if anything was drained.
    - Auto-commits with message `sync: drain N pending entries (YYYY-MM-DD)` and pushes if anything changed.
 
