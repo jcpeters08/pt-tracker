@@ -135,6 +135,11 @@ async function fetchJson(path) {
   return res.json();
 }
 
+// Escape dynamic values before they reach innerHTML (mirrors index.html).
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
 async function fetchExerciseNameMap() {
   // Get exercise display names by listing the directory via GitHub's contents API
   // (anonymous, public repo). Fall back to id-as-name if that fails.
@@ -191,7 +196,12 @@ function renderVolumeChart(analytics) {
 function renderLiftChart(analytics, exerciseNames) {
   const select = document.getElementById("lift-select");
   const ids = Object.keys(analytics.exercise_progression).sort((a, b) => (exerciseNames[a] || a).localeCompare(exerciseNames[b] || b));
-  select.innerHTML = ids.map(id => `<option value="${id}">${exerciseNames[id] || id}</option>`).join("");
+  select.replaceChildren(...ids.map(id => {
+    const opt = document.createElement("option");
+    opt.value = id;
+    opt.textContent = exerciseNames[id] || id;
+    return opt;
+  }));
   if (!ids.length) return;
 
   let chart;
@@ -284,10 +294,10 @@ function renderPrs(analytics, exerciseNames) {
       <tbody>
         ${analytics.prs.map(p => `
           <tr>
-            <td>${exerciseNames[p.exercise_id] || p.exercise_id}</td>
-            <td>${p.date}</td>
-            <td>${p.weight_kg} kg × ${p.reps}</td>
-            <td class="delta">+${p.delta_kg} kg</td>
+            <td>${escapeHtml(exerciseNames[p.exercise_id] || p.exercise_id)}</td>
+            <td>${escapeHtml(p.date)}</td>
+            <td>${escapeHtml(p.weight_kg)} kg × ${escapeHtml(p.reps)}</td>
+            <td class="delta">+${escapeHtml(p.delta_kg)} kg</td>
           </tr>
         `).join("")}
       </tbody>
@@ -308,7 +318,7 @@ function renderPrs(analytics, exerciseNames) {
   } catch (e) {
     console.error(e);
     document.querySelector(".container").insertAdjacentHTML("beforeend",
-      `<div class="section"><p style="color:var(--accent)">Failed to load reports: ${e.message}</p></div>`);
+      `<div class="section"><p style="color:var(--accent)">Failed to load reports: ${escapeHtml(e.message)}</p></div>`);
   }
 })();
 </script>
