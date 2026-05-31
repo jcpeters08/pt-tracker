@@ -15,8 +15,9 @@ function ghListing(dir) {
 }
 
 // Mock the auth Worker + GitHub Contents API. Same-origin data/*.json are
-// served real by the webServer, so the app loads genuine routines/logs.
-export async function mockBackends(context) {
+// served real by the webServer. opts.onPendingPut(parsedJson) receives the
+// decoded data/pending.json body whenever the app writes a pending entry.
+export async function mockBackends(context, opts = {}) {
   await context.route(/pt-tracker-auth\.ositodelnorte\.workers\.dev/, route => {
     const url = route.request().url();
     if (url.includes("/auth/verify-code")) return route.fulfill({ json: { sid: "e2e-sid" } });
@@ -25,18 +26,30 @@ export async function mockBackends(context) {
     return route.fulfill({ json: { ok: true } });
   });
   await context.route(/api\.github\.com/, route => {
-    const url = route.request().url();
+    const req = route.request();
+    const url = req.url();
     for (const dir of ["routines", "logs", "recovery_logs", "exercises"]) {
       if (url.includes(`/contents/data/${dir}`)) return route.fulfill({ json: ghListing(dir) });
     }
-    if (url.includes("pending.json")) return route.fulfill({ json: { content: "e30=", sha: "deadbeef" } });
+    if (url.includes("pending.json")) {
+      if (req.method() === "PUT") {
+        if (opts.onPendingPut) {
+          try {
+            const body = req.postDataJSON();
+            opts.onPendingPut(JSON.parse(Buffer.from(body.content, "base64").toString("utf8")));
+          } catch { /* ignore decode errors */ }
+        }
+        return route.fulfill({ json: { content: { sha: "newsha" }, commit: { sha: "c1" } } });
+      }
+      return route.fulfill({ json: { content: "e30=", sha: "deadbeef" } }); // GET: "{}"
+    }
     return route.fulfill({ json: [] });
   });
 }
 
 // Drive the real sign-in UI through to the authenticated app view.
-export async function signIn(page, context) {
-  await mockBackends(context);
+export async function signIn(page, context, opts = {}) {
+  await mockBackends(context, opts);
   await page.goto("/index.html");
   await expect(page.locator("#signin-panel")).toBeVisible();
   await page.fill("#email-input", "jcpeters08@gmail.com");
