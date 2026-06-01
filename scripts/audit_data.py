@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import sys
+from datetime import date, timedelta
 from pathlib import Path
 
 
@@ -48,6 +49,15 @@ def _exercise_refs_from_log(log: dict) -> set[str]:
     return refs
 
 
+def _iso_date(value: str | None) -> date | None:
+    if not value:
+        return None
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        return None
+
+
 def audit_repo(repo_root: Path) -> list[str]:
     findings: list[str] = []
     data_dir = repo_root / "data"
@@ -55,6 +65,7 @@ def audit_repo(repo_root: Path) -> list[str]:
         return [f"missing data directory: {data_dir}"]
 
     referenced: set[str] = set()
+    routines: list[tuple[Path, dict]] = []
     for subdir in ("routines", "logs", "recovery_logs", "exercises"):
         for path in _json_files(repo_root, subdir):
             obj = _load_json(path, findings)
@@ -63,9 +74,23 @@ def audit_repo(repo_root: Path) -> list[str]:
             if obj.get("id") and obj["id"] != path.stem:
                 findings.append(f"{path.relative_to(repo_root)}: id {obj['id']!r} does not match filename {path.stem!r}")
             if subdir == "routines":
+                routines.append((path, obj))
                 referenced |= _exercise_refs_from_routine(obj)
             elif subdir == "logs":
                 referenced |= _exercise_refs_from_log(obj)
+
+    dated_routines = sorted(
+        ((start, path, routine) for path, routine in routines if (start := _iso_date(routine.get("start_date")))),
+        key=lambda item: item[0],
+    )
+    for idx, (start, path, routine) in enumerate(dated_routines[:-1]):
+        next_start = dated_routines[idx + 1][0]
+        end = _iso_date(routine.get("end_date"))
+        if end is None:
+            expected = next_start - timedelta(days=1)
+            findings.append(f"{path.relative_to(repo_root)}: missing end_date before next routine; expected {expected.isoformat()}")
+        elif end >= next_start:
+            findings.append(f"{path.relative_to(repo_root)}: end_date {end.isoformat()} overlaps next routine start {next_start.isoformat()}")
 
     exercise_dir = repo_root / "data" / "exercises"
     exercise_files = {p.stem: p for p in exercise_dir.glob("*.json")} if exercise_dir.exists() else {}

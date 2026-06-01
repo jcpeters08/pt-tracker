@@ -67,6 +67,8 @@ class TestDataAudit(unittest.TestCase):
             root = Path(tmp)
             _write_json(root / "data/routines/r1.json", {
                 "id": "r1",
+                "start_date": "2026-05-11",
+                "end_date": None,
                 "days": {"monday": {"exercises": [{"exercise_id": "flat-db-bench-press"}]}},
             })
             _write_json(root / "data/logs/l1.json", {
@@ -85,6 +87,25 @@ class TestDataAudit(unittest.TestCase):
             })
             _write_json(root / "data/cooldowns.json", {"library": {"push": {"moves": [{"name": "stretch", "image_url": "https://example.com/stretch.jpg"}]}}})
             self.assertEqual(audit_data.audit_repo(root), [])
+
+    def test_non_latest_routine_missing_end_date_is_a_finding(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_json(root / "data/routines/2026-W20.json", {
+                "id": "2026-W20",
+                "start_date": "2026-05-11",
+                "end_date": None,
+                "days": {},
+            })
+            _write_json(root / "data/routines/2026-W21.json", {
+                "id": "2026-W21",
+                "start_date": "2026-05-18",
+                "end_date": None,
+                "days": {},
+            })
+            _write_json(root / "data/cooldowns.json", {"library": {}})
+            findings = audit_data.audit_repo(root)
+            self.assertTrue(any("expected 2026-05-17" in f for f in findings))
 
     def test_missing_referenced_exercise_and_null_images_are_findings(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -22,29 +22,29 @@ Status of every item is below; detailed per-item responses are inline under each
 | P2 | Worker stores PATs unvalidated | ✅ Done | `c524a2f` |
 | P2 | PR detection load-only | ✅ Done | `e5cf5f3` |
 | P3 | `index.html` too large / mixed concerns | ✅ Done | `48d6d13`…`28324d2`, `2c01bcc` |
-| A1 | No generated data manifest | ✅ Done | pending |
-| A2 | Routine `end_date` unused | ✅ Done | pending |
-| A3 | No automated doc-drift audit | ✅ Done | pending |
-| A4 | No data-integrity audit script/CI | ✅ Done | pending |
-| A5 | Test coverage incomplete | ✅ Done for listed gaps | pending |
-| A6 | Reports remain v1 | ✅ Done | pending |
-| A7 | Auth/session model high-trust | ✅ Done (Option 2) | pending |
-| A8 | Docs duplicate operational truth | ✅ Done | pending |
-| A9 | No native iPhone architecture | ✅ Done (architecture doc) | pending |
+| A1 | No generated data manifest | ✅ Done | `30eb345` |
+| A2 | Routine `end_date` unused | ✅ Done | `30eb345` |
+| A3 | No automated doc-drift audit | ✅ Done | `30eb345` |
+| A4 | No data-integrity audit script/CI | ✅ Done | `30eb345` |
+| A5 | Test coverage incomplete | ✅ Done for listed gaps | `30eb345` |
+| A6 | Reports remain v1 | ✅ Done | `30eb345` |
+| A7 | Auth/session model high-trust | ✅ Done (Option 2) | `30eb345` |
+| A8 | Docs duplicate operational truth | ✅ Done | `30eb345` |
+| A9 | No native iPhone architecture | ✅ Done (architecture doc) | `30eb345` |
 
 ### Validation after this work
 
 ```bash
 cd ~/Git/pt-tracker
-python3 -m pytest tests/ -q              # 31 passed
-npm test                                 # root vitest (js/ unit): 24 passed
+python3 -m pytest                        # 37 passed
+npm test                                 # root vitest (js/ unit): 27 passed
 npx playwright test                      # e2e: 8 passed
-( cd worker && npm test )                # worker vitest: 9 passed
-python3 scripts/compute_analytics.py .   # regenerates data/analytics.json
-git status --short                       # clean
+( cd worker && npm test )                # worker vitest: 14 passed
+python3 scripts/audit_data.py .          # passed
+python3 scripts/audit_docs.py .          # passed
 ```
 
-**Codex completion pass (2026-05-31):** added `data/manifest.json` + generator; derived routine `end_date`; added `scripts/audit_docs.py` and `scripts/audit_data.py`; moved writes behind Worker `POST /pending/append`; stopped returning decrypted PATs to the browser; expanded reports with recovery, calendar, drilldown, richer PRs, and coaching cards; added report/manifest/audit/Worker tests; documented doc ownership and iPhone architecture.
+**Codex completion pass (2026-05-31):** added `data/manifest.json` + generator; derived routine `end_date`; added `scripts/audit_docs.py` and `scripts/audit_data.py`; moved writes behind Worker `POST /pending/append`; stopped returning decrypted PATs to the browser; expanded reports with recovery, calendar, drilldown, richer PRs, and coaching cards; added report/manifest/audit/Worker tests; documented doc ownership and iPhone architecture. See `CODEX_CLAUDE_HANDOFF.md` for a detailed narrative handoff.
 
 **Heads-up — latent test bug fixed today (`39117f9`):** the Worker's vitest run inherited the repo-root config (`include: js/**/*.test.js`) and silently matched zero files, so `cd worker && npm test` had been reporting "No test files found" — the auth/PAT suites never actually executed. Added `worker/vitest.config.ts` scoped to `test/**/*.test.ts`; the 9 Worker tests now run.
 
