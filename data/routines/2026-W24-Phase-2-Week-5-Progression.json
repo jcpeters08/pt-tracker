@@ -1,10 +1,10 @@
 {
-  "id": "2026-W23-Phase-2-Week-4-Progression",
-  "name": "W23 MPLS Planet Fitness — Solo",
+  "id": "2026-W24-Phase-2-Week-5-Progression",
+  "name": "W24 MPLS Planet Fitness — Solo",
   "phase": "2",
-  "start_date": "2026-06-01",
-  "end_date": "2026-06-07",
-  "source_md": "Weekly Plans/2026-W23-Phase-2-Week-4-Progression.md",
+  "start_date": "2026-06-08",
+  "end_date": null,
+  "source_md": "Weekly Plans/2026-W24-Phase-2-Week-5-Progression.md",
   "days": {
     "monday": {
       "label": "Push (Chest / Shoulders / Triceps)",
@@ -15,17 +15,17 @@
           "exercise_id": "flat-db-bench-press",
           "target_weight_kg": 18.0,
           "target_weight_raw": "40 lbs (18 kg) ea",
-          "target_reps": 10,
+          "target_reps": 12,
           "target_sets": 3,
-          "notes": "Reclaim April peak (18 kg). 5/28 held 35×15 clean — earn 10–12 here and it's a true load PR"
+          "notes": "Hold W23 — push 10s to clean 12s. Earn 12/12/12 → 45 lbs in W25"
         },
         {
           "exercise_id": "incline-db-bench-press",
           "target_weight_kg": 18.0,
           "target_weight_raw": "40 lbs (18 kg) ea",
-          "target_reps": 10,
+          "target_reps": 12,
           "target_sets": 3,
-          "notes": "Load PR — 5/18 + 5/28 both 35×15 clean. Earn 10–12"
+          "notes": "Hold W23 — chase the 12s"
         },
         {
           "exercise_id": "cable-chest-fly",
@@ -33,39 +33,39 @@
           "target_weight_raw": "15 lbs (7 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Earned clean 15s on 5/28. Add a 3-sec eccentric; nudge a plate if the stack allows"
+          "notes": "Hold. 3-sec eccentric"
         },
         {
           "exercise_id": "seated-db-shoulder-press",
           "target_weight_kg": 16.0,
           "target_weight_raw": "35 lbs (16 kg) ea",
-          "target_reps": 10,
+          "target_reps": 12,
           "target_sets": 3,
-          "notes": "**Load PR** — 5/28 hit 35×12. Shoulders went 5→16 kg since April; earn 12/12/12 → 40 lbs"
+          "notes": "Earn 12/12/12 clean → 40 lbs next. This is the lift that's moved most — keep it honest"
         },
         {
           "exercise_id": "db-lateral-raise",
           "target_weight_kg": 7.0,
           "target_weight_raw": "15 lbs (7 kg) ea",
-          "target_reps": 10,
+          "target_reps": 12,
           "target_sets": 3,
-          "notes": "Push from 10 lbs. Partials OK to finish the set — no swinging"
+          "notes": "Push the reps up from W23's 10. Strict"
         },
         {
           "exercise_id": "rope-tricep-pushdown",
           "target_weight_kg": 11.0,
           "target_weight_raw": "25 lbs (11 kg)",
-          "target_reps": 12,
+          "target_reps": 15,
           "target_sets": 3,
-          "notes": "Recent was 20×15 clean — reclaim 25. Elbows pinned to ribs"
+          "notes": "Earn clean 15s → 30 lbs"
         },
         {
           "exercise_id": "overhead-db-tricep-extension",
           "target_weight_kg": 11.0,
           "target_weight_raw": "25 lbs (11 kg)",
-          "target_reps": 12,
+          "target_reps": 15,
           "target_sets": 3,
-          "notes": "5/28 hit 25×14 (rep PR). Earn 15 then bump"
+          "notes": "Earn 15/15/15"
         }
       ]
     },
@@ -76,27 +76,27 @@
       "exercises": [
         {
           "exercise_id": "lat-pulldown",
-          "target_weight_kg": 43.0,
-          "target_weight_raw": "95 lbs (43 kg)",
-          "target_reps": 10,
+          "target_weight_kg": 45.0,
+          "target_weight_raw": "100 lbs (45 kg)",
+          "target_reps": 8,
           "target_sets": 3,
-          "notes": "+1 plate from 5/26 (90×10). 4/21 PR was 100 — closing in"
+          "notes": "**+1 plate — reclaim the 4/21 PR (100).** Earn 8–10"
         },
         {
           "exercise_id": "seated-cable-row",
           "target_weight_kg": 27.0,
           "target_weight_raw": "60 lbs (27 kg)",
-          "target_reps": 12,
+          "target_reps": 15,
           "target_sets": 3,
-          "notes": "5/26 smashed 55×20 (vol PR). +1 plate, drop to 12"
+          "notes": "Hold W23, push to 15"
         },
         {
           "exercise_id": "single-arm-db-row",
-          "target_weight_kg": 18.0,
-          "target_weight_raw": "40 lbs (18 kg) ea",
-          "target_reps": 12,
+          "target_weight_kg": 20.0,
+          "target_weight_raw": "45 lbs (20 kg) ea",
+          "target_reps": 10,
           "target_sets": 3,
-          "notes": "5/26 hit 40×15. Earn clean 12 each side → 45"
+          "notes": "**+5** if W23's 40×12 was clean each side. Else hold 40"
         },
         {
           "exercise_id": "cable-face-pull",
@@ -104,7 +104,7 @@
           "target_weight_raw": "35 lbs (16 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Hold 5/26 load PR. Rear delts were the Phase-1 gap — keep the volume"
+          "notes": "Hold. Rear-delt volume stays"
         },
         {
           "exercise_id": "db-reverse-fly",
@@ -120,15 +120,15 @@
           "target_weight_raw": "55 lbs (25 kg)",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "Reclaim 5/1 PR (55×10). Strict — no hip swing"
+          "notes": "Hold — earn clean 10/10/10 before 60"
         },
         {
           "exercise_id": "hammer-curl",
-          "target_weight_kg": 9.0,
-          "target_weight_raw": "20 lbs (9 kg) ea",
-          "target_reps": 12,
+          "target_weight_kg": 10.0,
+          "target_weight_raw": "22.5 lbs (10 kg) ea",
+          "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold. Neutral grip, brachialis"
+          "notes": "+2.5 from 20 if last week was clean"
         },
         {
           "exercise_id": "suitcase-carry",
@@ -136,7 +136,7 @@
           "target_weight_raw": "45 lbs (20 kg) ea",
           "target_reps": 30,
           "target_sets": 3,
-          "notes": "+5 from 5/26. 30 sec each side, brace, don't lean toward the load"
+          "notes": "Hold. Brace, don't lean"
         }
       ]
     },
@@ -149,41 +149,41 @@
           "exercise_id": "barbell-back-squat",
           "target_weight_kg": 48.0,
           "target_weight_raw": "105 lbs (48 kg)",
-          "target_reps": 8,
+          "target_reps": 10,
           "target_sets": 3,
-          "notes": "+10 from 5/28 (95×8 clean load PR), as planned. Safety pins below depth, brace before each rep"
+          "notes": "Hold W23 load, **push 8 → 10 reps**. Earn 10/10/10 → 115 in W25. Depth over load"
         },
         {
           "exercise_id": "leg-press",
-          "target_weight_kg": 109.0,
-          "target_weight_raw": "240 lbs (109 kg)",
+          "target_weight_kg": 113.0,
+          "target_weight_raw": "250 lbs (113 kg)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "+20 from 220. Rebuild toward 4/20 PR (265). Full depth, no bounce"
+          "notes": "**+10** from W23. Closing on the 4/20 PR (265)"
         },
         {
           "exercise_id": "barbell-rdl",
           "target_weight_kg": 48.0,
           "target_weight_raw": "105 lbs (48 kg)",
-          "target_reps": 10,
+          "target_reps": 12,
           "target_sets": 3,
-          "notes": "+10 from 5/28 (95×10 vol PR). Hinge not squat, slow eccentric, bar tracks shins"
+          "notes": "Hold, push to 12. Hinge, slow eccentric"
         },
         {
           "exercise_id": "seated-leg-curl",
           "target_weight_kg": 27.0,
           "target_weight_raw": "60 lbs (27 kg)",
-          "target_reps": 12,
+          "target_reps": 15,
           "target_sets": 3,
-          "notes": "+5 from the 55×15 ceiling. Squeeze hard, slow negative"
+          "notes": "Earn 15s → 65"
         },
         {
           "exercise_id": "db-hip-thrust",
           "target_weight_kg": 25.0,
           "target_weight_raw": "55 lbs (25 kg)",
-          "target_reps": 12,
+          "target_reps": 15,
           "target_sets": 3,
-          "notes": "+5 from 5/28 (50×12). Drive through heels, squeeze top 1 sec"
+          "notes": "Push to 15 → move to barbell hip thrust in W25"
         },
         {
           "exercise_id": "calf-raise",
@@ -191,7 +191,7 @@
           "target_weight_raw": "95 lbs (43 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "+1 plate from 5/27 load PR (90×15). Pause 1 sec at top"
+          "notes": "Hold. Pause 1 sec at top"
         }
       ]
     },
@@ -206,7 +206,7 @@
           "target_weight_raw": "30 lbs (14 kg) ea",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Second shoulder hit — lighter than Mon's 35"
+          "notes": "Second shoulder hit — lighter than Mon"
         },
         {
           "exercise_id": "incline-db-bench-press",
@@ -222,7 +222,7 @@
           "target_weight_raw": "10 lbs (4.5 kg) ea",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Lateral delts 2× this week — higher reps, lighter"
+          "notes": "Lateral delts 2×"
         },
         {
           "exercise_id": "cable-face-pull",
@@ -230,7 +230,7 @@
           "target_weight_raw": "30 lbs (14 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Rear delts 2× this week"
+          "notes": "Rear delts 2×"
         },
         {
           "exercise_id": "single-arm-db-row",
@@ -238,31 +238,31 @@
           "target_weight_raw": "35 lbs (16 kg) ea",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Back second hit — lighter than Tue"
+          "notes": "Back second hit"
         },
         {
           "exercise_id": "db-curl",
           "target_weight_kg": 11.0,
           "target_weight_raw": "25 lbs (11 kg) ea",
-          "target_reps": 10,
+          "target_reps": 12,
           "target_sets": 3,
-          "notes": "Hold 5/14 PR — earn 10/10/10 clean"
+          "notes": "Push to 12 → 30 lbs next"
         },
         {
           "exercise_id": "db-skullcrusher",
           "target_weight_kg": 13.6,
           "target_weight_raw": "30 lbs (13.6 kg)",
-          "target_reps": 12,
+          "target_reps": 15,
           "target_sets": 3,
-          "notes": "Hold 5/29 load PR. Lower to forehead, control eccentric"
+          "notes": "Push to 15. Control eccentric to forehead"
         },
         {
           "exercise_id": "side-plank",
           "target_weight_kg": 0.0,
           "target_weight_raw": "bodyweight",
-          "target_reps": 30,
+          "target_reps": 35,
           "target_sets": 3,
-          "notes": "30 sec each side"
+          "notes": "+5 sec each side"
         },
         {
           "exercise_id": "pallof-press",
@@ -270,7 +270,7 @@
           "target_weight_raw": "20 lbs (9 kg)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Anti-rotation, 12 each side. Cable at sternum height"
+          "notes": "Anti-rotation, 12 each side"
         }
       ]
     },
@@ -281,11 +281,11 @@
       "exercises": [
         {
           "exercise_id": "leg-press",
-          "target_weight_kg": 109.0,
-          "target_weight_raw": "240 lbs (109 kg)",
+          "target_weight_kg": 113.0,
+          "target_weight_raw": "250 lbs (113 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Quad second hit — higher reps than Wed's 12, same load. Pause 1 sec at bottom, no bounce"
+          "notes": "Quad second hit — higher reps than Wed, matches Wed's +10"
         },
         {
           "exercise_id": "db-walking-lunge",
@@ -293,7 +293,7 @@
           "target_weight_raw": "25 lbs (11 kg) ea",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "+5 from 5/29 (20×12). 12 steps each leg, knee tracks toe, back knee almost touches floor"
+          "notes": "Hold W23. 12 steps each leg"
         },
         {
           "exercise_id": "seated-leg-curl",
@@ -301,7 +301,7 @@
           "target_weight_raw": "60 lbs (27 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Hamstring second hit — matches Wed's +5"
+          "notes": "Hamstring second hit"
         },
         {
           "exercise_id": "hip-abductor-machine",
@@ -309,15 +309,15 @@
           "target_weight_raw": "100 lbs (45 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Hold 5/29 (100×15). Lean forward to bias glute medius over TFL"
+          "notes": "Hold. Lean forward to bias glute medius"
         },
         {
           "exercise_id": "single-leg-calf-raise",
           "target_weight_kg": 11.0,
           "target_weight_raw": "25 lbs (11 kg) ea",
-          "target_reps": 12,
+          "target_reps": 15,
           "target_sets": 3,
-          "notes": "Retry 25 — 5/13 only got 9s, but you earned clean 20×15 on 5/29. Earn 12+ and it sticks"
+          "notes": "Push toward 15s — then it's the new working weight"
         },
         {
           "exercise_id": "cable-rope-crunch",
@@ -325,7 +325,7 @@
           "target_weight_raw": "35 lbs (16 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "+1 plate from 5/29 (30×15). Kneel, pull rope to forehead, abs not arms"
+          "notes": "Hold. Abs not arms"
         },
         {
           "exercise_id": "back-extension",
@@ -333,7 +333,7 @@
           "target_weight_raw": "bodyweight",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Add a plate to chest once 15/15/15 is easy. Supports the BB hinge load"
+          "notes": "Add a plate to chest once 15/15/15 is easy"
         }
       ]
     }
