@@ -756,11 +756,11 @@ import {
 } from "./js/util.js";
 import { payloadSignature, gcOldDrafts } from "./js/storage.js";
 import { buildSessionPayload, buildSkipPayload, buildRecoveryPayload } from "./js/payloads.js";
-import { selectRoutineForDate } from "./js/routines.js";
+import { selectRoutineForDate, resolveSessionForView } from "./js/routines.js";
 import { mergePending } from "./js/pending.js";
 import { toast, shortDate, openHowto, closeHowto, openVideo, closeVideo, openLightbox, closeLightbox } from "./js/ui.js";
 import { ensureRecoveryRounds, renderRecoveryRounds, renderRecoverySummary } from "./js/recovery.js";
-import { state, hooks, DAYS, todayKey, CD_CHOICE_KEY } from "./js/app-context.js";
+import { state, hooks, todayKey, CD_CHOICE_KEY } from "./js/app-context.js";
 import { dayLabel, renderDayToggle, renderCooldown, cooldownStateKey, renderExercises } from "./js/workout.js";
 "use strict";
 
@@ -1329,7 +1329,22 @@ function refreshActiveSession() {
   const day = state.routine.days?.[state.selectedDay];
   const dayType = dayTypeKey(day?.label, state.selectedDay);
   const key = `${state.workoutDate}|${state.selectedDay}|${dayType}`;
-  state.activeSession = state.sessionLookup?.get(key) || null;
+  // Resolve which session to show: exact date first, else the same day-of-week
+  // within the routine week (a catch-up performed on a different date). Pure
+  // logic in js/routines.js (unit-tested), validatable without a browser.
+  let wkEnd = state.routine.end_date;
+  if (state.routine.start_date && !wkEnd) {
+    const d = new Date(state.routine.start_date + "T00:00:00Z");
+    d.setUTCDate(d.getUTCDate() + 6);
+    wkEnd = d.toISOString().slice(0, 10);
+  }
+  state.activeSession = resolveSessionForView(state.sessionLookup, {
+    date: state.workoutDate,
+    day: state.selectedDay,
+    type: dayType,
+    weekStart: state.routine.start_date,
+    weekEnd: wkEnd,
+  });
   // When the (date|day|type) view changes, the in-progress log state from a
   // different view becomes meaningless. Reset state.log so ensureLogState
   // freshly hydrates from the active session (or routine targets).
@@ -1413,35 +1428,6 @@ function applyModeBanner() {
     ? "📜 Read-only — historical routine"
     : "🔮 Upcoming routine — pre-tune targets, can't log yet";
   host.appendChild(banner);
-}
-
-// Navigate to a day in the current routine's week. Critically, this aligns
-// `workoutDate` to that day's calendar date (start_date + day offset) so the
-// session lookup, draft key, and submit target all match the day being shown —
-// otherwise tapping a prior day kept the date pinned to today and the lookup
-// (keyed date|day|type) never matched the historical log, so cards rendered
-// routine defaults instead of the logged session.
-function selectDay(key) {
-  if (!key) return;
-  state.selectedDay = key;
-  const sd = state.routine?.start_date;
-  const offset = DAYS.indexOf(key);
-  if (sd && offset >= 0) {
-    const d = new Date(sd + "T00:00:00Z");
-    d.setUTCDate(d.getUTCDate() + offset);
-    const dateStr = d.toISOString().slice(0, 10);
-    if (dateStr !== state.workoutDate) {
-      state.workoutDate = dateStr;
-      const recInput = $("#rec-date");
-      if (recInput) recInput.value = dateStr;
-      state._recoveryHydratedFor = null;
-      state.recoveryRounds = null;
-      state.lastRecoverySig = null;
-    }
-  }
-  state.hydratedKeys = new Set();  // hydration is date-keyed → re-hydrate fresh
-  state.log = {};
-  renderApp();
 }
 
 function renderApp() {
@@ -1871,7 +1857,7 @@ async function saveRoutineEdit(payload) {
 document.addEventListener("DOMContentLoaded", () => {
   // Register shared callbacks so render modules (js/*.js) can call back into
   // the app without a circular import on index.html.
-  Object.assign(hooks, { renderApp, markWorkoutDirty, saveWorkoutDraft, getRoutineMode, selectDay });
+  Object.assign(hooks, { renderApp, markWorkoutDirty, saveWorkoutDraft, getRoutineMode });
   bindSigninPanel();
   bindPatPanel();
   $("#signout-btn").addEventListener("click", signOut);

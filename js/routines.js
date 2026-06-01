@@ -33,3 +33,26 @@ export function selectRoutineForDate({ date, routines = [], meta = [], pinned = 
 
   return routines.slice().sort().pop();
 }
+
+// Resolve which logged/pending session to show for a (date, day, type) view.
+// Prefers an exact date match; otherwise the latest LOGGED session for the same
+// day-of-week + type within the routine week [weekStart, weekEnd] — so a workout
+// performed on a different date than its nominal day (a catch-up: e.g. Monday's
+// session actually done Tuesday) still surfaces when you tap that day pill.
+// `lookup` is a Map keyed "date|day|type" → entry ({ kind, session, … }).
+export function resolveSessionForView(lookup, { date, day, type, weekStart, weekEnd } = {}) {
+  if (!lookup || !day) return null;
+  const exact = lookup.get(`${date}|${day}|${type}`);
+  if (exact) return exact;                 // exact-date match wins (log OR skip)
+  if (!weekStart) return null;
+  const end = weekEnd || "9999-12-31";
+  let best = null;                          // latest LOGGED match within the week
+  for (const [k, v] of lookup) {
+    if (!v || v.kind !== "log") continue;
+    const [d, dow, t] = k.split("|");
+    if (dow === day && t === type && d >= weekStart && d <= end) {
+      if (!best || d > best.date) best = { date: d, entry: v };
+    }
+  }
+  return best ? best.entry : null;
+}

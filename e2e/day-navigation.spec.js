@@ -10,20 +10,19 @@ import { signIn } from "./helpers.js";
 // that window makes W22 the active routine, and it has logged sessions Tue–Fri
 // (data/logs/2026-05-26..29). Tuesday 5/26 is a logged Pull day.
 
-test("Bug 2: a prior logged day in the current week shows the logged session, not defaults", async ({ page, context }) => {
+test("Bug 2: tapping a prior day shows the actual logged session — even a catch-up done on a different date", async ({ page, context }) => {
   await signIn(page, context);
-  await page.fill("#workout-date", "2026-05-25");           // land in the W22 week
+  await page.fill("#workout-date", "2026-05-27");          // a Wed inside the W22 week
   await page.dispatchEvent("#workout-date", "change");
   await expect(page.locator("#app")).toBeVisible();
 
-  // Navigate to Tuesday (a different, already-logged day) via the day pill.
-  // Day toggle order is Mon=0, Tue=1, …
-  await page.locator("#day-toggle .day-pill").nth(1).click();
+  // Tap Monday. W22's Monday Push was actually performed on Thu 5/28 (a catch-up),
+  // not on its nominal Monday date — so the exact (date|day|type) lookup misses
+  // and this exercises the day-of-week fallback. Before the fix it showed defaults.
+  await page.locator("#day-toggle .day-pill").nth(0).click();   // Monday
   await expect(page.locator(".ex-card").first()).toBeVisible();
 
-  // The logged session must be detected: "✓ Logged" status + a pre-filled Done
-  // set. Before the fix the lookup keyed on today's date, so this stayed hidden
-  // and the cards showed routine defaults.
+  // The logged session must be detected: "✓ Logged" status + a pre-filled Done set.
   await expect(page.locator("#log-status")).toBeVisible();
   await expect(page.locator("#log-status")).toContainText(/Logged|Submitted/);
   await expect(page.locator(".ex-card .set-row.done").first()).toBeVisible();

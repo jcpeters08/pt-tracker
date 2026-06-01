@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { selectRoutineForDate } from "./routines.js";
+import { selectRoutineForDate, resolveSessionForView } from "./routines.js";
 
 // All four current routines have end_date null (open-ended) — the C9 case.
 const ROUTINES = [
@@ -48,5 +48,59 @@ describe("selectRoutineForDate", () => {
 
   it("falls back to the lexically-last id when nothing has a start_date", () => {
     expect(selectRoutineForDate({ date: "2026-01-01", routines: ["a", "z", "m"], meta: [] })).toBe("z");
+  });
+});
+
+describe("resolveSessionForView (tapping a day shows the actual logged session)", () => {
+  const wk = { weekStart: "2026-05-25", weekEnd: "2026-05-31" }; // W22 week
+
+  it("returns the exact-date session when one exists (over a catch-up)", () => {
+    const lookup = new Map([
+      ["2026-05-25|monday|push", { kind: "log", id: "exact" }],
+      ["2026-05-28|monday|push", { kind: "log", id: "catchup" }],
+    ]);
+    expect(resolveSessionForView(lookup, { date: "2026-05-25", day: "monday", type: "push", ...wk }))
+      .toMatchObject({ id: "exact" });
+  });
+
+  it("falls back to a catch-up: a day's workout performed on a DIFFERENT date in the week", () => {
+    // The bug scenario: Monday's Push was actually done Thu 5/28; viewing it
+    // from another day in the week must still surface the real session.
+    const lookup = new Map([["2026-05-28|monday|push", { kind: "log", id: "catchup" }]]);
+    expect(resolveSessionForView(lookup, { date: "2026-05-27", day: "monday", type: "push", ...wk }))
+      .toMatchObject({ id: "catchup" });
+  });
+
+  it("prefers the latest matching date when several exist", () => {
+    const lookup = new Map([
+      ["2026-05-26|monday|push", { kind: "log", id: "early" }],
+      ["2026-05-28|monday|push", { kind: "log", id: "late" }],
+    ]);
+    expect(resolveSessionForView(lookup, { date: "2026-05-30", day: "monday", type: "push", ...wk }))
+      .toMatchObject({ id: "late" });
+  });
+
+  it("ignores skip entries in the day-of-week fallback (only logs surface)", () => {
+    const lookup = new Map([["2026-05-28|monday|push", { kind: "skip", id: "skip" }]]);
+    expect(resolveSessionForView(lookup, { date: "2026-05-27", day: "monday", type: "push", ...wk }))
+      .toBeNull();
+  });
+
+  it("still returns an exact-date skip for the queried day (date-specific)", () => {
+    const lookup = new Map([["2026-05-27|wednesday|legs", { kind: "skip", id: "skip" }]]);
+    expect(resolveSessionForView(lookup, { date: "2026-05-27", day: "wednesday", type: "legs", ...wk }))
+      .toMatchObject({ id: "skip" });
+  });
+
+  it("does not match a log outside the routine week window", () => {
+    const lookup = new Map([["2026-05-20|monday|push", { kind: "log", id: "prev-week" }]]);
+    expect(resolveSessionForView(lookup, { date: "2026-05-27", day: "monday", type: "push", ...wk }))
+      .toBeNull();
+  });
+
+  it("returns null with no exact match and no week window", () => {
+    const lookup = new Map([["2026-05-28|monday|push", { kind: "log", id: "x" }]]);
+    expect(resolveSessionForView(lookup, { date: "2026-05-27", day: "monday", type: "push" }))
+      .toBeNull();
   });
 });
