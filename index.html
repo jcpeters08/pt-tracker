@@ -608,6 +608,7 @@
         <button type="button" data-unit="lbs" class="active">lbs</button>
         <button type="button" data-unit="kg">kg</button>
       </div>
+      <a class="header-link" id="reports-link" href="reports.html" title="View reports &amp; analytics">📊 Reports</a>
       <a class="header-link" href="https://www.muscleandstrength.com/exercises" target="_blank" rel="noopener" title="Open Muscle &amp; Strength exercise database">M&amp;S ↗</a>
       <button id="signout-btn" class="signout-btn hidden" title="Sign out">⏻</button>
     </div>
@@ -759,7 +760,7 @@ import { selectRoutineForDate } from "./js/routines.js";
 import { mergePending } from "./js/pending.js";
 import { toast, shortDate, openHowto, closeHowto, openVideo, closeVideo, openLightbox, closeLightbox } from "./js/ui.js";
 import { ensureRecoveryRounds, renderRecoveryRounds, renderRecoverySummary } from "./js/recovery.js";
-import { state, hooks, todayKey, CD_CHOICE_KEY } from "./js/app-context.js";
+import { state, hooks, DAYS, todayKey, CD_CHOICE_KEY } from "./js/app-context.js";
 import { dayLabel, renderDayToggle, renderCooldown, cooldownStateKey, renderExercises } from "./js/workout.js";
 "use strict";
 
@@ -1414,6 +1415,35 @@ function applyModeBanner() {
   host.appendChild(banner);
 }
 
+// Navigate to a day in the current routine's week. Critically, this aligns
+// `workoutDate` to that day's calendar date (start_date + day offset) so the
+// session lookup, draft key, and submit target all match the day being shown —
+// otherwise tapping a prior day kept the date pinned to today and the lookup
+// (keyed date|day|type) never matched the historical log, so cards rendered
+// routine defaults instead of the logged session.
+function selectDay(key) {
+  if (!key) return;
+  state.selectedDay = key;
+  const sd = state.routine?.start_date;
+  const offset = DAYS.indexOf(key);
+  if (sd && offset >= 0) {
+    const d = new Date(sd + "T00:00:00Z");
+    d.setUTCDate(d.getUTCDate() + offset);
+    const dateStr = d.toISOString().slice(0, 10);
+    if (dateStr !== state.workoutDate) {
+      state.workoutDate = dateStr;
+      const recInput = $("#rec-date");
+      if (recInput) recInput.value = dateStr;
+      state._recoveryHydratedFor = null;
+      state.recoveryRounds = null;
+      state.lastRecoverySig = null;
+    }
+  }
+  state.hydratedKeys = new Set();  // hydration is date-keyed → re-hydrate fresh
+  state.log = {};
+  renderApp();
+}
+
 function renderApp() {
   applyModeBanner();
   // Defensive: if a code path landed here without loading the routine,
@@ -1841,7 +1871,7 @@ async function saveRoutineEdit(payload) {
 document.addEventListener("DOMContentLoaded", () => {
   // Register shared callbacks so render modules (js/*.js) can call back into
   // the app without a circular import on index.html.
-  Object.assign(hooks, { renderApp, markWorkoutDirty, saveWorkoutDraft, getRoutineMode });
+  Object.assign(hooks, { renderApp, markWorkoutDirty, saveWorkoutDraft, getRoutineMode, selectDay });
   bindSigninPanel();
   bindPatPanel();
   $("#signout-btn").addEventListener("click", signOut);

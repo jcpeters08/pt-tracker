@@ -48,11 +48,17 @@ export function renderDayToggle() {
     lab.textContent = hasExercises ? dayLabel(key) : "—";
     btn.append(lab);
     btn.addEventListener("click", () => {
-      state.selectedDay = key;
-      // Clear in-progress edits so cards re-hydrate from whatever's logged
-      // (or routine targets) for the newly-selected day.
-      state.log = {};
-      hooks.renderApp();
+      // Route through index.html's selectDay: it aligns the workout date to the
+      // selected day's date in the routine week so the logged session shows
+      // (not just routine defaults), then re-hydrates and re-renders. Falls back
+      // to the old behavior if the hook isn't registered yet.
+      if (typeof hooks.selectDay === "function") {
+        hooks.selectDay(key);
+      } else {
+        state.selectedDay = key;
+        state.log = {};
+        hooks.renderApp();
+      }
     });
     host.appendChild(btn);
   }
