@@ -14,11 +14,12 @@ Weekly Plans/*.md           ──→     data/routines/*.json     ──→    
 Workout Log/*.md            ←─→     data/logs/*.json         ←─→    reports.html
 Overview.md                 ──→     data/profile.json
 Log.md                      ←──     (appended by sync)
-                                    data/pending.json        ←──    (web app appends)
+                                    data/manifest.json       ←──    (sync recomputes)
+                                    data/pending.json        ←──    (Worker appends)
                                     data/analytics.json      ←──    (sync recomputes)
 ```
 
-The web app reads JSON same-origin, fetches a GitHub PAT from the auth Worker, and writes new sessions to `data/pending.json` via the GitHub Contents API. A daily sync script drains pending → vault MD, re-derives all snapshots, recomputes analytics, then commits + pushes.
+The web app reads `data/manifest.json` and same-origin JSON snapshots from GitHub Pages. Writes go to the auth Worker (`POST /pending/append`); the Worker holds the encrypted PAT and updates `data/pending.json` via the GitHub Contents API. A daily sync script drains pending → vault MD, re-derives all snapshots, recomputes analytics + manifest, then commits + pushes.
 
 ## How to log a session
 
@@ -26,7 +27,7 @@ The web app reads JSON same-origin, fetches a GitHub PAT from the auth Worker, a
 2. Sign in (one-time): email → 6-digit code → paste GitHub PAT.
 3. Tap the day pill (Mon / Tue / …). Today is highlighted.
 4. Edit weight/reps per set, mark Done, repeat per exercise.
-5. Tap **Submit session** when done. The app writes to `data/pending.json` immediately.
+5. Tap **Submit session** when done. The app asks the Worker to append to `data/pending.json` immediately.
 6. Overnight, the sync script writes `Workout Log/YYYY-MM-DD-Day-Type.md` to your vault.
 
 ## How to add a new routine
@@ -36,7 +37,7 @@ The web app reads JSON same-origin, fetches a GitHub PAT from the auth Worker, a
    ```bash
    python3 ~/Git/pt-tracker/scripts/sync.py
    ```
-3. The web app picks up the new routine on next load. The most-recent routine (by id) becomes the default; you can switch via the routine pill in the header.
+3. The web app picks up the new routine on next load through `data/manifest.json`. The latest routine by `start_date` becomes the default; you can switch via the routine pill in the header.
 
 ## How to add a new exercise
 
@@ -60,7 +61,7 @@ A Cowork scheduled task fires daily at 8:03 CT (mirrors the TV Concierge setup).
 The high-level steps it runs:
 
 1. `git pull --ff-only` in `~/Git/pt-tracker`
-2. `python3 scripts/sync.py` — drains `data/pending.json` into vault MD, re-derives JSON snapshots from vault MD, recomputes `data/analytics.json`, resets pending, auto-commits and pushes
+2. `python3 scripts/sync.py` — drains `data/pending.json` into vault MD, re-derives JSON snapshots from vault MD, recomputes `data/analytics.json` and `data/manifest.json`, resets pending, auto-commits and pushes
 3. Reports a summary
 
 **Pre-conditions:** Mac on, vault mounted at `~/Documents/Jonathan's Vault`, repo on `main`.
@@ -80,7 +81,7 @@ After the auth Worker is deployed and you sign in to the app for the first time,
 4. Set an expiration (1 year is reasonable). Generate.
 5. Copy the `github_pat_...` value, paste into the app, click **Test & save**. The Worker validates against GitHub, then encrypts and stores it.
 
-The PAT lives only in encrypted KV on the Worker, never in your browser, never on your laptop. Sign in on a new device and it's already there.
+The PAT lives only in encrypted KV on the Worker. The browser never receives the decrypted PAT after setup; submits go through `POST /pending/append`. Sign in on a new device and the Worker can write for you without re-pasting the token.
 
 ## Rotating the encryption key
 
@@ -112,7 +113,20 @@ Allowlist: `jcpeters08@gmail.com`. Update `ALLOWED_EMAILS` in `worker/wrangler.t
 - **Re-submitting a session** — a `log`/`skip`/`recovery` resubmit OVERWRITES the existing vault MD by design (correction/edit workflow); you no longer need to delete the MD to re-sync. The `Log.md` index line is appended only on the first write.
 - **Unknown exercise in sync output** — add an entry to `EXERCISE_ALIASES` in `scripts/pt_common.py` and re-run sync.
 
+## Validation
+
+```bash
+python3 -m pytest tests/ -q
+npm test
+npx playwright test
+( cd worker && npm test )
+python3 scripts/audit_data.py .
+python3 scripts/audit_docs.py .
+```
+
 ## See also
 
 - Build brief (historical): `🎯 Projects/🏋️ Personal Trainer/Web-App-Build-Brief.md` in the vault
+- Doc ownership: `docs/DOC_OWNERSHIP.md`
+- iPhone app architecture: `docs/IOS_APP_ARCHITECTURE.md`
 - Worker docs: `worker/README.md`

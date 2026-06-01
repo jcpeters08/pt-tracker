@@ -15,7 +15,7 @@ from __future__ import annotations
 import json
 import re
 import sys
-from datetime import date as _date
+from datetime import date as _date, timedelta
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -178,6 +178,30 @@ def parse_routine_md(text: str, *, routine_id: str) -> dict:
     }
 
 
+def derive_end_dates(routines: list[dict]) -> list[dict]:
+    """Fill missing routine end_date values from the next routine's start_date.
+
+    Explicit end_date frontmatter is preserved. Routines without start_date are
+    returned unchanged because there is no reliable window to derive.
+    """
+    out = [dict(r) for r in routines]
+    dated = sorted(
+        ((r.get("start_date"), i) for i, r in enumerate(out) if r.get("start_date")),
+        key=lambda x: x[0],
+    )
+    for pos, (_, idx) in enumerate(dated[:-1]):
+        routine = out[idx]
+        if routine.get("end_date"):
+            continue
+        next_start = dated[pos + 1][0]
+        try:
+            y, m, d = (int(x) for x in next_start.split("-"))
+            routine["end_date"] = (_date(y, m, d) - timedelta(days=1)).isoformat()
+        except Exception:
+            pass
+    return out
+
+
 def _phase_from_tags(fm: dict) -> str:
     tags = fm.get("tags", [])
     if isinstance(tags, list):
@@ -209,12 +233,16 @@ def main() -> int:
     src_dir = Path(args[0])
     out_dir = Path(args[1])
     md_files = sorted(src_dir.glob("*.md"))
-    n = 0
+    parsed: list[tuple[Path, dict]] = []
     for f in md_files:
+        parsed.append((f, parse_routine_md(f.read_text(encoding="utf-8"), routine_id=f.stem)))
+    parsed_routines = {routine["id"]: routine for routine in derive_end_dates([r for _, r in parsed])}
+    for f, routine in parsed:
         out = out_dir / (f.stem + ".json")
-        _process_one(f, out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(parsed_routines[routine["id"]], indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         print(f"  routine: {f.name} → {out.relative_to(out_dir.parent)}")
-        n += 1
+    n = len(parsed)
     print(f"Processed {n} routine(s).")
     return 0
 

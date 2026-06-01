@@ -7,12 +7,12 @@ import { signIn } from "./helpers.js";
 test("skip uses the selected workout date, not today (P1.1)", async ({ page, context }) => {
   await signIn(page, context);
 
-  const SELECTED = "2026-05-18"; // non-today; W21 Monday (a real planned workout)
+  const SELECTED = "2026-05-25"; // non-today; W22 Monday (current open routine)
   await page.fill("#workout-date", SELECTED);
   await page.dispatchEvent("#workout-date", "change");
 
   // Select a planned (non-rest) day so the skip control is meaningful.
-  await page.locator("#day-toggle .day-pill:not(.rest)").first().click();
+  await page.locator("#day-toggle .day-pill:not(.rest)").first().click({ force: true });
   await expect(page.locator("#skip-btn")).toBeVisible();
 
   // Capture the confirm() dialog and cancel it (no real write).

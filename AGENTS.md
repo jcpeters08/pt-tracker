@@ -19,11 +19,12 @@ Recovery Log/*.md           ←─→     data/recovery_logs/*.json
 Overview.md                 ──→     data/profile.json
 Log.md                      ←──     (appended by sync)
 Recovery Log.md             ←──     (appended by sync)
-                                    data/pending.json        ←──    (web app appends)
+                                    data/pending.json        ←──    (Worker appends)
+                                    data/manifest.json       ←──    (sync recomputes)
                                     data/analytics.json      ←──    (sync recomputes)
 ```
 
-The web app appends to `data/pending.json` via the GitHub Contents API using a PAT vaulted in the auth Worker. The daily scheduled task at 8:03 CT drains pending → vault MD, re-derives JSON from MD, recomputes analytics, commits + pushes.
+The web app reads `data/manifest.json` plus same-origin JSON snapshots. It appends to `data/pending.json` through the auth Worker's `POST /pending/append`; the Worker holds the encrypted PAT and performs GitHub Contents writes. The daily scheduled task at 8:03 CT drains pending → vault MD, re-derives JSON from MD, recomputes analytics + manifest, commits + pushes.
 
 See `README.md` for deploy and how-to-log details.
 
@@ -37,7 +38,7 @@ See `README.md` for deploy and how-to-log details.
 
 4. **Routine MDs support optional `**Warm-up:**` and `**Cool-down:**` lines** per day. When `Cool-down` is absent, the app falls back to the curated library in `data/cooldowns.json` keyed by muscle group.
 
-5. **Pre-dedupe on append**: the web app's `appendPending()` removes any existing pending entry for the same slot before pushing a new one. Workouts dedupe by `(date, day_of_week, type)`; recovery by `(date, location)`; routine_edit by `(routine_id, day_of_week, exercise_id)`.
+5. **Pre-dedupe on append**: appends go through the Worker's `POST /pending/append`, which removes any existing pending entry for the same slot before pushing a new one. The web app mirrors the same `mergePending()` logic locally so the just-submitted entry appears immediately. Workouts dedupe by `(date, day_of_week, type)`; recovery by `(date, location)`; routine_edit by `(routine_id, day_of_week, exercise_id)`.
 
 6. **localStorage drafts auto-save** on every Done click, weight input, rep edit, exercise note, session note, cooldown completion, and recovery round change. Keyed by `pt_tracker_draft_v2:<routine_id>|<date>|<day>|<type>` (workout; legacy `v1` keys are swept on boot) or `pt_tracker_recovery_draft_v1:<date>` (recovery). Cleared on successful submit. GC'd at 5 days.
 
@@ -57,7 +58,7 @@ See `README.md` for deploy and how-to-log details.
 
    Without all four steps, `image_url: null` is not allowed. When committing a new or updated exercise file, also populate `image_source` (license + attribution) and `image_match` (the source folder name or alternative title used). Prefer SVG when only Wikimedia thumb sizes are unavailable — browsers render SVG natively.
 
-   To audit the whole repo for either failure mode, run the audit snippet against `data/exercises/` + `data/routines/` + `data/logs/` (set difference of referenced IDs vs file basenames, plus a sweep for `image_url: null`).
+   To audit the whole repo for these failures, run `python3 scripts/audit_data.py .`.
 
 ## Glossary
 
@@ -78,11 +79,12 @@ See `README.md` for deploy and how-to-log details.
 - **Workout logs have an optional `cooldown` field**: `{type: "library"|"fitnessplus", source_key, fitnessplus_name, completed_at}` — populated when user clicks "Mark cool-down complete" in the app. Renders as a `## Cool-down` section in vault MD.
 - **Weight rendering in vault MD**: `_format_weight` in `sync.py` outputs `"<lbs> lbs (<kg> kg)"` (lbs primary, integer-rounded). Routine MDs use the same format.
 - **`routine_edit` entry shape**: `{type: "routine_edit", routine_id, day_of_week, exercise_id, changes: {target_weight_kg?, target_weight_raw?, target_reps?, target_sets?}, created_at}`. `changes` is partial — only edited fields are present. `target_weight_raw` is included whenever `target_weight_kg` changes (web app pre-formats the lbs/kg string and preserves any `ea` suffix from the prior raw value).
+- **`data/manifest.json`** lists local snapshot IDs for `routines`, `logs`, `recovery_logs`, and `exercises`, plus `latest_routine_id`. Browser reads should use the manifest and same-origin JSON files; do not add GitHub Contents directory listings for normal app/report loads.
 
 ## Operational pointers
 
 - **Daily sync**: Cowork scheduled task `pt-tracker-daily-sync`. Cron `3 8 * * *` (8:03 CT local). The task's authoritative spec is `docs/COWORK_SYNC_TASK.md` (this repo, version-controlled) — Cowork's UI holds only a thin wrapper that pulls latest and reads that file. See `docs/COWORK_WRAPPER_PROMPT.md` for the paste-once wrapper text. Pre-conditions: Mac on, vault mounted, repo on `main`.
-- **Auth Worker**: `worker/` directory. Live at `https://pt-tracker-auth.ositodelnorte.workers.dev`. Cloudflare KV stores encrypted PAT keyed by email. Allowlist: `jcpeters08@gmail.com`.
+- **Auth Worker**: `worker/` directory. Live at `https://pt-tracker-auth.ositodelnorte.workers.dev`. Cloudflare KV stores encrypted PAT keyed by email. The Worker never returns the decrypted PAT; browser writes use `POST /pending/append`. Allowlist: `jcpeters08@gmail.com`.
 - **Vault path**: `~/Documents/Jonathan's Vault/🎯 Projects/🏋️ Personal Trainer/`
 - **Vault MD edits via Cowork**: direct filesystem access to the vault is sandboxed from a Codex session in this repo. Use a separate Cowork session (which has full vault access) for MD updates. Pattern:
   1. Specify the exact file path
@@ -97,13 +99,15 @@ See `README.md` for deploy and how-to-log details.
 - **`data/cooldowns.json` cooldown moves all have a populated `image_url`** (30 moves, sourced from `yuhonas/free-exercise-db` + Wikimedia Commons). If a future move is added with a null `image_url`, the cooldown card falls back to a 🧘 emoji placeholder.
 - **PF doesn't have 22-lb dumbbells.** When picking default weights, use real PF increments (5/10/15/20/25/30/35/40/45/50/55/60/65/70/75/80 lb DBs). Straight kg→lb conversion gives nonsense values.
 - **Routine JSON edits without matching vault MD get reverted by the next 8:03 sync.** Always edit the vault MD too (via Cowork) when changing a routine.
-- **Routine `end_date` is always null (by design).** The active routine for a given date is the latest routine whose `start_date <= date` (open-ended); adding a routine with a later `start_date` supersedes the prior one. Selection logic: `pickRoutineForDate` in `index.html`. `start_date` is derived from the first day-header date (falling back to the ISO week in the id) — see `scripts/parse_routine.py`.
+- **Routine `end_date` is generated when missing.** `scripts/parse_routine.py` derives each routine's missing `end_date` as the day before the next routine's `start_date`; the latest routine remains open-ended. Selection logic still honors explicit frontmatter `end_date`, then falls back to latest past routine for gaps. `start_date` is derived from the first day-header date (falling back to the ISO week in the id).
 
 ## Where to look for more
 
 - `README.md` — full architecture, deploy, sign-in flow, how to add routine/exercise
 - `git log --oneline -30` — every recent change with rationale in the commit message
 - `worker/README.md` — auth Worker deploy
+- `docs/DOC_OWNERSHIP.md` — ownership boundaries for duplicated docs
+- `docs/IOS_APP_ARCHITECTURE.md` — native iPhone app migration architecture
 - Vault `Web-App-Build-Brief.md` — original build brief (referenced but not yet ingested into this brief)
 
 ## Wrap-up checkpoints (proactive offers at session end)

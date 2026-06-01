@@ -39,9 +39,9 @@ test("cooldown tab switches to Apple Fitness+", async ({ page, context }) => {
 });
 
 test("editing a target queues a routine_edit payload", async ({ page, context }) => {
-  let put = null;
+  let appended = null;
   page.on("dialog", d => d.accept());
-  await signIn(page, context, { onPendingPut: (json) => { put = json; } });
+  await signIn(page, context, { onPendingAppend: (entry) => { appended = entry; } });
   await openPlannedDay(page); // W22 is the current routine today → target line is editable
 
   const tl = page.locator(".ex-card .target-line").first();
@@ -52,9 +52,10 @@ test("editing a target queues a routine_edit payload", async ({ page, context })
   await editor.locator("input[data-field='sets']").fill("4");
   await editor.locator(".editor-btn.save").click();
 
-  await expect.poll(() => put, { timeout: 10_000 }).not.toBeNull();
-  const edit = (put.entries || []).find(e => e.type === "routine_edit");
+  await expect.poll(() => appended, { timeout: 10_000 }).not.toBeNull();
+  const edit = appended;
   expect(edit, "a routine_edit entry was queued").toBeTruthy();
+  expect(edit.type).toBe("routine_edit");
   expect(edit.exercise_id).toBeTruthy();
   expect(edit.changes.target_reps).toBe(8);
   expect(edit.changes.target_sets).toBe(4);

@@ -15,10 +15,10 @@ Algorithm:
          re-submitted session OVERWRITES the existing MD (correction workflow);
          the Log.md index line is appended only on first write.
   3. Re-derive snapshots:
-       - Parse Weekly Plans/*.md → data/routines/*.json
+       - Parse Weekly Plans/*.md → data/routines/*.json (derive end_date)
        - Parse Workout Log/*.md → data/logs/*.json
        - Parse Overview.md → data/profile.json (light)
-  4. Recompute data/analytics.json
+  4. Recompute data/analytics.json and data/manifest.json
   5. Reset pending.json → {entries: []}
   6. git add data/ → commit + push if anything changed.
 
@@ -45,6 +45,7 @@ import parse_log as pl                       # noqa: E402
 import parse_recovery as pre                 # noqa: E402
 import parse_overview as po                   # noqa: E402
 import compute_analytics as ca               # noqa: E402
+import generate_manifest as gm               # noqa: E402
 
 DEFAULT_VAULT = Path.home() / "Documents" / "Jonathan's Vault"
 DEFAULT_REPO = Path.home() / "Git" / "pt-tracker"
@@ -652,14 +653,17 @@ def main() -> int:
     routines_out = repo_root / "data" / "routines"
     routines_out.mkdir(parents=True, exist_ok=True)
     if plans_dir.exists():
+        parsed_routines: list[dict] = []
         for f in sorted(plans_dir.glob("*.md")):
             try:
                 routine = pr.parse_routine_md(f.read_text(encoding="utf-8"), routine_id=f.stem)
-                (routines_out / (f.stem + ".json")).write_text(
-                    json.dumps(routine, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-                )
+                parsed_routines.append(routine)
             except Exception as e:
                 print(f"  WARN: bad routine MD {f.name}: {e}", file=sys.stderr)
+        for routine in pr.derive_end_dates(parsed_routines):
+            (routines_out / (routine["id"] + ".json")).write_text(
+                json.dumps(routine, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+            )
 
     logs_out = repo_root / "data" / "logs"
     logs_out.mkdir(parents=True, exist_ok=True)
@@ -707,6 +711,7 @@ def main() -> int:
     # Step 4: recompute analytics
     analytics = ca.compute(repo_root)
     write_json(repo_root / "data" / "analytics.json", analytics)
+    gm.write_manifest(repo_root)
 
     # Step 5: reset pending if it had entries
     if entries:

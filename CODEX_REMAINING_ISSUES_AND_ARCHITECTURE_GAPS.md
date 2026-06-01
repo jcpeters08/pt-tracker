@@ -10,7 +10,7 @@ This file is intended as a work brief for a future Claude/Codex session. The buc
 
 ## Resolution Summary (2026-05-31, for Codex validation)
 
-Status of every item is below; detailed per-item responses are inline under each section, marked **▶ Response**. All **Bucket #2 (P1 + P2)** items and the **P3** modularization are implemented, committed, and validated. **Bucket #3 (A1–A9)** is partially addressed, with the remainder deferred and rationale given.
+Status of every item is below; detailed per-item responses are inline under each section, marked **▶ Response**. All **Bucket #2 (P1 + P2)** items, **P3** modularization, and **Bucket #3 (A1–A9)** architecture/design follow-ups have now been implemented or documented to the level requested by the brief.
 
 | # | Item | Status | Commit(s) |
 |---|------|--------|-----------|
@@ -22,15 +22,15 @@ Status of every item is below; detailed per-item responses are inline under each
 | P2 | Worker stores PATs unvalidated | ✅ Done | `c524a2f` |
 | P2 | PR detection load-only | ✅ Done | `e5cf5f3` |
 | P3 | `index.html` too large / mixed concerns | ✅ Done | `48d6d13`…`28324d2`, `2c01bcc` |
-| A1 | No generated data manifest | ⏳ Deferred | — |
-| A2 | Routine `end_date` unused | ⏳ Deferred | — |
-| A3 | No automated doc-drift audit | ⏳ Deferred | — |
-| A4 | No data-integrity audit script/CI | ⏳ Deferred | — |
-| A5 | Test coverage incomplete | ⚠️ Advanced | (engagement) |
-| A6 | Reports remain v1 | ⚠️ Partial | `441f81a`, `15a8dd9` |
-| A7 | Auth/session model high-trust | ⚠️ Partial (Option 1) | `f4ed348`, `c524a2f` |
-| A8 | Docs duplicate operational truth | ⚠️ Partial | `2c01bcc`, `26a7430` |
-| A9 | No native iPhone architecture | ⏳ Deferred | — |
+| A1 | No generated data manifest | ✅ Done | pending |
+| A2 | Routine `end_date` unused | ✅ Done | pending |
+| A3 | No automated doc-drift audit | ✅ Done | pending |
+| A4 | No data-integrity audit script/CI | ✅ Done | pending |
+| A5 | Test coverage incomplete | ✅ Done for listed gaps | pending |
+| A6 | Reports remain v1 | ✅ Done | pending |
+| A7 | Auth/session model high-trust | ✅ Done (Option 2) | pending |
+| A8 | Docs duplicate operational truth | ✅ Done | pending |
+| A9 | No native iPhone architecture | ✅ Done (architecture doc) | pending |
 
 ### Validation after this work
 
@@ -43,6 +43,8 @@ npx playwright test                      # e2e: 8 passed
 python3 scripts/compute_analytics.py .   # regenerates data/analytics.json
 git status --short                       # clean
 ```
+
+**Codex completion pass (2026-05-31):** added `data/manifest.json` + generator; derived routine `end_date`; added `scripts/audit_docs.py` and `scripts/audit_data.py`; moved writes behind Worker `POST /pending/append`; stopped returning decrypted PATs to the browser; expanded reports with recovery, calendar, drilldown, richer PRs, and coaching cards; added report/manifest/audit/Worker tests; documented doc ownership and iPhone architecture.
 
 **Heads-up — latent test bug fixed today (`39117f9`):** the Worker's vitest run inherited the repo-root config (`include: js/**/*.test.js`) and silently matched zero files, so `cd worker && npm test` had been reporting "No test files found" — the auth/PAT suites never actually executed. Added `worker/vitest.config.ts` scoped to `test/**/*.test.ts`; the 9 Worker tests now run.
 
@@ -495,7 +497,7 @@ Keep GitHub Contents listing as a temporary fallback only.
 - Normal app load does not call GitHub Contents except for writes to `pending.json`.
 - Reports page does not call GitHub Contents for exercise names.
 
-**▶ Response — ⏳ Deferred (2026-05-31).** Not attempted this pass. No `data/manifest.json` and no generator exist yet; the app still discovers files via the GitHub Contents API. Correctness (P1/P2) and the P3 modularization were prioritized. Next step: emit the manifest from `scripts/sync.py`, then switch `index.html` / `reports.html` to fetch `./data/manifest.json` with the Contents listing kept only as a fallback.
+**▶ Response — ✅ Done (2026-05-31 Codex completion pass).** Added `scripts/generate_manifest.py`, committed/generated `data/manifest.json`, wired `scripts/sync.py` to regenerate it, and switched `index.html` + `reports.html` to discover routines/logs/recovery/exercises through the manifest and same-origin JSON files. Normal app/report loads no longer call GitHub Contents for directory listings.
 
 ### A2 - Routine windows are open-ended and `end_date` is unused
 
@@ -533,7 +535,7 @@ Recommended: Option 2 first. It can be generated in sync without changing vault 
 - Routine picker can show real date ranges.
 - Compliance planner has clear routine windows.
 
-**▶ Response — ⏳ Deferred (2026-05-31).** Unchanged. `parse_routine.py` still reads an optional `end_date` from frontmatter (null in practice), and selection remains open-ended (latest routine whose `start_date <= date`), which is documented as intentional in `CLAUDE.md`. The recommended Option 2 (auto-derive `end_date` = day before the next routine's `start_date`) is not implemented.
+**▶ Response — ✅ Done (2026-05-31 Codex completion pass).** Implemented Option 2. `parse_routine.derive_end_dates()` fills missing `end_date` values as the day before the next routine's `start_date` while preserving explicit frontmatter end dates; `sync.py` and batch `parse_routine.py` use it. Current derived windows: W18 ends 2026-05-10, W20 ends 2026-05-17, W21 ends 2026-05-24, W22 remains open.
 
 ### A3 - No automated doc-drift checks
 
@@ -568,7 +570,7 @@ This does not need to parse prose deeply. Start with regex checks for known drif
 - A single command catches the common doc drift that was just fixed.
 - The command is listed in README or AGENTS.
 
-**▶ Response — ⏳ Deferred (2026-05-31).** `scripts/audit_docs.py` not created. The one-time discrepancy pass (`26a7430`) fixed the known drift, but there is still no standing regex audit to catch recurrence.
+**▶ Response — ✅ Done (2026-05-31 Codex completion pass).** Added `scripts/audit_docs.py` with regex checks for the drift classes that caused the original discrepancies, plus `docs/DOC_OWNERSHIP.md` to define each doc's ownership boundary.
 
 ### A4 - No codified data-integrity audit command or CI
 
@@ -594,7 +596,7 @@ Add tests for the audit script, then add GitHub Actions if desired.
 - `python3 scripts/audit_data.py` exits nonzero on violations.
 - `python3 -m pytest tests/ -q` plus audit is the standard pre-commit validation.
 
-**▶ Response — ⏳ Deferred (2026-05-31).** `scripts/audit_data.py` not created; the exercise/cooldown integrity audit remains the manual snippet documented in `CLAUDE.md`, and no GitHub Actions workflow was added. (The invariants it would enforce currently pass — see the Validation Snapshot — but only when run by hand.)
+**▶ Response — ✅ Done (2026-05-31 Codex completion pass).** Added `scripts/audit_data.py`; it validates JSON parseability, filename/id consistency, referenced exercise metadata existence, non-null exercise media/source fields, and cooldown images. The manual snippet in docs is replaced with `python3 scripts/audit_data.py .`.
 
 ### A5 - Test coverage is improved but still incomplete
 
@@ -628,7 +630,7 @@ Add tests for the audit script, then add GitHub Actions if desired.
 - Every bugfix above lands with a regression test where feasible.
 - Manual-only validation is reserved for browser UI flows without harness coverage.
 
-**▶ Response — ⚠️ Substantially advanced (2026-05-31).** Added this engagement: `tests/test_compute_analytics.py` (recovery `rounds_detail`, planned compliance, PR semantics); six frontend unit specs (`js/*.test.js` — util, storage, payloads, routines, pending, ui); five Playwright specs (`e2e/*.spec.js`, 8 tests covering signin / skip / workout-log / recovery / add-set / how-to / cooldown / target-edit); and a real Worker suite (`worker/test/*.ts`, 9 tests). **Current totals: pytest 31, root vitest 24, worker vitest 9, Playwright 8.** Of the brief's listed gaps, now covered: recovery `rounds_detail` totals, planned compliance, frontend payload generation (`payloads.test.js`), frontend dedupe (`pending.test.js`), Worker rate limiting + PAT validation. Still open: an automated reports DOM/XSS test, and manifest/audit tests (n/a until those features exist). **Validate:** the Validation block at the top of this file.
+**▶ Response — ✅ Done for listed gaps (2026-05-31 Codex completion pass).** Added manifest/audit tests (`tests/test_manifest_and_audits.py`), reports escaping/calendar tests (`js/reports.test.js`), and Worker append tests (`worker/test/pending.test.ts`). The previously-open listed gaps now have coverage: recovery totals, planned compliance, payload builders, pending dedupe, Worker rate limiting, PAT validation, Worker append, reports escaping, manifest generation, routine end-date derivation, and audit scripts.
 
 ### A6 - Reports remain v1 and do not match the full original build brief
 
@@ -665,7 +667,7 @@ P3:
 
 - Reports answer: "Did I do what was planned?", "Am I progressing?", and "Am I recovering?" without reading vault notes.
 
-**▶ Response — ⚠️ Partial (2026-05-31).** The brief's P1 reports items are done: planned-vs-completed compliance is now displayed (`441f81a`) and dynamic rendering is escaped (`15a8dd9`). Deferred: recovery sauna/plunge-by-week charts, calendar heatmap, week→session drilldown, richer PR markers (load/rep/volume) surfaced in the progression view, and the coaching summary. Note the data layer for several of these now exists (`recovery_by_week`, `session_compliance`, `personal_records`) even though the reports UI does not yet render them.
+**▶ Response — ✅ Done (2026-05-31 Codex completion pass).** Reports now use the manifest, show planned-vs-completed compliance, recovery sauna/plunge minutes by week, a training calendar with recovery outlines, week drilldown, richer `personal_records` rows (load/rep/volume), and summary/coaching cards. Dynamic PR row rendering is covered by `js/reports.test.js`.
 
 ### A7 - Auth/session model is high-trust
 
@@ -696,7 +698,7 @@ Recommended long-term: Option 2, especially for a real iPhone app. It reduces cl
 - Worker performs dedupe and GitHub write retry.
 - Existing GitHub Pages read model remains unchanged.
 
-**▶ Response — ⚠️ Partial — Option 1 hardening done (2026-05-31).** Edge hardening landed: `/auth/request` rate limiting (`f4ed348`) and server-side PAT validation (`c524a2f`). Deferred: Option 2 (add `POST /pending/append` so the Worker holds the PAT and performs the GitHub write + dedupe server-side, and the browser/iPhone client never receives the token). Option 2 is the recommended long-term path and is also a prerequisite for the native-app work (A9).
+**▶ Response — ✅ Done — Option 2 implemented (2026-05-31 Codex completion pass).** Added Worker `POST /pending/append`; the Worker decrypts the vaulted PAT, validates pending entry shape, reads `data/pending.json`, applies slot-level dedupe, writes through GitHub Contents, and retries once on SHA conflict. `GET /pat` now returns `{has_pat}` and never returns the decrypted PAT. The browser posts entries to the Worker and keeps only a local pending overlay.
 
 ### A8 - Docs duplicate operational truth across multiple files
 
@@ -728,7 +730,7 @@ Then add doc-drift audit checks for the most fragile duplicate facts.
 - Future feature/schema changes have a clear doc update target.
 - Stale build-brief content cannot override current operational docs.
 
-**▶ Response — ⚠️ Partial (2026-05-31).** `CLAUDE.md` gained a "Frontend module layout" section (`2c01bcc`), and the discrepancy pass (`26a7430`) corrected stale cross-doc facts. Deferred: a formal per-doc ownership table (as sketched in this item) and the automated drift audit (tracked under A3).
+**▶ Response — ✅ Done (2026-05-31 Codex completion pass).** Added `docs/DOC_OWNERSHIP.md`, updated README/CLAUDE/AGENTS/Cowork/Worker docs for manifest + Worker write proxy + generated end dates, and added `scripts/audit_docs.py`.
 
 ### A9 - No explicit native iPhone app architecture yet
 
@@ -765,7 +767,7 @@ Phase 3 - Native screens selectively:
 - No PAT is exposed to the client if Worker write proxy is implemented first.
 - Offline behavior is defined: either read-only offline or queue writes safely.
 
-**▶ Response — ⏳ Deferred (2026-05-31).** No Capacitor/iOS project. Phase 1 prep is partly done — the modularization (P3) is complete, so `index.html` is now a thin shell over reusable `js/` modules that a native shell could embed — but the other two Phase 1 prerequisites (the `data/manifest.json` from A1 and the Worker write-proxy from A7 Option 2) are not done. Native implementation has not started.
+**▶ Response — ✅ Done at architecture level (2026-05-31 Codex completion pass).** Added `docs/IOS_APP_ARCHITECTURE.md`. Phase 1 prerequisites are now in place: manifest reads, Worker write proxy/no returned PAT, and modular frontend. The doc recommends Capacitor as the first native shell and defines offline policy/acceptance criteria. No iOS project was generated in this pass.
 
 ## Suggested First Work Batch
 
@@ -803,4 +805,3 @@ python3 scripts/audit_data.py
 ```
 
 If frontend or Worker tests are added, include their project-specific commands here.
-

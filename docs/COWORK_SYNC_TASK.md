@@ -19,10 +19,11 @@ If you're editing this file, the rule of thumb: anything that describes *what th
      - **Recovery entries** (`type: "recovery"`, sauna/cold plunge sessions) → `Recovery Log/YYYY-MM-DD-Location.md`. These can land on any day, including rest days. When `rounds_detail` is present, the MD renders a per-round breakdown (sauna/plunge minutes per round).
    - Appends a one-line entry to vault `Log.md` per workout session.
    - Appends a one-line entry to vault `Recovery Log.md` per recovery session.
-   - Re-derives `data/routines/*.json` from vault `Weekly Plans/*.md` (reads optional `**Cool-down:**` line per day in addition to `**Warm-up:**`).
+   - Re-derives `data/routines/*.json` from vault `Weekly Plans/*.md` (reads optional `**Cool-down:**` line per day in addition to `**Warm-up:**`). Missing routine `end_date` values are generated as the day before the next routine's `start_date`; the latest routine remains open-ended.
    - Re-derives `data/logs/*.json` from vault `Workout Log/*.md` (idempotent).
    - Re-derives `data/recovery_logs/*.json` from vault `Recovery Log/*.md` (idempotent).
    - Recomputes `data/analytics.json` (weekly volume, lift progression, legacy `prs` plus the richer `personal_records` load/rep/volume PRs, `session_compliance` with planned-vs-completed, `recovery_count`, and `recovery_by_week`).
+   - Regenerates `data/manifest.json` so the app and reports can discover routines/logs/recovery/exercises from same-origin static JSON instead of GitHub Contents directory listings.
    - Resets `data/pending.json` to `{entries: []}` if anything was drained.
    - Auto-commits with message `sync: drain N pending entries (YYYY-MM-DD)` and pushes if anything changed.
 

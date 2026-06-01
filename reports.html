@@ -52,6 +52,10 @@
   table.prs th, table.prs td { text-align: left; padding: 8px 8px; border-bottom: 1px solid var(--rule); }
   table.prs th { color: var(--ink-soft); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
   table.prs .delta { color: var(--good); font-weight: 600; }
+  .summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+  .summary-card { border: 1px solid var(--rule); border-radius: 8px; padding: 10px; background: var(--bg-soft); }
+  .summary-card b { display: block; font-size: 12px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .04em; }
+  .summary-card span { display: block; font-size: 20px; margin-top: 4px; color: var(--ink); }
 
   .calendar-grid {
     display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 10px;
@@ -62,7 +66,11 @@
     font-size: 11px; color: var(--ink-muted);
   }
   .cal-cell.session { background: var(--good); color: white; }
+  .cal-cell.recovery { box-shadow: inset 0 0 0 2px var(--warn); }
   .cal-cell.future { opacity: 0.3; }
+  .week-detail { margin-top: 12px; border-top: 1px solid var(--rule); padding-top: 12px; }
+  .week-detail h3 { margin: 0 0 8px; font-size: 16px; }
+  .week-detail ul { margin: 0; padding-left: 20px; }
 
   .empty { color: var(--ink-muted); font-style: italic; padding: 16px 0; }
 
@@ -96,6 +104,26 @@
     <h2>Session compliance</h2>
     <p class="subtle">Planned vs completed sessions per ISO week (hover for completion rate).</p>
     <div class="chart-host" style="height:200px"><canvas id="compliance-chart"></canvas></div>
+    <div id="coaching-host" class="summary-grid"></div>
+  </section>
+
+  <section class="section">
+    <h2>Recovery</h2>
+    <p class="subtle">Sauna and plunge minutes by week.</p>
+    <div class="chart-host" style="height:220px"><canvas id="recovery-chart"></canvas></div>
+  </section>
+
+  <section class="section">
+    <h2>Training calendar</h2>
+    <p class="subtle">Logged workout days; outlined days include recovery.</p>
+    <div id="calendar-host" class="calendar-grid"></div>
+  </section>
+
+  <section class="section">
+    <h2>Week drilldown</h2>
+    <p class="subtle">Logged sessions for the selected ISO week.</p>
+    <div style="margin-bottom: 10px;"><select id="week-select"></select></div>
+    <div id="week-detail-host" class="week-detail"></div>
   </section>
 
   <section class="section">
@@ -105,11 +133,9 @@
   </section>
 </div>
 
-<script>
+<script type="module">
+import { escapeHtml, personalRecordRowsHtml, calendarCells, weekRangeFromIso } from "./js/reports.js";
 "use strict";
-
-const REPO_OWNER = "jcpeters08";
-const REPO_NAME  = "pt-tracker";
 
 const MUSCLE_COLORS = {
   "chest":          "#B23A3A",
@@ -135,28 +161,36 @@ async function fetchJson(path) {
   return res.json();
 }
 
-// Escape dynamic values before they reach innerHTML (mirrors index.html).
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+async function loadManifest() {
+  try {
+    return await fetchJson("data/manifest.json");
+  } catch {
+    return { routines: [], logs: [], recovery_logs: [], exercises: [] };
+  }
 }
 
-async function fetchExerciseNameMap() {
-  // Get exercise display names by listing the directory via GitHub's contents API
-  // (anonymous, public repo). Fall back to id-as-name if that fails.
-  try {
-    const list = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/exercises`).then(r => r.ok ? r.json() : []);
-    const ids = (Array.isArray(list) ? list : []).map(f => f.name.replace(/\.json$/, ""));
-    const map = {};
-    await Promise.all(ids.map(async id => {
-      try {
-        const ex = await fetchJson(`data/exercises/${id}.json`);
-        map[id] = ex.name || id;
-      } catch { map[id] = id; }
-    }));
-    return map;
-  } catch {
-    return {};
-  }
+async function fetchExerciseNameMap(manifest) {
+  const ids = Array.isArray(manifest.exercises) ? manifest.exercises : [];
+  const map = {};
+  await Promise.all(ids.map(async id => {
+    try {
+      const ex = await fetchJson(`data/exercises/${id}.json`);
+      map[id] = ex.name || id;
+    } catch { map[id] = id; }
+  }));
+  return map;
+}
+
+async function fetchLogs(manifest) {
+  const ids = Array.isArray(manifest.logs) ? manifest.logs : [];
+  const logs = await Promise.all(ids.map(id => fetchJson(`data/logs/${id}.json`).catch(() => null)));
+  return logs.filter(Boolean).sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+}
+
+async function fetchRecovery(manifest) {
+  const ids = Array.isArray(manifest.recovery_logs) ? manifest.recovery_logs : [];
+  const recs = await Promise.all(ids.map(id => fetchJson(`data/recovery_logs/${id}.json`).catch(() => null)));
+  return recs.filter(Boolean).sort((a, b) => (a.date || "").localeCompare(b.date || ""));
 }
 
 function lastN(arr, n) { return arr.slice(Math.max(0, arr.length - n)); }
@@ -175,7 +209,7 @@ function renderVolumeChart(analytics) {
     }),
     backgroundColor: MUSCLE_COLORS[m] || MUSCLE_COLORS.other,
   }));
-  new Chart(document.getElementById("volume-chart"), {
+  new window.Chart(document.getElementById("volume-chart"), {
     type: "bar",
     data: { labels: weeks, datasets },
     options: {
@@ -211,7 +245,7 @@ function renderLiftChart(analytics, exerciseNames) {
     const topSet = series.map(p => p.top_set_weight_kg * (p.top_set_reps || 1));
     const totalVol = series.map(p => p.total_volume_kg);
     if (chart) chart.destroy();
-    chart = new Chart(document.getElementById("lift-chart"), {
+    chart = new window.Chart(document.getElementById("lift-chart"), {
       type: "line",
       data: {
         labels,
@@ -243,7 +277,7 @@ function renderLiftChart(analytics, exerciseNames) {
 function renderComplianceChart(analytics) {
   const compliance = analytics.session_compliance || {};
   const weeks = Object.keys(compliance).sort();
-  new Chart(document.getElementById("compliance-chart"), {
+  new window.Chart(document.getElementById("compliance-chart"), {
     type: "bar",
     data: {
       labels: weeks,
@@ -282,24 +316,121 @@ function renderComplianceChart(analytics) {
   });
 }
 
+function renderRecoveryChart(analytics) {
+  const recovery = analytics.recovery_by_week || {};
+  const weeks = Object.keys(recovery).sort();
+  new window.Chart(document.getElementById("recovery-chart"), {
+    type: "bar",
+    data: {
+      labels: weeks,
+      datasets: [
+        {
+          label: "Sauna minutes",
+          data: weeks.map(w => recovery[w].sauna_min_total || 0),
+          backgroundColor: "#B23A3A",
+        },
+        {
+          label: "Plunge minutes",
+          data: weeks.map(w => recovery[w].plunge_min_total || 0),
+          backgroundColor: "#406A8B",
+        },
+      ],
+    },
+    options: {
+      maintainAspectRatio: false,
+      responsive: true,
+      scales: { y: { beginAtZero: true, title: { display: true, text: "minutes" } } },
+      plugins: { legend: { position: "bottom" } },
+    },
+  });
+}
+
+function renderCoachingSummary(analytics) {
+  const host = document.getElementById("coaching-host");
+  const compliance = analytics.session_compliance || {};
+  const latestWeek = Object.keys(compliance).sort().pop();
+  const latest = latestWeek ? compliance[latestWeek] : {};
+  const recovery = analytics.recovery_by_week?.[latestWeek] || {};
+  const prs = (analytics.personal_records || []).filter(p => p.date && latestWeek && weekRangeFromIso(latestWeek) && p.date >= weekRangeFromIso(latestWeek).start && p.date <= weekRangeFromIso(latestWeek).end);
+  const cards = [
+    ["Latest week", latestWeek || "n/a"],
+    ["Compliance", latest.planned ? `${latest.completed || 0}/${latest.planned}` : `${latest.completed || 0} logged`],
+    ["Recovery", `${recovery.sessions || 0} sessions`],
+    ["PR signals", String(prs.length)],
+  ];
+  host.innerHTML = cards.map(([label, value]) =>
+    `<div class="summary-card"><b>${escapeHtml(label)}</b><span>${escapeHtml(value)}</span></div>`
+  ).join("");
+}
+
+function renderCalendar(logs, recovery) {
+  const host = document.getElementById("calendar-host");
+  const sessionDates = logs.map(l => l.date).filter(Boolean);
+  if (!sessionDates.length) {
+    host.innerHTML = `<div class="empty">No logged sessions yet.</div>`;
+    return;
+  }
+  const recoveryDates = new Set(recovery.map(r => r.date).filter(Boolean));
+  const start = sessionDates[0];
+  const end = sessionDates[sessionDates.length - 1];
+  const cells = calendarCells(sessionDates, start, end);
+  host.innerHTML = cells.map(c => {
+    const cls = ["cal-cell"];
+    if (c.hasSession) cls.push("session");
+    if (recoveryDates.has(c.date)) cls.push("recovery");
+    return `<div class="${cls.join(" ")}" title="${escapeHtml(c.date)}">${escapeHtml(c.day)}</div>`;
+  }).join("");
+}
+
+function renderWeekDrilldown(analytics, logs, recovery, exerciseNames) {
+  const select = document.getElementById("week-select");
+  const host = document.getElementById("week-detail-host");
+  const weeks = Object.keys(analytics.session_compliance || {}).sort().reverse();
+  select.replaceChildren(...weeks.map(w => {
+    const opt = document.createElement("option");
+    opt.value = w;
+    opt.textContent = w;
+    return opt;
+  }));
+  if (!weeks.length) {
+    host.innerHTML = `<div class="empty">No weeks yet.</div>`;
+    return;
+  }
+  function draw(week) {
+    const range = weekRangeFromIso(week);
+    if (!range) return;
+    const weekLogs = logs.filter(l => l.date >= range.start && l.date <= range.end);
+    const weekRecovery = recovery.filter(r => r.date >= range.start && r.date <= range.end);
+    const rows = weekLogs.map(l => {
+      const exNames = (l.exercises || []).slice(0, 3).map(e => exerciseNames[e.exercise_id] || e.exercise_id).join(", ");
+      return `<li><b>${escapeHtml(l.date)}</b> ${escapeHtml(l.day_of_week || "")} · ${escapeHtml(l.type || "")}${exNames ? ` — ${escapeHtml(exNames)}` : ""}</li>`;
+    }).join("");
+    const recRows = weekRecovery.map(r =>
+      `<li><b>${escapeHtml(r.date)}</b> ${escapeHtml(r.location || "Recovery")} — ${escapeHtml(r.rounds || 0)} rounds, ${escapeHtml(r.total_min || 0)} min</li>`
+    ).join("");
+    host.innerHTML = `
+      <h3>${escapeHtml(week)} · ${escapeHtml(range.start)} to ${escapeHtml(range.end)}</h3>
+      ${rows ? `<ul>${rows}</ul>` : `<div class="empty">No workouts logged this week.</div>`}
+      ${recRows ? `<h3 style="margin-top:12px">Recovery</h3><ul>${recRows}</ul>` : ""}
+    `;
+  }
+  select.addEventListener("change", () => draw(select.value));
+  select.value = weeks[0];
+  draw(weeks[0]);
+}
+
 function renderPrs(analytics, exerciseNames) {
   const host = document.getElementById("prs-host");
-  if (!analytics.prs?.length) {
-    host.innerHTML = `<div class="empty">No PRs yet — log a heavier set to start the streak.</div>`;
+  const records = analytics.personal_records?.length ? analytics.personal_records : analytics.prs || [];
+  if (!records.length) {
+    host.innerHTML = `<div class="empty">No PRs yet — log more sessions to start the streak.</div>`;
     return;
   }
   host.innerHTML = `
     <table class="prs">
-      <thead><tr><th>Exercise</th><th>Date</th><th>Weight × Reps</th><th>Δ</th></tr></thead>
+      <thead><tr><th>Exercise</th><th>Date</th><th>Type</th><th>Weight × Reps</th><th>Δ</th></tr></thead>
       <tbody>
-        ${analytics.prs.map(p => `
-          <tr>
-            <td>${escapeHtml(exerciseNames[p.exercise_id] || p.exercise_id)}</td>
-            <td>${escapeHtml(p.date)}</td>
-            <td>${escapeHtml(p.weight_kg)} kg × ${escapeHtml(p.reps)}</td>
-            <td class="delta">+${escapeHtml(p.delta_kg)} kg</td>
-          </tr>
-        `).join("")}
+        ${personalRecordRowsHtml(records, exerciseNames)}
       </tbody>
     </table>
   `;
@@ -307,13 +438,20 @@ function renderPrs(analytics, exerciseNames) {
 
 (async () => {
   try {
-    const [analytics, exerciseNames] = await Promise.all([
+    const manifest = await loadManifest();
+    const [analytics, exerciseNames, logs, recovery] = await Promise.all([
       fetchJson("data/analytics.json"),
-      fetchExerciseNameMap(),
+      fetchExerciseNameMap(manifest),
+      fetchLogs(manifest),
+      fetchRecovery(manifest),
     ]);
     renderVolumeChart(analytics);
     renderLiftChart(analytics, exerciseNames);
     renderComplianceChart(analytics);
+    renderCoachingSummary(analytics);
+    renderRecoveryChart(analytics);
+    renderCalendar(logs, recovery);
+    renderWeekDrilldown(analytics, logs, recovery, exerciseNames);
     renderPrs(analytics, exerciseNames);
   } catch (e) {
     console.error(e);

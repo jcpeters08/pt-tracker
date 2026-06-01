@@ -12,7 +12,9 @@
 export const state = {
   sid: null,
   email: null,
-  pat: null,
+  hasPat: false,
+  manifest: null,       // data/manifest.json
+  pendingEntries: [],   // entries appended during this browser session
   routines: [],         // [{id, file}, ...]
   routine: null,        // active routine JSON
   routineMeta: [],      // [{id, name, start_date, end_date}] for auto-pick by date

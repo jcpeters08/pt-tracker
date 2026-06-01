@@ -15,9 +15,8 @@
  *      the wrong context).
  *   3. App stores the session id in localStorage and uses it as a Bearer
  *      token on subsequent requests.
- *   4. App calls GET /pat to fetch the encrypted-at-rest PAT (AES-GCM with a
- *      Worker secret key). On first sign-in there is no PAT yet, so the app
- *      prompts for one and PUTs it.
+ *   4. App calls GET /pat to check whether a PAT is vaulted. The Worker never
+ *      returns the PAT to the browser; appends go through POST /pending/append.
  */
 
 interface Env {
@@ -58,6 +57,7 @@ export default {
       if (url.pathname === "/auth/me"          && request.method === "GET")  return cors(env, await handleAuthMe(request, env));
       if (url.pathname === "/pat"              && request.method === "GET")  return cors(env, await handleGetPat(request, env));
       if (url.pathname === "/pat"              && request.method === "PUT")  return cors(env, await handlePutPat(request, env));
+      if (url.pathname === "/pending/append"   && request.method === "POST") return cors(env, await handleAppendPending(request, env));
       return cors(env, json({ error: "not found" }, 404));
     } catch (err) {
       console.error(err);
@@ -145,10 +145,7 @@ async function handleGetPat(request: Request, env: Env): Promise<Response> {
   if (!session) return json({ error: "unauthorized" }, 401);
 
   const stored = await env.KV.get(`pat:${session.email}`);
-  if (!stored) return json({ pat: null });
-
-  const pat = await decryptString(env.PAT_ENC_KEY, stored);
-  return json({ pat });
+  return json({ has_pat: !!stored });
 }
 
 async function handlePutPat(request: Request, env: Env): Promise<Response> {
@@ -169,15 +166,8 @@ async function handlePutPat(request: Request, env: Env): Promise<Response> {
   // (PUT identical content + sha → GitHub creates no commit) but still enforces
   // Contents:write, so a read-only token is rejected here instead of silently
   // stored and failing on first real submit.
-  const owner = env.GITHUB_REPO_OWNER;
-  const repo = env.GITHUB_REPO_NAME;
-  const path = env.GITHUB_PENDING_PATH || "data/pending.json";
-  const ghUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-  const ghHeaders: Record<string, string> = {
-    "Authorization": `Bearer ${pat}`,
-    "Accept": "application/vnd.github+json",
-    "User-Agent": "pt-tracker-auth",   // GitHub API requires a User-Agent
-  };
+  const ghUrl = githubPendingUrl(env);
+  const ghHeaders = githubHeaders(pat);
   const getRes = await fetch(ghUrl, { headers: ghHeaders });
   if (!getRes.ok) return json({ error: `token read check failed (${getRes.status})` }, 400);
   const cur = await getRes.json() as { content?: string; sha?: string };
@@ -195,6 +185,124 @@ async function handlePutPat(request: Request, env: Env): Promise<Response> {
   const ciphertext = await encryptString(env.PAT_ENC_KEY, pat);
   await env.KV.put(`pat:${session.email}`, ciphertext);
   return json({ ok: true });
+}
+
+async function handleAppendPending(request: Request, env: Env): Promise<Response> {
+  const session = await loadSession(request, env);
+  if (!session) return json({ error: "unauthorized" }, 401);
+
+  const body = await safeJson(request);
+  const entry = body?.entry as Record<string, unknown> | undefined;
+  const validationError = validatePendingEntry(entry);
+  if (validationError) return json({ error: validationError }, 400);
+
+  const stored = await env.KV.get(`pat:${session.email}`);
+  if (!stored) return json({ error: "pat not configured" }, 400);
+  const pat = await decryptString(env.PAT_ENC_KEY, stored);
+
+  const ghUrl = githubPendingUrl(env);
+  const ghHeaders = githubHeaders(pat);
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const getRes = await fetch(ghUrl, { headers: ghHeaders });
+    if (!getRes.ok) return json({ error: `pending read failed (${getRes.status})` }, 502);
+    const cur = await getRes.json() as { content?: string; sha?: string };
+    const pending = parsePendingContent(cur.content || "");
+    pending.entries = mergePendingEntries(pending.entries, entry!);
+
+    const putRes = await fetch(ghUrl, {
+      method: "PUT",
+      headers: { ...ghHeaders, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: pendingCommitMessage(entry!),
+        content: utf8ToBase64(JSON.stringify(pending, null, 2) + "\n"),
+        sha: cur.sha,
+      }),
+    });
+    if (putRes.ok) return json({ ok: true });
+    if (putRes.status !== 409 || attempt > 0) {
+      return json({ error: `pending write failed (${putRes.status})` }, 502);
+    }
+  }
+  return json({ error: "pending write failed" }, 502);
+}
+
+function githubPendingUrl(env: Env): string {
+  const path = env.GITHUB_PENDING_PATH || "data/pending.json";
+  return `https://api.github.com/repos/${env.GITHUB_REPO_OWNER}/${env.GITHUB_REPO_NAME}/contents/${path}`;
+}
+
+function githubHeaders(pat: string): Record<string, string> {
+  return {
+    "Authorization": `Bearer ${pat}`,
+    "Accept": "application/vnd.github+json",
+    "User-Agent": "pt-tracker-auth",
+  };
+}
+
+function validatePendingEntry(entry: Record<string, unknown> | undefined): string | null {
+  if (!entry || typeof entry !== "object") return "missing entry";
+  const type = entry.type;
+  const session = entry.session as Record<string, unknown> | undefined;
+  if (type === "log" || type === "skip") {
+    if (!session || typeof session !== "object") return "missing session";
+    if (!session.date || !session.day_of_week || !session.type) return "workout entry missing date/day/type";
+    if (type === "log" && !Array.isArray(session.exercises)) return "log entry missing exercises";
+    return null;
+  }
+  if (type === "recovery") {
+    if (!session || typeof session !== "object") return "missing session";
+    if (!session.date || !session.location) return "recovery entry missing date/location";
+    if (!Array.isArray(session.rounds_detail)) return "recovery entry missing rounds_detail";
+    return null;
+  }
+  if (type === "routine_edit") {
+    if (!entry.routine_id || !entry.day_of_week || !entry.exercise_id) return "routine_edit missing key fields";
+    if (!entry.changes || typeof entry.changes !== "object") return "routine_edit missing changes";
+    return null;
+  }
+  return "unknown pending entry type";
+}
+
+function parsePendingContent(contentB64: string): { format_note?: string; entries: unknown[] } {
+  try {
+    const parsed = JSON.parse(base64ToUtf8(contentB64));
+    return { ...parsed, entries: Array.isArray(parsed.entries) ? parsed.entries : [] };
+  } catch {
+    return { entries: [] };
+  }
+}
+
+function mergePendingEntries(entries: unknown[], entry: Record<string, unknown>): unknown[] {
+  const list = Array.isArray(entries) ? entries : [];
+  const ns = (entry.session || {}) as Record<string, unknown>;
+  const kept = list.filter((raw) => {
+    const e = raw as Record<string, unknown>;
+    const s = (e.session || {}) as Record<string, unknown>;
+    if (entry.type === "recovery") {
+      if (e.type !== "recovery") return true;
+      return !(s.date === ns.date && (s.location || "") === (ns.location || ""));
+    }
+    if (entry.type === "log" || entry.type === "skip") {
+      if (e.type !== "log" && e.type !== "skip") return true;
+      return !(s.date === ns.date && s.day_of_week === ns.day_of_week && s.type === ns.type);
+    }
+    if (entry.type === "routine_edit") {
+      if (e.type !== "routine_edit") return true;
+      const sig = `${entry.routine_id}|${entry.day_of_week}|${entry.exercise_id}`;
+      return `${e.routine_id}|${e.day_of_week}|${e.exercise_id}` !== sig;
+    }
+    return true;
+  });
+  kept.push(entry);
+  return kept;
+}
+
+function pendingCommitMessage(entry: Record<string, unknown>): string {
+  if (entry.type === "routine_edit") {
+    return `web app: routine_edit ${entry.routine_id || ""} ${entry.day_of_week || ""} ${entry.exercise_id || ""}`;
+  }
+  const s = (entry.session || {}) as Record<string, unknown>;
+  return `web app: ${s.date || ""} ${s.day_of_week || entry.type || ""}`;
 }
 
 // ---- Auth helpers ----------------------------------------------------------
@@ -314,15 +422,23 @@ function bytesToBase64(bytes: Uint8Array): string {
   return btoa(s);
 }
 
+function utf8ToBase64(s: string): string {
+  return bytesToBase64(new TextEncoder().encode(s));
+}
+
 function bytesToBase64Url(bytes: Uint8Array): string {
   return bytesToBase64(bytes).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
 function base64ToBytes(b64: string): Uint8Array {
-  const norm = b64.replace(/-/g, "+").replace(/_/g, "/");
+  const norm = b64.replace(/\s+/g, "").replace(/-/g, "+").replace(/_/g, "/");
   const pad = norm.length % 4 === 0 ? "" : "=".repeat(4 - (norm.length % 4));
   const bin = atob(norm + pad);
   const out = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
   return out;
+}
+
+function base64ToUtf8(b64: string): string {
+  return new TextDecoder().decode(base64ToBytes(b64));
 }

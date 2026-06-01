@@ -8,8 +8,9 @@ Cloudflare Worker that handles email-code sign-in and vaults the GitHub PAT for 
 - `POST /auth/verify-code {email, code}` — verifies the code, mints a session, returns `{sid}` as JSON. Code-based (not magic-link) so the iOS PWA flow stays in one tab.
 - `GET  /auth/me` — returns the signed-in email or 401.
 - `POST /auth/logout` — invalidates the current session.
-- `GET  /pat` — returns the decrypted PAT (or `null` if not yet stored).
-- `PUT  /pat {pat}` — encrypts and stores the PAT (AES-GCM with a Worker secret key).
+- `GET  /pat` — returns `{has_pat: boolean}`. It never returns the decrypted PAT.
+- `PUT  /pat {pat}` — validates, encrypts, and stores the PAT (AES-GCM with a Worker secret key).
+- `POST /pending/append {entry}` — validates a pending entry, reads `data/pending.json`, applies slot-level dedupe, and writes the merged queue through GitHub Contents. Retries once on SHA conflict.
 
 Sessions, codes, and the encrypted PAT live in a single Cloudflare KV namespace:
 
@@ -19,7 +20,7 @@ Sessions, codes, and the encrypted PAT live in a single Cloudflare KV namespace:
 | `session:<sid>` | `{email}` | 30 days |
 | `pat:<email>` | base64(IV ‖ AES-GCM ciphertext) | none |
 
-The frontend uses the session id as a Bearer token. We do **not** use cookies — that avoids cross-origin cookie complications between GitHub Pages and `*.workers.dev`.
+The frontend uses the session id as a Bearer token. We do **not** use cookies — that avoids cross-origin cookie complications between GitHub Pages and `*.workers.dev`. The frontend never receives the decrypted PAT after setup; all writes go through `POST /pending/append`.
 
 ## One-time deploy
 

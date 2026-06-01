@@ -44,6 +44,12 @@ function putPatReq(pat: string, sid: string | null = SID) {
   return new Request("https://w/pat", { method: "PUT", headers, body: JSON.stringify({ pat }) });
 }
 
+function getPatReq(sid: string | null = SID) {
+  const headers: Record<string, string> = {};
+  if (sid) headers.Authorization = `Bearer ${sid}`;
+  return new Request("https://w/pat", { method: "GET", headers });
+}
+
 describe("/pat PUT — server-side validation", () => {
   afterEach(() => vi.unstubAllGlobals());
 
@@ -56,6 +62,15 @@ describe("/pat PUT — server-side validation", () => {
     const stored = await env.KV.get("pat:user@example.com");
     expect(stored).toBeTruthy();
     expect(stored).not.toContain(VALID_PAT); // stored encrypted, not plaintext
+  });
+
+  it("GET /pat only reports presence and never returns the token", async () => {
+    vi.stubGlobal("fetch", ghStub({ getStatus: 200, putStatus: 200 }));
+    const env = makeEnv();
+    await worker.fetch(putPatReq(VALID_PAT), env);
+    const res = await worker.fetch(getPatReq(), env);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ has_pat: true });
   });
 
   it("rejects a malformed token before making any GitHub call", async () => {

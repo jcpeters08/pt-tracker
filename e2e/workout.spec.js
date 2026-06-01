@@ -5,9 +5,9 @@ import { signIn } from "./helpers.js";
 // → submit, asserting the queued pending payload. This is the coverage that
 // makes a future workout/render module split validatable.
 test("logging a workout queues a correct log payload", async ({ page, context }) => {
-  let put = null;
+  let appended = null;
   page.on("dialog", d => d.accept()); // accept any submit confirm
-  await signIn(page, context, { onPendingPut: (json) => { put = json; } });
+  await signIn(page, context, { onPendingAppend: (entry) => { appended = entry; } });
 
   // Deterministic: W22 Monday (a real Push day with exercises).
   await page.fill("#workout-date", "2026-05-25");
@@ -24,9 +24,10 @@ test("logging a workout queues a correct log payload", async ({ page, context })
 
   await page.click("#submit-btn");
 
-  await expect.poll(() => put, { timeout: 10_000 }).not.toBeNull();
-  const logEntry = (put.entries || []).find(e => e.type === "log");
+  await expect.poll(() => appended, { timeout: 10_000 }).not.toBeNull();
+  const logEntry = appended;
   expect(logEntry, "a log entry was queued").toBeTruthy();
+  expect(logEntry.type).toBe("log");
   expect(logEntry.session.date).toBe("2026-05-25");
   expect(logEntry.session.exercises.length).toBeGreaterThan(0);
   const ex = logEntry.session.exercises[0];

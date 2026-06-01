@@ -765,8 +765,6 @@ import { dayLabel, renderDayToggle, renderCooldown, cooldownStateKey, renderExer
 
 // ---- Config ---------------------------------------------------------------
 
-const REPO_OWNER   = "jcpeters08";
-const REPO_NAME    = "pt-tracker";
 const WORKER_URL   = "https://pt-tracker-auth.ositodelnorte.workers.dev"; // updated post-deploy
 const SID_KEY      = "pt_tracker_sid";
 const ROUTINE_KEY  = "pt_tracker_active_routine";
@@ -776,7 +774,6 @@ const DRAFT_PREFIX = "pt_tracker_draft_v2:";          // workout drafts, key: pr
 const DRAFT_PREFIX_V1 = "pt_tracker_draft_v1:";       // legacy — orphaned by routine_id-scoped keys, swept on boot
 const REC_DRAFT_PREFIX = "pt_tracker_recovery_draft_v1:"; // recovery drafts, key: prefix + date
 const DRAFT_GC_DAYS = 5;                              // drafts older than N days dropped on boot
-const PENDING_PATH = "data/pending.json";
 
 // DAYS / DAY_LABELS / todayKey → js/app-context.js
 
@@ -801,8 +798,6 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 // escapeHtml / isoNow / localDateIso → imported from ./js/util.js
 // todayKey → js/app-context.js
 // toast → js/ui.js
-function b64encodeUtf8(s) { return btoa(unescape(encodeURIComponent(s))); }
-function b64decodeUtf8(s) { return decodeURIComponent(escape(atob(s.replace(/\n/g, "")))); }
 
 // ---- Draft persistence (localStorage) ------------------------------------
 // Workout drafts: keyed by date|day|type. Cleared on successful submit.
@@ -899,7 +894,7 @@ function loadSid() { state.sid = localStorage.getItem(SID_KEY) || null; return s
 function saveSid(sid) { localStorage.setItem(SID_KEY, sid); state.sid = sid; }
 function clearSid() {
   localStorage.removeItem(SID_KEY);
-  state.sid = null; state.email = null; state.pat = null;
+  state.sid = null; state.email = null; state.hasPat = false;
 }
 
 async function apiFetch(path, opts = {}) {
@@ -934,43 +929,21 @@ async function verifySession() {
   state.email = data.email;
   return data.email;
 }
-async function fetchPat() {
+async function fetchPatStatus() {
   const res = await apiFetch("/pat");
-  if (!res.ok) throw new Error(`Fetch PAT failed: ${res.status}`);
+  if (!res.ok) throw new Error(`PAT status failed: ${res.status}`);
   const data = await res.json();
-  return data.pat || null;
+  // Backward-compatible with the old Worker response during rollout, but do
+  // not store or use the PAT in the browser.
+  return !!(data.has_pat || data.pat);
 }
 async function testAndSavePat(pat) {
-  // 1. Read check — confirms the token can see the repo at all.
-  const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/pending.json`;
-  const ghHeaders = { Authorization: `Bearer ${pat}`, Accept: "application/vnd.github+json" };
-  const getRes = await fetch(url, { headers: ghHeaders });
-  if (!getRes.ok) throw new Error(`PAT read check failed: ${getRes.status}. Confirm the token has access to ${REPO_OWNER}/${REPO_NAME}.`);
-  const cur = await getRes.json();
-  // 2. Write check — PUT the file back to itself with the existing sha and
-  // identical content. GitHub treats this as a no-op (no commit created)
-  // when the content matches, but enforces Contents:write — so a read-only
-  // token gets a 403 here instead of silently passing validation and
-  // failing on first real submit (the bug we hit on 2026-05-01).
-  const putRes = await fetch(url, {
-    method: "PUT",
-    headers: { ...ghHeaders, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      message: "PAT write validation (no-op)",
-      content: cur.content.replace(/\s+/g, ""),
-      sha: cur.sha,
-    }),
-  });
-  if (!putRes.ok) {
-    const detail = putRes.status === 403
-      ? "The token can read but not write. Edit the PAT on github.com and grant Repository → Contents: Read and write."
-      : `Status ${putRes.status}.`;
-    throw new Error(`PAT write check failed. ${detail}`);
-  }
-  // 3. Save the encrypted PAT on the worker.
   const res = await apiFetch("/pat", { method: "PUT", body: JSON.stringify({ pat }) });
-  if (!res.ok) throw new Error(`Save PAT failed: ${res.status}`);
-  state.pat = pat;
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || `Save PAT failed: ${res.status}`);
+  }
+  state.hasPat = true;
 }
 async function signOut() {
   try { await apiFetch("/auth/logout", { method: "POST" }); } catch {}
@@ -984,6 +957,28 @@ async function fetchJson(path) {
   const res = await fetch(`./${path}?t=${Date.now()}`);
   if (!res.ok) throw new Error(`fetch ${path} failed: ${res.status}`);
   return res.json();
+}
+
+async function loadManifest() {
+  if (state.manifest) return state.manifest;
+  try {
+    state.manifest = await fetchJson("data/manifest.json");
+  } catch (e) {
+    console.warn("manifest not loaded; using seed fallback", e);
+    state.manifest = {
+      routines: ["2026-W20-Phase-2-Launch-Reentry"],
+      logs: [],
+      recovery_logs: [],
+      exercises: [],
+      latest_routine_id: "2026-W20-Phase-2-Launch-Reentry",
+    };
+  }
+  return state.manifest;
+}
+
+function manifestIds(key) {
+  const ids = state.manifest?.[key];
+  return Array.isArray(ids) ? ids : [];
 }
 
 async function fetchExercise(id) {
@@ -1001,16 +996,9 @@ async function fetchExercise(id) {
 }
 
 async function loadSessions() {
-  // Discover synced log files via GitHub's contents listing (anonymous, public).
+  await loadManifest();
   state.sessionLookup = new Map();
-  let logIds = [];
-  try {
-    const list = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/logs`)
-      .then(r => r.ok ? r.json() : []);
-    logIds = (Array.isArray(list) ? list : [])
-      .filter(f => f.name && f.name.endsWith(".json"))
-      .map(f => f.name.replace(/\.json$/, ""));
-  } catch {}
+  const logIds = manifestIds("logs");
   // Fetch all logs in parallel.
   const logs = await Promise.all(
     logIds.map(id => fetchJson(`data/logs/${id}.json`).catch(() => null))
@@ -1029,7 +1017,11 @@ async function loadSessions() {
   // logs for the same key, so we let pending overwrite synced.
   try {
     const pending = await fetchJson("data/pending.json");
-    for (const entry of pending?.entries || []) {
+    const entries = [...(pending?.entries || [])];
+    for (const localEntry of state.pendingEntries || []) {
+      entries.splice(0, entries.length, ...mergePending(entries, localEntry));
+    }
+    for (const entry of entries) {
       const s = entry.session || {};
       if (!s.date || !s.day_of_week) continue;
       const key = `${s.date}|${s.day_of_week}|${s.type || ""}`;
@@ -1046,6 +1038,7 @@ async function loadSessions() {
 // dayTypeKey → imported from ./js/util.js
 
 async function loadPastLogsForRoutine(routine) {
+  await loadManifest();
   if (!routine || !routine.start_date) return {};
   const startDate = routine.start_date;
   let endDate = routine.end_date;
@@ -1054,17 +1047,7 @@ async function loadPastLogsForRoutine(routine) {
     d.setUTCDate(d.getUTCDate() + 6);
     endDate = d.toISOString().slice(0, 10);
   }
-  let logsListing;
-  try {
-    logsListing = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/logs`).then(r => r.ok ? r.json() : []);
-  } catch (e) {
-    console.warn("logs listing failed", e);
-    return {};
-  }
-  const files = (Array.isArray(logsListing) ? logsListing : [])
-    .filter(f => f.name && f.name.endsWith(".json"))
-    .map(f => f.name.replace(/\.json$/, ""));
-  const matching = files.filter(name => {
+  const matching = manifestIds("logs").filter(name => {
     const date = name.slice(0, 10);
     return date >= startDate && date <= endDate;
   });
@@ -1081,15 +1064,10 @@ async function loadPastLogsForRoutine(routine) {
 }
 
 async function loadRoutines() {
-  // Discover routine files via the GitHub Contents API (anonymous on a public repo).
-  // Falls back to a known seed file path if the listing fails.
-  try {
-    const list = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/routines`).then(r => r.ok ? r.json() : []);
-    const files = (Array.isArray(list) ? list : []).filter(f => f.name.endsWith(".json")).map(f => f.name.replace(/\.json$/, ""));
-    state.routines = files.length ? files : ["2026-W20-Phase-2-Launch-Reentry"];
-  } catch {
-    state.routines = ["2026-W20-Phase-2-Launch-Reentry"];
-  }
+  await loadManifest();
+  state.routines = manifestIds("routines").length
+    ? manifestIds("routines")
+    : ["2026-W20-Phase-2-Launch-Reentry"];
 
   // Load metadata (start_date, end_date) for all routines so we can auto-pick
   // the one whose date window covers the active workout date.
@@ -1192,15 +1170,9 @@ async function loadCooldowns() {
 }
 
 async function loadRecoveryLogs() {
+  await loadManifest();
   state.recoveryByDate = new Map();
-  let ids = [];
-  try {
-    const list = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/recovery_logs`)
-      .then(r => r.ok ? r.json() : []);
-    ids = (Array.isArray(list) ? list : [])
-      .filter(f => f.name && f.name.endsWith(".json"))
-      .map(f => f.name.replace(/\.json$/, ""));
-  } catch {}
+  const ids = manifestIds("recovery_logs");
   const recs = await Promise.all(
     ids.map(id => fetchJson(`data/recovery_logs/${id}.json`).catch(() => null))
   );
@@ -1211,7 +1183,11 @@ async function loadRecoveryLogs() {
   // Overlay pending recovery entries
   try {
     const pending = await fetchJson("data/pending.json");
-    for (const entry of pending?.entries || []) {
+    const entries = [...(pending?.entries || [])];
+    for (const localEntry of state.pendingEntries || []) {
+      entries.splice(0, entries.length, ...mergePending(entries, localEntry));
+    }
+    for (const entry of entries) {
       if (entry.type !== "recovery") continue;
       const s = entry.session || {};
       if (!s.date) continue;
@@ -1223,39 +1199,13 @@ async function loadRecoveryLogs() {
 // ---- Pending append -------------------------------------------------------
 
 async function appendPending(entry) {
-  if (!state.pat) throw new Error("no PAT");
-  const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${PENDING_PATH}`;
-  const headers = { Authorization: `Bearer ${state.pat}`, Accept: "application/vnd.github+json" };
-  for (let attempt = 0; attempt < 2; attempt++) {
-    const cur = await fetch(url, { headers, cache: "no-store" }).then(r => {
-      if (!r.ok) throw new Error(`GET pending failed: ${r.status}`);
-      return r.json();
-    });
-    let parsed;
-    try { parsed = JSON.parse(b64decodeUtf8(cur.content)); }
-    catch { parsed = { format_note: "", entries: [] }; }
-    if (!Array.isArray(parsed.entries)) parsed.entries = [];
-
-    // Pre-dedupe: remove any stale pending entry for the same slot before
-    // appending the new one. Prevents the queue from carrying multiple
-    // entries when the user re-submits the same date after editing.
-    // Workout (log/skip) → keyed on (date, day_of_week, type). A new log
-    // displaces a pending skip for the same slot and vice versa.
-    // Recovery → keyed on (date, location).
-    parsed.entries = mergePending(parsed.entries, entry);
-    const body = {
-      message: entry.type === "routine_edit"
-        ? `web app: routine_edit ${entry.routine_id || ""} ${entry.day_of_week || ""} ${entry.exercise_id || ""}`
-        : `web app: ${entry.session?.date || ""} ${entry.session?.day_of_week || ""}`,
-      content: b64encodeUtf8(JSON.stringify(parsed, null, 2) + "\n"),
-      sha: cur.sha,
-    };
-    const res = await fetch(url, { method: "PUT", headers: { ...headers, "Content-Type": "application/json" }, body: JSON.stringify(body) });
-    if (res.ok) return;
-    if (res.status !== 409 || attempt > 0) {
-      throw new Error(`PUT pending failed: ${res.status}`);
-    }
+  if (!state.hasPat) throw new Error("PAT not configured");
+  const res = await apiFetch("/pending/append", { method: "POST", body: JSON.stringify({ entry }) });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || `pending append failed: ${res.status}`);
   }
+  state.pendingEntries = mergePending(state.pendingEntries || [], entry);
 }
 
 // ---- UI: sign-in / PAT panels ---------------------------------------------
@@ -1308,7 +1258,7 @@ function bindPatPanel() {
     if (!pat) return;
     try {
       $("#pat-status").className = "status-msg";
-      $("#pat-status").textContent = "Validating with GitHub…";
+      $("#pat-status").textContent = "Validating securely…";
       await testAndSavePat(pat);
       $("#pat-status").className = "status-msg ok";
       $("#pat-status").textContent = "Loading routine…";
@@ -1773,8 +1723,8 @@ async function bootApp() {
   try {
     const email = await verifySession();
     if (!email) { showPanel("signin"); return; }
-    state.pat = await fetchPat();
-    if (!state.pat) { showPanel("pat"); return; }
+    state.hasPat = await fetchPatStatus();
+    if (!state.hasPat) { showPanel("pat"); return; }
     await Promise.all([loadRoutines(), loadSessions(), loadCooldowns(), loadRecoveryLogs()]);
     renderApp();
     showPanel("app");

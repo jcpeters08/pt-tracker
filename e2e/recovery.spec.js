@@ -6,9 +6,9 @@ import { signIn } from "./helpers.js";
 // consistent and reflects the entered values. Coverage for a future recovery
 // render-module split. (The panel seeds 3 default rounds via ensureRecoveryRounds.)
 test("logging recovery queues a correct recovery payload", async ({ page, context }) => {
-  let put = null;
+  let appended = null;
   page.on("dialog", d => d.accept());
-  await signIn(page, context, { onPendingPut: (json) => { put = json; } });
+  await signIn(page, context, { onPendingAppend: (entry) => { appended = entry; } });
 
   await page.click("#rec-head"); // panel starts collapsed
   await expect(page.locator("#rec-date")).toBeVisible();
@@ -21,9 +21,10 @@ test("logging recovery queues a correct recovery payload", async ({ page, contex
 
   await page.click("#rec-submit-btn");
 
-  await expect.poll(() => put, { timeout: 10_000 }).not.toBeNull();
-  const rec = (put.entries || []).find(e => e.type === "recovery");
+  await expect.poll(() => appended, { timeout: 10_000 }).not.toBeNull();
+  const rec = appended;
   expect(rec, "a recovery entry was queued").toBeTruthy();
+  expect(rec.type).toBe("recovery");
   expect(rec.session.date).toBe("2026-05-31");
 
   const detail = rec.session.rounds_detail;
