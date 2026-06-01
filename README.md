@@ -49,6 +49,20 @@ The web app reads `data/manifest.json` and same-origin JSON snapshots from GitHu
 
 All exercise files in `data/exercises/` currently have populated `image_url` (images from `yuhonas/free-exercise-db`, Wikimedia Commons fallback) and `video_url` (YouTube / muscleandstrength). When adding a new exercise, populate both with verified URLs in the same commit — a non-null `image_url` is required (see the "every exercise … must have a non-null `image_url`" convention in `CLAUDE.md` / `AGENTS.md`), and document the source in `image_source` + `image_match`.
 
+## Reports
+
+Open **Reports** from the day-view header (`reports.html`) — read-only; it reads the same same-origin JSON the app does (no sign-in needed). All weights display in **pounds** (storage stays kg). Available reports:
+
+- **Weekly volume by muscle** — working sets per muscle, last 8 weeks.
+- **Lift progression** — per-exercise top-set and total volume on *performed dates only* (point markers, not connected lines), in lbs.
+- **Training calendar** — month grid with workout + recovery markers, plus a week drilldown.
+- **Personal records** — load/rep/volume PRs in lbs, grouped by body area (filterable).
+- **Ready to progress** — lifts whose latest logged sets met the programmed weight/reps/sets.
+- **Actual vs planned** — planned routine days vs logged sessions for a routine week (defaults to `data/profile.json.active_routine`).
+- **Body-area target bands** — weekly set totals per body area vs pragmatic target ranges.
+- **Stale lifts** — active-routine exercises not trained in 7+/14+/21+ days.
+- **Recovery correlation** — weekly compliance, recovery minutes, and PR signals (descriptive only).
+
 ## Daily sync — Cowork scheduled task
 
 A Cowork scheduled task fires daily at 8:03 CT (mirrors the TV Concierge setup). It runs as Claude on your Mac, so it has access to the vault.

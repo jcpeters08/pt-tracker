@@ -3,6 +3,8 @@
 This file summarizes the local, uncommitted reports work for Claude to validate,
 test, and decide whether documentation needs updates.
 
+> **Status (Claude validation, 2026-06-01):** this work was committed + pushed as `8fe8cf7` ("reports: add progress insights and PF weight guards"). Independently validated — pytest 40, vitest 44, worker 14, e2e 11, audit_data/audit_docs pass, `parse_routine` NO DIFF, and `reports.html` verified in-browser (point-only lbs progression, month calendar, lbs PRs grouped by body area, all 5 new sections populated, actual-vs-planned defaulting to W23, no console errors). Docs updated (README, CLAUDE.md/AGENTS.md, vault build brief). The "not committed" note below was written pre-commit.
+
 ## Current Git State
 
 At the time this handoff was written, the work is **not committed** and **not
