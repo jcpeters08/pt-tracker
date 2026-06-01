@@ -47,32 +47,44 @@
   .section .subtle { color: var(--ink-soft); font-size: 13px; margin: 0 0 14px; }
   .chart-host { position: relative; height: 280px; }
   select { font-family: inherit; font-size: 14px; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--rule); background: var(--bg-card); }
+  .control-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
 
   table.prs { width: 100%; border-collapse: collapse; font-size: 14px; }
   table.prs th, table.prs td { text-align: left; padding: 8px 8px; border-bottom: 1px solid var(--rule); }
   table.prs th { color: var(--ink-soft); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
   table.prs .delta { color: var(--good); font-weight: 600; }
+  table.report { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.report th, table.report td { text-align: left; padding: 8px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  table.report th { color: var(--ink-soft); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+  .status-good { color: var(--good); font-weight: 700; }
+  .status-warn { color: var(--warn); font-weight: 700; }
+  .status-bad { color: var(--accent); font-weight: 700; }
   .summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
   .summary-card { border: 1px solid var(--rule); border-radius: 8px; padding: 10px; background: var(--bg-soft); }
   .summary-card b { display: block; font-size: 12px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .04em; }
   .summary-card span { display: block; font-size: 20px; margin-top: 4px; color: var(--ink); }
 
-  .calendar-grid {
-    display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 10px;
-  }
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 10px; }
+  .calendar-dow { font-size: 11px; color: var(--ink-soft); font-weight: 700; text-align: center; text-transform: uppercase; letter-spacing: .04em; }
   .cal-cell {
-    aspect-ratio: 1 / 1; border-radius: 4px; background: var(--bg-soft);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; color: var(--ink-muted);
+    min-height: 46px; border-radius: 4px; background: var(--bg-soft);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    font-size: 12px; color: var(--ink-muted);
   }
-  .cal-cell.session { background: var(--good); color: white; }
+  .cal-cell.blank { background: transparent; border: 1px dashed transparent; }
+  .cal-cell.session { background: color-mix(in srgb, var(--good) 18%, white); color: var(--ink); box-shadow: inset 0 0 0 2px var(--good); }
   .cal-cell.recovery { box-shadow: inset 0 0 0 2px var(--warn); }
+  .cal-cell.session.recovery { box-shadow: inset 0 0 0 2px var(--good), inset 0 0 0 4px var(--warn); }
+  .cal-dot-row { display: flex; gap: 3px; min-height: 7px; }
+  .cal-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--good); }
+  .cal-dot.recovery { background: var(--warn); }
   .cal-cell.future { opacity: 0.3; }
   .week-detail { margin-top: 12px; border-top: 1px solid var(--rule); padding-top: 12px; }
   .week-detail h3 { margin: 0 0 8px; font-size: 16px; }
   .week-detail ul { margin: 0; padding-left: 20px; }
 
   .empty { color: var(--ink-muted); font-style: italic; padding: 16px 0; }
+  .pr-area-title { margin: 14px 0 6px; font-family: var(--serif); font-size: 16px; font-weight: 600; }
 
   @media (max-width: 480px) {
     .chart-host { height: 240px; }
@@ -95,8 +107,8 @@
 
   <section class="section">
     <h2>Lift progression</h2>
-    <p class="subtle">Top-set weight × reps and total session volume per logged session.</p>
-    <div style="margin-bottom: 10px;"><select id="lift-select"></select></div>
+    <p class="subtle">Performed dates only: top-set weight × reps and total session volume per logged session.</p>
+    <div class="control-row"><select id="lift-select"></select></div>
     <div class="chart-host"><canvas id="lift-chart"></canvas></div>
   </section>
 
@@ -108,6 +120,38 @@
   </section>
 
   <section class="section">
+    <h2>Ready to progress</h2>
+    <p class="subtle">Latest logged exercises that met the programmed weight, reps, and set count.</p>
+    <div id="readiness-host"></div>
+  </section>
+
+  <section class="section">
+    <h2>Actual vs planned</h2>
+    <p class="subtle">Training days from the selected routine week compared with completed logs.</p>
+    <div class="control-row"><select id="planned-week-select"></select></div>
+    <div id="actual-planned-host"></div>
+  </section>
+
+  <section class="section">
+    <h2>Body-area target bands</h2>
+    <p class="subtle">Working sets by body area against practical weekly target bands.</p>
+    <div class="control-row"><select id="volume-band-week-select"></select></div>
+    <div id="volume-band-host"></div>
+  </section>
+
+  <section class="section">
+    <h2>Stale lifts</h2>
+    <p class="subtle">Active routine exercises that have not been logged recently.</p>
+    <div id="stale-lifts-host"></div>
+  </section>
+
+  <section class="section">
+    <h2>Recovery correlation</h2>
+    <p class="subtle">Compliance, recovery minutes, and PR signals by week.</p>
+    <div id="recovery-correlation-host"></div>
+  </section>
+
+  <section class="section">
     <h2>Recovery</h2>
     <p class="subtle">Sauna and plunge minutes by week.</p>
     <div class="chart-host" style="height:220px"><canvas id="recovery-chart"></canvas></div>
@@ -115,7 +159,8 @@
 
   <section class="section">
     <h2>Training calendar</h2>
-    <p class="subtle">Logged workout days; outlined days include recovery.</p>
+    <p class="subtle">Monthly workout and recovery view.</p>
+    <div class="control-row"><select id="month-select"></select></div>
     <div id="calendar-host" class="calendar-grid"></div>
   </section>
 
@@ -128,13 +173,21 @@
 
   <section class="section">
     <h2>PRs</h2>
-    <p class="subtle">Each session where top-set weight increased vs the prior best on that lift.</p>
+    <p class="subtle">Personal records in pounds, grouped by body area.</p>
+    <div class="control-row"><select id="pr-area-select"></select></div>
     <div id="prs-host"></div>
   </section>
 </div>
 
 <script type="module">
-import { escapeHtml, personalRecordRowsHtml, calendarCells, weekRangeFromIso } from "./js/reports.js";
+import { bodyAreaForExercise, escapeHtml, monthCalendarCells, personalRecordRowsHtml, weekRangeFromIso } from "./js/reports.js";
+import {
+  actualVsPlannedRows,
+  muscleTargetBandRows,
+  readinessRows,
+  recoveryCorrelationRows,
+  staleLiftRows,
+} from "./js/reports.js";
 "use strict";
 
 const MUSCLE_COLORS = {
@@ -169,16 +222,20 @@ async function loadManifest() {
   }
 }
 
-async function fetchExerciseNameMap(manifest) {
+async function fetchExerciseMetaMap(manifest) {
   const ids = Array.isArray(manifest.exercises) ? manifest.exercises : [];
   const map = {};
   await Promise.all(ids.map(async id => {
     try {
       const ex = await fetchJson(`data/exercises/${id}.json`);
-      map[id] = ex.name || id;
-    } catch { map[id] = id; }
+      map[id] = ex;
+    } catch { map[id] = { id, name: id }; }
   }));
   return map;
+}
+
+function exerciseNamesFromMeta(exerciseMeta) {
+  return Object.fromEntries(Object.entries(exerciseMeta || {}).map(([id, ex]) => [id, ex.name || id]));
 }
 
 async function fetchLogs(manifest) {
@@ -193,7 +250,52 @@ async function fetchRecovery(manifest) {
   return recs.filter(Boolean).sort((a, b) => (a.date || "").localeCompare(b.date || ""));
 }
 
+async function fetchRoutines(manifest) {
+  const ids = Array.isArray(manifest.routines) ? manifest.routines : [];
+  const routines = await Promise.all(ids.map(id => fetchJson(`data/routines/${id}.json`).catch(() => null)));
+  return routines.filter(Boolean).sort((a, b) => (a.start_date || "").localeCompare(b.start_date || ""));
+}
+
+async function fetchProfile() {
+  try {
+    return await fetchJson("data/profile.json");
+  } catch {
+    return {};
+  }
+}
+
 function lastN(arr, n) { return arr.slice(Math.max(0, arr.length - n)); }
+
+function currentIsoWeek() {
+  const d = new Date();
+  const utc = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = utc.getUTCDay() || 7;
+  utc.setUTCDate(utc.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(utc.getUTCFullYear(), 0, 1));
+  const week = Math.ceil((((utc - yearStart) / 86400000) + 1) / 7);
+  return `${utc.getUTCFullYear()}-W${String(week).padStart(2, "0")}`;
+}
+
+function isoWeekForDate(dateStr) {
+  const d = new Date(`${dateStr}T00:00:00Z`);
+  const day = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const week = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return `${d.getUTCFullYear()}-W${String(week).padStart(2, "0")}`;
+}
+
+function defaultWeek(weeks) {
+  const current = currentIsoWeek();
+  if (weeks.includes(current)) return current;
+  return weeks.filter(w => w <= current).sort().pop() || weeks.sort().pop();
+}
+
+function statusClass(status) {
+  if (["Done", "In range", "Current"].includes(status)) return "status-good";
+  if (["Low", "Open", "7+ days"].includes(status)) return "status-warn";
+  return "status-bad";
+}
 
 function renderVolumeChart(analytics) {
   const allWeeks = Object.keys(analytics.lifts_per_week || {}).sort();
@@ -241,28 +343,41 @@ function renderLiftChart(analytics, exerciseNames) {
   let chart;
   function draw(id) {
     const series = analytics.exercise_progression[id] || [];
-    const labels = series.map(p => p.date);
-    const topSet = series.map(p => p.top_set_weight_kg * (p.top_set_reps || 1));
-    const totalVol = series.map(p => p.total_volume_kg);
+    const topSet = series.map(p => ({ x: Date.parse(`${p.date}T00:00:00Z`), y: Math.round((p.top_set_weight_kg || 0) * 2.20462 * (p.top_set_reps || 1)) }));
+    const totalVol = series.map(p => ({ x: Date.parse(`${p.date}T00:00:00Z`), y: Math.round((p.total_volume_kg || 0) * 2.20462) }));
     if (chart) chart.destroy();
     chart = new window.Chart(document.getElementById("lift-chart"), {
       type: "line",
       data: {
-        labels,
         datasets: [
-          { label: "Top set (weight × reps)", data: topSet, borderColor: "#B23A3A", backgroundColor: "#B23A3A", tension: 0.2, yAxisID: "y" },
-          { label: "Total session volume (kg)", data: totalVol, borderColor: "#3D6B4D", backgroundColor: "#3D6B4D", borderDash: [4,4], tension: 0.2, yAxisID: "y1" },
+          { label: "Top set (lbs × reps)", data: topSet, borderColor: "#B23A3A", backgroundColor: "#B23A3A", yAxisID: "y", pointRadius: 4, showLine: false },
+          { label: "Total session volume (lbs)", data: totalVol, borderColor: "#3D6B4D", backgroundColor: "#3D6B4D", yAxisID: "y1", pointRadius: 4, showLine: false },
         ],
       },
       options: {
         maintainAspectRatio: false,
         responsive: true,
+        parsing: false,
         interaction: { mode: "index", intersect: false },
         scales: {
-          y:  { type: "linear", position: "left",  title: { display: true, text: "weight × reps" } },
-          y1: { type: "linear", position: "right", title: { display: true, text: "session volume (kg)" }, grid: { drawOnChartArea: false } },
+          x: {
+            type: "linear",
+            ticks: {
+              callback: value => new Date(Number(value)).toISOString().slice(5, 10),
+              maxTicksLimit: 6,
+            },
+          },
+          y:  { type: "linear", position: "left",  title: { display: true, text: "lbs × reps" } },
+          y1: { type: "linear", position: "right", title: { display: true, text: "volume (lbs)" }, grid: { drawOnChartArea: false } },
         },
-        plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } } },
+        plugins: {
+          legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } },
+          tooltip: {
+            callbacks: {
+              title: items => items[0]?.raw?.x ? new Date(items[0].raw.x).toISOString().slice(0, 10) : "",
+            },
+          },
+        },
       },
     });
   }
@@ -363,23 +478,179 @@ function renderCoachingSummary(analytics) {
   ).join("");
 }
 
+function renderReadiness(logs, routines, exerciseNames) {
+  const host = document.getElementById("readiness-host");
+  const rows = readinessRows(logs, routines, exerciseNames);
+  if (!rows.length) {
+    host.innerHTML = `<div class="empty">No lifts are clearly ready to progress yet.</div>`;
+    return;
+  }
+  host.innerHTML = `
+    <table class="report">
+      <thead><tr><th>Exercise</th><th>Date</th><th>Target</th><th>Actual</th><th>Signal</th></tr></thead>
+      <tbody>${rows.map(r => `
+        <tr>
+          <td>${escapeHtml(r.exercise)}</td>
+          <td>${escapeHtml(r.date)}</td>
+          <td>${escapeHtml(r.target)}</td>
+          <td>${escapeHtml(r.actual)}</td>
+          <td class="status-good">${escapeHtml(r.signal)}</td>
+        </tr>
+      `).join("")}</tbody>
+    </table>
+  `;
+}
+
+function renderActualVsPlanned(routines, logs, exerciseNames, activeRoutineId) {
+  const select = document.getElementById("planned-week-select");
+  const host = document.getElementById("actual-planned-host");
+  const weeks = [...new Set(routines.map(r => r.start_date && isoWeekForDate(r.start_date)).filter(Boolean))].sort().reverse();
+  if (!weeks.length) {
+    host.innerHTML = `<div class="empty">No planned routine weeks yet.</div>`;
+    return;
+  }
+  select.replaceChildren(...weeks.map(w => {
+    const opt = document.createElement("option");
+    opt.value = w;
+    opt.textContent = w;
+    return opt;
+  }));
+  function draw(week) {
+    const rows = actualVsPlannedRows(routines, logs, exerciseNames, week);
+    host.innerHTML = `
+      <table class="report">
+        <thead><tr><th>Day</th><th>Status</th><th>Planned</th><th>Completed</th></tr></thead>
+        <tbody>${rows.map(r => `
+          <tr>
+            <td><b>${escapeHtml(r.day)}</b><br>${escapeHtml(r.type)}</td>
+            <td class="${statusClass(r.status)}">${escapeHtml(r.status)}<br>${escapeHtml(r.completed_exercises)}/${escapeHtml(r.planned_exercises)} exercises</td>
+            <td>${escapeHtml(r.planned)}</td>
+            <td>${escapeHtml(r.completed || "—")}</td>
+          </tr>
+        `).join("")}</tbody>
+      </table>
+    `;
+  }
+  select.addEventListener("change", () => draw(select.value));
+  const activeRoutine = routines.find(r => r.id === activeRoutineId);
+  select.value = activeRoutine?.start_date ? isoWeekForDate(activeRoutine.start_date) : defaultWeek(weeks);
+  draw(select.value);
+}
+
+function renderVolumeBands(analytics) {
+  const select = document.getElementById("volume-band-week-select");
+  const host = document.getElementById("volume-band-host");
+  const weeks = [...new Set((analytics.weekly_volume_by_muscle || []).map(r => r.week))].sort().reverse();
+  if (!weeks.length) {
+    host.innerHTML = `<div class="empty">No volume rows yet.</div>`;
+    return;
+  }
+  select.replaceChildren(...weeks.map(w => {
+    const opt = document.createElement("option");
+    opt.value = w;
+    opt.textContent = w;
+    return opt;
+  }));
+  function draw(week) {
+    const rows = muscleTargetBandRows(analytics, week);
+    host.innerHTML = `
+      <table class="report">
+        <thead><tr><th>Body area</th><th>Sets</th><th>Target band</th><th>Status</th></tr></thead>
+        <tbody>${rows.map(r => `
+          <tr>
+            <td>${escapeHtml(r.area)}</td>
+            <td>${escapeHtml(r.sets)}</td>
+            <td>${escapeHtml(r.min)}-${escapeHtml(r.max)}</td>
+            <td class="${statusClass(r.status)}">${escapeHtml(r.status)}</td>
+          </tr>
+        `).join("")}</tbody>
+      </table>
+    `;
+  }
+  select.addEventListener("change", () => draw(select.value));
+  select.value = defaultWeek(weeks);
+  draw(select.value);
+}
+
+function renderStaleLifts(routines, logs, exerciseNames, activeRoutineId) {
+  const host = document.getElementById("stale-lifts-host");
+  const today = new Date().toISOString().slice(0, 10);
+  const activeRoutine = routines.find(r => r.id === activeRoutineId);
+  const basis = activeRoutine ? [activeRoutine] : routines.filter(r => !r.start_date || r.start_date <= today);
+  const rows = staleLiftRows(basis, logs, exerciseNames, today);
+  if (!rows.length) {
+    host.innerHTML = `<div class="empty">No active routine lifts are stale.</div>`;
+    return;
+  }
+  host.innerHTML = `
+    <table class="report">
+      <thead><tr><th>Exercise</th><th>Last logged</th><th>Age</th><th>Status</th></tr></thead>
+      <tbody>${rows.map(r => `
+        <tr>
+          <td>${escapeHtml(r.exercise)}</td>
+          <td>${escapeHtml(r.last_seen)}</td>
+          <td>${escapeHtml(r.stale_days == null ? "—" : `${r.stale_days} days`)}</td>
+          <td class="${statusClass(r.severity)}">${escapeHtml(r.severity)}</td>
+        </tr>
+      `).join("")}</tbody>
+    </table>
+  `;
+}
+
+function renderRecoveryCorrelation(analytics) {
+  const host = document.getElementById("recovery-correlation-host");
+  const rows = recoveryCorrelationRows(analytics).slice(0, 8);
+  if (!rows.length) {
+    host.innerHTML = `<div class="empty">No weekly recovery/compliance rows yet.</div>`;
+    return;
+  }
+  host.innerHTML = `
+    <table class="report">
+      <thead><tr><th>Week</th><th>Compliance</th><th>Recovery</th><th>Recovery min</th><th>PRs</th></tr></thead>
+      <tbody>${rows.map(r => `
+        <tr>
+          <td>${escapeHtml(r.week)}</td>
+          <td>${escapeHtml(r.compliance)}${r.completion_rate == null ? "" : ` (${escapeHtml(r.completion_rate)}%)`}</td>
+          <td>${escapeHtml(r.recovery)}</td>
+          <td>${escapeHtml(r.recovery_minutes)}</td>
+          <td class="${r.prs ? "status-good" : ""}">${escapeHtml(r.prs)}</td>
+        </tr>
+      `).join("")}</tbody>
+    </table>
+  `;
+}
+
 function renderCalendar(logs, recovery) {
   const host = document.getElementById("calendar-host");
+  const select = document.getElementById("month-select");
   const sessionDates = logs.map(l => l.date).filter(Boolean);
   if (!sessionDates.length) {
     host.innerHTML = `<div class="empty">No logged sessions yet.</div>`;
     return;
   }
-  const recoveryDates = new Set(recovery.map(r => r.date).filter(Boolean));
-  const start = sessionDates[0];
-  const end = sessionDates[sessionDates.length - 1];
-  const cells = calendarCells(sessionDates, start, end);
-  host.innerHTML = cells.map(c => {
-    const cls = ["cal-cell"];
-    if (c.hasSession) cls.push("session");
-    if (recoveryDates.has(c.date)) cls.push("recovery");
-    return `<div class="${cls.join(" ")}" title="${escapeHtml(c.date)}">${escapeHtml(c.day)}</div>`;
-  }).join("");
+  const recoveryDates = recovery.map(r => r.date).filter(Boolean);
+  const months = [...new Set([...sessionDates, ...recoveryDates].map(d => d.slice(0, 7)))].sort().reverse();
+  select.replaceChildren(...months.map(m => {
+    const opt = document.createElement("option");
+    opt.value = m;
+    opt.textContent = new Date(`${m}-01T00:00:00Z`).toLocaleDateString(undefined, { month: "long", year: "numeric", timeZone: "UTC" });
+    return opt;
+  }));
+  function draw(month) {
+    const cells = monthCalendarCells(sessionDates, recoveryDates, month);
+    const dow = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(d => `<div class="calendar-dow">${d}</div>`).join("");
+    host.innerHTML = dow + cells.map(c => {
+      if (!c.inMonth) return `<div class="cal-cell blank" aria-hidden="true"></div>`;
+      const cls = ["cal-cell"];
+      if (c.hasSession) cls.push("session");
+      if (c.hasRecovery) cls.push("recovery");
+      const dots = `<div class="cal-dot-row">${c.hasSession ? `<span class="cal-dot"></span>` : ""}${c.hasRecovery ? `<span class="cal-dot recovery"></span>` : ""}</div>`;
+      return `<div class="${cls.join(" ")}" title="${escapeHtml(c.date)}"><span>${escapeHtml(c.day)}</span>${dots}</div>`;
+    }).join("");
+  }
+  select.addEventListener("change", () => draw(select.value));
+  select.value = months[0];
+  draw(months[0]);
 }
 
 function renderWeekDrilldown(analytics, logs, recovery, exerciseNames) {
@@ -419,40 +690,68 @@ function renderWeekDrilldown(analytics, logs, recovery, exerciseNames) {
   draw(weeks[0]);
 }
 
-function renderPrs(analytics, exerciseNames) {
+function renderPrs(analytics, exerciseMeta, exerciseNames) {
   const host = document.getElementById("prs-host");
+  const select = document.getElementById("pr-area-select");
   const records = analytics.personal_records?.length ? analytics.personal_records : analytics.prs || [];
   if (!records.length) {
     host.innerHTML = `<div class="empty">No PRs yet — log more sessions to start the streak.</div>`;
     return;
   }
-  host.innerHTML = `
-    <table class="prs">
-      <thead><tr><th>Exercise</th><th>Date</th><th>Type</th><th>Weight × Reps</th><th>Δ</th></tr></thead>
-      <tbody>
-        ${personalRecordRowsHtml(records, exerciseNames)}
-      </tbody>
-    </table>
-  `;
+  const areas = [...new Set(records.map(r => bodyAreaForExercise(exerciseMeta[r.exercise_id] || {})))].sort();
+  select.replaceChildren(...["All", ...areas].map(area => {
+    const opt = document.createElement("option");
+    opt.value = area;
+    opt.textContent = area;
+    return opt;
+  }));
+  function draw(area) {
+    const visible = area === "All"
+      ? records
+      : records.filter(r => bodyAreaForExercise(exerciseMeta[r.exercise_id] || {}) === area);
+    const grouped = {};
+    for (const record of visible) {
+      const key = bodyAreaForExercise(exerciseMeta[record.exercise_id] || {});
+      (grouped[key] ||= []).push(record);
+    }
+    host.innerHTML = Object.keys(grouped).sort().map(key => `
+      <div class="pr-area-title">${escapeHtml(key)}</div>
+      <table class="prs">
+        <thead><tr><th>Exercise</th><th>Date</th><th>Type</th><th>Weight × Reps</th><th>Δ</th></tr></thead>
+        <tbody>${personalRecordRowsHtml(grouped[key], exerciseNames)}</tbody>
+      </table>
+    `).join("");
+  }
+  select.addEventListener("change", () => draw(select.value));
+  select.value = "All";
+  draw("All");
 }
 
 (async () => {
   try {
     const manifest = await loadManifest();
-    const [analytics, exerciseNames, logs, recovery] = await Promise.all([
+    const [analytics, exerciseMeta, logs, recovery, routines, profile] = await Promise.all([
       fetchJson("data/analytics.json"),
-      fetchExerciseNameMap(manifest),
+      fetchExerciseMetaMap(manifest),
       fetchLogs(manifest),
       fetchRecovery(manifest),
+      fetchRoutines(manifest),
+      fetchProfile(),
     ]);
+    const exerciseNames = exerciseNamesFromMeta(exerciseMeta);
     renderVolumeChart(analytics);
     renderLiftChart(analytics, exerciseNames);
     renderComplianceChart(analytics);
     renderCoachingSummary(analytics);
+    renderReadiness(logs, routines, exerciseNames);
+    renderActualVsPlanned(routines, logs, exerciseNames, profile.active_routine);
+    renderVolumeBands(analytics);
+    renderStaleLifts(routines, logs, exerciseNames, profile.active_routine);
+    renderRecoveryCorrelation(analytics);
     renderRecoveryChart(analytics);
     renderCalendar(logs, recovery);
     renderWeekDrilldown(analytics, logs, recovery, exerciseNames);
-    renderPrs(analytics, exerciseNames);
+    renderPrs(analytics, exerciseMeta, exerciseNames);
   } catch (e) {
     console.error(e);
     document.querySelector(".container").insertAdjacentHTML("beforeend",

@@ -144,6 +144,28 @@ class TestDataAudit(unittest.TestCase):
             findings = audit_data.audit_repo(root)
             self.assertTrue(any("PF dumbbell target" in f and "22.5 lbs" in f for f in findings))
 
+    def test_phase2_cable_machine_and_barbell_targets_must_match_pf_increments(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_json(root / "data/routines/2026-W24-Phase-2.json", {
+                "id": "2026-W24-Phase-2",
+                "phase": "2",
+                "days": {"monday": {"exercises": [{
+                    "exercise_id": "rope-tricep-pushdown",
+                    "target_weight_raw": "24 lbs (11 kg)",
+                    "target_weight_kg": 11,
+                }]}},
+            })
+            _write_json(root / "data/exercises/rope-tricep-pushdown.json", {
+                "id": "rope-tricep-pushdown",
+                "image_url": "https://example.com/image.jpg",
+                "image_source": "test",
+                "image_match": "test",
+            })
+            _write_json(root / "data/cooldowns.json", {"library": {}})
+            findings = audit_data.audit_repo(root)
+            self.assertTrue(any("PF target" in f and "24 lbs" in f for f in findings))
+
 
 class TestDocAudit(unittest.TestCase):
     def test_doc_audit_flags_known_stale_phrases(self):

@@ -216,13 +216,17 @@ function inputToKg(val) {
 }
 
 // Dual-unit target text from a routine entry: "30 lbs (14 kg) × 12 × 3".
-function formatTargetText(ex) {
+export function formatTargetText(ex) {
   if (ex.target_weight_kg == null) {
     return `${ex.target_weight_raw || "?"} × ${ex.target_reps || "?"} × ${ex.target_sets || "?"}`;
   }
   const kg = ex.target_weight_kg;
   if (kg === 0) {
     return `bodyweight × ${ex.target_reps || "?"} × ${ex.target_sets || "?"}`;
+  }
+  const raw = String(ex.target_weight_raw || "").trim();
+  if (state.unitPref === "lbs" && /\blbs?\b/i.test(raw)) {
+    return `${raw} × ${ex.target_reps || "?"} × ${ex.target_sets || "?"}`;
   }
   const lbs = roundTo(kgToLbs(kg), 0);
   const kgRounded = roundTo(kg, 1);

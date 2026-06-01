@@ -1790,7 +1790,7 @@ function openTargetEditor(el) {
   editor.className = "target-editor";
 
   const lbsIn = document.createElement("input");
-  lbsIn.type = "number"; lbsIn.step = "0.5"; lbsIn.min = "0"; lbsIn.value = String(lbs);
+  lbsIn.type = "number"; lbsIn.step = "5"; lbsIn.min = "0"; lbsIn.value = String(lbs);
   lbsIn.dataset.field = "lbs";
 
   const repsIn = document.createElement("input");
@@ -1818,6 +1818,10 @@ function openTargetEditor(el) {
     const newLbs = parseFloat(lbsIn.value);
     const newReps = parseInt(repsIn.value, 10);
     const newSets = parseInt(setsIn.value, 10);
+    if (!Number.isFinite(newLbs) || newLbs % 5 !== 0) {
+      toast("Use a PF-available 5-lb increment", "err");
+      return;
+    }
     const newKgRaw = lbsToKg(newLbs);
     const newKg = Math.round(newKgRaw * 2) / 2;
     const kgStr = newKg % 1 === 0 ? newKg.toFixed(0) : newKg.toFixed(1);
