@@ -43,7 +43,7 @@ export function selectRoutineForDate({ date, routines = [], meta = [], pinned = 
 export function resolveSessionForView(lookup, { date, day, type, weekStart, weekEnd } = {}) {
   if (!lookup || !day) return null;
   const exact = lookup.get(`${date}|${day}|${type}`);
-  if (exact) return exact;                 // exact-date match wins (log OR skip)
+  if (exact) return { ...exact, resolvedDate: date, isFallback: false };
   if (!weekStart) return null;
   const end = weekEnd || "9999-12-31";
   let best = null;                          // latest LOGGED match within the week
@@ -54,5 +54,5 @@ export function resolveSessionForView(lookup, { date, day, type, weekStart, week
       if (!best || d > best.date) best = { date: d, entry: v };
     }
   }
-  return best ? best.entry : null;
+  return best ? { ...best.entry, resolvedDate: best.date, isFallback: true } : null;
 }

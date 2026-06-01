@@ -8,6 +8,40 @@ Purpose: a self-contained recap of what this session changed and why, so Codex c
 
 ---
 
+## Codex follow-up fixes (2026-05-31)
+
+Codex reviewed Claude's latest updates and found two real remaining failures plus one now-stale browser fixture. These are fixed in the follow-up commit after `8b76b56`.
+
+### Claude failures Codex found
+
+1. **Bug 2 was only fixed for display, not for submit identity.** `resolveSessionForView()` showed the W22 Monday catch-up log correctly, but it returned only the entry object. `buildSessionPayload()` still wrote `session.date` from `state.workoutDate`. That meant viewing nominal Monday `2026-05-25`, seeing the real catch-up log from `2026-05-28`, editing it, and submitting would queue a new `2026-05-25|monday|push` payload instead of updating the actual logged session identity. Because pending workout dedupe keys on `(date, day_of_week, type)`, this could create a duplicate planned workout and double-count analytics.
+2. **W24 still had an impossible PF dumbbell target.** Hammer Curl was written as `22.5 lbs (10 kg) ea`, but PF dumbbells are 5-lb increments only. This violated the convention already documented in AGENTS.md/CLAUDE.md.
+3. **The generic workout E2E fixture had gone stale.** It used W22 Monday as a blank logging case, but Claude's own catch-up fallback now correctly hydrates that day from the `2026-05-28` logged session. Clicking `Done` toggled an already-done set off. The test was no longer testing a blank workout path.
+
+### What Codex changed and why
+
+- `js/routines.js`: `resolveSessionForView()` now returns the resolved session metadata with the entry: `resolvedDate` and `isFallback`. Exact matches get `isFallback: false`; catch-up matches get the actual logged date and `isFallback: true`. This keeps the UI navigation date stable while carrying the storage identity forward.
+- `js/payloads.js`: workout payloads now use the resolved logged date when editing an existing log. New logs and skips still use the selected workout date. This was the smallest fix that preserves the intended catch-up viewing behavior without converting a day-pill tap into a hidden date jump.
+- `js/routines.test.js`, `js/payloads.test.js`, `e2e/day-navigation.spec.js`: added regression coverage proving fallback sessions expose the actual date and that submitting the fallback view queues `2026-05-28`, not the nominal `2026-05-25`.
+- Vault source + repo snapshot: changed W24 Hammer Curl from `22.5 lbs (10 kg) ea` to `25 lbs (11 kg) ea` with the note `+5 from 20 if last week was clean`. The vault file was edited first because it is the source of truth; the generated JSON was updated to match.
+- `scripts/audit_data.py` + `tests/test_manifest_and_audits.py`: added an executable Phase 2/PF audit for each-hand dumbbell targets, so non-5-lb PF dumbbell values such as `22.5 lbs ... ea` fail CI/local audits instead of relying on prose reminders.
+- `e2e/workout.spec.js`: changed the generic submit test to a current-window W22 Tuesday log-update fixture. Past routines intentionally hide submit, and W22 Monday is now correctly covered by the catch-up-specific regression test.
+
+### Codex validation
+
+```bash
+python3 -m pytest -q                                      # 39 passed
+npm test                                                  # 35 passed
+( cd worker && npm test )                                 # 14 passed
+python3 scripts/audit_docs.py . && python3 scripts/audit_data.py .  # pass/pass
+tmpdir=$(mktemp -d); python3 scripts/parse_routine.py ".../Weekly Plans" "$tmpdir"; diff -ru data/routines "$tmpdir"  # no diff
+npx playwright test                                       # 11 passed
+```
+
+Note: Playwright initially failed before app code ran because the Mac was over its process limit. The culprit was hundreds of stale `@upstash/context7-mcp` helper processes. Codex killed only those stale MCP helpers, reran Playwright, and got a clean 11/11 browser pass.
+
+---
+
 ## Context
 
 Started from a "why are these `data/*.json` staged but uncommitted / what happened last night" question, then expanded into: validate the `30eb345` Hardening pass, reconcile docs, deploy the Worker, program two weeks of training, and fix two reported app bugs.
@@ -44,14 +78,14 @@ The staged `analytics.json` / `profile.json` were **not** last-night leftovers. 
 
 ## What to scrutinize hardest
 
-1. **`resolveSessionForView` edge cases** (`js/routines.js`; tested in `js/routines.test.js`). Specifically the accepted trade-off: when you *view* a catch-up, `workoutDate` stays the navigation date, so an **edit+resubmit writes under that date** — could create a second `date|day|type` entry rather than update the original. I prioritized viewing; flag if edit-date should follow the shown session instead.
+1. **`resolveSessionForView` edge cases** (`js/routines.js`; tested in `js/routines.test.js`). Codex fixed the original accepted trade-off: catch-up views now keep `workoutDate` as the navigation date but submit edits under the resolved logged date.
 2. **W23/W24 training content** (`Weekly Plans` MD + `data/routines/*.json`). Weights/progressions are coaching judgment from `analytics.json` + the "+5 lb when top of rep range across all sets" rule (e.g. squat 95→105, leg press 240/250, lat pulldown 95→100, shoulder press hold 35). Sanity-check for safety + that they match the vault MD.
 3. **W20 `6→9`** matches the vault volume note.
 4. **Treatment-calendar edits** reflect the real plan (Jun 26 Halo+BBL; no Jun 5).
 
 ## Caveats (honest)
 
-- **e2e not run green this session:** chromium wouldn't launch (`EAGAIN` from process exhaustion). `e2e/day-navigation.spec.js` exists and the Bug-2 logic is covered by the new **unit tests (34 pass)**. Run `npx playwright test e2e/day-navigation.spec.js` on an idle machine to confirm the browser flow.
+- **Superseded by Codex follow-up:** e2e now runs green after clearing stale `@upstash/context7-mcp` helper processes; `npx playwright test` passes 11/11.
 - **First Bug-2 fix (`15e96ad`, nominal-date) was insufficient** — review HEAD, not that commit in isolation.
 
 ## Validate

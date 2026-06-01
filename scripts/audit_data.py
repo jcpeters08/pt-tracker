@@ -8,9 +8,12 @@ and a non-null image, plus a few cheap JSON/schema consistency checks.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from datetime import date, timedelta
 from pathlib import Path
+
+PF_DUMBBELL_LBS = set(range(5, 85, 5))
 
 
 def _load_json(path: Path, findings: list[str]) -> dict | None:
@@ -58,6 +61,32 @@ def _iso_date(value: str | None) -> date | None:
         return None
 
 
+def _is_phase2_routine(routine: dict) -> bool:
+    return str(routine.get("phase") or "") == "2" or "Phase-2" in str(routine.get("id") or "")
+
+
+def _lbs_from_raw(raw: str) -> float | None:
+    match = re.search(r"(\d+(?:\.\d+)?)\s*lbs?", raw.lower())
+    return float(match.group(1)) if match else None
+
+
+def _audit_pf_dumbbell_targets(path: Path, routine: dict, repo_root: Path, findings: list[str]) -> None:
+    if not _is_phase2_routine(routine):
+        return
+    for day_name, day in (routine.get("days") or {}).items():
+        for ex in day.get("exercises") or []:
+            raw = str(ex.get("target_weight_raw") or "")
+            if "ea" not in raw.lower():
+                continue
+            lbs = _lbs_from_raw(raw)
+            if lbs is None or lbs in PF_DUMBBELL_LBS:
+                continue
+            findings.append(
+                f"{path.relative_to(repo_root)}: PF dumbbell target {raw!r} "
+                f"for {day_name}/{ex.get('exercise_id')} is not a real 5-lb dumbbell increment"
+            )
+
+
 def audit_repo(repo_root: Path) -> list[str]:
     findings: list[str] = []
     data_dir = repo_root / "data"
@@ -75,6 +104,7 @@ def audit_repo(repo_root: Path) -> list[str]:
                 findings.append(f"{path.relative_to(repo_root)}: id {obj['id']!r} does not match filename {path.stem!r}")
             if subdir == "routines":
                 routines.append((path, obj))
+                _audit_pf_dumbbell_targets(path, obj, repo_root, findings)
                 referenced |= _exercise_refs_from_routine(obj)
             elif subdir == "logs":
                 referenced |= _exercise_refs_from_log(obj)

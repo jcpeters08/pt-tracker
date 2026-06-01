@@ -3,9 +3,17 @@
 // so the exact shape written to data/pending.json is unit-testable.
 import { isoNow, localDateIso, dayTypeKey } from "./util.js";
 
+function workoutPayloadDate(state) {
+  if (state.activeSession?.kind === "log") {
+    return state.activeSession.resolvedDate || state.activeSession.session?.date || state.workoutDate || localDateIso();
+  }
+  return state.workoutDate || localDateIso();
+}
+
 // Workout log payload. Only sets explicitly marked Done count as real work.
 export function buildSessionPayload(state, now = isoNow()) {
   const day = state.routine?.days?.[state.selectedDay];
+  const sessionDate = workoutPayloadDate(state);
   const muscleSet = new Set();
   const exercises = [];
   for (const planEx of (day?.exercises || [])) {
@@ -24,7 +32,9 @@ export function buildSessionPayload(state, now = isoNow()) {
       notes: log.notes || "",
     });
   }
-  const cdLog = state.cooldownLog?.[`${state.workoutDate || ""}|${state.selectedDay || ""}`];
+  const selectedCooldownKey = `${state.workoutDate || ""}|${state.selectedDay || ""}`;
+  const resolvedCooldownKey = `${sessionDate}|${state.selectedDay || ""}`;
+  const cdLog = state.cooldownLog?.[selectedCooldownKey] || state.cooldownLog?.[resolvedCooldownKey];
   const cooldown = (cdLog && cdLog.completed_at) ? {
     type: cdLog.type,
     source_key: cdLog.source_key || null,
@@ -35,7 +45,7 @@ export function buildSessionPayload(state, now = isoNow()) {
     type: "log",
     submitted_at: now,
     session: {
-      date: state.workoutDate || localDateIso(),
+      date: sessionDate,
       submitted_at: now,
       day_of_week: state.selectedDay,
       type: dayTypeKey(state.routine?.days?.[state.selectedDay]?.label, state.selectedDay),

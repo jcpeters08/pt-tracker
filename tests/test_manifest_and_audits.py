@@ -122,6 +122,28 @@ class TestDataAudit(unittest.TestCase):
             self.assertIn("bad.json", joined)
             self.assertIn("cooldowns", joined)
 
+    def test_phase2_each_hand_dumbbell_targets_must_match_pf_inventory(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_json(root / "data/routines/2026-W24-Phase-2.json", {
+                "id": "2026-W24-Phase-2",
+                "phase": "2",
+                "days": {"tuesday": {"exercises": [{
+                    "exercise_id": "hammer-curl",
+                    "target_weight_raw": "22.5 lbs (10 kg) ea",
+                    "target_weight_kg": 10,
+                }]}},
+            })
+            _write_json(root / "data/exercises/hammer-curl.json", {
+                "id": "hammer-curl",
+                "image_url": "https://example.com/image.jpg",
+                "image_source": "test",
+                "image_match": "test",
+            })
+            _write_json(root / "data/cooldowns.json", {"library": {}})
+            findings = audit_data.audit_repo(root)
+            self.assertTrue(any("PF dumbbell target" in f and "22.5 lbs" in f for f in findings))
+
 
 class TestDocAudit(unittest.TestCase):
     def test_doc_audit_flags_known_stale_phrases(self):

@@ -9,17 +9,16 @@ test("logging a workout queues a correct log payload", async ({ page, context })
   page.on("dialog", d => d.accept()); // accept any submit confirm
   await signIn(page, context, { onPendingAppend: (entry) => { appended = entry; } });
 
-  // Deterministic: W22 Monday (a real Push day with exercises).
-  await page.fill("#workout-date", "2026-05-25");
+  // Deterministic: W22 Tuesday is a real Pull day in the current routine window.
+  await page.fill("#workout-date", "2026-05-26");
   await page.dispatchEvent("#workout-date", "change");
-  await page.locator("#day-toggle .day-pill:not(.rest)").first().click();
+  await page.locator("#day-toggle .day-pill").nth(1).dispatchEvent("click");
 
   const card = page.locator(".ex-card").first();
   await expect(card).toBeVisible();
   const set0 = card.locator(".set-row[data-set='0']");
   await set0.locator("input[data-field='weight']").fill("20");
   await set0.locator("input[data-field='reps']").fill("10");
-  await set0.locator("button[data-action='done']").click();
   await expect(set0).toHaveClass(/done/);
 
   await page.click("#submit-btn");
@@ -28,7 +27,7 @@ test("logging a workout queues a correct log payload", async ({ page, context })
   const logEntry = appended;
   expect(logEntry, "a log entry was queued").toBeTruthy();
   expect(logEntry.type).toBe("log");
-  expect(logEntry.session.date).toBe("2026-05-25");
+  expect(logEntry.session.date).toBe("2026-05-26");
   expect(logEntry.session.exercises.length).toBeGreaterThan(0);
   const ex = logEntry.session.exercises[0];
   expect(ex.sets.length).toBeGreaterThan(0);

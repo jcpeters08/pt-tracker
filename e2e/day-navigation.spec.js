@@ -28,6 +28,22 @@ test("Bug 2: tapping a prior day shows the actual logged session — even a catc
   await expect(page.locator(".ex-card .set-row.done").first()).toBeVisible();
 });
 
+test("Bug 2 regression: submitting a catch-up view preserves the actual logged date", async ({ page, context }) => {
+  let appended = null;
+  await signIn(page, context, { onPendingAppend: (entry) => { appended = entry; } });
+  await page.fill("#workout-date", "2026-05-27");
+  await page.dispatchEvent("#workout-date", "change");
+
+  await page.locator("#day-toggle .day-pill").nth(0).click();   // Monday catch-up logged on Thu 5/28
+  await expect(page.locator(".ex-card .set-row.done").first()).toBeVisible();
+  await page.click("#submit-btn");
+
+  await expect.poll(() => appended, { timeout: 10_000 }).not.toBeNull();
+  expect(appended.session.date).toBe("2026-05-28");
+  expect(appended.session.day_of_week).toBe("monday");
+  expect(appended.session.type).toBe("push");
+});
+
 test("Bug 1 (regression): switching routine via the pill and back keeps in-progress edits", async ({ page, context }) => {
   page.on("dialog", d => d.accept());
   await signIn(page, context);

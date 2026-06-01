@@ -60,7 +60,7 @@ describe("resolveSessionForView (tapping a day shows the actual logged session)"
       ["2026-05-28|monday|push", { kind: "log", id: "catchup" }],
     ]);
     expect(resolveSessionForView(lookup, { date: "2026-05-25", day: "monday", type: "push", ...wk }))
-      .toMatchObject({ id: "exact" });
+      .toMatchObject({ id: "exact", resolvedDate: "2026-05-25", isFallback: false });
   });
 
   it("falls back to a catch-up: a day's workout performed on a DIFFERENT date in the week", () => {
@@ -68,7 +68,7 @@ describe("resolveSessionForView (tapping a day shows the actual logged session)"
     // from another day in the week must still surface the real session.
     const lookup = new Map([["2026-05-28|monday|push", { kind: "log", id: "catchup" }]]);
     expect(resolveSessionForView(lookup, { date: "2026-05-27", day: "monday", type: "push", ...wk }))
-      .toMatchObject({ id: "catchup" });
+      .toMatchObject({ id: "catchup", resolvedDate: "2026-05-28", isFallback: true });
   });
 
   it("prefers the latest matching date when several exist", () => {

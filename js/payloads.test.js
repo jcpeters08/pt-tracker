@@ -42,6 +42,15 @@ describe("buildSessionPayload", () => {
     const state = baseState({ log: { "flat-db-bench-press": { sets: [{ done: false, weight_kg: 16, reps: 10 }] } } });
     expect(buildSessionPayload(state, NOW).session.exercises).toEqual([]);
   });
+
+  it("uses the resolved logged date when editing a catch-up session", () => {
+    const state = baseState({
+      workoutDate: "2026-05-25",
+      activeSession: { kind: "log", resolvedDate: "2026-05-28", isFallback: true },
+      log: { "flat-db-bench-press": { notes: "", sets: [{ done: true, weight_kg: 18, reps: 10 }] } },
+    });
+    expect(buildSessionPayload(state, NOW).session.date).toBe("2026-05-28");
+  });
 });
 
 describe("buildSkipPayload", () => {
