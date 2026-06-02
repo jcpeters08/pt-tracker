@@ -1118,6 +1118,7 @@ async function selectRoutine(id) {
   // so refreshActiveSession re-hydrates state.log from the new routine's
   // targets instead of returning the prior routine's per-set values.
   state.hydratedKeys.clear();
+  state.workoutHydrationKey = null;
   state.log = {};
   renderApp();
 }
@@ -1309,6 +1310,7 @@ function renderDraftBanner() {
     $("#session-notes-input").value = state.sessionNotes;
     if (state.cooldownLog) delete state.cooldownLog[`${state.workoutDate}|${state.selectedDay}`];
     state.hydratedKeys.delete(`${state.workoutDate}|${state.selectedDay}|${dayTypeKey(state.routine?.days?.[state.selectedDay]?.label, state.selectedDay)}`);
+    state.workoutHydrationKey = null;
     renderApp();
     toast("Draft discarded.", "ok");
   });
@@ -1345,10 +1347,11 @@ function refreshActiveSession() {
     weekStart: state.routine.start_date,
     weekEnd: wkEnd,
   });
-  // When the (date|day|type) view changes, the in-progress log state from a
-  // different view becomes meaningless. Reset state.log so ensureLogState
-  // freshly hydrates from the active session (or routine targets).
-  if (!state.hydratedKeys.has(key)) {
+  // Re-hydrate whenever state.log belongs to a different view. The older
+  // hydratedKeys set is retained for discard/reset bookkeeping, but it cannot
+  // be the gate here: state.log is a single in-memory slot, so returning to a
+  // previously visited day must load that day's draft again.
+  if (state.workoutHydrationKey !== key) {
     state.log = {};
     state.sessionNotes = state.activeSession?.session?.session_notes || "";
     const notesInput = $("#session-notes-input");
@@ -1384,6 +1387,7 @@ function refreshActiveSession() {
       }
     }
     state.hydratedKeys.add(key);
+    state.workoutHydrationKey = key;
   }
 }
 
@@ -1644,6 +1648,7 @@ async function submitSkip() {
     state.log = {}; state.sessionNotes = "";
     state.cooldownLog = {};
     state.hydratedKeys = new Set();
+    state.workoutHydrationKey = null;
     $("#session-notes-input").value = "";
     setTimeout(() => { btn.disabled = false; renderApp(); }, 1500);
   } catch (e) {
@@ -1697,6 +1702,7 @@ async function submitSession() {
     state.log = {}; state.sessionNotes = "";
     state.cooldownLog = {};
     state.hydratedKeys = new Set();
+    state.workoutHydrationKey = null;
     $("#session-notes-input").value = "";
     setTimeout(() => { btn.disabled = false; btn.textContent = "Submit session"; renderApp(); }, 1800);
   } catch (e) {
@@ -1937,6 +1943,7 @@ document.addEventListener("DOMContentLoaded", () => {
     state.workoutDate = v;
     state.log = {};
     state.hydratedKeys = new Set();   // every cached hydration is keyed on date; clear all
+    state.workoutHydrationKey = null;
     // Sync the recovery date input to follow the workout date. Without this, the
     // recovery panel's date stays stuck on whatever it was first initialized to
     // (today, in practice), so its "✓ Logged" pill keeps reflecting that earlier

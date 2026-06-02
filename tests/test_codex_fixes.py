@@ -113,6 +113,23 @@ class TestRoutineStartDate(unittest.TestCase):
         routine = pr.parse_routine_md(ROUTINE_FM_WINS, routine_id="2026-W18-Whatever")
         self.assertEqual(routine["start_date"], "2026-06-01")
 
+    def test_lbs_primary_weight_uses_authored_pounds_not_rounded_kg_parenthetical(self):
+        routine = pr.parse_routine_md("""---
+phase: 2
+---
+# Plan
+
+## Mon 6/8 — Push
+
+| # | Exercise | Working Weight | Reps | Sets | Notes |
+|---|----------|----------------|------|------|-------|
+| 1 | Rope Tricep Pushdown (Cable) | 25 lbs (11 kg) | 12 | 3 | x |
+| 2 | Flat DB Bench Press | 16 kg (35 lbs) ea | 10 | 3 | y |
+""", routine_id="2026-W24-Phase-2-Week-5-Progression")
+        exercises = routine["days"]["monday"]["exercises"]
+        self.assertAlmostEqual(exercises[0]["target_weight_kg"], 11.34)
+        self.assertEqual(exercises[1]["target_weight_kg"], 16.0)
+
 
 class TestLogBlockHeadings(unittest.TestCase):
     def setUp(self):

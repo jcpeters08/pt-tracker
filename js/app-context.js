@@ -36,6 +36,7 @@ export const state = {
   // Track which (date|day|type) keys we've already hydrated into state.log so
   // a re-render doesn't clobber the user's in-progress edits.
   hydratedKeys: new Set(),
+  workoutHydrationKey: null, // the (date|day|type) currently loaded into state.log
   pastLogsByDay: null,  // day_of_week → log JSON, populated when viewing a past routine
 };
 

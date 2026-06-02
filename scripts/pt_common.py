@@ -342,8 +342,8 @@ def parse_table_rows(lines: list[str], header_idx: int, end_idx: int) -> list[di
 
 def parse_weight(cell: str) -> tuple[float | None, str]:
     """Return (kg, raw). Handles 'bodyweight', '16 kg (35 lbs) ea', '40 kg',
-    '5 kg/arm', 'BW or 40 kg'. Always normalizes to kg (the primary unit in
-    the vault). If only lbs is given, converts."""
+    '5 kg/arm', 'BW or 40 kg'. Always normalizes the first authored unit to kg;
+    parenthetical secondary units may be rounded display text."""
     raw = cell.strip()
     if not raw:
         return None, raw
@@ -354,12 +354,13 @@ def parse_weight(cell: str) -> tuple[float | None, str]:
             if m:
                 return float(m.group(1)), raw
         return 0.0, raw
-    m = re.search(r"(\d+(?:\.\d+)?)\s*kg", low)
+    m = re.search(r"(\d+(?:\.\d+)?)\s*(kg|lbs?)\b", low)
     if m:
-        return float(m.group(1)), raw
-    m = re.search(r"(\d+(?:\.\d+)?)\s*lbs?", low)
-    if m:
-        return round(float(m.group(1)) * 0.4536, 2), raw
+        amount = float(m.group(1))
+        unit = m.group(2)
+        if unit == "kg":
+            return amount, raw
+        return round(amount * 0.4536, 2), raw
     m = re.search(r"(\d+(?:\.\d+)?)", raw)
     if m:
         return float(m.group(1)), raw

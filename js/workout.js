@@ -48,12 +48,14 @@ export function renderDayToggle() {
     lab.textContent = hasExercises ? dayLabel(key) : "—";
     btn.append(lab);
     btn.addEventListener("click", () => {
+      if (key === state.selectedDay) return;
       state.selectedDay = key;
       // Clear in-progress edits so cards re-hydrate for the newly-selected day.
       // refreshActiveSession resolves the session by exact date, then falls back
       // to the day-of-week's log within the routine week — so a workout you did
       // on a different date (a catch-up) still shows up when you tap that day.
       state.log = {};
+      state.workoutHydrationKey = null;
       hooks.renderApp();
     });
     host.appendChild(btn);
@@ -207,6 +209,17 @@ function displayWeight(kg) {
   return fmtNum(kg, 1);
 }
 
+function primaryAuthoredLbs(raw) {
+  const m = String(raw || "").trim().match(/^(\d+(?:\.\d+)?)\s*lbs?\b/i);
+  return m ? Number(m[1]) : null;
+}
+
+function targetWeightForSetDefaults(ex) {
+  if (ex?.target_weight_kg == null || ex.target_weight_kg === 0) return ex?.target_weight_kg ?? null;
+  const lbs = primaryAuthoredLbs(ex.target_weight_raw);
+  return lbs == null ? ex.target_weight_kg : roundTo(lbsToKg(lbs), 2);
+}
+
 // Convert an input value (in the user's pref unit) → kg for storage.
 function inputToKg(val) {
   if (val === "" || val == null) return null;
@@ -282,7 +295,7 @@ export function ensureLogState(exId, targetWeight, targetReps, targetSets) {
 
 export function renderExerciseCard(exDef, ex) {
   const meta = state.exercises[ex.exercise_id] || {};
-  const log = ensureLogState(ex.exercise_id, ex.target_weight_kg, ex.target_reps, ex.target_sets);
+  const log = ensureLogState(ex.exercise_id, targetWeightForSetDefaults(ex), ex.target_reps, ex.target_sets);
   const muscles = [meta.primary_muscle, ...(meta.secondary_muscles || [])].filter(Boolean).join(" · ");
   const targetText = formatTargetText(ex);
   const unitLabel = state.unitPref;

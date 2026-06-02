@@ -69,3 +69,53 @@ test("Bug 1 (regression): switching routine via the pill and back keeps in-progr
   // The in-progress edit must survive the routine round-trip.
   await expect(weight()).toHaveValue("137");
 });
+
+test("Bug 1 regression: switching workout days and back keeps in-progress Done sets", async ({ page, context }) => {
+  await signIn(page, context);
+  await page.fill("#workout-date", "2026-06-08");
+  await page.dispatchEvent("#workout-date", "change");
+
+  await page.locator("#day-toggle .day-pill").nth(0).click();   // Monday Push
+  const firstCard = page.locator(".ex-card").first();
+  const firstSet = firstCard.locator(".set-row[data-set='0']");
+  await expect(firstSet.locator("input[data-field='weight']")).toHaveValue("40");
+  await firstSet.locator("input[data-field='reps']").fill("12");
+  await firstSet.locator("input[data-field='reps']").dispatchEvent("input");
+  await firstSet.locator("[data-action='done']").click();
+  await expect(firstSet).toHaveClass(/done/);
+
+  await page.locator("#day-toggle .day-pill").nth(1).click();   // Tuesday Pull
+  await expect(page.locator(".ex-card").first().locator("h3")).toContainText("Lat Pulldown");
+  await page.locator("#day-toggle .day-pill").nth(0).click();   // back to Monday Push
+
+  const restoredSet = page.locator(".ex-card").first().locator(".set-row[data-set='0']");
+  await expect(restoredSet.locator("input[data-field='weight']")).toHaveValue("40");
+  await expect(restoredSet.locator("input[data-field='reps']")).toHaveValue("12");
+  await expect(restoredSet).toHaveClass(/done/);
+});
+
+test("PF target defaults use authored pounds for set inputs and pending payloads", async ({ page, context }) => {
+  let appended = null;
+  await context.route(/\/data\/pending\.json/, route => {
+    return route.fulfill({ json: { entries: [] } });
+  });
+  await signIn(page, context, { onPendingAppend: (entry) => { appended = entry; } });
+  await page.fill("#workout-date", "2026-06-01");
+  await page.dispatchEvent("#workout-date", "change");
+  await page.locator("#day-toggle .day-pill").nth(0).click();   // Monday Push
+
+  const tricepsCard = page.locator(".ex-card").filter({
+    has: page.locator("h3", { hasText: "Rope Tricep Pushdown" }),
+  });
+  const tricepsWeights = tricepsCard.locator("input[data-field='weight']");
+  await expect(tricepsWeights.nth(0)).toHaveValue("25");
+  await expect(tricepsWeights.nth(1)).toHaveValue("25");
+  await expect(tricepsWeights.nth(2)).toHaveValue("25");
+
+  await tricepsCard.locator(".set-row[data-set='0'] [data-action='done']").click();
+  await page.click("#submit-btn");
+
+  await expect.poll(() => appended, { timeout: 10_000 }).not.toBeNull();
+  const triceps = appended.session.exercises.find(e => e.exercise_id === "rope-tricep-pushdown");
+  expect(triceps.sets[0].weight_kg).toBeCloseTo(11.34, 2);
+});

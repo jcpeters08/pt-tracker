@@ -39,6 +39,8 @@ The web app reads `data/manifest.json` and same-origin JSON snapshots from GitHu
    ```
 3. The web app picks up the new routine on next load through `data/manifest.json`. The latest routine by `start_date` becomes the default; you can switch via the routine pill in the header.
 
+> **Dual-unit weights — the first unit wins.** In a Working-Weight cell the first authored unit is canonical (stored as `target_weight_kg`); the parenthetical is rounded display text. `25 lbs (11 kg)` means 25 lb is intended (stored `11.34 kg`); `16 kg (35 lbs) ea` means 16 kg is intended. For Planet Fitness, lead with the real PF pounds so set inputs seed a valid weight.
+
 ## How to add a new exercise
 
 1. Create `data/exercises/<id>.json` (see existing files for shape). Populate `image_url` (required — non-null) and `video_url` with verified URLs in the same commit, plus `image_source`/`image_match`.
@@ -126,6 +128,7 @@ Allowlist: `jcpeters08@gmail.com`. Update `ALLOWED_EMAILS` in `worker/wrangler.t
 - **Pages deploy stuck** — check the **Actions** tab on GitHub. The deploy workflow is in `.github/workflows/deploy.yml`.
 - **Re-submitting a session** — a `log`/`skip`/`recovery` resubmit OVERWRITES the existing vault MD by design (correction/edit workflow); you no longer need to delete the MD to re-sync. The `Log.md` index line is appended only on the first write.
 - **Unknown exercise in sync output** — add an entry to `EXERCISE_ALIASES` in `scripts/pt_common.py` and re-run sync.
+- **Set inputs show an impossible PF weight (e.g. `24 lbs`)** — fixed: set inputs now seed from the authored pounds in the routine's Working-Weight cell, so `25 lbs (11 kg)` seeds `25` (and submits `11.34 kg`), not `24` from the rounded `11 kg`. If you still see an odd value, confirm the cell's **first** unit is the one you intend (the first unit is authoritative — see *How to add a new routine*), then run `python3 scripts/audit_data.py .`.
 
 ## Validation
 
