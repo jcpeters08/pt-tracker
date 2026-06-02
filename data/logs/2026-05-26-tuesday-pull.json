@@ -24,17 +24,17 @@
       "sets": [
         {
           "set": 1,
-          "weight_kg": 41.0,
+          "weight_kg": 40.82,
           "reps": 10
         },
         {
           "set": 2,
-          "weight_kg": 41.0,
+          "weight_kg": 40.82,
           "reps": 10
         },
         {
           "set": 3,
-          "weight_kg": 41.0,
+          "weight_kg": 40.82,
           "reps": 10
         }
       ],
@@ -47,17 +47,17 @@
       "sets": [
         {
           "set": 1,
-          "weight_kg": 25.0,
+          "weight_kg": 24.95,
           "reps": 20
         },
         {
           "set": 2,
-          "weight_kg": 25.0,
+          "weight_kg": 24.95,
           "reps": 20
         },
         {
           "set": 3,
-          "weight_kg": 25.0,
+          "weight_kg": 24.95,
           "reps": 12
         }
       ],
@@ -70,17 +70,17 @@
       "sets": [
         {
           "set": 1,
-          "weight_kg": 18.0,
+          "weight_kg": 18.14,
           "reps": 12
         },
         {
           "set": 2,
-          "weight_kg": 18.0,
+          "weight_kg": 18.14,
           "reps": 12
         },
         {
           "set": 3,
-          "weight_kg": 18.0,
+          "weight_kg": 18.14,
           "reps": 15
         }
       ],
@@ -93,17 +93,17 @@
       "sets": [
         {
           "set": 1,
-          "weight_kg": 15.9,
+          "weight_kg": 15.88,
           "reps": 15
         },
         {
           "set": 2,
-          "weight_kg": 15.9,
+          "weight_kg": 15.88,
           "reps": 15
         },
         {
           "set": 3,
-          "weight_kg": 15.9,
+          "weight_kg": 15.88,
           "reps": 15
         }
       ],
@@ -116,17 +116,17 @@
       "sets": [
         {
           "set": 1,
-          "weight_kg": 4.5,
+          "weight_kg": 4.54,
           "reps": 15
         },
         {
           "set": 2,
-          "weight_kg": 4.5,
+          "weight_kg": 4.54,
           "reps": 15
         },
         {
           "set": 3,
-          "weight_kg": 4.5,
+          "weight_kg": 4.54,
           "reps": 15
         }
       ],
@@ -139,17 +139,17 @@
       "sets": [
         {
           "set": 1,
-          "weight_kg": 22.5,
+          "weight_kg": 22.68,
           "reps": 10
         },
         {
           "set": 2,
-          "weight_kg": 22.5,
+          "weight_kg": 22.68,
           "reps": 10
         },
         {
           "set": 3,
-          "weight_kg": 22.5,
+          "weight_kg": 22.68,
           "reps": 6
         }
       ],
@@ -162,12 +162,12 @@
       "sets": [
         {
           "set": 1,
-          "weight_kg": 9.0,
+          "weight_kg": 9.07,
           "reps": 10
         },
         {
           "set": 2,
-          "weight_kg": 9.0,
+          "weight_kg": 9.07,
           "reps": 7
         }
       ],
@@ -180,17 +180,17 @@
       "sets": [
         {
           "set": 1,
-          "weight_kg": 18.0,
+          "weight_kg": 18.14,
           "reps": 30
         },
         {
           "set": 2,
-          "weight_kg": 18.0,
+          "weight_kg": 18.14,
           "reps": 30
         },
         {
           "set": 3,
-          "weight_kg": 18.0,
+          "weight_kg": 18.14,
           "reps": 30
         }
       ],
