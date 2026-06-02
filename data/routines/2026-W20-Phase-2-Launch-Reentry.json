@@ -13,7 +13,7 @@
       "exercises": [
         {
           "exercise_id": "flat-db-bench-press",
-          "target_weight_kg": 14.0,
+          "target_weight_kg": 13.61,
           "target_weight_raw": "30 lbs (14 kg) ea",
           "target_reps": 12,
           "target_sets": 3,
@@ -21,7 +21,7 @@
         },
         {
           "exercise_id": "incline-db-bench-press",
-          "target_weight_kg": 9.0,
+          "target_weight_kg": 9.07,
           "target_weight_raw": "20 lbs (9 kg) ea",
           "target_reps": 12,
           "target_sets": 3,
@@ -29,7 +29,7 @@
         },
         {
           "exercise_id": "cable-chest-fly",
-          "target_weight_kg": 9.0,
+          "target_weight_kg": 9.07,
           "target_weight_raw": "20 lbs/arm (9 kg)",
           "target_reps": 12,
           "target_sets": 3,
@@ -37,7 +37,7 @@
         },
         {
           "exercise_id": "seated-db-shoulder-press",
-          "target_weight_kg": 9.0,
+          "target_weight_kg": 9.07,
           "target_weight_raw": "20 lbs (9 kg) ea",
           "target_reps": 12,
           "target_sets": 3,
@@ -45,7 +45,7 @@
         },
         {
           "exercise_id": "db-lateral-raise",
-          "target_weight_kg": 4.5,
+          "target_weight_kg": 4.54,
           "target_weight_raw": "10 lbs (4.5 kg) ea",
           "target_reps": 15,
           "target_sets": 3,
@@ -53,7 +53,7 @@
         },
         {
           "exercise_id": "rope-tricep-pushdown",
-          "target_weight_kg": 14.0,
+          "target_weight_kg": 13.61,
           "target_weight_raw": "30 lbs (14 kg)",
           "target_reps": 12,
           "target_sets": 3,
@@ -61,7 +61,7 @@
         },
         {
           "exercise_id": "overhead-db-tricep-extension",
-          "target_weight_kg": 11.0,
+          "target_weight_kg": 11.34,
           "target_weight_raw": "25 lbs (11 kg)",
           "target_reps": 12,
           "target_sets": 3,
@@ -82,7 +82,7 @@
       "exercises": [
         {
           "exercise_id": "lat-pulldown",
-          "target_weight_kg": 41.0,
+          "target_weight_kg": 40.82,
           "target_weight_raw": "90 lbs (41 kg)",
           "target_reps": 12,
           "target_sets": 3,
@@ -90,7 +90,7 @@
         },
         {
           "exercise_id": "seated-cable-row",
-          "target_weight_kg": 25.0,
+          "target_weight_kg": 24.95,
           "target_weight_raw": "55 lbs (25 kg)",
           "target_reps": 12,
           "target_sets": 3,
@@ -98,7 +98,7 @@
         },
         {
           "exercise_id": "dual-rope-straight-arm-pulldown",
-          "target_weight_kg": 9.0,
+          "target_weight_kg": 9.07,
           "target_weight_raw": "20 lbs/arm (9 kg)",
           "target_reps": 12,
           "target_sets": 3,
@@ -106,7 +106,7 @@
         },
         {
           "exercise_id": "cable-face-pull",
-          "target_weight_kg": 9.0,
+          "target_weight_kg": 9.07,
           "target_weight_raw": "20 lbs (9 kg)",
           "target_reps": 15,
           "target_sets": 3,
@@ -114,7 +114,7 @@
         },
         {
           "exercise_id": "db-reverse-fly",
-          "target_weight_kg": 4.5,
+          "target_weight_kg": 4.54,
           "target_weight_raw": "10 lbs (4.5 kg) ea",
           "target_reps": 15,
           "target_sets": 3,
@@ -122,7 +122,7 @@
         },
         {
           "exercise_id": "barbell-curl",
-          "target_weight_kg": 22.5,
+          "target_weight_kg": 22.68,
           "target_weight_raw": "50 lbs (22.5 kg)",
           "target_reps": 10,
           "target_sets": 3,
@@ -130,7 +130,7 @@
         },
         {
           "exercise_id": "hammer-curl",
-          "target_weight_kg": 9.0,
+          "target_weight_kg": 9.07,
           "target_weight_raw": "20 lbs (9 kg) ea",
           "target_reps": 12,
           "target_sets": 3,
@@ -145,7 +145,7 @@
       "exercises": [
         {
           "exercise_id": "barbell-back-squat",
-          "target_weight_kg": 43.0,
+          "target_weight_kg": 43.09,
           "target_weight_raw": "95 lbs (43 kg, bar + 25/side)",
           "target_reps": 10,
           "target_sets": 3,
@@ -153,7 +153,7 @@
         },
         {
           "exercise_id": "leg-press",
-          "target_weight_kg": 100.0,
+          "target_weight_kg": 99.79,
           "target_weight_raw": "220 lbs (100 kg)",
           "target_reps": 15,
           "target_sets": 3,
@@ -161,7 +161,7 @@
         },
         {
           "exercise_id": "barbell-rdl",
-          "target_weight_kg": 43.0,
+          "target_weight_kg": 43.09,
           "target_weight_raw": "95 lbs (43 kg)",
           "target_reps": 10,
           "target_sets": 3,
@@ -169,7 +169,7 @@
         },
         {
           "exercise_id": "seated-leg-curl",
-          "target_weight_kg": 25.0,
+          "target_weight_kg": 24.95,
           "target_weight_raw": "55 lbs (25 kg)",
           "target_reps": 15,
           "target_sets": 3,
@@ -177,7 +177,7 @@
         },
         {
           "exercise_id": "barbell-hip-thrust",
-          "target_weight_kg": 43.0,
+          "target_weight_kg": 43.09,
           "target_weight_raw": "95 lbs (43 kg)",
           "target_reps": 12,
           "target_sets": 3,
@@ -185,7 +185,7 @@
         },
         {
           "exercise_id": "calf-raise",
-          "target_weight_kg": 41.0,
+          "target_weight_kg": 40.82,
           "target_weight_raw": "90 lbs (41 kg)",
           "target_reps": 15,
           "target_sets": 3,
@@ -200,7 +200,7 @@
       "exercises": [
         {
           "exercise_id": "seated-db-shoulder-press",
-          "target_weight_kg": 9.0,
+          "target_weight_kg": 9.07,
           "target_weight_raw": "20 lbs (9 kg) ea",
           "target_reps": 12,
           "target_sets": 3,
@@ -208,7 +208,7 @@
         },
         {
           "exercise_id": "db-lateral-raise",
-          "target_weight_kg": 4.5,
+          "target_weight_kg": 4.54,
           "target_weight_raw": "10 lbs (4.5 kg) ea",
           "target_reps": 15,
           "target_sets": 3,
@@ -216,7 +216,7 @@
         },
         {
           "exercise_id": "cable-face-pull",
-          "target_weight_kg": 9.0,
+          "target_weight_kg": 9.07,
           "target_weight_raw": "20 lbs (9 kg)",
           "target_reps": 15,
           "target_sets": 3,
@@ -224,7 +224,7 @@
         },
         {
           "exercise_id": "single-arm-db-row",
-          "target_weight_kg": 14.0,
+          "target_weight_kg": 13.61,
           "target_weight_raw": "30 lbs (14 kg) ea",
           "target_reps": 12,
           "target_sets": 3,
@@ -232,7 +232,7 @@
         },
         {
           "exercise_id": "db-curl",
-          "target_weight_kg": 9.0,
+          "target_weight_kg": 9.07,
           "target_weight_raw": "20 lbs (9 kg) ea",
           "target_reps": 10,
           "target_sets": 3,
@@ -240,7 +240,7 @@
         },
         {
           "exercise_id": "db-skullcrusher",
-          "target_weight_kg": 9.0,
+          "target_weight_kg": 9.07,
           "target_weight_raw": "20 lbs (9 kg)",
           "target_reps": 12,
           "target_sets": 3,
@@ -248,7 +248,7 @@
         },
         {
           "exercise_id": "single-leg-calf-raise",
-          "target_weight_kg": 9.0,
+          "target_weight_kg": 9.07,
           "target_weight_raw": "20 lbs (9 kg)",
           "target_reps": 15,
           "target_sets": 3,
