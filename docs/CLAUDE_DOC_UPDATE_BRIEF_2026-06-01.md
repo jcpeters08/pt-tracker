@@ -2,7 +2,16 @@
 
 Use this file as a handoff brief for updating the durable PT Tracker documentation after the 2026-06-01 bug-fix session. This is not intended to become the permanent source of truth; once the durable docs are updated, this file can either remain as an audit note or be removed in the same documentation commit.
 
-> **Status — applied 2026-06-01 (Claude session).** Both fixes independently re-validated: vitest 44/44, Python unittest 41/41, parser regression red→green (old `11.0` fails → new `11.34` passes), targeted e2e 2/2, `audit_data.py` + `audit_docs.py` pass, `data/pending.json` preserved (2 entries), no orphaned browser processes. Durable docs applied to `CLAUDE.md`, `AGENTS.md`, `README.md`, and `docs/COWORK_SYNC_TASK.md`; iOS-arch + DOC_OWNERSHIP + wrapper docs needed no change. This brief is retained as an audit note. Heads-up for the next sync: the `parse_weight` change re-derives every Phase-2 routine `target_weight_kg` from the authored lbs (~167 values, e.g. `11.0 → 11.34`) — a benign one-time convergence; a dry-run over the live vault confirmed all targets stay PF-valid and the JS already shows correct lbs in the interim.
+## Applied — Claude session, 2026-06-01 (read this first)
+
+A later Claude Code session validated these fixes, synced the durable docs, committed/pushed everything, and converged the routine data. Concrete outcomes (the rest of this brief is the original handoff, kept for reference):
+
+- **Validation (fresh, independent):** vitest 44/44; Python unittest 41/41; the parser regression proven red→green (revert `scripts/pt_common.py` to HEAD → `11.0` fails; restore → `11.34` passes); targeted e2e 2/2; `audit_data.py` + `audit_docs.py` pass; `data/pending.json` preserved (the 2 entries); no orphaned browser processes after the e2e run.
+- **Docs updated — commit `eb73c3b`:** `CLAUDE.md` + `AGENTS.md` gained a "Workout draft hydration gate — `workoutHydrationKey`, not `hydratedKeys`" gotcha, and the PF gotcha + draft convention #6 were extended with the authored-lbs set defaults and the first-unit-canonical `parse_weight` rule; `README.md` got a troubleshooting entry (impossible PF weights) + a dual-unit authoring note; `docs/COWORK_SYNC_TASK.md` got a first-unit-canonical note on the routine re-derive step. `docs/IOS_APP_ARCHITECTURE.md`, `docs/DOC_OWNERSHIP.md`, `docs/COWORK_WRAPPER_PROMPT.md` needed no change. **No vault MD change needed** — per `DOC_OWNERSHIP.md` the vault files are historical/training-status (not convention owners), and `data/profile.json` already points at the active W23 routine.
+- **Routine data converged — commit `834a20b`:** regenerated `data/routines/*.json` from the vault Weekly Plans via the *same* path the daily sync uses (`parse_routine.parse_routine_md` + `derive_end_dates`). 167 Phase-2 `target_weight_kg` values converged onto the authored lbs (e.g. `11.0 → 11.34`, `7.0 → 6.8`); **only** `target_weight_kg` lines changed; `analytics.json`/`manifest.json` unaffected; all targets stay PF-valid. So the "next-sync convergence" the original brief anticipated **already happened** — the routine JSONs now carry the new kg, and the upcoming 8:03 sync's routine re-derive is a no-op (it will only drain the 2 pending entries + recompute analytics).
+- **Follow-up spawned:** `hydratedKeys` is now write-only dead state (no `.has()` reads remain after the `workoutHydrationKey` change). A separate task was queued to remove it (declaration + all write sites) without behavior change and update the docs accordingly. Until then, **do not re-introduce `hydratedKeys` as a hydration gate** — `workoutHydrationKey` is the gate.
+
+Everything above is on `main` and pushed. This brief is retained as an audit note.
 
 ## Purpose
 
@@ -13,7 +22,7 @@ Update project documentation so future Claude/Codex sessions preserve two fixed 
 
 ## Current code status
 
-As of this brief, the bug-fix code is present in the working tree but not committed.
+As originally written, the bug-fix code was present in the working tree but not committed. **Update:** it was committed in `eb73c3b` (code + tests + docs) and the routine-data convergence in `834a20b`, both pushed to `main`. The file list below is the original snapshot.
 
 Changed files:
 
