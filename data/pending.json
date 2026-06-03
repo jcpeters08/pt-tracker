@@ -1,4 +1,164 @@
 {
   "format_note": "Append-only inbox written by the web app. Daily scheduled task drains entries[] into vault MD files at Workout Log/YYYY-MM-DD-day-type.md and into data/logs/*.json, then resets to []. Schema: {type: 'log', submitted_at: ISO8601, session: {…full log object…}}",
-  "entries": []
+  "entries": [
+    {
+      "type": "log",
+      "submitted_at": "2026-06-03T20:23:40.123Z",
+      "session": {
+        "date": "2026-06-03",
+        "submitted_at": "2026-06-03T20:23:40.123Z",
+        "day_of_week": "wednesday",
+        "type": "legs",
+        "muscle_groups": [
+          "quads",
+          "hamstrings",
+          "glutes",
+          "calves"
+        ],
+        "routine_id": "2026-W23-Phase-2-Week-4-Progression",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "barbell-back-squat",
+            "display_name": "Barbell Back Squat",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 49.9,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 49.9,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 49.9,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "leg-press",
+            "display_name": "45-Degree Incline Leg Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 108.86,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 108.86,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 108.86,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "barbell-rdl",
+            "display_name": "Barbell Romanian Deadlift",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 49.9,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 49.9,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 49.9,
+                "reps": 10
+              }
+            ],
+            "notes": "Out of breath between each"
+          },
+          {
+            "exercise_id": "seated-leg-curl",
+            "display_name": "Seated Leg Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 27.22,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 27.22,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 27.22,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-hip-thrust",
+            "display_name": "Dumbbell Hip Thrust",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 27.22,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 27.22,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 27.22,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "calf-raise",
+            "display_name": "Standing Calf Raise (Machine)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 45.36,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 45.36,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 45.36,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": {
+          "type": "library",
+          "source_key": "legs",
+          "fitnessplus_name": "",
+          "completed_at": "2026-06-03T20:01:42.349Z"
+        },
+        "session_notes": ""
+      }
+    }
+  ]
 }
