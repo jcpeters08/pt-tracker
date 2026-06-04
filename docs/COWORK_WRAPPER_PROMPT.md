@@ -15,7 +15,7 @@ VAULT PROJECT: /Users/jonathanpeters/Documents/Jonathan's Vault/🎯 Projects/�
 
 1. cd to the mounted source checkout. Do **not** run `git pull`, `git add`, `git commit`, `git push`, or lock cleanup in this mounted checkout. Cowork's sandbox mount can leave undeletable `.git/*.lock` files there. Instead, prepare a disposable Git checkout:
    `python3 scripts/cowork_git_bridge.py --prepare-only --workdir /tmp/pt-tracker-cowork-git`
-   If this fails, report stderr verbatim and abort. Do not force-push, reset, or skip.
+   The bridge auto-handles two sandbox quirks: if `/tmp/pt-tracker-cowork-git` already exists but is owned by a previous sandbox uid (unwritable here), it transparently falls back to a uid-scoped sibling; and it seeds `safe.directory` plus a local-only `user.email`/`user.name` so `git commit` works on a fresh sandbox. The bridge prints `COWORK_GIT_WORKDIR=<path>` on stdout — **use that path** for step 3, not the literal `/tmp/...` argument. If it fails, report stderr verbatim and abort. Do not force-push, reset, or skip.
 
 2. Make sure the vault is materialized locally. ~/Documents/ is iCloud Drive–synced on this Mac, so the vault folder can exist as `.icloud` placeholders that the sync script can't read. Run:
    `ls "/Users/jonathanpeters/Documents/Jonathan's Vault/🎯 Projects/🏋️ Personal Trainer/Workout Log/" 2>&1 | head -5`
@@ -28,7 +28,7 @@ VAULT PROJECT: /Users/jonathanpeters/Documents/Jonathan's Vault/🎯 Projects/�
      (a Finder visit forces iCloud to download). Wait another 30s, recheck. If it's still not materialized, abort and report.
    - **"No such file or directory"** → vault folder is missing entirely. Abort and report — do NOT create the folder, that would silently erase the source of truth. `docs/COWORK_SYNC_TASK.md` "Vault not mounted / missing" section has deeper diagnostics (iCloud sign-in check, etc.) if needed.
 
-3. cd to `/tmp/pt-tracker-cowork-git`. Read `docs/COWORK_SYNC_TASK.md` there. That file is the authoritative spec for this scheduled task. Follow its steps verbatim, including its failure-recovery and hard-limits sections. Do not improvise beyond what it says.
+3. cd to the path the bridge printed as `COWORK_GIT_WORKDIR=` in step 1. Read `docs/COWORK_SYNC_TASK.md` there. That file is the authoritative spec for this scheduled task. Follow its steps verbatim, including its failure-recovery and hard-limits sections. Do not improvise beyond what it says.
 
 Pre-conditions: Mac is on; repo is on `main` with a remote.
 ```
