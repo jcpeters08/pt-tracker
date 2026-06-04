@@ -1,0 +1,167 @@
+{
+  "id": "2026-06-03-wednesday-legs",
+  "date": "2026-06-03",
+  "day_of_week": "wednesday",
+  "type": "legs",
+  "muscle_groups": [
+    "quads",
+    "hamstrings",
+    "glutes",
+    "calves"
+  ],
+  "phase": "2",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "barbell-back-squat",
+      "display_name": "Barbell Back Squat",
+      "weight_raw": "110 lbs (49.9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 49.9,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 49.9,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 49.9,
+          "reps": 10
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "leg-press",
+      "display_name": "45-Degree Incline Leg Press",
+      "weight_raw": "240 lbs (108.9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 108.86,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 108.86,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 108.86,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "barbell-rdl",
+      "display_name": "Barbell Romanian Deadlift",
+      "weight_raw": "110 lbs (49.9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 49.9,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 49.9,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 49.9,
+          "reps": 10
+        }
+      ],
+      "notes": "Out of breath between each"
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "display_name": "Seated Leg Curl",
+      "weight_raw": "60 lbs (27.2 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 27.22,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 27.22,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 27.22,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-hip-thrust",
+      "display_name": "Dumbbell Hip Thrust",
+      "weight_raw": "60 lbs (27.2 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 27.22,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 27.22,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 27.22,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "calf-raise",
+      "display_name": "Standing Calf Raise (Machine)",
+      "weight_raw": "100 lbs (45.4 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 45.36,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 45.36,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 45.36,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "cooldown": {
+    "type": "library",
+    "source_key": "legs",
+    "completed_at": "2026-06-03T20:01:42.349Z"
+  },
+  "session_notes": "",
+  "submitted_at": "2026-06-03T20:23:40.123Z",
+  "source_md": "Workout Log/2026-06-03-Wednesday-Legs.md"
+}
