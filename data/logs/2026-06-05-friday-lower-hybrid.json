@@ -1,0 +1,192 @@
+{
+  "id": "2026-06-05-friday-lower-hybrid",
+  "date": "2026-06-05",
+  "day_of_week": "friday",
+  "type": "lower-hybrid",
+  "muscle_groups": [
+    "quads",
+    "hamstrings",
+    "glutes",
+    "calves",
+    "core",
+    "lower-back"
+  ],
+  "phase": "2",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "leg-press",
+      "display_name": "45-Degree Incline Leg Press",
+      "weight_raw": "250 lbs (113.4 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 113.4,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 113.4,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 113.4,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-walking-lunge",
+      "display_name": "Dumbbell Walking Lunge",
+      "weight_raw": "25 lbs (11.3 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 11.34,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 11.34,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 11.34,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "display_name": "Seated Leg Curl",
+      "weight_raw": "60 lbs (27.2 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 27.22,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 27.22,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 27.22,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "hip-abductor-machine",
+      "display_name": "Hip Abductor Machine",
+      "weight_raw": "110 lbs (49.9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 49.9,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 49.9,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 49.9,
+          "reps": 15
+        }
+      ],
+      "notes": "Also did hip adductor 80 lbs x 12 reps x 3 sets"
+    },
+    {
+      "exercise_id": "single-leg-calf-raise",
+      "display_name": "Single-Leg Calf Raise (on Step)",
+      "weight_raw": "45 lbs (20.4 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 20.41,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 20.41,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 20.41,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "cable-rope-crunch",
+      "display_name": "Cable Rope Crunch",
+      "weight_raw": "35 lbs (15.9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 15.88,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 15.88,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 15.88,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "back-extension",
+      "display_name": "Back Extension",
+      "weight_raw": "bodyweight",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 0.0,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "cooldown": {
+    "type": "library",
+    "source_key": "upper-hybrid",
+    "completed_at": "2026-06-05T18:33:41.166Z"
+  },
+  "session_notes": "",
+  "submitted_at": "2026-06-05T18:33:52.093Z",
+  "source_md": "Workout Log/2026-06-05-Friday-Lower-Hybrid.md"
+}
