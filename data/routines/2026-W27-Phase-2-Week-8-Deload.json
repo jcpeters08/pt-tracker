@@ -1,0 +1,167 @@
+{
+  "id": "2026-W27-Phase-2-Week-8-Deload",
+  "name": "W27 MPLS Planet Fitness — Solo",
+  "phase": "2",
+  "start_date": "2026-06-29",
+  "end_date": null,
+  "source_md": "Weekly Plans/2026-W27-Phase-2-Week-8-Deload.md",
+  "days": {
+    "wednesday": {
+      "label": "Full-Body (Deload)",
+      "warmup": "Treadmill incline walk 5 min + band pull-aparts × 15 + bodyweight squats × 15",
+      "cooldown": "",
+      "exercises": [
+        {
+          "exercise_id": "leg-press",
+          "target_weight_kg": 81.65,
+          "target_weight_raw": "180 lbs (82 kg)",
+          "target_reps": 15,
+          "target_sets": 2,
+          "notes": "~60%. Smooth, full depth, leave 3 in the tank"
+        },
+        {
+          "exercise_id": "flat-db-bench-press",
+          "target_weight_kg": 15.88,
+          "target_weight_raw": "35 lbs (16 kg) ea",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "Light re-entry, controlled tempo"
+        },
+        {
+          "exercise_id": "lat-pulldown",
+          "target_weight_kg": 40.82,
+          "target_weight_raw": "90 lbs (41 kg)",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "~60%. Squeeze, no momentum"
+        },
+        {
+          "exercise_id": "seated-leg-curl",
+          "target_weight_kg": 22.68,
+          "target_weight_raw": "50 lbs (23 kg)",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "Easy, slow negative"
+        },
+        {
+          "exercise_id": "db-lateral-raise",
+          "target_weight_kg": 4.54,
+          "target_weight_raw": "10 lbs (5 kg) ea",
+          "target_reps": 15,
+          "target_sets": 2,
+          "notes": "Strict, deload weight"
+        },
+        {
+          "exercise_id": "cable-rope-crunch",
+          "target_weight_kg": 13.61,
+          "target_weight_raw": "30 lbs (14 kg)",
+          "target_reps": 15,
+          "target_sets": 2,
+          "notes": "Light core"
+        }
+      ]
+    },
+    "thursday": {
+      "label": "Upper (Deload)",
+      "warmup": "Rower 5 min + band pull-aparts × 15",
+      "cooldown": "",
+      "exercises": [
+        {
+          "exercise_id": "incline-db-bench-press",
+          "target_weight_kg": 20.41,
+          "target_weight_raw": "45 lbs (20 kg) ea",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "~65–70%. Rebuild the groove"
+        },
+        {
+          "exercise_id": "seated-cable-row",
+          "target_weight_kg": 29.48,
+          "target_weight_raw": "65 lbs (29 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "Moderate, clean"
+        },
+        {
+          "exercise_id": "seated-db-shoulder-press",
+          "target_weight_kg": 15.88,
+          "target_weight_raw": "35 lbs (16 kg) ea",
+          "target_reps": 10,
+          "target_sets": 2,
+          "notes": "Easy on the shoulders this week"
+        },
+        {
+          "exercise_id": "cable-face-pull",
+          "target_weight_kg": 15.88,
+          "target_weight_raw": "35 lbs (16 kg)",
+          "target_reps": 15,
+          "target_sets": 2,
+          "notes": "Rear delts, light"
+        },
+        {
+          "exercise_id": "barbell-curl",
+          "target_weight_kg": 18.14,
+          "target_weight_raw": "40 lbs (18 kg)",
+          "target_reps": 10,
+          "target_sets": 2,
+          "notes": "Deload"
+        },
+        {
+          "exercise_id": "rope-tricep-pushdown",
+          "target_weight_kg": 11.34,
+          "target_weight_raw": "25 lbs (11 kg)",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "Deload"
+        }
+      ]
+    },
+    "friday": {
+      "label": "Lower (Deload)",
+      "warmup": "Treadmill incline walk 5 min + bodyweight squats × 15 + glute bridges × 15",
+      "cooldown": "90/90 hip stretch 60s ea side + couch stretch 60s ea side + child's pose 60s",
+      "exercises": [
+        {
+          "exercise_id": "barbell-back-squat",
+          "target_weight_kg": 43.09,
+          "target_weight_raw": "95 lbs (43 kg)",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "~70%. Groove the pattern, don't grind"
+        },
+        {
+          "exercise_id": "barbell-rdl",
+          "target_weight_kg": 43.09,
+          "target_weight_raw": "95 lbs (43 kg)",
+          "target_reps": 10,
+          "target_sets": 2,
+          "notes": "Straps. Hinge, slow eccentric"
+        },
+        {
+          "exercise_id": "leg-press",
+          "target_weight_kg": 90.72,
+          "target_weight_raw": "200 lbs (91 kg)",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "Moderate"
+        },
+        {
+          "exercise_id": "seated-leg-curl",
+          "target_weight_kg": 24.95,
+          "target_weight_raw": "55 lbs (25 kg)",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "Light-moderate"
+        },
+        {
+          "exercise_id": "calf-raise",
+          "target_weight_kg": 40.82,
+          "target_weight_raw": "90 lbs (41 kg)",
+          "target_reps": 15,
+          "target_sets": 2,
+          "notes": "Pause at top"
+        }
+      ]
+    }
+  }
+}
