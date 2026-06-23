@@ -34,7 +34,7 @@ See `README.md` for deploy and how-to-log details.
 
 Two interop patterns, by module type:
 
-- **Pure-logic modules use real DI** — they take arguments and return values, touch no globals: `util`, `storage`, `payloads`, `routines`, `pending`. Trivially unit-testable.
+- **Pure-logic modules use real DI** — they take arguments and return values, touch no globals: `util`, `storage`, `payloads`, `routines`, `pending`, `rest-timer`. Trivially unit-testable.
 - **Render modules share `state` + `hooks`** via `app-context.js`. `state` is the single mutable app-state object — every importer shares the same reference, so in-place mutation propagates (this deliberately relaxes pure DI for the render layer, which reads/writes state on nearly every line). `hooks` is a registry `index.html` fills at boot — `Object.assign(hooks, { renderApp, markWorkoutDirty, saveWorkoutDraft, getRoutineMode })` — so render modules can call back into index **without** a circular import.
 
 | Module | Owns | Key exports |
@@ -49,6 +49,8 @@ Two interop patterns, by module type:
 | `reports.js` | reports-page pure helpers | `escapeHtml`, `personalRecordRowsHtml`, `calendarCells`, `weekRangeFromIso` |
 | `recovery.js` | recovery-panel renderers (take `state` + an `onDirty` callback) | `ensureRecoveryRounds`, `renderRecoverySummary`, `renderRecoveryRounds` |
 | `workout.js` | workout day-view renderers (day toggle, exercise cards, cool-down) | `renderDayToggle`, `renderExercises`, `renderCooldown`, `renderExerciseCard`, `ensureLogState`, `dayLabel`, `cooldownStateKey` |
+| `rest-timer.js` | pure between-sets rest-timer math + duration persistence | `formatClock`, `remainingSeconds`, `startTimer`, `loadDuration`, `saveDuration`, `REST_PRESETS`, `DEFAULT_REST_SECONDS` |
+| `rest-bar.js` | sticky rest-timer bar (DOM, 1s ticker, silent flash; auto-starts on a set's Done, presets 1:00/1:30/2:00/3:00) | `renderRestBar`, `startRest`, `cancelRest`, `setRestDuration` |
 
 **No `innerHTML` in render modules** — a PreToolUse hook blocks it, and it's the right call for user data anyway. Build DOM imperatively: `workout.js` uses a small `el(tag, props, ...kids)` helper; `ui.js`/`recovery.js` use `createElement` + `replaceChildren`/`textContent`. User data (exercise names, notes, cool-down moves) flows through `textContent`/`dataset`, never string interpolation.
 
