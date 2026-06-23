@@ -1,4 +1,203 @@
 {
   "format_note": "Append-only inbox written by the web app. Daily scheduled task drains entries[] into vault MD files at Workout Log/YYYY-MM-DD-day-type.md and into data/logs/*.json, then resets to []. Schema: {type: 'log', submitted_at: ISO8601, session: {…full log object…}}",
-  "entries": []
+  "entries": [
+    {
+      "type": "log",
+      "submitted_at": "2026-06-23T11:59:49.927Z",
+      "session": {
+        "date": "2026-06-23",
+        "submitted_at": "2026-06-23T11:59:49.927Z",
+        "day_of_week": "tuesday",
+        "type": "pull",
+        "muscle_groups": [
+          "back",
+          "rear-delts",
+          "biceps",
+          "core"
+        ],
+        "routine_id": "2026-W26-Phase-2-Week-7-Progression",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "lat-pulldown",
+            "display_name": "Lat Pulldown",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 54.43,
+                "reps": 9
+              },
+              {
+                "set": 2,
+                "weight_kg": 54.43,
+                "reps": 8
+              },
+              {
+                "set": 3,
+                "weight_kg": 54.43,
+                "reps": 8
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-cable-row",
+            "display_name": "Seated Cable Row",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 38.56,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 38.56,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 38.56,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "single-arm-db-row",
+            "display_name": "Single-Arm Dumbbell Row",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 22.68,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.68,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "cable-face-pull",
+            "display_name": "Cable Face Pull",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 20.41,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 20.41,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 20.41,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-reverse-fly",
+            "display_name": "Dumbbell Reverse Fly",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 6.8,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 6.8,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 6.8,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "barbell-curl",
+            "display_name": "Barbell Biceps Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 22.68,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.68,
+                "reps": 8
+              },
+              {
+                "set": 3,
+                "weight_kg": 22.68,
+                "reps": 9
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "hammer-curl",
+            "display_name": "Hammer Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 11.34,
+                "reps": 11
+              },
+              {
+                "set": 3,
+                "weight_kg": 11.34,
+                "reps": 9
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "suitcase-carry",
+            "display_name": "Suitcase Carry",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 27.22,
+                "reps": 30
+              },
+              {
+                "set": 2,
+                "weight_kg": 27.22,
+                "reps": 30
+              },
+              {
+                "set": 3,
+                "weight_kg": 27.22,
+                "reps": 30
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": {
+          "type": "library",
+          "source_key": "pull",
+          "fitnessplus_name": "",
+          "completed_at": "2026-06-23T11:59:48.181Z"
+        },
+        "session_notes": ""
+      }
+    }
+  ]
 }
