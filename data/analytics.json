@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T01:00:29Z",
+  "generated_at": "2026-06-23T01:12:57Z",
   "log_count": 35,
   "recovery_count": 8,
   "lifts_per_week": {
@@ -517,7 +517,7 @@
     {
       "week": "2026-W26",
       "muscle": "chest",
-      "sets": 8
+      "sets": 9
     },
     {
       "week": "2026-W26",
@@ -1951,8 +1951,8 @@
         "date": "2026-06-22",
         "top_set_weight_kg": 11.34,
         "top_set_reps": 13,
-        "total_volume_kg": 294.8,
-        "sets_count": 2
+        "total_volume_kg": 442.3,
+        "sets_count": 3
       }
     ],
     "overhead-db-tricep-extension": [
@@ -2665,6 +2665,15 @@
       "weight_kg": 11.34,
       "reps": 13,
       "delta_reps": 1
+    },
+    {
+      "exercise_id": "cable-chest-fly",
+      "date": "2026-06-22",
+      "type": "volume_pr",
+      "weight_kg": 11.34,
+      "reps": 13,
+      "total_volume_kg": 442.3,
+      "delta_volume_kg": 61.4
     },
     {
       "exercise_id": "overhead-db-tricep-extension",
