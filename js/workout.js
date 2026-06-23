@@ -5,6 +5,7 @@
 import { state, hooks, DAYS, DAY_LABELS, todayKey, CD_CHOICE_KEY } from "./app-context.js";
 import { isoNow, kgToLbs, lbsToKg, roundTo, fmtNum } from "./util.js";
 import { openHowto, openVideo, openLightbox } from "./ui.js";
+import { startRest } from "./rest-bar.js";
 
 // Tiny DOM builder: el("div", {class, text, href, dataset…}, ...children).
 // Keeps the render functions readable without innerHTML.
@@ -420,6 +421,7 @@ function bindCardEvents(card, exId) {
       row.classList.toggle("done", log.sets[idx].done);
       row.querySelector('[data-action="done"]').textContent = log.sets[idx].done ? "✓ Done" : "Done";
       hooks.markWorkoutDirty();
+      if (log.sets[idx].done) startRest();   // auto-start rest between sets
     });
   });
   card.querySelector('[data-action="add-set"]').addEventListener("click", () => {
