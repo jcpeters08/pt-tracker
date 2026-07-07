@@ -3,15 +3,16 @@
   "entries": [
     {
       "type": "log",
-      "submitted_at": "2026-07-07T11:18:06.320Z",
+      "submitted_at": "2026-07-07T11:33:58.986Z",
       "session": {
         "date": "2026-07-07",
-        "submitted_at": "2026-07-07T11:18:06.320Z",
+        "submitted_at": "2026-07-07T11:33:58.986Z",
         "day_of_week": "tuesday",
         "type": "push",
         "muscle_groups": [
           "chest",
           "shoulders",
+          "lateral-delts",
           "triceps"
         ],
         "routine_id": "2026-W28-Phase-2-Week-9-Return",
@@ -79,6 +80,28 @@
                 "set": 3,
                 "weight_kg": 20.41,
                 "reps": 8
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-lateral-raise",
+            "display_name": "Dumbbell Lateral Raise",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 6.8,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 6.8,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 6.8,
+                "reps": 12
               }
             ],
             "notes": ""
