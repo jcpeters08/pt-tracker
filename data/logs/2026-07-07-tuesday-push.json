@@ -1,0 +1,163 @@
+{
+  "id": "2026-07-07-tuesday-push",
+  "date": "2026-07-07",
+  "day_of_week": "tuesday",
+  "type": "push",
+  "muscle_groups": [
+    "chest",
+    "shoulders",
+    "lateral-delts",
+    "triceps"
+  ],
+  "phase": "2",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "incline-db-bench-press",
+      "display_name": "Incline Dumbbell Bench Press",
+      "weight_raw": "55 lbs (24.9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 24.95,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 24.95,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 24.95,
+          "reps": 13
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "flat-db-bench-press",
+      "display_name": "Flat Dumbbell Bench Press",
+      "weight_raw": "55 lbs (24.9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 24.95,
+          "reps": 9
+        },
+        {
+          "set": 2,
+          "weight_kg": 24.95,
+          "reps": 8
+        },
+        {
+          "set": 3,
+          "weight_kg": 24.95,
+          "reps": 8
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "seated-db-shoulder-press",
+      "display_name": "Seated Dumbbell Shoulder Press",
+      "weight_raw": "45 lbs (20.4 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 20.41,
+          "reps": 8
+        },
+        {
+          "set": 2,
+          "weight_kg": 20.41,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 20.41,
+          "reps": 8
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-lateral-raise",
+      "display_name": "Dumbbell Lateral Raise",
+      "weight_raw": "15 lbs (6.8 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 6.8,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 6.8,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 6.8,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "rope-tricep-pushdown",
+      "display_name": "Rope Tricep Pushdown (Cable)",
+      "weight_raw": "30 lbs (13.6 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 13.61,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 13.61,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 13.61,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "overhead-db-tricep-extension",
+      "display_name": "Overhead Dumbbell Tricep Extension",
+      "weight_raw": "35 lbs (15.9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 15.88,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 15.88,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 15.88,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "cooldown": null,
+  "session_notes": "",
+  "submitted_at": "2026-07-07T11:33:58.986Z",
+  "source_md": "Workout Log/2026-07-07-Tuesday-Push.md"
+}
