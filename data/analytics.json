@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T03:12:58Z",
+  "generated_at": "2026-07-13T03:16:08Z",
   "log_count": 40,
   "recovery_count": 8,
   "lifts_per_week": {
@@ -4479,6 +4479,11 @@
       "planned": 4,
       "completed": 3,
       "completion_rate": 0.75
+    },
+    "2026-W29": {
+      "planned": 5,
+      "completed": 0,
+      "completion_rate": 0.0
     }
   },
   "recovery_by_week": {
