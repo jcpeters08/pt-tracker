@@ -176,6 +176,115 @@
         "cooldown": null,
         "session_notes": ""
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-07-14T11:21:36.696Z",
+      "session": {
+        "date": "2026-07-14",
+        "submitted_at": "2026-07-14T11:21:36.696Z",
+        "day_of_week": "tuesday",
+        "type": "pull",
+        "muscle_groups": [
+          "back",
+          "rear-delts",
+          "biceps"
+        ],
+        "routine_id": "2026-W29-Phase-2-Week-10-Progression",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "lat-pulldown",
+            "display_name": "Lat Pulldown",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 58.97,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 58.97,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 58.97,
+                "reps": 8
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "single-arm-db-row",
+            "display_name": "Single-Arm Dumbbell Row",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 24.95,
+                "reps": 8
+              },
+              {
+                "set": 2,
+                "weight_kg": 24.95,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 24.95,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "cable-face-pull",
+            "display_name": "Cable Face Pull",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 22.68,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.68,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 22.68,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "barbell-curl",
+            "display_name": "Barbell Biceps Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 22.68,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.68,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 22.68,
+                "reps": 8
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": null,
+        "session_notes": ""
+      }
     }
   ]
 }
