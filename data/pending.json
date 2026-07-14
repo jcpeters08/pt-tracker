@@ -179,16 +179,17 @@
     },
     {
       "type": "log",
-      "submitted_at": "2026-07-14T11:25:00.495Z",
+      "submitted_at": "2026-07-14T11:51:29.379Z",
       "session": {
         "date": "2026-07-14",
-        "submitted_at": "2026-07-14T11:25:00.495Z",
+        "submitted_at": "2026-07-14T11:51:29.379Z",
         "day_of_week": "tuesday",
         "type": "pull",
         "muscle_groups": [
           "back",
           "rear-delts",
-          "biceps"
+          "biceps",
+          "core"
         ],
         "routine_id": "2026-W29-Phase-2-Week-10-Progression",
         "phase": "2",
@@ -211,6 +212,28 @@
                 "set": 3,
                 "weight_kg": 58.97,
                 "reps": 8
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-cable-row",
+            "display_name": "Seated Cable Row",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 45.36,
+                "reps": 13
+              },
+              {
+                "set": 2,
+                "weight_kg": 45.36,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 45.36,
+                "reps": 12
               }
             ],
             "notes": ""
@@ -272,6 +295,11 @@
                 "set": 2,
                 "weight_kg": 6.8,
                 "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 6.8,
+                "reps": 12
               }
             ],
             "notes": ""
@@ -297,9 +325,58 @@
               }
             ],
             "notes": ""
+          },
+          {
+            "exercise_id": "hammer-curl",
+            "display_name": "Hammer Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 11.34,
+                "reps": 8
+              },
+              {
+                "set": 3,
+                "weight_kg": 11.34,
+                "reps": 9
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "suitcase-carry",
+            "display_name": "Suitcase Carry",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 27.22,
+                "reps": 30
+              },
+              {
+                "set": 2,
+                "weight_kg": 27.22,
+                "reps": 30
+              },
+              {
+                "set": 3,
+                "weight_kg": 27.22,
+                "reps": 30
+              }
+            ],
+            "notes": ""
           }
         ],
-        "cooldown": null,
+        "cooldown": {
+          "type": "library",
+          "source_key": "pull",
+          "fitnessplus_name": "",
+          "completed_at": "2026-07-14T11:46:22.388Z"
+        },
         "session_notes": ""
       }
     }
