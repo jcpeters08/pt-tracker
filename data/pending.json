@@ -179,10 +179,10 @@
     },
     {
       "type": "log",
-      "submitted_at": "2026-07-14T11:21:36.696Z",
+      "submitted_at": "2026-07-14T11:25:00.495Z",
       "session": {
         "date": "2026-07-14",
-        "submitted_at": "2026-07-14T11:21:36.696Z",
+        "submitted_at": "2026-07-14T11:25:00.495Z",
         "day_of_week": "tuesday",
         "type": "pull",
         "muscle_groups": [
@@ -254,6 +254,23 @@
               {
                 "set": 3,
                 "weight_kg": 22.68,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-reverse-fly",
+            "display_name": "Dumbbell Reverse Fly",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 6.8,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 6.8,
                 "reps": 15
               }
             ],
