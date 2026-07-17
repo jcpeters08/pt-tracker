@@ -814,6 +814,189 @@
         },
         "session_notes": ""
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-07-17T11:48:10.188Z",
+      "session": {
+        "date": "2026-07-17",
+        "submitted_at": "2026-07-17T11:48:10.188Z",
+        "day_of_week": "friday",
+        "type": "lower-hybrid",
+        "muscle_groups": [
+          "quads",
+          "hamstrings",
+          "glutes",
+          "calves",
+          "core",
+          "lower-back"
+        ],
+        "routine_id": "2026-W29-Phase-2-Week-10-Progression",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "leg-press",
+            "display_name": "45-Degree Incline Leg Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 117.93,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 117.93,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 117.93,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-walking-lunge",
+            "display_name": "Dumbbell Walking Lunge",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 11.34,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 11.34,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-leg-curl",
+            "display_name": "Seated Leg Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 31.75,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 31.75,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 31.75,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "hip-abductor-machine",
+            "display_name": "Hip Abductor Machine",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 49.9,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 49.9,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 49.9,
+                "reps": 17
+              }
+            ],
+            "notes": "Also did hip adductor at 65 lbs 3 sets 15 reps . Should add that to some days workout as well"
+          },
+          {
+            "exercise_id": "single-leg-calf-raise",
+            "display_name": "Single-Leg Calf Raise (on Step)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 20.41,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 20.41,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 20.41,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "cable-rope-crunch",
+            "display_name": "Cable Rope Crunch",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 18.14,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.68,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 22.68,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "back-extension",
+            "display_name": "Back Extension",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 0,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 0,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 0,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": {
+          "type": "library",
+          "source_key": "upper-hybrid",
+          "fitnessplus_name": "",
+          "completed_at": "2026-07-17T11:47:57.939Z"
+        },
+        "session_notes": ""
+      }
     }
   ]
 }
