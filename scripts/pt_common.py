@@ -170,6 +170,9 @@ EXERCISE_ALIASES: dict[str, str] = {
     "hip abductor machine":                  "hip-abductor-machine",
     "hip abductor":                          "hip-abductor-machine",
     "abductor machine":                      "hip-abductor-machine",
+    "hip adductor machine":                  "hip-adductor-machine",
+    "hip adductor":                          "hip-adductor-machine",
+    "adductor machine":                      "hip-adductor-machine",
 
     # Core
     "plank":                                 "plank",
