@@ -1,0 +1,30 @@
+{
+  "id": "hip-adductor-machine",
+  "name": "Hip Adductor Machine",
+  "primary_muscle": "adductors",
+  "secondary_muscles": [
+    "glutes"
+  ],
+  "equipment": [
+    "machine"
+  ],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Adductor/0.jpg",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "Thigh Adductor",
+  "video_url": "https://www.muscleandstrength.com/exercises/hip-adduction-machine",
+  "form_cues": [
+    "Sit tall with your back flat against the pad",
+    "Squeeze the pads together with control — no slamming",
+    "Pause 1 sec at full adduction, slow eccentric on the way out"
+  ],
+  "default_load_unit": "kg",
+  "notes": "Seated machine. Press knees inward against resistance pads — inner-thigh counterpart to the abductor machine.",
+  "video_source": "muscleandstrength.com",
+  "video_id_query": "Hip Adductor Machine how to proper form",
+  "instructions": [
+    "Sit on the machine with your back against the pad and place your inner knees against the resistance pads.",
+    "Set the start position so the pads are comfortably apart; grip the handles.",
+    "Squeeze the pads together by adducting your hips — pause briefly when the pads meet.",
+    "Control the return; don't let the stack pull your legs apart quickly."
+  ]
+}
