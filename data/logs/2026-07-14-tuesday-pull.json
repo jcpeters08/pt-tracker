@@ -1,0 +1,213 @@
+{
+  "id": "2026-07-14-tuesday-pull",
+  "date": "2026-07-14",
+  "day_of_week": "tuesday",
+  "type": "pull",
+  "muscle_groups": [
+    "back",
+    "rear-delts",
+    "biceps",
+    "core"
+  ],
+  "phase": "2",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "lat-pulldown",
+      "display_name": "Lat Pulldown",
+      "weight_raw": "130 lbs (59 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 58.97,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 58.97,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 58.97,
+          "reps": 8
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "seated-cable-row",
+      "display_name": "Seated Cable Row",
+      "weight_raw": "100 lbs (45.4 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 45.36,
+          "reps": 13
+        },
+        {
+          "set": 2,
+          "weight_kg": 45.36,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 45.36,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "single-arm-db-row",
+      "display_name": "Single-Arm Dumbbell Row",
+      "weight_raw": "55 lbs (24.9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 24.95,
+          "reps": 8
+        },
+        {
+          "set": 2,
+          "weight_kg": 24.95,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 24.95,
+          "reps": 10
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "cable-face-pull",
+      "display_name": "Cable Face Pull",
+      "weight_raw": "50 lbs (22.7 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 22.68,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 22.68,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 22.68,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-reverse-fly",
+      "display_name": "Dumbbell Reverse Fly",
+      "weight_raw": "15 lbs (6.8 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 6.8,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 6.8,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 6.8,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "barbell-curl",
+      "display_name": "Barbell Biceps Curl",
+      "weight_raw": "50 lbs (22.7 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 22.68,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 22.68,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 22.68,
+          "reps": 8
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "hammer-curl",
+      "display_name": "Hammer Curl",
+      "weight_raw": "25 lbs (11.3 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 11.34,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 11.34,
+          "reps": 8
+        },
+        {
+          "set": 3,
+          "weight_kg": 11.34,
+          "reps": 9
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "suitcase-carry",
+      "display_name": "Suitcase Carry",
+      "weight_raw": "60 lbs (27.2 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 27.22,
+          "reps": 30
+        },
+        {
+          "set": 2,
+          "weight_kg": 27.22,
+          "reps": 30
+        },
+        {
+          "set": 3,
+          "weight_kg": 27.22,
+          "reps": 30
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "cooldown": {
+    "type": "library",
+    "source_key": "pull",
+    "completed_at": "2026-07-14T11:46:22.388Z"
+  },
+  "session_notes": "",
+  "submitted_at": "2026-07-14T11:51:29.379Z",
+  "source_md": "Workout Log/2026-07-14-Tuesday-Pull.md"
+}

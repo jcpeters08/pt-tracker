@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-13T03:16:08Z",
-  "log_count": 40,
+  "generated_at": "2026-07-20T00:22:39Z",
+  "log_count": 45,
   "recovery_count": 8,
   "lifts_per_week": {
     "2026-W16": {
@@ -63,6 +63,13 @@
       "tuesday": "push",
       "wednesday": "pull",
       "thursday": "legs"
+    },
+    "2026-W29": {
+      "monday": "push",
+      "tuesday": "pull",
+      "wednesday": "legs",
+      "thursday": "upper-hybrid",
+      "friday": "lower-hybrid"
     }
   },
   "weekly_volume_by_muscle": [
@@ -650,6 +657,76 @@
       "week": "2026-W28",
       "muscle": "triceps",
       "sets": 6
+    },
+    {
+      "week": "2026-W29",
+      "muscle": "back",
+      "sets": 12
+    },
+    {
+      "week": "2026-W29",
+      "muscle": "biceps",
+      "sets": 9
+    },
+    {
+      "week": "2026-W29",
+      "muscle": "calves",
+      "sets": 6
+    },
+    {
+      "week": "2026-W29",
+      "muscle": "chest",
+      "sets": 12
+    },
+    {
+      "week": "2026-W29",
+      "muscle": "core",
+      "sets": 12
+    },
+    {
+      "week": "2026-W29",
+      "muscle": "glutes",
+      "sets": 6
+    },
+    {
+      "week": "2026-W29",
+      "muscle": "hamstrings",
+      "sets": 9
+    },
+    {
+      "week": "2026-W29",
+      "muscle": "lateral-delts",
+      "sets": 6
+    },
+    {
+      "week": "2026-W29",
+      "muscle": "lower-back",
+      "sets": 6
+    },
+    {
+      "week": "2026-W29",
+      "muscle": "obliques",
+      "sets": 3
+    },
+    {
+      "week": "2026-W29",
+      "muscle": "quads",
+      "sets": 12
+    },
+    {
+      "week": "2026-W29",
+      "muscle": "rear-delts",
+      "sets": 9
+    },
+    {
+      "week": "2026-W29",
+      "muscle": "shoulders",
+      "sets": 6
+    },
+    {
+      "week": "2026-W29",
+      "muscle": "triceps",
+      "sets": 9
     }
   ],
   "exercise_progression": {
@@ -744,6 +821,20 @@
         "top_set_reps": 13,
         "total_volume_kg": 923.1,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-13",
+        "top_set_weight_kg": 27.22,
+        "top_set_reps": 10,
+        "total_volume_kg": 762.2,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-16",
+        "top_set_weight_kg": 20.41,
+        "top_set_reps": 12,
+        "total_volume_kg": 734.8,
+        "sets_count": 3
       }
     ],
     "flat-db-bench-press": [
@@ -822,6 +913,13 @@
         "top_set_weight_kg": 24.95,
         "top_set_reps": 9,
         "total_volume_kg": 623.8,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-13",
+        "top_set_weight_kg": 24.95,
+        "top_set_reps": 10,
+        "total_volume_kg": 673.6,
         "sets_count": 3
       }
     ],
@@ -910,6 +1008,13 @@
         "top_set_weight_kg": 13.61,
         "top_set_reps": 12,
         "total_volume_kg": 490.0,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-13",
+        "top_set_weight_kg": 15.88,
+        "top_set_reps": 12,
+        "total_volume_kg": 539.9,
         "sets_count": 3
       }
     ],
@@ -1003,6 +1108,20 @@
         "top_set_weight_kg": 20.41,
         "top_set_reps": 10,
         "total_volume_kg": 530.7,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-13",
+        "top_set_weight_kg": 20.41,
+        "top_set_reps": 10,
+        "total_volume_kg": 612.3,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-16",
+        "top_set_weight_kg": 18.14,
+        "top_set_reps": 15,
+        "total_volume_kg": 707.5,
         "sets_count": 3
       }
     ],
@@ -1227,6 +1346,20 @@
         "top_set_reps": 15,
         "total_volume_kg": 1365.2,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-15",
+        "top_set_weight_kg": 34.02,
+        "top_set_reps": 12,
+        "total_volume_kg": 1190.7,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-17",
+        "top_set_weight_kg": 31.75,
+        "top_set_reps": 15,
+        "total_volume_kg": 1428.8,
+        "sets_count": 3
       }
     ],
     "leg-press": [
@@ -1320,6 +1453,20 @@
         "top_set_reps": 12,
         "total_volume_kg": 4572.4,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-15",
+        "top_set_weight_kg": 131.54,
+        "top_set_reps": 12,
+        "total_volume_kg": 4735.4,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-17",
+        "top_set_weight_kg": 117.94,
+        "top_set_reps": 15,
+        "total_volume_kg": 5307.3,
+        "sets_count": 3
       }
     ],
     "calf-raise": [
@@ -1406,6 +1553,13 @@
         "top_set_reps": 12,
         "total_volume_kg": 3338.6,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-15",
+        "top_set_weight_kg": 104.33,
+        "top_set_reps": 12,
+        "total_volume_kg": 3755.9,
+        "sets_count": 3
       }
     ],
     "lat-pulldown": [
@@ -1464,6 +1618,13 @@
         "top_set_reps": 10,
         "total_volume_kg": 1632.9,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-14",
+        "top_set_weight_kg": 58.97,
+        "top_set_reps": 10,
+        "total_volume_kg": 1651.2,
+        "sets_count": 3
       }
     ],
     "seated-cable-row": [
@@ -1508,6 +1669,13 @@
         "top_set_reps": 15,
         "total_volume_kg": 1503.8,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-14",
+        "top_set_weight_kg": 45.36,
+        "top_set_reps": 13,
+        "total_volume_kg": 1678.3,
+        "sets_count": 3
       }
     ],
     "db-curl": [
@@ -1537,6 +1705,13 @@
         "top_set_weight_kg": 11.34,
         "top_set_reps": 10,
         "total_volume_kg": 340.2,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-16",
+        "top_set_weight_kg": 11.34,
+        "top_set_reps": 10,
+        "total_volume_kg": 283.5,
         "sets_count": 3
       }
     ],
@@ -1603,6 +1778,20 @@
         "top_set_reps": 15,
         "total_volume_kg": 918.4,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-14",
+        "top_set_weight_kg": 22.68,
+        "top_set_reps": 15,
+        "total_volume_kg": 952.6,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-16",
+        "top_set_weight_kg": 20.41,
+        "top_set_reps": 15,
+        "total_volume_kg": 918.4,
+        "sets_count": 3
       }
     ],
     "hammer-curl": [
@@ -1646,6 +1835,13 @@
         "top_set_weight_kg": 11.34,
         "top_set_reps": 9,
         "total_volume_kg": 283.5,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-14",
+        "top_set_weight_kg": 11.34,
+        "top_set_reps": 10,
+        "total_volume_kg": 306.2,
         "sets_count": 3
       }
     ],
@@ -1756,6 +1952,13 @@
         "top_set_weight_kg": 6.8,
         "top_set_reps": 15,
         "total_volume_kg": 265.2,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-14",
+        "top_set_weight_kg": 6.8,
+        "top_set_reps": 15,
+        "total_volume_kg": 285.6,
         "sets_count": 3
       }
     ],
@@ -1897,6 +2100,13 @@
         "top_set_reps": 10,
         "total_volume_kg": 612.4,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-14",
+        "top_set_weight_kg": 22.68,
+        "top_set_reps": 10,
+        "total_volume_kg": 635.0,
+        "sets_count": 3
       }
     ],
     "v-up": [
@@ -2024,6 +2234,20 @@
         "top_set_reps": 12,
         "total_volume_kg": 244.8,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-13",
+        "top_set_weight_kg": 6.8,
+        "top_set_reps": 15,
+        "total_volume_kg": 306.0,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-16",
+        "top_set_weight_kg": 6.8,
+        "top_set_reps": 15,
+        "total_volume_kg": 265.2,
+        "sets_count": 3
       }
     ],
     "single-arm-db-row": [
@@ -2089,6 +2313,20 @@
         "top_set_reps": 10,
         "total_volume_kg": 680.4,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-14",
+        "top_set_weight_kg": 24.95,
+        "top_set_reps": 10,
+        "total_volume_kg": 698.6,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-16",
+        "top_set_weight_kg": 20.41,
+        "top_set_reps": 15,
+        "total_volume_kg": 796.0,
+        "sets_count": 3
       }
     ],
     "db-goblet-squat": [
@@ -2123,6 +2361,13 @@
         "top_set_reps": 12,
         "total_volume_kg": 408.2,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-17",
+        "top_set_weight_kg": 11.34,
+        "top_set_reps": 12,
+        "total_volume_kg": 408.2,
+        "sets_count": 3
       }
     ],
     "single-leg-calf-raise": [
@@ -2149,6 +2394,13 @@
       },
       {
         "date": "2026-06-05",
+        "top_set_weight_kg": 20.41,
+        "top_set_reps": 15,
+        "total_volume_kg": 918.4,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-17",
         "top_set_weight_kg": 20.41,
         "top_set_reps": 15,
         "total_volume_kg": 918.4,
@@ -2193,6 +2445,13 @@
         "top_set_weight_kg": 13.61,
         "top_set_reps": 10,
         "total_volume_kg": 299.4,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-16",
+        "top_set_weight_kg": 13.61,
+        "top_set_reps": 10,
+        "total_volume_kg": 381.1,
         "sets_count": 3
       }
     ],
@@ -2245,6 +2504,13 @@
         "top_set_reps": 13,
         "total_volume_kg": 442.3,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-13",
+        "top_set_weight_kg": 11.34,
+        "top_set_reps": 13,
+        "total_volume_kg": 385.6,
+        "sets_count": 3
       }
     ],
     "overhead-db-tricep-extension": [
@@ -2296,6 +2562,13 @@
         "top_set_reps": 12,
         "total_volume_kg": 571.7,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-13",
+        "top_set_weight_kg": 18.14,
+        "top_set_reps": 14,
+        "total_volume_kg": 725.6,
+        "sets_count": 3
       }
     ],
     "suitcase-carry": [
@@ -2329,6 +2602,13 @@
       },
       {
         "date": "2026-07-08",
+        "top_set_weight_kg": 27.22,
+        "top_set_reps": 30,
+        "total_volume_kg": 2449.8,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-14",
         "top_set_weight_kg": 27.22,
         "top_set_reps": 30,
         "total_volume_kg": 2449.8,
@@ -2377,6 +2657,13 @@
         "top_set_reps": 10,
         "total_volume_kg": 1632.9,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-15",
+        "top_set_weight_kg": 58.97,
+        "top_set_reps": 8,
+        "total_volume_kg": 1415.3,
+        "sets_count": 3
       }
     ],
     "barbell-rdl": [
@@ -2421,6 +2708,13 @@
         "top_set_reps": 10,
         "total_volume_kg": 1251.9,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-15",
+        "top_set_weight_kg": 54.43,
+        "top_set_reps": 10,
+        "total_volume_kg": 1415.2,
+        "sets_count": 3
       }
     ],
     "db-hip-thrust": [
@@ -2460,6 +2754,13 @@
         "top_set_reps": 15,
         "total_volume_kg": 2245.5,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-17",
+        "top_set_weight_kg": 49.9,
+        "top_set_reps": 17,
+        "total_volume_kg": 2345.3,
+        "sets_count": 3
       }
     ],
     "cable-rope-crunch": [
@@ -2493,6 +2794,20 @@
       },
       {
         "date": "2026-07-10",
+        "top_set_weight_kg": 18.14,
+        "top_set_reps": 15,
+        "total_volume_kg": 816.3,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-15",
+        "top_set_weight_kg": 20.41,
+        "top_set_reps": 15,
+        "total_volume_kg": 918.4,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-17",
         "top_set_weight_kg": 18.14,
         "top_set_reps": 15,
         "total_volume_kg": 816.3,
@@ -2534,6 +2849,20 @@
         "top_set_reps": 15,
         "total_volume_kg": 0,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-15",
+        "top_set_weight_kg": 0,
+        "top_set_reps": 15,
+        "total_volume_kg": 0,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-17",
+        "top_set_weight_kg": 0,
+        "top_set_reps": 15,
+        "total_volume_kg": 0,
+        "sets_count": 3
       }
     ],
     "side-plank": [
@@ -2548,6 +2877,13 @@
         "date": "2026-06-04",
         "top_set_weight_kg": 0,
         "top_set_reps": 30,
+        "total_volume_kg": 0,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-16",
+        "top_set_weight_kg": 0,
+        "top_set_reps": 35,
         "total_volume_kg": 0,
         "sets_count": 3
       }
@@ -2565,6 +2901,13 @@
         "top_set_weight_kg": 13.61,
         "top_set_reps": 12,
         "total_volume_kg": 490.0,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-16",
+        "top_set_weight_kg": 13.61,
+        "top_set_reps": 15,
+        "total_volume_kg": 571.6,
         "sets_count": 3
       }
     ],
@@ -2589,10 +2932,94 @@
         "top_set_reps": 10,
         "total_volume_kg": 1292.7,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-15",
+        "top_set_weight_kg": 45.36,
+        "top_set_reps": 10,
+        "total_volume_kg": 1360.8,
+        "sets_count": 3
       }
     ]
   },
   "prs": [
+    {
+      "exercise_id": "seated-leg-curl",
+      "date": "2026-07-15",
+      "weight_kg": 34.02,
+      "reps": 12,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "leg-press",
+      "date": "2026-07-15",
+      "weight_kg": 131.54,
+      "reps": 12,
+      "delta_kg": 4.5
+    },
+    {
+      "exercise_id": "barbell-back-squat",
+      "date": "2026-07-15",
+      "weight_kg": 58.97,
+      "reps": 8,
+      "delta_kg": 4.5
+    },
+    {
+      "exercise_id": "cable-rope-crunch",
+      "date": "2026-07-15",
+      "weight_kg": 20.41,
+      "reps": 15,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "barbell-hip-thrust",
+      "date": "2026-07-15",
+      "weight_kg": 45.36,
+      "reps": 10,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "lat-pulldown",
+      "date": "2026-07-14",
+      "weight_kg": 58.97,
+      "reps": 10,
+      "delta_kg": 4.5
+    },
+    {
+      "exercise_id": "seated-cable-row",
+      "date": "2026-07-14",
+      "weight_kg": 45.36,
+      "reps": 13,
+      "delta_kg": 6.8
+    },
+    {
+      "exercise_id": "cable-face-pull",
+      "date": "2026-07-14",
+      "weight_kg": 22.68,
+      "reps": 15,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "single-arm-db-row",
+      "date": "2026-07-14",
+      "weight_kg": 24.95,
+      "reps": 10,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "incline-db-bench-press",
+      "date": "2026-07-13",
+      "weight_kg": 27.22,
+      "reps": 10,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "overhead-db-tricep-extension",
+      "date": "2026-07-13",
+      "weight_kg": 18.14,
+      "reps": 14,
+      "delta_kg": 2.3
+    },
     {
       "exercise_id": "calf-raise",
       "date": "2026-07-10",
@@ -3085,6 +3512,226 @@
     }
   ],
   "personal_records": [
+    {
+      "exercise_id": "seated-leg-curl",
+      "date": "2026-07-17",
+      "type": "volume_pr",
+      "weight_kg": 31.75,
+      "reps": 15,
+      "total_volume_kg": 1428.8,
+      "delta_volume_kg": 63.6
+    },
+    {
+      "exercise_id": "hip-abductor-machine",
+      "date": "2026-07-17",
+      "type": "rep_pr",
+      "weight_kg": 49.9,
+      "reps": 17,
+      "delta_reps": 2
+    },
+    {
+      "exercise_id": "hip-abductor-machine",
+      "date": "2026-07-17",
+      "type": "volume_pr",
+      "weight_kg": 49.9,
+      "reps": 17,
+      "total_volume_kg": 2345.3,
+      "delta_volume_kg": 99.8
+    },
+    {
+      "exercise_id": "seated-db-shoulder-press",
+      "date": "2026-07-16",
+      "type": "volume_pr",
+      "weight_kg": 18.14,
+      "reps": 15,
+      "total_volume_kg": 707.5,
+      "delta_volume_kg": 90.7
+    },
+    {
+      "exercise_id": "single-arm-db-row",
+      "date": "2026-07-16",
+      "type": "volume_pr",
+      "weight_kg": 20.41,
+      "reps": 15,
+      "total_volume_kg": 796.0,
+      "delta_volume_kg": 81.4
+    },
+    {
+      "exercise_id": "side-plank",
+      "date": "2026-07-16",
+      "type": "rep_pr",
+      "weight_kg": 0,
+      "reps": 35,
+      "delta_reps": 5
+    },
+    {
+      "exercise_id": "pallof-press",
+      "date": "2026-07-16",
+      "type": "rep_pr",
+      "weight_kg": 13.61,
+      "reps": 15,
+      "delta_reps": 3
+    },
+    {
+      "exercise_id": "pallof-press",
+      "date": "2026-07-16",
+      "type": "volume_pr",
+      "weight_kg": 13.61,
+      "reps": 15,
+      "total_volume_kg": 571.6,
+      "delta_volume_kg": 81.6
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "date": "2026-07-15",
+      "type": "load_pr",
+      "weight_kg": 34.02,
+      "reps": 12,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "leg-press",
+      "date": "2026-07-15",
+      "type": "load_pr",
+      "weight_kg": 131.54,
+      "reps": 12,
+      "delta_kg": 4.5
+    },
+    {
+      "exercise_id": "calf-raise",
+      "date": "2026-07-15",
+      "type": "volume_pr",
+      "weight_kg": 104.33,
+      "reps": 12,
+      "total_volume_kg": 3755.9,
+      "delta_volume_kg": 417.3
+    },
+    {
+      "exercise_id": "barbell-back-squat",
+      "date": "2026-07-15",
+      "type": "load_pr",
+      "weight_kg": 58.97,
+      "reps": 8,
+      "delta_kg": 4.5
+    },
+    {
+      "exercise_id": "cable-rope-crunch",
+      "date": "2026-07-15",
+      "type": "load_pr",
+      "weight_kg": 20.41,
+      "reps": 15,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "cable-rope-crunch",
+      "date": "2026-07-15",
+      "type": "volume_pr",
+      "weight_kg": 20.41,
+      "reps": 15,
+      "total_volume_kg": 918.4,
+      "delta_volume_kg": 102.1
+    },
+    {
+      "exercise_id": "barbell-hip-thrust",
+      "date": "2026-07-15",
+      "type": "load_pr",
+      "weight_kg": 45.36,
+      "reps": 10,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "lat-pulldown",
+      "date": "2026-07-14",
+      "type": "load_pr",
+      "weight_kg": 58.97,
+      "reps": 10,
+      "delta_kg": 4.5
+    },
+    {
+      "exercise_id": "lat-pulldown",
+      "date": "2026-07-14",
+      "type": "volume_pr",
+      "weight_kg": 58.97,
+      "reps": 10,
+      "total_volume_kg": 1651.2,
+      "delta_volume_kg": 18.3
+    },
+    {
+      "exercise_id": "seated-cable-row",
+      "date": "2026-07-14",
+      "type": "load_pr",
+      "weight_kg": 45.36,
+      "reps": 13,
+      "delta_kg": 6.8
+    },
+    {
+      "exercise_id": "cable-face-pull",
+      "date": "2026-07-14",
+      "type": "load_pr",
+      "weight_kg": 22.68,
+      "reps": 15,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "cable-face-pull",
+      "date": "2026-07-14",
+      "type": "volume_pr",
+      "weight_kg": 22.68,
+      "reps": 15,
+      "total_volume_kg": 952.6,
+      "delta_volume_kg": 34.2
+    },
+    {
+      "exercise_id": "db-reverse-fly",
+      "date": "2026-07-14",
+      "type": "volume_pr",
+      "weight_kg": 6.8,
+      "reps": 15,
+      "total_volume_kg": 285.6,
+      "delta_volume_kg": 20.4
+    },
+    {
+      "exercise_id": "single-arm-db-row",
+      "date": "2026-07-14",
+      "type": "load_pr",
+      "weight_kg": 24.95,
+      "reps": 10,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "incline-db-bench-press",
+      "date": "2026-07-13",
+      "type": "load_pr",
+      "weight_kg": 27.22,
+      "reps": 10,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "db-lateral-raise",
+      "date": "2026-07-13",
+      "type": "volume_pr",
+      "weight_kg": 6.8,
+      "reps": 15,
+      "total_volume_kg": 306.0,
+      "delta_volume_kg": 34.0
+    },
+    {
+      "exercise_id": "overhead-db-tricep-extension",
+      "date": "2026-07-13",
+      "type": "load_pr",
+      "weight_kg": 18.14,
+      "reps": 14,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "overhead-db-tricep-extension",
+      "date": "2026-07-13",
+      "type": "volume_pr",
+      "weight_kg": 18.14,
+      "reps": 14,
+      "total_volume_kg": 725.6,
+      "delta_volume_kg": 26.9
+    },
     {
       "exercise_id": "seated-leg-curl",
       "date": "2026-07-10",
@@ -4482,8 +5129,8 @@
     },
     "2026-W29": {
       "planned": 5,
-      "completed": 0,
-      "completion_rate": 0.0
+      "completed": 5,
+      "completion_rate": 1.0
     }
   },
   "recovery_by_week": {

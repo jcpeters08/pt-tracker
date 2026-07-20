@@ -1,0 +1,215 @@
+{
+  "id": "2026-07-15-wednesday-legs",
+  "date": "2026-07-15",
+  "day_of_week": "wednesday",
+  "type": "legs",
+  "muscle_groups": [
+    "quads",
+    "hamstrings",
+    "glutes",
+    "calves",
+    "core",
+    "lower-back"
+  ],
+  "phase": "2",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "barbell-back-squat",
+      "display_name": "Barbell Back Squat",
+      "weight_raw": "130 lbs (59 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 58.97,
+          "reps": 8
+        },
+        {
+          "set": 2,
+          "weight_kg": 58.97,
+          "reps": 8
+        },
+        {
+          "set": 3,
+          "weight_kg": 58.97,
+          "reps": 8
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "leg-press",
+      "display_name": "45-Degree Incline Leg Press",
+      "weight_raw": "290 lbs (131.5 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 131.54,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 131.54,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 131.54,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "barbell-rdl",
+      "display_name": "Barbell Romanian Deadlift",
+      "weight_raw": "120 lbs (54.4 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 54.43,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 54.43,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 54.43,
+          "reps": 6
+        }
+      ],
+      "notes": "No straps- work on grip strength"
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "display_name": "Seated Leg Curl",
+      "weight_raw": "75 lbs (34 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 34.02,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 34.02,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 34.02,
+          "reps": 11
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "barbell-hip-thrust",
+      "display_name": "Barbell Hip Thrust",
+      "weight_raw": "100 lbs (45.4 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 45.36,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 45.36,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 45.36,
+          "reps": 10
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "calf-raise",
+      "display_name": "Standing Calf Raise (Machine)",
+      "weight_raw": "230 lbs (104.3 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 104.33,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 104.33,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 104.33,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "cable-rope-crunch",
+      "display_name": "Cable Rope Crunch",
+      "weight_raw": "45 lbs (20.4 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 20.41,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 20.41,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 20.41,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "back-extension",
+      "display_name": "Back Extension",
+      "weight_raw": "bodyweight",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 0.0,
+          "reps": 14
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "cooldown": {
+    "type": "library",
+    "source_key": "legs",
+    "completed_at": "2026-07-15T11:52:48.453Z"
+  },
+  "session_notes": "",
+  "submitted_at": "2026-07-15T11:52:49.488Z",
+  "source_md": "Workout Log/2026-07-15-Wednesday-Legs.md"
+}
