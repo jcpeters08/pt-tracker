@@ -3,10 +3,10 @@
   "entries": [
     {
       "type": "log",
-      "submitted_at": "2026-07-21T11:36:39.369Z",
+      "submitted_at": "2026-07-21T11:39:23.893Z",
       "session": {
         "date": "2026-07-21",
-        "submitted_at": "2026-07-21T11:36:39.369Z",
+        "submitted_at": "2026-07-21T11:39:23.893Z",
         "day_of_week": "tuesday",
         "type": "pull",
         "muscle_groups": [
@@ -90,6 +90,16 @@
             "sets": [
               {
                 "set": 1,
+                "weight_kg": 22.68,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.68,
+                "reps": 15
+              },
+              {
+                "set": 3,
                 "weight_kg": 22.68,
                 "reps": 15
               }
