@@ -203,6 +203,37 @@
         },
         "session_notes": ""
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-07-22T10:56:54.268Z",
+      "session": {
+        "date": "2026-07-22",
+        "submitted_at": "2026-07-22T10:56:54.268Z",
+        "day_of_week": "wednesday",
+        "type": "legs",
+        "muscle_groups": [
+          "quads"
+        ],
+        "routine_id": "2026-W30-Phase-2-Week-11-Progression",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "barbell-back-squat",
+            "display_name": "Barbell Back Squat",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 63.5,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": null,
+        "session_notes": ""
+      }
     }
   ]
 }
