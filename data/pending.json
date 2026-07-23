@@ -234,6 +234,138 @@
         "cooldown": null,
         "session_notes": ""
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-07-23T11:28:58.699Z",
+      "session": {
+        "date": "2026-07-23",
+        "submitted_at": "2026-07-23T11:28:58.699Z",
+        "day_of_week": "monday",
+        "type": "push",
+        "muscle_groups": [
+          "chest",
+          "shoulders",
+          "lateral-delts",
+          "triceps"
+        ],
+        "routine_id": "2026-W30-Phase-2-Week-11-Progression",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "incline-db-bench-press",
+            "display_name": "Incline Dumbbell Bench Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 27.22,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 27.22,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 27.22,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "flat-db-bench-press",
+            "display_name": "Flat Dumbbell Bench Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 24.95,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 24.95,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 24.95,
+                "reps": 8
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-db-shoulder-press",
+            "display_name": "Seated Dumbbell Shoulder Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 22.68,
+                "reps": 6
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.68,
+                "reps": 8
+              },
+              {
+                "set": 3,
+                "weight_kg": 22.68,
+                "reps": 8
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-lateral-raise",
+            "display_name": "Dumbbell Lateral Raise",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 6.8,
+                "reps": 13
+              },
+              {
+                "set": 2,
+                "weight_kg": 9.07,
+                "reps": 14
+              },
+              {
+                "set": 3,
+                "weight_kg": 9.07,
+                "reps": 14
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "overhead-db-tricep-extension",
+            "display_name": "Overhead Dumbbell Tricep Extension",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 20.41,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 20.41,
+                "reps": 14
+              },
+              {
+                "set": 3,
+                "weight_kg": 20.41,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": null,
+        "session_notes": ""
+      }
     }
   ]
 }
