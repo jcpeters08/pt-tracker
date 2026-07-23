@@ -237,10 +237,10 @@
     },
     {
       "type": "log",
-      "submitted_at": "2026-07-23T11:28:58.699Z",
+      "submitted_at": "2026-07-23T11:46:31.864Z",
       "session": {
         "date": "2026-07-23",
-        "submitted_at": "2026-07-23T11:28:58.699Z",
+        "submitted_at": "2026-07-23T11:46:31.864Z",
         "day_of_week": "monday",
         "type": "push",
         "muscle_groups": [
@@ -297,6 +297,28 @@
             "notes": ""
           },
           {
+            "exercise_id": "cable-chest-fly",
+            "display_name": "Cable Chest Fly",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 11.34,
+                "reps": 13
+              },
+              {
+                "set": 3,
+                "weight_kg": 11.34,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
             "exercise_id": "seated-db-shoulder-press",
             "display_name": "Seated Dumbbell Shoulder Press",
             "sets": [
@@ -341,6 +363,28 @@
             "notes": ""
           },
           {
+            "exercise_id": "rope-tricep-pushdown",
+            "display_name": "Rope Tricep Pushdown (Cable)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 15.88,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 15.88,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 15.88,
+                "reps": 11
+              }
+            ],
+            "notes": ""
+          },
+          {
             "exercise_id": "overhead-db-tricep-extension",
             "display_name": "Overhead Dumbbell Tricep Extension",
             "sets": [
@@ -363,7 +407,12 @@
             "notes": ""
           }
         ],
-        "cooldown": null,
+        "cooldown": {
+          "type": "library",
+          "source_key": "push",
+          "fitnessplus_name": "",
+          "completed_at": "2026-07-23T11:46:30.678Z"
+        },
         "session_notes": ""
       }
     }
