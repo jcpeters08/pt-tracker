@@ -418,14 +418,20 @@
     },
     {
       "type": "log",
-      "submitted_at": "2026-07-24T11:26:26.811Z",
+      "submitted_at": "2026-07-24T12:07:35.447Z",
       "session": {
         "date": "2026-07-24",
-        "submitted_at": "2026-07-24T11:26:26.811Z",
+        "submitted_at": "2026-07-24T12:07:35.447Z",
         "day_of_week": "friday",
         "type": "lower-hybrid",
         "muscle_groups": [
-          "quads"
+          "quads",
+          "hamstrings",
+          "glutes",
+          "adductors",
+          "calves",
+          "core",
+          "lower-back"
         ],
         "routine_id": "2026-W30-Phase-2-Week-11-Progression",
         "phase": "2",
@@ -473,9 +479,141 @@
               }
             ],
             "notes": ""
+          },
+          {
+            "exercise_id": "seated-leg-curl",
+            "display_name": "Seated Leg Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 31.75,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 31.75,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 31.75,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "hip-abductor-machine",
+            "display_name": "Hip Abductor Machine",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 52.16,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 52.16,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 52.16,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "hip-adductor-machine",
+            "display_name": "Hip Adductor Machine",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 29.48,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 29.48,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "single-leg-calf-raise",
+            "display_name": "Single-Leg Calf Raise (on Step)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 22.68,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.68,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 22.68,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "cable-rope-crunch",
+            "display_name": "Cable Rope Crunch",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 20.41,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 20.41,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 20.41,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "back-extension",
+            "display_name": "Back Extension",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 0,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 0,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 0,
+                "reps": 12
+              }
+            ],
+            "notes": ""
           }
         ],
-        "cooldown": null,
+        "cooldown": {
+          "type": "library",
+          "source_key": "upper-hybrid",
+          "fitnessplus_name": "",
+          "completed_at": "2026-07-24T12:07:34.881Z"
+        },
         "session_notes": ""
       }
     }
