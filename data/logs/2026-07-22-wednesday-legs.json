@@ -1,0 +1,35 @@
+{
+  "id": "2026-07-22-wednesday-legs",
+  "date": "2026-07-22",
+  "day_of_week": "wednesday",
+  "type": "legs",
+  "muscle_groups": [
+    "quads"
+  ],
+  "phase": "2",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "barbell-back-squat",
+      "display_name": "Barbell Back Squat",
+      "weight_raw": "140 lbs (63.5 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 63.5,
+          "reps": 10
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "cooldown": null,
+  "session_notes": "",
+  "submitted_at": "2026-07-22T10:56:54.268Z",
+  "source_md": "Workout Log/2026-07-22-Wednesday-Legs.md"
+}

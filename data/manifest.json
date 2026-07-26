@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-20T00:25:47Z",
+  "generated_at": "2026-07-26T21:59:50Z",
   "routines": [
     "2026-W18-CDMX-Phase-1-Closeout",
     "2026-W20-Phase-2-Launch-Reentry",
@@ -59,7 +59,12 @@
     "2026-07-14-tuesday-pull",
     "2026-07-15-wednesday-legs",
     "2026-07-16-thursday-upper-hybrid",
-    "2026-07-17-friday-lower-hybrid"
+    "2026-07-17-friday-lower-hybrid",
+    "2026-07-21-tuesday-pull",
+    "2026-07-22-wednesday-legs",
+    "2026-07-23-monday-push",
+    "2026-07-24-friday-lower-hybrid",
+    "2026-07-25-thursday-upper-hybrid"
   ],
   "recovery_logs": [
     "2026-05-14-embrace-north",
