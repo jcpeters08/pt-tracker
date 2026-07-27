@@ -1,4 +1,132 @@
 {
   "format_note": "Append-only inbox written by the web app. Daily scheduled task drains entries[] into vault MD files at Workout Log/YYYY-MM-DD-day-type.md and into data/logs/*.json, then resets to []. Schema: {type: 'log', submitted_at: ISO8601, session: {…full log object…}}",
-  "entries": []
+  "entries": [
+    {
+      "type": "log",
+      "submitted_at": "2026-07-27T11:27:53.614Z",
+      "session": {
+        "date": "2026-07-27",
+        "submitted_at": "2026-07-27T11:27:53.614Z",
+        "day_of_week": "monday",
+        "type": "legs",
+        "muscle_groups": [
+          "quads",
+          "hamstrings",
+          "calves",
+          "core"
+        ],
+        "routine_id": "2026-W31-Phase-2-Week-12-Progression",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "barbell-back-squat",
+            "display_name": "Barbell Back Squat",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 63.5,
+                "reps": 8
+              },
+              {
+                "set": 2,
+                "weight_kg": 63.5,
+                "reps": 8
+              },
+              {
+                "set": 3,
+                "weight_kg": 63.5,
+                "reps": 8
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "leg-press",
+            "display_name": "45-Degree Incline Leg Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 136.08,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 136.08,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 136.08,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-leg-curl",
+            "display_name": "Seated Leg Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 34.02,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 34.02,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 34.02,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "calf-raise",
+            "display_name": "Standing Calf Raise (Machine)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 108.86,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 108.86,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "cable-rope-crunch",
+            "display_name": "Cable Rope Crunch",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 22.68,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.68,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 22.68,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": null,
+        "session_notes": ""
+      }
+    }
+  ]
 }
