@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-28T01:43:33Z",
-  "log_count": 51,
+  "generated_at": "2026-07-28T16:14:28Z",
+  "log_count": 52,
   "recovery_count": 8,
   "lifts_per_week": {
     "2026-W16": {
@@ -79,7 +79,8 @@
       "thursday": "upper-hybrid"
     },
     "2026-W31": {
-      "monday": "legs"
+      "monday": "legs",
+      "tuesday": "push"
     }
   },
   "weekly_volume_by_muscle": [
@@ -820,6 +821,11 @@
     },
     {
       "week": "2026-W31",
+      "muscle": "chest",
+      "sets": 9
+    },
+    {
+      "week": "2026-W31",
       "muscle": "core",
       "sets": 3
     },
@@ -830,7 +836,22 @@
     },
     {
       "week": "2026-W31",
+      "muscle": "lateral-delts",
+      "sets": 3
+    },
+    {
+      "week": "2026-W31",
       "muscle": "quads",
+      "sets": 6
+    },
+    {
+      "week": "2026-W31",
+      "muscle": "shoulders",
+      "sets": 3
+    },
+    {
+      "week": "2026-W31",
+      "muscle": "triceps",
       "sets": 6
     }
   ],
@@ -954,6 +975,13 @@
         "top_set_reps": 15,
         "total_volume_kg": 918.4,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-28",
+        "top_set_weight_kg": 29.48,
+        "top_set_reps": 8,
+        "total_volume_kg": 678.0,
+        "sets_count": 3
       }
     ],
     "flat-db-bench-press": [
@@ -1046,6 +1074,13 @@
         "top_set_weight_kg": 24.95,
         "top_set_reps": 10,
         "total_volume_kg": 698.6,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-28",
+        "top_set_weight_kg": 24.95,
+        "top_set_reps": 10,
+        "total_volume_kg": 748.5,
         "sets_count": 3
       }
     ],
@@ -1148,6 +1183,13 @@
         "top_set_weight_kg": 15.88,
         "top_set_reps": 12,
         "total_volume_kg": 555.8,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-28",
+        "top_set_weight_kg": 15.88,
+        "top_set_reps": 12,
+        "total_volume_kg": 571.7,
         "sets_count": 3
       }
     ],
@@ -1269,6 +1311,13 @@
         "top_set_weight_kg": 18.14,
         "top_set_reps": 15,
         "total_volume_kg": 816.3,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-28",
+        "top_set_weight_kg": 22.68,
+        "top_set_reps": 10,
+        "total_volume_kg": 680.4,
         "sets_count": 3
       }
     ],
@@ -2500,6 +2549,13 @@
         "top_set_reps": 15,
         "total_volume_kg": 306.0,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-28",
+        "top_set_weight_kg": 9.07,
+        "top_set_reps": 8,
+        "total_volume_kg": 217.7,
+        "sets_count": 3
       }
     ],
     "single-arm-db-row": [
@@ -2805,6 +2861,13 @@
         "top_set_reps": 13,
         "total_volume_kg": 396.9,
         "sets_count": 3
+      },
+      {
+        "date": "2026-07-28",
+        "top_set_weight_kg": 11.34,
+        "top_set_reps": 15,
+        "total_volume_kg": 487.6,
+        "sets_count": 3
       }
     ],
     "overhead-db-tricep-extension": [
@@ -2869,6 +2932,13 @@
         "top_set_weight_kg": 20.41,
         "top_set_reps": 15,
         "total_volume_kg": 836.8,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-07-28",
+        "top_set_weight_kg": 22.68,
+        "top_set_reps": 12,
+        "total_volume_kg": 771.1,
         "sets_count": 3
       }
     ],
@@ -3316,6 +3386,27 @@
     ]
   },
   "prs": [
+    {
+      "exercise_id": "incline-db-bench-press",
+      "date": "2026-07-28",
+      "weight_kg": 29.48,
+      "reps": 8,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "db-lateral-raise",
+      "date": "2026-07-28",
+      "weight_kg": 9.07,
+      "reps": 8,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "overhead-db-tricep-extension",
+      "date": "2026-07-28",
+      "weight_kg": 22.68,
+      "reps": 12,
+      "delta_kg": 2.3
+    },
     {
       "exercise_id": "leg-press",
       "date": "2026-07-27",
@@ -3962,6 +4053,55 @@
     }
   ],
   "personal_records": [
+    {
+      "exercise_id": "incline-db-bench-press",
+      "date": "2026-07-28",
+      "type": "load_pr",
+      "weight_kg": 29.48,
+      "reps": 8,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "seated-db-shoulder-press",
+      "date": "2026-07-28",
+      "type": "rep_pr",
+      "weight_kg": 22.68,
+      "reps": 10,
+      "delta_reps": 2
+    },
+    {
+      "exercise_id": "db-lateral-raise",
+      "date": "2026-07-28",
+      "type": "load_pr",
+      "weight_kg": 9.07,
+      "reps": 8,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "cable-chest-fly",
+      "date": "2026-07-28",
+      "type": "rep_pr",
+      "weight_kg": 11.34,
+      "reps": 15,
+      "delta_reps": 2
+    },
+    {
+      "exercise_id": "cable-chest-fly",
+      "date": "2026-07-28",
+      "type": "volume_pr",
+      "weight_kg": 11.34,
+      "reps": 15,
+      "total_volume_kg": 487.6,
+      "delta_volume_kg": 45.3
+    },
+    {
+      "exercise_id": "overhead-db-tricep-extension",
+      "date": "2026-07-28",
+      "type": "load_pr",
+      "weight_kg": 22.68,
+      "reps": 12,
+      "delta_kg": 2.3
+    },
     {
       "exercise_id": "leg-press",
       "date": "2026-07-27",
@@ -5774,8 +5914,8 @@
     },
     "2026-W31": {
       "planned": 5,
-      "completed": 1,
-      "completion_rate": 0.2
+      "completed": 2,
+      "completion_rate": 0.4
     },
     "2026-W32": {
       "planned": 5,
