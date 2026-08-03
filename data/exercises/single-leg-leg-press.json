@@ -1,0 +1,33 @@
+{
+  "id": "single-leg-leg-press",
+  "name": "Single-Leg Leg Press",
+  "primary_muscle": "quads",
+  "secondary_muscles": [
+    "glutes",
+    "hamstrings"
+  ],
+  "equipment": [
+    "plate-loaded-machine"
+  ],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg",
+  "video_url": "https://www.muscleandstrength.com/exercises/single-leg-press",
+  "form_cues": [
+    "Weaker (left) leg first; right leg only matches the reps the left earned",
+    "Foot mid-platform, push through mid-foot",
+    "Don't lock out at the top; control the descent"
+  ],
+  "default_load_unit": "kg",
+  "notes": "Unilateral asymmetry slot: left leg carries -1.6 lbs lean vs right (DEXA 2026-06-24). Left leg gets one extra set.",
+  "image_source": "yuhonas/free-exercise-db (public domain)",
+  "image_match": "No dedicated single-leg folder exists (probed Single_Leg_Press, Single-Leg_Press, One-Legged_Leg_Press, One_Leg_Press, Single_Leg_Leg_Press — all 404; keyword search of dist/exercises.json shows only bilateral variants). Reused canonical Leg_Press/0.jpg — identical machine and movement, one-leg execution.",
+  "video_source": "muscleandstrength.com",
+  "video_id": null,
+  "video_id_query": "Single-Leg Leg Press how to proper form",
+  "instructions": [
+    "Sit in the leg press machine and place one foot on the platform, centered mid-platform, with the other foot resting on the floor or frame.",
+    "Release the safety bars and lower the platform under control until your knee approaches a 90-degree angle.",
+    "Press back to the start by driving through mid-foot, without locking the knee at the top.",
+    "Complete all reps with the weaker (left) leg first, then match only that rep count with the right leg.",
+    "Re-set the safety pins before exiting the machine."
+  ]
+}
