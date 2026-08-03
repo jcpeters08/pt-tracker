@@ -674,8 +674,8 @@
 
   <!-- PAT setup panel -->
   <section id="pat-panel" class="setup hidden">
-    <h2>One-time setup — add your GitHub token</h2>
-    <p>This app reads your routines from the GitHub repo and writes back logged sessions. It needs a personal access token scoped to <code>jcpeters08/pt-tracker</code>.</p>
+    <h2>Add or replace your GitHub token</h2>
+    <p>This app reads your routines from the GitHub repo and writes back logged sessions. It needs a personal access token scoped to <code>jcpeters08/pt-tracker</code>. Saving here overwrites any previously stored token (use this when a token expires).</p>
     <ol>
       <li>Open <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">github.com/settings/tokens?type=beta</a> → Fine-grained PAT.</li>
       <li><b>Repository access:</b> Only select repositories → <code>jcpeters08/pt-tracker</code>.</li>
@@ -685,6 +685,7 @@
     <div class="row">
       <input id="pat-input" type="password" placeholder="github_pat_..." autocomplete="off" spellcheck="false">
       <button class="btn" id="pat-save">Test &amp; save</button>
+      <button class="btn subtle hidden" id="pat-cancel">Cancel</button>
     </div>
     <div class="status-msg" id="pat-status"></div>
   </section>
@@ -708,6 +709,7 @@
       <p style="text-align:center; margin: 6px 0 0; font-size: 12px; color: var(--ink-muted);">
         Saves to GitHub now. Synced to your vault overnight.
         · <a href="reports.html">Reports →</a>
+        · <a href="#" id="replace-token-link">Replace token</a>
       </p>
       <div class="skip-row">
         <button class="skip-link" id="skip-btn" type="button">I didn't do this workout — mark as skipped</button>
@@ -1249,6 +1251,8 @@ function showPanel(which) {
   $("#pat-panel").classList.toggle("hidden", which !== "pat");
   $("#app").classList.toggle("hidden", which !== "app");
   $("#signout-btn").classList.toggle("hidden", which !== "app");
+  // Replacement mode: a token is already vaulted, so offer a way back.
+  if (which === "pat") $("#pat-cancel").classList.toggle("hidden", !state.hasPat);
 }
 
 function bindSigninPanel() {
@@ -1305,6 +1309,11 @@ function bindPatPanel() {
       $("#pat-status").className = "status-msg err";
       $("#pat-status").textContent = e.message;
     }
+  });
+  $("#pat-cancel").addEventListener("click", () => {
+    $("#pat-status").textContent = "";
+    $("#pat-input").value = "";
+    showPanel("app");
   });
 }
 
@@ -1645,12 +1654,14 @@ async function submitRecovery() {
     setTimeout(() => { btn.disabled = false; }, 1000);
   } catch (e) {
     console.error("submitRecovery", e);
-    const msg = /403/.test(e.message)
-      ? "Recovery save failed: GitHub denied the write (403). Token needs Contents: Read and write."
+    const denied = /403/.test(e.message);
+    const msg = denied
+      ? "Recovery save failed: GitHub denied the write (403) — token expired or lost access. Paste a fresh one."
       : `Recovery save failed: ${e.message}`;
     toast(msg, "err");
     btn.textContent = "Log recovery session";
     btn.disabled = false;
+    if (denied) showPanel("pat");
   } finally {
     state.recoverySubmitting = false;
   }
@@ -1686,11 +1697,13 @@ async function submitSkip() {
     setTimeout(() => { btn.disabled = false; renderApp(); }, 1500);
   } catch (e) {
     console.error("submitSkip:", e);
-    const msg = /403/.test(e.message)
-      ? "Skip failed: GitHub denied the write (403). Token needs Contents: Read and write."
+    const denied = /403/.test(e.message);
+    const msg = denied
+      ? "Skip failed: GitHub denied the write (403) — token expired or lost access. Paste a fresh one."
       : `Skip failed: ${e.message}`;
     toast(msg, "err");
     btn.disabled = false;
+    if (denied) showPanel("pat");
   } finally {
     state.submitting = false;
   }
@@ -1742,12 +1755,14 @@ async function submitSession() {
     console.error("submitSession:", e);
     // Be explicit about a 403 so the user knows it's a token-permission
     // problem, not an app bug.
-    const msg = /403/.test(e.message)
-      ? "Submit failed: GitHub denied the write (403). Your PAT lost write access — sign out and re-paste a token with Contents: Read and write."
+    const denied = /403/.test(e.message);
+    const msg = denied
+      ? "Submit failed: GitHub denied the write (403) — token expired or lost access. Paste a fresh one below."
       : `Submit failed: ${e.message}`;
     toast(msg, "err");
     btn.textContent = "Submit session";
     btn.disabled = false;
+    if (denied) showPanel("pat");
   } finally {
     state.submitting = false;
     // Belt-and-suspenders: never end with a green toast if the write failed.
@@ -1904,6 +1919,10 @@ document.addEventListener("DOMContentLoaded", () => {
   bindSigninPanel();
   bindPatPanel();
   $("#signout-btn").addEventListener("click", signOut);
+  $("#replace-token-link").addEventListener("click", (e) => {
+    e.preventDefault();
+    showPanel("pat");
+  });
 
   // Routine picker popover
   const _routineBtn = document.getElementById("routine-label");
