@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-03T21:40:26Z",
+  "generated_at": "2026-08-06T00:31:27Z",
   "routines": [
     "2026-W18-CDMX-Phase-1-Closeout",
     "2026-W20-Phase-2-Launch-Reentry",
@@ -69,7 +69,9 @@
     "2026-07-25-thursday-upper-hybrid",
     "2026-07-27-monday-legs",
     "2026-07-28-tuesday-push",
-    "2026-07-29-wednesday-pull"
+    "2026-07-29-wednesday-pull",
+    "2026-08-04-tuesday-push",
+    "2026-08-05-wednesday-pull"
   ],
   "recovery_logs": [
     "2026-05-14-embrace-north",
@@ -79,7 +81,8 @@
     "2026-05-26-embrace-north",
     "2026-05-28-embrace-north",
     "2026-06-01-embrace-north",
-    "2026-06-08-embrace-north"
+    "2026-06-08-embrace-north",
+    "2026-08-04-embrace-north"
   ],
   "exercises": [
     "back-extension",
