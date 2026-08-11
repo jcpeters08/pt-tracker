@@ -408,11 +408,32 @@
       }
     },
     {
+      "type": "recovery",
+      "submitted_at": "2026-08-09T19:08:13.832Z",
+      "session": {
+        "date": "2026-08-09",
+        "location": "Embrace North",
+        "rounds": 1,
+        "sauna_min": 15,
+        "plunge_min": 3,
+        "total_min": 18,
+        "rounds_detail": [
+          {
+            "round": 1,
+            "sauna_min": 15,
+            "plunge_min": 3
+          }
+        ],
+        "notes": "",
+        "submitted_at": "2026-08-09T19:08:13.832Z"
+      }
+    },
+    {
       "type": "log",
-      "submitted_at": "2026-08-09T19:07:42.405Z",
+      "submitted_at": "2026-08-11T11:36:26.898Z",
       "session": {
         "date": "2026-08-04",
-        "submitted_at": "2026-08-09T19:07:42.405Z",
+        "submitted_at": "2026-08-11T11:36:26.898Z",
         "day_of_week": "tuesday",
         "type": "push",
         "muscle_groups": [
@@ -444,7 +465,7 @@
                 "reps": 5
               }
             ],
-            "notes": ""
+            "notes": "8/11: 11, 10, 9"
           },
           {
             "exercise_id": "flat-db-bench-press",
@@ -466,7 +487,7 @@
                 "reps": 8
               }
             ],
-            "notes": ""
+            "notes": "8/11: 10,10, 9"
           },
           {
             "exercise_id": "cable-chest-fly",
@@ -488,7 +509,7 @@
                 "reps": 6
               }
             ],
-            "notes": ""
+            "notes": "8/11: 10, , 10, 9"
           },
           {
             "exercise_id": "seated-db-shoulder-press",
@@ -510,7 +531,7 @@
                 "reps": 5
               }
             ],
-            "notes": ""
+            "notes": "8/11: 8, 7, 6 "
           },
           {
             "exercise_id": "db-lateral-raise",
@@ -532,7 +553,7 @@
                 "reps": 9
               }
             ],
-            "notes": ""
+            "notes": "8/11: 9, 8, ,8"
           },
           {
             "exercise_id": "rope-tricep-pushdown",
@@ -554,7 +575,7 @@
                 "reps": 10
               }
             ],
-            "notes": ""
+            "notes": "8/11: 10, 9, 9"
           },
           {
             "exercise_id": "overhead-db-tricep-extension",
@@ -576,7 +597,7 @@
                 "reps": 11
               }
             ],
-            "notes": ""
+            "notes": "8/11: 12, 14"
           }
         ],
         "cooldown": {
@@ -586,27 +607,6 @@
           "completed_at": "2026-08-04T11:42:50.924Z"
         },
         "session_notes": ""
-      }
-    },
-    {
-      "type": "recovery",
-      "submitted_at": "2026-08-09T19:08:13.832Z",
-      "session": {
-        "date": "2026-08-09",
-        "location": "Embrace North",
-        "rounds": 1,
-        "sauna_min": 15,
-        "plunge_min": 3,
-        "total_min": 18,
-        "rounds_detail": [
-          {
-            "round": 1,
-            "sauna_min": 15,
-            "plunge_min": 3
-          }
-        ],
-        "notes": "",
-        "submitted_at": "2026-08-09T19:08:13.832Z"
       }
     }
   ]
