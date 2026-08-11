@@ -1,0 +1,216 @@
+{
+  "id": "2026-08-09-saturday-lower-hybrid",
+  "date": "2026-08-09",
+  "day_of_week": "saturday",
+  "type": "lower-hybrid",
+  "muscle_groups": [
+    "quads",
+    "hamstrings",
+    "glutes",
+    "adductors",
+    "calves",
+    "core",
+    "lower-back"
+  ],
+  "phase": "2",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "single-leg-leg-press",
+      "display_name": "Single-Leg Leg Press",
+      "weight_raw": "140 lbs (63.5 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 63.5,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 63.5,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 63.5,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-walking-lunge",
+      "display_name": "Dumbbell Walking Lunge",
+      "weight_raw": "30 lbs (13.6 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 13.61,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 13.61,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 13.61,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "display_name": "Seated Leg Curl",
+      "weight_raw": "70 lbs (31.8 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 31.75,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 31.75,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 31.75,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "hip-abductor-machine",
+      "display_name": "Hip Abductor Machine",
+      "weight_raw": "120 lbs (54.4 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 54.43,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 54.43,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 54.43,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "hip-adductor-machine",
+      "display_name": "Hip Adductor Machine",
+      "weight_raw": "65 lbs (29.5 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 29.48,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 29.48,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 29.48,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "single-leg-calf-raise",
+      "display_name": "Single-Leg Calf Raise (on Step)",
+      "weight_raw": "50 lbs (22.7 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 22.68,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 22.68,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 22.68,
+          "reps": 14
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "cable-rope-crunch",
+      "display_name": "Cable Rope Crunch",
+      "weight_raw": "45 lbs (20.4 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 20.41,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 20.41,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 20.41,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "back-extension",
+      "display_name": "Back Extension",
+      "weight_raw": "bodyweight",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 0.0,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "cooldown": {
+    "type": "library",
+    "source_key": "upper-hybrid",
+    "completed_at": "2026-08-09T15:47:58.215Z"
+  },
+  "session_notes": "",
+  "submitted_at": "2026-08-09T15:48:00.150Z",
+  "source_md": "Workout Log/2026-08-09-Saturday-Lower-Hybrid.md"
+}

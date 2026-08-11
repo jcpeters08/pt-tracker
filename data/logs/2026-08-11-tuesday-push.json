@@ -1,6 +1,6 @@
 {
-  "id": "2026-08-04-tuesday-push",
-  "date": "2026-08-04",
+  "id": "2026-08-11-tuesday-push",
+  "date": "2026-08-11",
   "day_of_week": "tuesday",
   "type": "push",
   "muscle_groups": [
@@ -25,17 +25,17 @@
         {
           "set": 1,
           "weight_kg": 29.48,
-          "reps": 10
+          "reps": 11
         },
         {
           "set": 2,
           "weight_kg": 29.48,
-          "reps": 8
+          "reps": 10
         },
         {
           "set": 3,
           "weight_kg": 29.48,
-          "reps": 5
+          "reps": 9
         }
       ],
       "notes": ""
@@ -48,17 +48,17 @@
         {
           "set": 1,
           "weight_kg": 27.22,
-          "reps": 8
+          "reps": 10
         },
         {
           "set": 2,
           "weight_kg": 27.22,
-          "reps": 8
+          "reps": 10
         },
         {
           "set": 3,
           "weight_kg": 27.22,
-          "reps": 8
+          "reps": 9
         }
       ],
       "notes": ""
@@ -71,17 +71,17 @@
         {
           "set": 1,
           "weight_kg": 13.61,
-          "reps": 9
+          "reps": 10
         },
         {
           "set": 2,
           "weight_kg": 13.61,
-          "reps": 9
+          "reps": 10
         },
         {
           "set": 3,
           "weight_kg": 13.61,
-          "reps": 6
+          "reps": 9
         }
       ],
       "notes": ""
@@ -94,17 +94,17 @@
         {
           "set": 1,
           "weight_kg": 24.95,
-          "reps": 6
+          "reps": 8
         },
         {
           "set": 2,
           "weight_kg": 24.95,
-          "reps": 6
+          "reps": 7
         },
         {
           "set": 3,
           "weight_kg": 24.95,
-          "reps": 5
+          "reps": 6
         }
       ],
       "notes": ""
@@ -117,17 +117,17 @@
         {
           "set": 1,
           "weight_kg": 9.07,
-          "reps": 8
+          "reps": 9
         },
         {
           "set": 2,
           "weight_kg": 9.07,
-          "reps": 9
+          "reps": 8
         },
         {
           "set": 3,
           "weight_kg": 9.07,
-          "reps": 9
+          "reps": 8
         }
       ],
       "notes": ""
@@ -140,17 +140,17 @@
         {
           "set": 1,
           "weight_kg": 18.14,
-          "reps": 8
+          "reps": 10
         },
         {
           "set": 2,
           "weight_kg": 18.14,
-          "reps": 8
+          "reps": 9
         },
         {
           "set": 3,
           "weight_kg": 18.14,
-          "reps": 10
+          "reps": 9
         }
       ],
       "notes": ""
@@ -168,23 +168,14 @@
         {
           "set": 2,
           "weight_kg": 22.68,
-          "reps": 12
-        },
-        {
-          "set": 3,
-          "weight_kg": 22.68,
-          "reps": 11
+          "reps": 14
         }
       ],
       "notes": ""
     }
   ],
-  "cooldown": {
-    "type": "library",
-    "source_key": "push",
-    "completed_at": "2026-08-04T11:42:50.924Z"
-  },
-  "session_notes": "",
-  "submitted_at": "2026-08-09T19:07:42.405Z",
-  "source_md": "Workout Log/2026-08-04-Tuesday-Push.md"
+  "cooldown": null,
+  "session_notes": "Done Tue 8/11 via the W32 Tue 8/4 view (W33 plan not yet published); actuals recovered from per-exercise notes.",
+  "submitted_at": "2026-08-11T11:36:26.898Z",
+  "source_md": "Workout Log/2026-08-11-Tuesday-Push.md"
 }
