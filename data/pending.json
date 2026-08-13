@@ -206,16 +206,17 @@
     },
     {
       "type": "log",
-      "submitted_at": "2026-08-13T11:26:22.625Z",
+      "submitted_at": "2026-08-13T11:34:56.034Z",
       "session": {
         "date": "2026-08-13",
-        "submitted_at": "2026-08-13T11:26:22.625Z",
+        "submitted_at": "2026-08-13T11:34:56.034Z",
         "day_of_week": "thursday",
         "type": "legs",
         "muscle_groups": [
           "quads",
           "hamstrings",
-          "glutes"
+          "glutes",
+          "calves"
         ],
         "routine_id": "2026-W33-Phase-2-Week-14-Progression",
         "phase": "2",
@@ -326,6 +327,23 @@
                 "set": 3,
                 "weight_kg": 49.9,
                 "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "calf-raise",
+            "display_name": "Standing Calf Raise (Machine)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 113.4,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 113.4,
+                "reps": 12
               }
             ],
             "notes": ""
