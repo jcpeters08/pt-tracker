@@ -206,17 +206,19 @@
     },
     {
       "type": "log",
-      "submitted_at": "2026-08-13T11:34:56.034Z",
+      "submitted_at": "2026-08-13T11:49:37.182Z",
       "session": {
         "date": "2026-08-13",
-        "submitted_at": "2026-08-13T11:34:56.034Z",
+        "submitted_at": "2026-08-13T11:49:37.182Z",
         "day_of_week": "thursday",
         "type": "legs",
         "muscle_groups": [
           "quads",
           "hamstrings",
           "glutes",
-          "calves"
+          "calves",
+          "core",
+          "lower-back"
         ],
         "routine_id": "2026-W33-Phase-2-Week-14-Progression",
         "phase": "2",
@@ -344,12 +346,66 @@
                 "set": 2,
                 "weight_kg": 113.4,
                 "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 113.4,
+                "reps": 12
               }
             ],
             "notes": ""
+          },
+          {
+            "exercise_id": "cable-rope-crunch",
+            "display_name": "Cable Rope Crunch",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 24.95,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 24.95,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 24.95,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "back-extension",
+            "display_name": "Back Extension",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 0,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 0,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 0,
+                "reps": 15
+              }
+            ],
+            "notes": "You saying plate jump but there’s no weight and it says body weight "
           }
         ],
-        "cooldown": null,
+        "cooldown": {
+          "type": "library",
+          "source_key": "legs",
+          "fitnessplus_name": "",
+          "completed_at": "2026-08-13T11:49:30.890Z"
+        },
         "session_notes": ""
       }
     }
