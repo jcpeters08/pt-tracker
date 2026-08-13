@@ -203,6 +203,137 @@
         },
         "session_notes": ""
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-08-13T11:26:22.625Z",
+      "session": {
+        "date": "2026-08-13",
+        "submitted_at": "2026-08-13T11:26:22.625Z",
+        "day_of_week": "thursday",
+        "type": "legs",
+        "muscle_groups": [
+          "quads",
+          "hamstrings",
+          "glutes"
+        ],
+        "routine_id": "2026-W33-Phase-2-Week-14-Progression",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "barbell-back-squat",
+            "display_name": "Barbell Back Squat",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 68.04,
+                "reps": 8
+              },
+              {
+                "set": 2,
+                "weight_kg": 68.04,
+                "reps": 8
+              },
+              {
+                "set": 3,
+                "weight_kg": 68.04,
+                "reps": 8
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "leg-press",
+            "display_name": "45-Degree Incline Leg Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 145.15,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 145.15,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 145.15,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "barbell-rdl",
+            "display_name": "Barbell Romanian Deadlift",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 54.43,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 54.43,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 54.43,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-leg-curl",
+            "display_name": "Seated Leg Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 36.29,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 36.29,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 36.29,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "barbell-hip-thrust",
+            "display_name": "Barbell Hip Thrust",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 49.9,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 49.9,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 49.9,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": null,
+        "session_notes": ""
+      }
     }
   ]
 }
