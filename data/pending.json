@@ -184,16 +184,17 @@
     },
     {
       "type": "log",
-      "submitted_at": "2026-08-19T11:22:35.694Z",
+      "submitted_at": "2026-08-19T11:28:36.104Z",
       "session": {
         "date": "2026-08-19",
-        "submitted_at": "2026-08-19T11:22:35.694Z",
+        "submitted_at": "2026-08-19T11:28:36.104Z",
         "day_of_week": "wednesday",
         "type": "pull",
         "muscle_groups": [
           "back",
           "rear-delts",
-          "biceps"
+          "biceps",
+          "core"
         ],
         "routine_id": "2026-W34-Phase-2-Week-15-Progression",
         "phase": "2",
@@ -265,6 +266,28 @@
             "notes": ""
           },
           {
+            "exercise_id": "cable-face-pull",
+            "display_name": "Cable Face Pull",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 27.22,
+                "reps": 14
+              },
+              {
+                "set": 2,
+                "weight_kg": 27.22,
+                "reps": 11
+              },
+              {
+                "set": 3,
+                "weight_kg": 27.22,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
             "exercise_id": "db-reverse-fly",
             "display_name": "Dumbbell Reverse Fly",
             "sets": [
@@ -329,9 +352,36 @@
               }
             ],
             "notes": ""
+          },
+          {
+            "exercise_id": "suitcase-carry",
+            "display_name": "Suitcase Carry",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 34.02,
+                "reps": 30
+              },
+              {
+                "set": 2,
+                "weight_kg": 34.02,
+                "reps": 30
+              },
+              {
+                "set": 3,
+                "weight_kg": 34.02,
+                "reps": 20
+              }
+            ],
+            "notes": ""
           }
         ],
-        "cooldown": null,
+        "cooldown": {
+          "type": "library",
+          "source_key": "pull",
+          "fitnessplus_name": "",
+          "completed_at": "2026-08-19T11:28:34.943Z"
+        },
         "session_notes": ""
       }
     }
