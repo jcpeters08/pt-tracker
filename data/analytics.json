@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-08-17T20:59:00Z",
-  "log_count": 61,
+  "generated_at": "2026-08-24T00:54:46Z",
+  "log_count": 63,
   "recovery_count": 11,
   "lifts_per_week": {
     "2026-W16": {
@@ -94,6 +94,10 @@
       "wednesday": "pull",
       "thursday": "legs",
       "friday": "upper-hybrid"
+    },
+    "2026-W34": {
+      "tuesday": "push",
+      "wednesday": "pull"
     }
   },
   "weekly_volume_by_muscle": [
@@ -1021,6 +1025,46 @@
       "week": "2026-W33",
       "muscle": "triceps",
       "sets": 8
+    },
+    {
+      "week": "2026-W34",
+      "muscle": "back",
+      "sets": 9
+    },
+    {
+      "week": "2026-W34",
+      "muscle": "biceps",
+      "sets": 6
+    },
+    {
+      "week": "2026-W34",
+      "muscle": "chest",
+      "sets": 9
+    },
+    {
+      "week": "2026-W34",
+      "muscle": "core",
+      "sets": 3
+    },
+    {
+      "week": "2026-W34",
+      "muscle": "lateral-delts",
+      "sets": 3
+    },
+    {
+      "week": "2026-W34",
+      "muscle": "rear-delts",
+      "sets": 6
+    },
+    {
+      "week": "2026-W34",
+      "muscle": "shoulders",
+      "sets": 3
+    },
+    {
+      "week": "2026-W34",
+      "muscle": "triceps",
+      "sets": 6
     }
   ],
   "exercise_progression": {
@@ -1171,6 +1215,13 @@
         "top_set_reps": 15,
         "total_volume_kg": 884.5,
         "sets_count": 3
+      },
+      {
+        "date": "2026-08-18",
+        "top_set_weight_kg": 27.22,
+        "top_set_reps": 10,
+        "total_volume_kg": 762.2,
+        "sets_count": 3
       }
     ],
     "flat-db-bench-press": [
@@ -1284,6 +1335,13 @@
         "top_set_weight_kg": 27.22,
         "top_set_reps": 10,
         "total_volume_kg": 789.4,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-08-18",
+        "top_set_weight_kg": 24.95,
+        "top_set_reps": 10,
+        "total_volume_kg": 748.5,
         "sets_count": 3
       }
     ],
@@ -1407,6 +1465,13 @@
         "top_set_weight_kg": 18.14,
         "top_set_reps": 10,
         "total_volume_kg": 507.9,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-08-18",
+        "top_set_weight_kg": 18.14,
+        "top_set_reps": 10,
+        "total_volume_kg": 471.6,
         "sets_count": 3
       }
     ],
@@ -1556,6 +1621,13 @@
         "top_set_weight_kg": 20.41,
         "top_set_reps": 15,
         "total_volume_kg": 918.4,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-08-18",
+        "top_set_weight_kg": 22.68,
+        "top_set_reps": 10,
+        "total_volume_kg": 635.0,
         "sets_count": 3
       }
     ],
@@ -2171,6 +2243,13 @@
         "top_set_reps": 8,
         "total_volume_kg": 1524.0,
         "sets_count": 3
+      },
+      {
+        "date": "2026-08-19",
+        "top_set_weight_kg": 68.04,
+        "top_set_reps": 7,
+        "total_volume_kg": 1360.8,
+        "sets_count": 3
       }
     ],
     "seated-cable-row": [
@@ -2249,6 +2328,13 @@
         "top_set_weight_kg": 54.43,
         "top_set_reps": 12,
         "total_volume_kg": 1959.5,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-08-19",
+        "top_set_weight_kg": 56.7,
+        "top_set_reps": 12,
+        "total_volume_kg": 2041.2,
         "sets_count": 3
       }
     ],
@@ -2422,6 +2508,13 @@
         "top_set_reps": 15,
         "total_volume_kg": 1020.6,
         "sets_count": 3
+      },
+      {
+        "date": "2026-08-19",
+        "top_set_weight_kg": 27.22,
+        "top_set_reps": 14,
+        "total_volume_kg": 1007.1,
+        "sets_count": 3
       }
     ],
     "hammer-curl": [
@@ -2500,6 +2593,13 @@
         "top_set_weight_kg": 13.61,
         "top_set_reps": 9,
         "total_volume_kg": 353.9,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-08-19",
+        "top_set_weight_kg": 13.61,
+        "top_set_reps": 9,
+        "total_volume_kg": 340.2,
         "sets_count": 3
       }
     ],
@@ -2645,6 +2745,13 @@
         "top_set_weight_kg": 9.07,
         "top_set_reps": 15,
         "total_volume_kg": 371.9,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-08-19",
+        "top_set_weight_kg": 9.07,
+        "top_set_reps": 15,
+        "total_volume_kg": 380.9,
         "sets_count": 3
       }
     ],
@@ -2820,6 +2927,13 @@
         "top_set_weight_kg": 27.22,
         "top_set_reps": 8,
         "total_volume_kg": 653.3,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-08-19",
+        "top_set_weight_kg": 27.22,
+        "top_set_reps": 10,
+        "total_volume_kg": 734.9,
         "sets_count": 3
       }
     ],
@@ -3004,6 +3118,13 @@
         "top_set_reps": 15,
         "total_volume_kg": 306.0,
         "sets_count": 3
+      },
+      {
+        "date": "2026-08-18",
+        "top_set_weight_kg": 9.07,
+        "top_set_reps": 9,
+        "total_volume_kg": 226.8,
+        "sets_count": 3
       }
     ],
     "single-arm-db-row": [
@@ -3124,6 +3245,13 @@
         "top_set_weight_kg": 22.68,
         "top_set_reps": 12,
         "total_volume_kg": 816.5,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-08-19",
+        "top_set_weight_kg": 29.48,
+        "top_set_reps": 8,
+        "total_volume_kg": 707.5,
         "sets_count": 3
       }
     ],
@@ -3379,6 +3507,13 @@
         "top_set_reps": 10,
         "total_volume_kg": 394.7,
         "sets_count": 3
+      },
+      {
+        "date": "2026-08-18",
+        "top_set_weight_kg": 13.61,
+        "top_set_reps": 9,
+        "total_volume_kg": 340.2,
+        "sets_count": 3
       }
     ],
     "overhead-db-tricep-extension": [
@@ -3465,6 +3600,13 @@
         "top_set_reps": 14,
         "total_volume_kg": 589.7,
         "sets_count": 2
+      },
+      {
+        "date": "2026-08-18",
+        "top_set_weight_kg": 22.68,
+        "top_set_reps": 12,
+        "total_volume_kg": 816.5,
+        "sets_count": 3
       }
     ],
     "suitcase-carry": [
@@ -3536,6 +3678,13 @@
         "top_set_weight_kg": 34.02,
         "top_set_reps": 30,
         "total_volume_kg": 3061.8,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-08-19",
+        "top_set_weight_kg": 34.02,
+        "top_set_reps": 30,
+        "total_volume_kg": 2721.6,
         "sets_count": 3
       }
     ],
@@ -4053,6 +4202,27 @@
     ]
   },
   "prs": [
+    {
+      "exercise_id": "lat-pulldown",
+      "date": "2026-08-19",
+      "weight_kg": 68.04,
+      "reps": 7,
+      "delta_kg": 4.5
+    },
+    {
+      "exercise_id": "seated-cable-row",
+      "date": "2026-08-19",
+      "weight_kg": 56.7,
+      "reps": 12,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "cable-face-pull",
+      "date": "2026-08-19",
+      "weight_kg": 27.22,
+      "reps": 14,
+      "delta_kg": 2.3
+    },
     {
       "exercise_id": "pallof-press",
       "date": "2026-08-14",
@@ -4874,6 +5044,48 @@
     }
   ],
   "personal_records": [
+    {
+      "exercise_id": "lat-pulldown",
+      "date": "2026-08-19",
+      "type": "load_pr",
+      "weight_kg": 68.04,
+      "reps": 7,
+      "delta_kg": 4.5
+    },
+    {
+      "exercise_id": "seated-cable-row",
+      "date": "2026-08-19",
+      "type": "load_pr",
+      "weight_kg": 56.7,
+      "reps": 12,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "cable-face-pull",
+      "date": "2026-08-19",
+      "type": "load_pr",
+      "weight_kg": 27.22,
+      "reps": 14,
+      "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "db-reverse-fly",
+      "date": "2026-08-19",
+      "type": "volume_pr",
+      "weight_kg": 9.07,
+      "reps": 15,
+      "total_volume_kg": 380.9,
+      "delta_volume_kg": 9.0
+    },
+    {
+      "exercise_id": "barbell-curl",
+      "date": "2026-08-19",
+      "type": "volume_pr",
+      "weight_kg": 27.22,
+      "reps": 10,
+      "total_volume_kg": 734.9,
+      "delta_volume_kg": 27.2
+    },
     {
       "exercise_id": "seated-db-shoulder-press",
       "date": "2026-08-14",
@@ -7284,6 +7496,11 @@
       "completion_rate": 0.8
     },
     "2026-W34": {
+      "planned": 5,
+      "completed": 2,
+      "completion_rate": 0.4
+    },
+    "2026-W35": {
       "planned": 5,
       "completed": 0,
       "completion_rate": 0.0
