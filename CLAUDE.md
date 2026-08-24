@@ -88,6 +88,10 @@ Tests: unit specs are co-located (`js/*.test.js`, run via `npm test` → vitest)
 
    To audit the whole repo for these failures, run `python3 scripts/audit_data.py .`.
 
+9. **Progression rule — weight moves only after a full 12/12/12 lock** (Jonathan, 2026-08-23). A weight increase in a Weekly Plan must be earned by 12 reps × 3 sets at the current weight (15×3 for high-rep isolation slots like face pulls / reverse flys / lunges / abductor-adductor / calves / crunches; 3×30s for carries). Rep targets climb 8→10→12 within a weight; "close enough" (11/10/9, 10/10/9, a locked 8×3) does NOT unlock a jump. This replaced the looser W34-era logic after Jonathan couldn't lift the early-jumped weights at all on 2026-08-18. When authoring a new week, check each exercise's last actuals against the gate before writing a heavier target.
+
+10. **Deload / rest week every 6 weeks.** Five training weeks, then one deload week — planned into the Weekly Plan MD, not left to happen by accident. W27 was a planned deload; W34 (2026-08-17) became a de facto rest week right on cadence; **next scheduled deload: W40 (Sep 28 – Oct 2, 2026)**, then every 6th week after. When building a plan for a deload week, cut volume/intensity deliberately (~half sets or −20–30% load) rather than skipping the week's plan.
+
 ## Glossary
 
 - **W18 / W20** — ISO week number prefix on routine ids (e.g. `2026-W18-CDMX-Phase-1-Closeout`, `2026-W20-Phase-2-Launch-Reentry`)
