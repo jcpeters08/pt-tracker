@@ -181,6 +181,86 @@
         },
         "session_notes": ""
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-08-25T11:01:30.575Z",
+      "session": {
+        "date": "2026-08-25",
+        "submitted_at": "2026-08-25T11:01:30.575Z",
+        "day_of_week": "tuesday",
+        "type": "pull",
+        "muscle_groups": [
+          "back"
+        ],
+        "routine_id": "2026-W35-Phase-2-Week-16-Rebuild",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "lat-pulldown",
+            "display_name": "Lat Pulldown",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 58.97,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 61.23,
+                "reps": 9
+              },
+              {
+                "set": 3,
+                "weight_kg": 61.23,
+                "reps": 9
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-cable-row",
+            "display_name": "Seated Cable Row",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 58.97,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 58.97,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 58.97,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "single-arm-db-row",
+            "display_name": "Single-Arm Dumbbell Row",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 29.48,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 29.48,
+                "reps": 10
+              }
+            ],
+            "notes": "Are you broken seriously? If last week was 8/8/8 how the fuck is this week 12/12/12? "
+          }
+        ],
+        "cooldown": null,
+        "session_notes": ""
+      }
     }
   ]
 }
