@@ -379,6 +379,206 @@
         "cooldown": null,
         "session_notes": ""
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-08-26T11:25:43.784Z",
+      "session": {
+        "date": "2026-08-26",
+        "submitted_at": "2026-08-26T11:25:43.784Z",
+        "day_of_week": "wednesday",
+        "type": "legs",
+        "muscle_groups": [
+          "quads",
+          "hamstrings",
+          "glutes",
+          "calves",
+          "core",
+          "lower-back"
+        ],
+        "routine_id": "2026-W35-Phase-2-Week-16-Rebuild",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "barbell-back-squat",
+            "display_name": "Barbell Back Squat",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 68.04,
+                "reps": 8
+              },
+              {
+                "set": 2,
+                "weight_kg": 68.04,
+                "reps": 8
+              },
+              {
+                "set": 3,
+                "weight_kg": 68.04,
+                "reps": 8
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "leg-press",
+            "display_name": "45-Degree Incline Leg Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 149.69,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 149.69,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 149.69,
+                "reps": 8
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "barbell-rdl",
+            "display_name": "Barbell Romanian Deadlift",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 54.43,
+                "reps": 8
+              },
+              {
+                "set": 2,
+                "weight_kg": 54.43,
+                "reps": 8
+              },
+              {
+                "set": 3,
+                "weight_kg": 54.43,
+                "reps": 8
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-leg-curl",
+            "display_name": "Seated Leg Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 38.56,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 38.56,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 38.56,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "barbell-hip-thrust",
+            "display_name": "Barbell Hip Thrust",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 49.9,
+                "reps": 8
+              },
+              {
+                "set": 2,
+                "weight_kg": 49.9,
+                "reps": 8
+              },
+              {
+                "set": 3,
+                "weight_kg": 49.9,
+                "reps": 10
+              }
+            ],
+            "notes": "Intentional doing lower weight and reps today to see how the leg responds that was bothering me last week"
+          },
+          {
+            "exercise_id": "calf-raise",
+            "display_name": "Standing Calf Raise (Machine)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 117.93,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 117.93,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 117.93,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "cable-rope-crunch",
+            "display_name": "Cable Rope Crunch",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 27.22,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 27.22,
+                "reps": 11
+              },
+              {
+                "set": 3,
+                "weight_kg": 27.22,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "back-extension",
+            "display_name": "Back Extension",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 11.34,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 11.34,
+                "reps": 9
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": null,
+        "session_notes": ""
+      }
     }
   ]
 }
