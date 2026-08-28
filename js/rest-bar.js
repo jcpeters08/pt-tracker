@@ -1,4 +1,4 @@
-// Sticky rest-timer bar for the workout view. The countdown math + duration
+// Inline rest-timer bar for the workout view. The countdown math + duration
 // persistence are pure and unit-tested in rest-timer.js; this module owns the
 // DOM, the ticker, and the silent flash. It auto-starts when a set is marked
 // Done (wired from js/workout.js) and reads/writes the shared `state` singleton.
@@ -77,10 +77,8 @@ export function renderRestBar(active) {
   host.replaceChildren();
   if (!active) {
     stopTicker();
-    document.body.classList.remove("rest-bar-open");
     return;
   }
-  document.body.classList.add("rest-bar-open");
   const selected = ensureDuration();
 
   const time = el("div", { class: "rest-time", title: "Tap to start / stop rest" });

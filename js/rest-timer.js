@@ -1,6 +1,6 @@
 // Pure rest-timer logic: presets, clock formatting, countdown math, and
 // duration persistence. No DOM and no real timers — the UI layer (workout view)
-// owns the setInterval ticker, the sticky bar, and the silent flash; this module
+// owns the setInterval ticker, the inline bar, and the silent flash; this module
 // stays trivially unit-testable (js/rest-timer.test.js).
 
 export const REST_PRESETS = [60, 90, 120, 180]; // 1:00 / 1:30 / 2:00 / 3:00

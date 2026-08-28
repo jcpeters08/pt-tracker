@@ -60,3 +60,28 @@ test("editing a target queues a routine_edit payload", async ({ page, context })
   expect(edit.changes.target_reps).toBe(8);
   expect(edit.changes.target_sets).toBe(4);
 });
+
+test("rest timer remains in workout flow while the page scrolls", async ({ page, context }) => {
+  await signIn(page, context);
+  await page.setViewportSize({ width: 390, height: 700 });
+  await page.evaluate(async () => {
+    document.body.style.minHeight = "2000px";
+    const { startRest } = await import("/js/rest-bar.js");
+    startRest();
+  });
+  const bar = page.locator("#rest-bar-host .rest-bar");
+  await expect(bar).toBeVisible();
+
+  await page.evaluate(() => window.scrollTo(0, 0));
+  const beforeDocumentY = await bar.evaluate(
+    (element) => element.getBoundingClientRect().top + window.scrollY,
+  );
+
+  await page.evaluate(() => window.scrollTo(0, 600));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(300);
+  const afterDocumentY = await bar.evaluate(
+    (element) => element.getBoundingClientRect().top + window.scrollY,
+  );
+
+  expect(afterDocumentY).toBeCloseTo(beforeDocumentY, 0);
+});
