@@ -9,7 +9,11 @@ export default defineConfig({
   expect: { timeout: 10_000 },
   fullyParallel: false,
   reporter: [["list"]],
-  use: { baseURL: "http://localhost:8788", browserName: "chromium" },
+  use: {
+    baseURL: "http://localhost:8788",
+    browserName: "chromium",
+    timezoneId: "America/Chicago",
+  },
   webServer: {
     command: "python3 -m http.server 8788",
     url: "http://localhost:8788/index.html",

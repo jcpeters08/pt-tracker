@@ -1,4 +1,11 @@
 import { expect } from "@playwright/test";
+
+// Keep date-sensitive routine-mode tests independent from the real calendar.
+// Call before signIn() so the app boots with the intended routine as "today".
+export async function freezeAppTime(page, timestamp) {
+  await page.clock.setFixedTime(timestamp);
+}
+
 // Mock the auth Worker. Same-origin data/*.json are served by the webServer,
 // discovered through data/manifest.json. opts.onPendingAppend(entry) receives
 // the pending entry the app posts to the Worker append endpoint.

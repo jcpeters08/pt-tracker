@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { signIn } from "./helpers.js";
+import { freezeAppTime, signIn } from "./helpers.js";
 
 // Exercises the render + submit path end-to-end: day view → set inputs → Done
 // → submit, asserting the queued pending payload. This is the coverage that
@@ -7,12 +7,13 @@ import { signIn } from "./helpers.js";
 test("logging a workout queues a correct log payload", async ({ page, context }) => {
   let appended = null;
   page.on("dialog", d => d.accept()); // accept any submit confirm
+  await freezeAppTime(page, "2026-05-30T12:00:00-05:00");
   await signIn(page, context, { onPendingAppend: (entry) => { appended = entry; } });
 
-  // Deterministic: W22 Tuesday is a real Pull day in the current routine window.
+  // Deterministic: W22 Tuesday is a real Pull day in the frozen current window.
   await page.fill("#workout-date", "2026-05-26");
   await page.dispatchEvent("#workout-date", "change");
-  await page.locator("#day-toggle .day-pill").nth(1).dispatchEvent("click");
+  await page.locator("#day-toggle .day-pill").nth(1).click();
 
   const card = page.locator(".ex-card").first();
   await expect(card).toBeVisible();

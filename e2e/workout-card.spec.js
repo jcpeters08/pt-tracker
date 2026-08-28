@@ -1,11 +1,15 @@
 import { test, expect } from "@playwright/test";
-import { signIn } from "./helpers.js";
+import { freezeAppTime, signIn } from "./helpers.js";
+
+test.beforeEach(async ({ page }) => {
+  await freezeAppTime(page, "2026-05-30T12:00:00-05:00");
+});
 
 // Coverage for the interactive branches of the workout day view that a
 // renderExerciseCard / renderCooldown extraction will touch (beyond the
 // happy-path set-fill+submit already in workout.spec.js).
 async function openPlannedDay(page) {
-  await page.fill("#workout-date", "2026-05-25"); // W22 Monday (Push)
+  await page.fill("#workout-date", "2026-05-25"); // W22 Monday (Push), current under the frozen clock
   await page.dispatchEvent("#workout-date", "change");
   await page.locator("#day-toggle .day-pill:not(.rest)").first().click();
   await expect(page.locator(".ex-card").first()).toBeVisible();
@@ -42,7 +46,7 @@ test("editing a target queues a routine_edit payload", async ({ page, context })
   let appended = null;
   page.on("dialog", d => d.accept());
   await signIn(page, context, { onPendingAppend: (entry) => { appended = entry; } });
-  await openPlannedDay(page); // W22 is the current routine today → target line is editable
+  await openPlannedDay(page); // W22 is current under the frozen clock → target line is editable
 
   const tl = page.locator(".ex-card .target-line").first();
   await tl.click();
