@@ -2,11 +2,37 @@
   "format_note": "Append-only inbox written by the web app. Daily scheduled task drains entries[] into vault MD files at Workout Log/YYYY-MM-DD-day-type.md and into data/logs/*.json, then resets to []. Schema: {type: 'log', submitted_at: ISO8601, session: {…full log object…}}",
   "entries": [
     {
-      "type": "log",
-      "submitted_at": "2026-08-29T17:41:49.497Z",
+      "type": "recovery",
+      "submitted_at": "2026-08-29T17:42:43.227Z",
       "session": {
         "date": "2026-08-29",
-        "submitted_at": "2026-08-29T17:41:49.497Z",
+        "location": "Embrace North",
+        "rounds": 2,
+        "sauna_min": 15,
+        "plunge_min": 3,
+        "total_min": 36,
+        "rounds_detail": [
+          {
+            "round": 1,
+            "sauna_min": 15,
+            "plunge_min": 4
+          },
+          {
+            "round": 2,
+            "sauna_min": 15,
+            "plunge_min": 2
+          }
+        ],
+        "notes": "",
+        "submitted_at": "2026-08-29T17:42:43.227Z"
+      }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-08-29T17:43:19.792Z",
+      "session": {
+        "date": "2026-08-29",
+        "submitted_at": "2026-08-29T17:43:19.792Z",
         "day_of_week": "friday",
         "type": "lower-hybrid",
         "muscle_groups": [
@@ -181,33 +207,7 @@
           "fitnessplus_name": "",
           "completed_at": "2026-08-29T17:41:46.311Z"
         },
-        "session_notes": "I don’t hmm see how that cooldown choices match the muscles for the workout (should be lower body focused on a lower body day and upper on upper)"
-      }
-    },
-    {
-      "type": "recovery",
-      "submitted_at": "2026-08-29T17:42:43.227Z",
-      "session": {
-        "date": "2026-08-29",
-        "location": "Embrace North",
-        "rounds": 2,
-        "sauna_min": 15,
-        "plunge_min": 3,
-        "total_min": 36,
-        "rounds_detail": [
-          {
-            "round": 1,
-            "sauna_min": 15,
-            "plunge_min": 4
-          },
-          {
-            "round": 2,
-            "sauna_min": 15,
-            "plunge_min": 2
-          }
-        ],
-        "notes": "",
-        "submitted_at": "2026-08-29T17:42:43.227Z"
+        "session_notes": "I don’t hmm see how that cooldown choices match the muscles for the workout (should be lower body focused on a lower body day and upper on upper)\nNo workout didn’t increase pain( maybe feeling better today)\n"
       }
     }
   ]
