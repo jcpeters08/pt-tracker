@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatHistoryDate, formatLoggedPerformance } from "./workout.js";
+import { cooldownKeyForDay, formatHistoryDate, formatLoggedPerformance } from "./workout.js";
 
 describe("formatLoggedPerformance", () => {
   it("compacts equal canonical loads into one weight and a rep sequence", () => {
@@ -51,5 +51,19 @@ describe("formatHistoryDate", () => {
   it("omits malformed dates", () => {
     expect(formatHistoryDate("not-a-date")).toBe("");
     expect(formatHistoryDate("2026-02-31")).toBe("");
+  });
+});
+
+describe("cooldownKeyForDay", () => {
+  it.each([
+    ["Push (Chest / Shoulders / Triceps)", "push"],
+    ["Pull (Back / Biceps)", "pull"],
+    ["Legs", "legs"],
+    ["Lower Hybrid", "legs"],
+    ["Upper Hybrid", "upper-hybrid"],
+    ["Hybrid", "upper-hybrid"],
+    ["Mobility", "default"],
+  ])("maps %s to %s", (label, expected) => {
+    expect(cooldownKeyForDay({ label })).toBe(expected);
   });
 });

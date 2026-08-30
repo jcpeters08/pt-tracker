@@ -70,11 +70,12 @@ export function cooldownStateKey() {
   return `${state.workoutDate || ""}|${state.selectedDay || ""}`;
 }
 
-function cooldownKeyForDay(day) {
+export function cooldownKeyForDay(day) {
   const label = (day?.label || "").toLowerCase();
   if (label.startsWith("push")) return "push";
   if (label.startsWith("pull")) return "pull";
   if (label.startsWith("legs")) return "legs";
+  if (label.includes("lower")) return "legs";
   if (label.includes("upper")) return "upper-hybrid";
   if (label.includes("hybrid")) return "upper-hybrid";
   return "default";
