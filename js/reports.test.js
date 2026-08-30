@@ -109,7 +109,7 @@ describe("decision report helpers", () => {
   }];
   const names = { bench: "Bench", fly: "Fly", row: "Row", triceps: "Triceps" };
 
-  it("finds latest logs that met the programmed target without claiming load readiness", () => {
+  it("finds latest logs that met the programmed target without implying an automatic load increase", () => {
     const rows = targetAchievementRows(logs, [routine], names);
     expect(rows.find(row => row.exercise === "Bench")).toMatchObject({
       target: "22 lbs × 10 × 2",
