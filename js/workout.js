@@ -3,9 +3,11 @@
 // instead of innerHTML. renderApp orchestration stays in index.html and calls
 // these; the day-pill click re-renders via hooks.renderApp.
 import { state, hooks, DAYS, DAY_LABELS, todayKey, CD_CHOICE_KEY } from "./app-context.js";
-import { isoNow, kgToLbs, lbsToKg, roundTo, fmtNum } from "./util.js";
+import { isoNow, kgToLbs, lbsToKg, roundTo, fmtNum, dayTypeKey } from "./util.js";
 import { openHowto, openVideo, openLightbox } from "./ui.js";
 import { startRest } from "./rest-bar.js";
+import { findPreviousExercisePerformance } from "./workout-history.js";
+import { summarizeWorkoutProgress } from "./workout-progress.js";
 
 // Tiny DOM builder: el("div", {class, text, href, dataset…}, ...children).
 // Keeps the render functions readable without innerHTML.
@@ -350,7 +352,7 @@ export function renderExerciseCard(exDef, ex) {
   const exImg = el("div", { class: "ex-img" }, imgInner);
 
   // target line — tappable; user data via textContent + dataset (no innerHTML)
-  const targetDiv = el("div", { class: "target" }, el("b", { text: "Target:" }), document.createTextNode(" "));
+  const targetDiv = el("div", { class: "target" }, el("b", { text: "Today:" }), document.createTextNode(" "));
   const targetLine = el("span", {
     class: "target-line",
     text: targetText,
@@ -370,6 +372,22 @@ export function renderExerciseCard(exDef, ex) {
     const ns = el("span", { text: ex.notes });
     ns.style.color = "var(--ink-muted)";
     targetDiv.append(ns);
+  }
+  const selectedRoutineDay = state.routine?.days?.[state.selectedDay];
+  const selectedType = dayTypeKey(selectedRoutineDay?.label, state.selectedDay);
+  const beforeDate = state.activeSession?.kind === "log"
+    ? (state.activeSession.resolvedDate || state.activeSession.session?.date || state.workoutDate)
+    : state.workoutDate;
+  const previous = findPreviousExercisePerformance(state.sessionLookup, {
+    beforeDate,
+    type: selectedType,
+    exerciseId: ex.exercise_id,
+  });
+  if (hooks.getRoutineMode(state.routine) !== "past" && previous) {
+    targetDiv.append(el("div", { class: "previous-line" },
+      el("b", { text: `Last ${dayLabel(state.selectedDay)} · ${formatHistoryDate(previous.date)}:` }),
+      document.createTextNode(` ${formatLoggedPerformance(previous, state.unitPref)}`),
+    ));
   }
   if (hooks.getRoutineMode(state.routine) === "past") {
     const pastLog = state.pastLogsByDay?.[state.selectedDay];
@@ -462,6 +480,7 @@ function bindCardEvents(card, exId) {
       row.classList.toggle("done", log.sets[idx].done);
       row.querySelector('[data-action="done"]').textContent = log.sets[idx].done ? "✓ Done" : "Done";
       hooks.markWorkoutDirty();
+      renderWorkoutProgress();
       if (log.sets[idx].done) startRest();   // auto-start rest between sets
     });
   });
@@ -477,26 +496,38 @@ function bindCardEvents(card, exId) {
   });
 }
 
+export function renderWorkoutProgress(day = state.routine?.days?.[state.selectedDay]) {
+  const node = document.querySelector("#session-progress");
+  if (!node) return;
+  const progress = summarizeWorkoutProgress(day, state.log);
+  node.textContent = progress.text;
+  node.setAttribute("aria-label", progress.ariaLabel);
+}
+
 export function renderExercises() {
   const host = document.querySelector("#exercises-host");
   if (!host) return;
   host.replaceChildren();
   const day = state.routine?.days?.[state.selectedDay];
-  if (!day || !day.exercises?.length) {
+  const hasExercises = !!day?.exercises?.length;
+  const canLog = hasExercises && hooks.getRoutineMode(state.routine) === "current";
+
+  document.querySelector("#session-notes-host")?.classList.toggle("hidden", !hasExercises);
+  document.querySelector("#workout-top-actions")?.classList.toggle("hidden", !canLog);
+  document.querySelector("#submit-row")?.classList.toggle("hidden", !canLog);
+
+  if (!hasExercises) {
     host.append(el("div", { class: "rest-day-msg" },
       document.createTextNode("Rest day — no scheduled exercises."),
       el("br"),
       document.createTextNode("Use the day toggle to see another day."),
     ));
-    document.querySelector("#session-notes-host")?.classList.add("hidden");
-    document.querySelector("#submit-row")?.classList.add("hidden");
     return;
   }
-  for (const ex of day.exercises) {
-    const card = renderExerciseCard(state.routine, ex);
+  for (const exercise of day.exercises) {
+    const card = renderExerciseCard(state.routine, exercise);
     host.appendChild(card);
-    bindCardEvents(card, ex.exercise_id);
+    bindCardEvents(card, exercise.exercise_id);
   }
-  document.querySelector("#session-notes-host")?.classList.remove("hidden");
-  document.querySelector("#submit-row")?.classList.remove("hidden");
+  renderWorkoutProgress(day);
 }
