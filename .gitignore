@@ -7,6 +7,7 @@
 
 # Claude Code / local tooling (machine-local — never committed)
 .claude/
+.worktrees/
 .pytest_cache/
 
 # Playwright e2e artifacts
