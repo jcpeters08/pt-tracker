@@ -22,6 +22,16 @@ async function openFirstWaveDay(page) {
   await expect(page.locator(".ex-card").first()).toBeVisible();
 }
 
+test("token replacement is unavailable before sign-in", async ({ page, context }) => {
+  await page.goto("/index.html");
+  await expect(page.locator("#signin-panel")).toBeVisible();
+  await expect(page.locator("#replace-token-btn")).toBeHidden();
+  await expect(page.locator("#pat-panel")).toBeHidden();
+
+  await signIn(page, context);
+  await expect(page.locator("#replace-token-btn")).toBeVisible();
+});
+
 test("add-set appends a working set row to an exercise card", async ({ page, context }) => {
   await signIn(page, context);
   await openPlannedDay(page);

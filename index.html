@@ -722,7 +722,7 @@
         <button type="button" data-unit="kg" class="unit-btn" aria-pressed="false">kg</button>
       </div>
       <a class="header-link" id="reports-link" href="reports.html" title="View reports &amp; analytics">📊 Reports</a>
-      <button class="header-link" id="replace-token-btn" type="button" aria-label="Replace GitHub token">
+      <button class="header-link hidden" id="replace-token-btn" type="button" aria-label="Replace GitHub token">
         <span aria-hidden="true">🔑</span><span class="token-long">Replace token</span><span class="token-short">Token</span>
       </button>
       <button id="signout-btn" class="signout-btn hidden" title="Sign out" aria-label="Sign out">⏻</button>
@@ -1347,6 +1347,7 @@ function showPanel(which) {
   $("#pat-panel").classList.toggle("hidden", which !== "pat");
   $("#app").classList.toggle("hidden", which !== "app");
   $("#signout-btn").classList.toggle("hidden", which !== "app");
+  $("#replace-token-btn").classList.toggle("hidden", which !== "app");
   // Replacement mode: a token is already vaulted, so offer a way back.
   if (which === "pat") $("#pat-cancel").classList.toggle("hidden", !state.hasPat);
   requestAnimationFrame(updateDockOffset);
