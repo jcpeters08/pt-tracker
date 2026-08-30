@@ -258,6 +258,92 @@ test("first wave: history context respects routine mode", async ({ page, context
   await expect(page.locator("#unit-toggle button[data-unit='lbs']")).toHaveAttribute("aria-pressed", "false");
 });
 
+test("past mode prevents keyboard workout edits without blocking global or reference controls", async ({ page, context }) => {
+  await freezeAppTime(page, "2026-08-29T12:00:00-05:00");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await signIn(page, context);
+
+  await page.fill("#workout-date", "2026-08-23");
+  await page.dispatchEvent("#workout-date", "change");
+  await expect(page.locator("body")).toHaveClass(/mode-past/);
+  await page.locator("#day-toggle .day-pill:not(.rest)").first().click();
+  await expect(page.locator(".ex-card").first()).toBeVisible();
+
+  const workoutDraftsBefore = await page.evaluate(() => Object.fromEntries(
+    Object.keys(localStorage)
+      .filter(key => key.startsWith("pt_tracker_draft_v2:"))
+      .map(key => [key, localStorage.getItem(key)]),
+  ));
+  const card = page.locator(".ex-card").first();
+  const weight = card.locator("input[data-field='weight']").first();
+  const reps = card.locator("input[data-field='reps']").first();
+  const exerciseNotes = card.locator(".ex-notes");
+  const sessionNotes = page.locator("#session-notes-input");
+  const done = card.locator("[data-action='done']").first();
+  const addSet = card.locator("[data-action='add-set']");
+  const original = {
+    weight: await weight.inputValue(),
+    reps: await reps.inputValue(),
+    exerciseNotes: await exerciseNotes.inputValue(),
+    sessionNotes: await sessionNotes.inputValue(),
+    doneText: await done.textContent(),
+    setCount: await card.locator(".set-row[data-set]").count(),
+  };
+
+  for (const [control, attemptedValue] of [
+    [weight, "999"],
+    [reps, "99"],
+    [exerciseNotes, "keyboard exercise edit"],
+    [sessionNotes, "keyboard session edit"],
+  ]) {
+    await control.focus();
+    await page.keyboard.press("ControlOrMeta+A");
+    await page.keyboard.type(attemptedValue);
+  }
+  await done.focus();
+  await page.keyboard.press("Enter");
+  await addSet.focus();
+  await page.keyboard.press("Enter");
+  await card.locator(".target-line").click();
+
+  expect(await weight.inputValue()).toBe(original.weight);
+  expect(await reps.inputValue()).toBe(original.reps);
+  expect(await exerciseNotes.inputValue()).toBe(original.exerciseNotes);
+  expect(await sessionNotes.inputValue()).toBe(original.sessionNotes);
+  expect(await done.textContent()).toBe(original.doneText);
+  await expect(card.locator(".set-row[data-set]")).toHaveCount(original.setCount);
+  await expect(card.locator(".target-editor")).toHaveCount(0);
+  expect(await page.evaluate(() => Object.fromEntries(
+    Object.keys(localStorage)
+      .filter(key => key.startsWith("pt_tracker_draft_v2:"))
+      .map(key => [key, localStorage.getItem(key)]),
+  ))).toEqual(workoutDraftsBefore);
+
+  await expect(weight).toHaveJSProperty("readOnly", true);
+  await expect(reps).toHaveJSProperty("readOnly", true);
+  await expect(exerciseNotes).toHaveJSProperty("readOnly", true);
+  await expect(sessionNotes).toHaveJSProperty("readOnly", true);
+  await expect(done).toBeDisabled();
+  await expect(addSet).toBeDisabled();
+
+  const howTo = card.locator("[data-action='show-howto']").first();
+  await expect(howTo).toBeEnabled();
+  await howTo.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#howto-modal")).toHaveClass(/show/);
+  await page.keyboard.press("Escape");
+
+  await expect(page.locator("#workout-date")).toBeEnabled();
+  await page.fill("#workout-date", "2026-08-22");
+  await page.dispatchEvent("#workout-date", "change");
+  await expect(page.locator("#workout-date")).toHaveValue("2026-08-22");
+  const kgButton = page.locator("#unit-toggle button[data-unit='kg']");
+  await expect(kgButton).toBeEnabled();
+  await kgButton.focus();
+  await page.keyboard.press("Enter");
+  await expect(kgButton).toHaveAttribute("aria-pressed", "true");
+});
+
 test("first wave: the dock and header reflow across supported mobile viewports", async ({ page, context }, testInfo) => {
   await freezeAppTime(page, "2026-08-30T12:00:00-05:00");
   await signIn(page, context);

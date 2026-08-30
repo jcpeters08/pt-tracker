@@ -125,10 +125,9 @@
   body.mode-past #workout-top-actions,
   body.mode-upcoming #workout-top-actions { display: none !important; }
   body.mode-past .recovery-panel { display: none !important; }
-  body.mode-past #app input,
-  body.mode-past #app textarea,
-  body.mode-past #app button {
-    pointer-events: none;
+  body.mode-past #app input[readonly],
+  body.mode-past #app textarea[readonly],
+  body.mode-past #app button:disabled {
     opacity: 0.6;
   }
   .signout-btn {

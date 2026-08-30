@@ -114,6 +114,7 @@ export function renderCooldown(day) {
   const lib = cd.library?.[key] || cd.library?.default;
   const fp = cd.apple_fitness_plus;
   const choice = state.cooldownChoice || "library";
+  const isPast = hooks.getRoutineMode(state.routine) === "past";
   const dayCooldownText = (day.cooldown || "").trim();
   const cdLog = getCooldownLog();
   const isDone = !!cdLog.completed_at && cdLog.type === choice;
@@ -161,14 +162,14 @@ export function renderCooldown(day) {
       if (fp.note) b.append(el("div", { class: "cd-fp-note", text: fp.note }));
       b.append(el("div", { class: "cd-fp-name" },
         el("label", { for: "cd-fp-name-input", text: "Which Apple Fitness+ cooldown did you do?" }),
-        el("input", { id: "cd-fp-name-input", type: "text", placeholder: "e.g. Mindful Cooldown · Jessica · 10 min", value: fpName })));
+        el("input", { id: "cd-fp-name-input", type: "text", placeholder: "e.g. Mindful Cooldown · Jessica · 10 min", value: fpName, readOnly: isPast })));
       card.append(b);
     } else {
       card.append(el("div", { class: "cd-body", text: "Apple Fitness+ link not configured." }));
     }
   }
 
-  const completeBtn = el("button", { type: "button", id: "cd-complete-btn", class: "cd-complete-btn" + (isDone ? " done" : ""), text: isDone ? "✓ Cool-down logged" : "Mark cool-down complete" });
+  const completeBtn = el("button", { type: "button", id: "cd-complete-btn", class: "cd-complete-btn" + (isDone ? " done" : ""), text: isDone ? "✓ Cool-down logged" : "Mark cool-down complete", disabled: isPast });
   const completeRow = el("div", { class: "cd-complete-row" }, completeBtn);
   if (isDone) {
     const at = new Date(cdLog.completed_at).toLocaleString([], { hour: "2-digit", minute: "2-digit" });
@@ -344,6 +345,7 @@ export function renderExerciseCard(exDef, ex) {
   const targetText = formatTargetText(ex);
   const unitLabel = state.unitPref;
   const step = weightInputStep();
+  const isPast = hooks.getRoutineMode(state.routine) === "past";
 
   // image (or emoji fallback)
   const imgInner = meta.image_url
@@ -427,16 +429,16 @@ export function renderExerciseCard(exDef, ex) {
   log.sets.forEach((s, i) => {
     setList.append(el("div", { class: "set-row" + (s.done ? " done" : ""), dataset: { set: String(i) } },
       el("span", { class: "set-num", text: String(i + 1) }),
-      el("input", { type: "number", inputmode: "decimal", step, placeholder: unitLabel, value: displayWeight(s.weight_kg), dataset: { field: "weight" } }),
-      el("input", { type: "number", inputmode: "numeric", step: "1", placeholder: "reps", value: s.reps ?? "", dataset: { field: "reps" } }),
-      el("button", { class: "done-btn", dataset: { action: "done" }, text: s.done ? "✓ Done" : "Done" }),
+      el("input", { type: "number", inputmode: "decimal", step, placeholder: unitLabel, value: displayWeight(s.weight_kg), readOnly: isPast, dataset: { field: "weight" } }),
+      el("input", { type: "number", inputmode: "numeric", step: "1", placeholder: "reps", value: s.reps ?? "", readOnly: isPast, dataset: { field: "reps" } }),
+      el("button", { class: "done-btn", dataset: { action: "done" }, text: s.done ? "✓ Done" : "Done", disabled: isPast }),
     ));
   });
 
   const exBody = el("div", { class: "ex-body" },
     setList,
-    el("button", { class: "add-set", dataset: { action: "add-set" }, text: "+ Add set" }),
-    el("textarea", { class: "ex-notes", placeholder: "Notes for this exercise…", value: log.notes }),
+    el("button", { class: "add-set", dataset: { action: "add-set" }, text: "+ Add set", disabled: isPast }),
+    el("textarea", { class: "ex-notes", placeholder: "Notes for this exercise…", value: log.notes, readOnly: isPast }),
   );
 
   return el("section", { class: "ex-card", dataset: { exid: ex.exercise_id } },
@@ -510,7 +512,10 @@ export function renderExercises() {
   host.replaceChildren();
   const day = state.routine?.days?.[state.selectedDay];
   const hasExercises = !!day?.exercises?.length;
-  const canLog = hasExercises && hooks.getRoutineMode(state.routine) === "current";
+  const mode = hooks.getRoutineMode(state.routine);
+  const canLog = hasExercises && mode === "current";
+  const sessionNotes = document.querySelector("#session-notes-input");
+  if (sessionNotes) sessionNotes.readOnly = mode === "past";
 
   document.querySelector("#session-notes-host")?.classList.toggle("hidden", !hasExercises);
   document.querySelector("#workout-top-actions")?.classList.toggle("hidden", !canLog);
