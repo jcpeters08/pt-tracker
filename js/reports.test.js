@@ -8,7 +8,7 @@ import {
   monthCalendarCells,
   personalRecordRowsHtml,
   prDeltaText,
-  readinessRows,
+  targetAchievementRows,
   recoveryCorrelationRows,
   staleLiftRows,
 } from "./reports.js";
@@ -109,15 +109,17 @@ describe("decision report helpers", () => {
   }];
   const names = { bench: "Bench", fly: "Fly", row: "Row", triceps: "Triceps" };
 
-  it("finds lifts ready to progress from logged sets against routine targets", () => {
-    const rows = readinessRows(logs, [routine], names);
-    expect(rows.find(r => r.exercise === "Bench")).toMatchObject({
+  it("finds latest logs that met the programmed target without claiming load readiness", () => {
+    const rows = targetAchievementRows(logs, [routine], names);
+    expect(rows.find(row => row.exercise === "Bench")).toMatchObject({
       target: "22 lbs × 10 × 2",
       actual: "22 lbs × 11/10",
+      signal: "Programmed target met",
     });
-    expect(rows.find(r => r.exercise === "Triceps")).toMatchObject({
+    expect(rows.find(row => row.exercise === "Triceps")).toMatchObject({
       target: "25 lbs × 12 × 1",
       actual: "25 lbs × 12",
+      signal: "Programmed target met",
     });
   });
 

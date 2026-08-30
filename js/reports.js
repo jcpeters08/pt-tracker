@@ -175,7 +175,7 @@ function actualRepsText(sets) {
   return (sets || []).map(s => s.reps ?? "?").join("/");
 }
 
-export function readinessRows(logs, routines, exerciseNames = {}) {
+export function targetAchievementRows(logs, routines, exerciseNames = {}) {
   const latestByExercise = new Map();
   for (const log of logs || []) {
     for (const ex of log.exercises || []) {
@@ -201,7 +201,7 @@ export function readinessRows(logs, routines, exerciseNames = {}) {
       date: item.log.date,
       target: `${fmtTargetLbs(target)} × ${target.target_reps} × ${target.target_sets}`,
       actual: `${fmtLbsFromKg(counted[0]?.weight_kg)} × ${actualRepsText(counted)}`,
-      signal: `Hit target across ${target.target_sets} sets`,
+      signal: "Programmed target met",
     });
   }
   return rows.sort((a, b) => a.exercise.localeCompare(b.exercise));

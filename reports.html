@@ -120,9 +120,9 @@
   </section>
 
   <section class="section">
-    <h2>Ready to progress</h2>
-    <p class="subtle">Latest logged exercises that met the programmed weight, reps, and set count.</p>
-    <div id="readiness-host"></div>
+    <h2>Programmed target met</h2>
+    <p class="subtle">Latest logged exercises that met that week's programmed weight, reps, and set count. This does not automatically mean add weight.</p>
+    <div id="target-achievement-host"></div>
   </section>
 
   <section class="section">
@@ -184,7 +184,7 @@ import { bodyAreaForExercise, escapeHtml, monthCalendarCells, personalRecordRows
 import {
   actualVsPlannedRows,
   muscleTargetBandRows,
-  readinessRows,
+  targetAchievementRows,
   recoveryCorrelationRows,
   staleLiftRows,
 } from "./js/reports.js";
@@ -478,11 +478,11 @@ function renderCoachingSummary(analytics) {
   ).join("");
 }
 
-function renderReadiness(logs, routines, exerciseNames) {
-  const host = document.getElementById("readiness-host");
-  const rows = readinessRows(logs, routines, exerciseNames);
+function renderTargetAchievement(logs, routines, exerciseNames) {
+  const host = document.getElementById("target-achievement-host");
+  const rows = targetAchievementRows(logs, routines, exerciseNames);
   if (!rows.length) {
-    host.innerHTML = `<div class="empty">No lifts are clearly ready to progress yet.</div>`;
+    host.innerHTML = `<div class="empty">No latest logs met every programmed target.</div>`;
     return;
   }
   host.innerHTML = `
@@ -743,7 +743,7 @@ function renderPrs(analytics, exerciseMeta, exerciseNames) {
     renderLiftChart(analytics, exerciseNames);
     renderComplianceChart(analytics);
     renderCoachingSummary(analytics);
-    renderReadiness(logs, routines, exerciseNames);
+    renderTargetAchievement(logs, routines, exerciseNames);
     renderActualVsPlanned(routines, logs, exerciseNames, profile.active_routine);
     renderVolumeBands(analytics);
     renderStaleLifts(routines, logs, exerciseNames, profile.active_routine);

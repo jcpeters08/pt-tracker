@@ -59,7 +59,7 @@ Open **Reports** from the day-view header (`reports.html`) — read-only; it rea
 - **Lift progression** — per-exercise top-set and total volume on *performed dates only* (point markers, not connected lines), in lbs.
 - **Training calendar** — month grid with workout + recovery markers, plus a week drilldown.
 - **Personal records** — load/rep/volume PRs in lbs, grouped by body area (filterable).
-- **Ready to progress** — lifts whose latest logged sets met the programmed weight/reps/sets.
+- **Programmed target met** — latest logs whose sets met that week's programmed weight/reps/sets; this is not automatically a load-increase signal.
 - **Actual vs planned** — planned routine days vs logged sessions for a routine week (defaults to `data/profile.json.active_routine`).
 - **Body-area target bands** — weekly set totals per body area vs pragmatic target ranges.
 - **Stale lifts** — active-routine exercises not trained in 7+/14+/21+ days.
