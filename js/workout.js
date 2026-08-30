@@ -210,6 +210,46 @@ function displayWeight(kg) {
   return fmtNum(kg, 1);
 }
 
+function canonicalLoggedWeight(weightKg) {
+  return typeof weightKg === "number" && Number.isFinite(weightKg) ? weightKg : null;
+}
+
+function loggedWeightLabel(weightKg, unitPref) {
+  const canonical = canonicalLoggedWeight(weightKg);
+  if (canonical == null) return "?";
+  if (canonical === 0) return "bodyweight";
+  if (unitPref === "kg") return `${fmtNum(canonical, 1)} kg`;
+  return `${Math.round(kgToLbs(canonical))} lbs`;
+}
+
+function loggedRepLabel(reps) {
+  return typeof reps === "number" && Number.isFinite(reps) ? String(reps) : "?";
+}
+
+export function formatLoggedPerformance(performance, unitPref = "lbs") {
+  const sets = Array.isArray(performance?.exercise?.sets) ? performance.exercise.sets : [];
+  if (!sets.length) return "";
+  const weights = sets.map(set => canonicalLoggedWeight(set?.weight_kg));
+  const labels = sets.map((set, index) => loggedWeightLabel(weights[index], unitPref));
+  const reps = sets.map(set => loggedRepLabel(set?.reps));
+  if (weights.every(weight => Object.is(weight, weights[0]))) {
+    return `${labels[0]} × ${reps.join("/")}`;
+  }
+  return sets.map((_set, index) => `${labels[index]} × ${reps[index]}`).join(" · ");
+}
+
+const HISTORY_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+export function formatHistoryDate(isoDate) {
+  const match = String(isoDate || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return "";
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const normalized = new Date(Date.UTC(Number(match[1]), month - 1, day)).toISOString().slice(0, 10);
+  if (normalized !== isoDate) return "";
+  return `${HISTORY_MONTHS[month - 1]} ${day}`;
+}
+
 function primaryAuthoredLbs(raw) {
   const m = String(raw || "").trim().match(/^(\d+(?:\.\d+)?)\s*lbs?\b/i);
   return m ? Number(m[1]) : null;
