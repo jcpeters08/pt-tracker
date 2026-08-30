@@ -1,7 +1,7 @@
 # Mobile workout flow — first-wave refactor
 
 **Date:** 2026-08-29
-**Status:** Design — awaiting written-spec review
+**Status:** Approved for implementation
 
 ## Context
 
