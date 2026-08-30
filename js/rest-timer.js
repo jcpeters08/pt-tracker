@@ -6,6 +6,7 @@
 export const REST_PRESETS = [60, 90, 120, 180]; // 1:00 / 1:30 / 2:00 / 3:00
 export const DEFAULT_REST_SECONDS = 120;        // 2:00
 export const REST_DURATION_KEY = "pt_tracker_rest_duration_v1";
+export const REST_TIMER_KEY = "pt_tracker_rest_timer_v1";
 
 // Seconds → "M:SS" with zero-padded seconds, clamped at 0.
 export function formatClock(seconds) {
@@ -35,4 +36,39 @@ export function loadDuration(storage) {
 export function saveDuration(storage, seconds) {
   if (!REST_PRESETS.includes(seconds)) return;
   storage?.setItem?.(REST_DURATION_KEY, String(seconds));
+}
+
+export function clearRunningTimer(storage) {
+  storage?.removeItem?.(REST_TIMER_KEY);
+}
+
+export function saveRunningTimer(storage, timer) {
+  const endsAtMs = timer?.endsAtMs;
+  const durationSec = timer?.durationSec;
+  if (typeof endsAtMs !== "number" || !Number.isFinite(endsAtMs) || !REST_PRESETS.includes(durationSec)) return;
+  storage?.setItem?.(REST_TIMER_KEY, JSON.stringify({ endsAtMs, durationSec }));
+}
+
+export function loadRunningTimer(storage, nowMs = Date.now()) {
+  let stored;
+  try {
+    stored = JSON.parse(storage?.getItem?.(REST_TIMER_KEY) || "null");
+  } catch {
+    clearRunningTimer(storage);
+    return null;
+  }
+  const endsAtMs = stored?.endsAtMs;
+  const durationSec = stored?.durationSec;
+  const remainingMs = endsAtMs - nowMs;
+  const valid = typeof endsAtMs === "number"
+    && Number.isFinite(endsAtMs)
+    && REST_PRESETS.includes(durationSec)
+    && remainingMs > 0
+    && remainingMs <= durationSec * 1000;
+  if (!valid) {
+    clearRunningTimer(storage);
+    return null;
+  }
+  saveDuration(storage, durationSec);
+  return { endsAtMs, durationSec };
 }

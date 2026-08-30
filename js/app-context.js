@@ -31,6 +31,9 @@ export const state = {
   unitPref: "lbs",      // "lbs" | "kg" — display + input unit; storage is always kg
   cooldownChoice: "library", // "library" | "fitnessplus" — per-day, persisted globally
   recoverySubmitting: false,
+  restDurationSec: null,
+  restTimer: null,
+  restTimerHydrated: false,
   lastWorkoutSig: null,    // signature of last successfully submitted workout payload
   lastRecoverySig: null,   // signature of last successfully submitted recovery payload
   // Track which (date|day|type) keys we've already hydrated into state.log so

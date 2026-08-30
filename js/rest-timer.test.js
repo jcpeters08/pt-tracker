@@ -7,6 +7,11 @@ import {
   startTimer,
   loadDuration,
   saveDuration,
+  REST_DURATION_KEY,
+  REST_TIMER_KEY,
+  loadRunningTimer,
+  saveRunningTimer,
+  clearRunningTimer,
 } from "./rest-timer.js";
 
 function fakeStorage(entries = {}) {
@@ -89,5 +94,63 @@ describe("loadDuration / saveDuration", () => {
     expect(s.getItem(KEY)).toBe("90");
     saveDuration(s, 45); // not a preset → no change
     expect(s.getItem(KEY)).toBe("90");
+  });
+});
+
+describe("running timer persistence", () => {
+  it("stores only the absolute end and selected duration, then restores a live timer", () => {
+    const storage = fakeStorage();
+    saveRunningTimer(storage, { endsAtMs: 125000, durationSec: 120, flashed: true });
+
+    expect(REST_TIMER_KEY).toBe("pt_tracker_rest_timer_v1");
+    expect(JSON.parse(storage.getItem(REST_TIMER_KEY))).toEqual({
+      endsAtMs: 125000,
+      durationSec: 120,
+    });
+    expect(loadRunningTimer(storage, 5000)).toEqual({
+      endsAtMs: 125000,
+      durationSec: 120,
+    });
+  });
+
+  it.each([
+    ["expired", JSON.stringify({ endsAtMs: 5000, durationSec: 120 }), 5000],
+    ["malformed", "not-json", 5000],
+    ["unknown preset", JSON.stringify({ endsAtMs: 50000, durationSec: 45 }), 5000],
+    ["impossibly far future", JSON.stringify({ endsAtMs: 200000, durationSec: 60 }), 5000],
+  ])("rejects and clears %s stored state", (_label, raw, nowMs) => {
+    const storage = fakeStorage({ [REST_TIMER_KEY]: raw });
+
+    expect(loadRunningTimer(storage, nowMs)).toBeNull();
+    expect(storage.getItem(REST_TIMER_KEY)).toBeNull();
+  });
+
+  it("clears a running timer explicitly", () => {
+    const storage = fakeStorage({
+      [REST_TIMER_KEY]: JSON.stringify({ endsAtMs: 125000, durationSec: 120 }),
+    });
+
+    clearRunningTimer(storage);
+
+    expect(storage.getItem(REST_TIMER_KEY)).toBeNull();
+  });
+
+  it("restores the running timer's duration as the selected preset", () => {
+    const storage = fakeStorage({
+      [REST_DURATION_KEY]: "120",
+      [REST_TIMER_KEY]: JSON.stringify({ endsAtMs: 95000, durationSec: 90 }),
+    });
+
+    expect(loadRunningTimer(storage, 5000)).toEqual({ endsAtMs: 95000, durationSec: 90 });
+    expect(storage.getItem(REST_DURATION_KEY)).toBe("90");
+  });
+
+  it("rejects numeric strings as structurally invalid", () => {
+    const storage = fakeStorage({
+      [REST_TIMER_KEY]: JSON.stringify({ endsAtMs: "95000", durationSec: "90" }),
+    });
+
+    expect(loadRunningTimer(storage, 5000)).toBeNull();
+    expect(storage.getItem(REST_TIMER_KEY)).toBeNull();
   });
 });
