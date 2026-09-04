@@ -616,6 +616,184 @@
         },
         "session_notes": ""
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-09-04T16:03:02.137Z",
+      "session": {
+        "date": "2026-09-04",
+        "submitted_at": "2026-09-04T16:03:02.137Z",
+        "day_of_week": "thursday",
+        "type": "lower-hybrid",
+        "muscle_groups": [
+          "quads",
+          "hamstrings",
+          "glutes",
+          "calves",
+          "core",
+          "lower-back"
+        ],
+        "routine_id": "2026-W36-Phase-2-Week-17-Progression",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "single-leg-leg-press",
+            "display_name": "Single-Leg Leg Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 52.16,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 52.16,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 52.16,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-walking-lunge",
+            "display_name": "Dumbbell Walking Lunge",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 11.34,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 11.34,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-leg-curl",
+            "display_name": "Seated Leg Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 34.02,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 34.02,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 34.02,
+                "reps": 15
+              }
+            ],
+            "notes": "If we do curls why aren’t we doing leg extensions? Honest question not telling u we should "
+          },
+          {
+            "exercise_id": "hip-abductor-machine",
+            "display_name": "Hip Abductor Machine",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 40.82,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 40.82,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 40.82,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "single-leg-calf-raise",
+            "display_name": "Single-Leg Calf Raise (on Step)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 22.68,
+                "reps": 13
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.68,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 22.68,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "cable-rope-crunch",
+            "display_name": "Cable Rope Crunch",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 24.95,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 24.95,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 24.95,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "back-extension",
+            "display_name": "Back Extension",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 11.34,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 11.34,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": null,
+        "session_notes": "Why did hip adductors get dropped again"
+      }
     }
   ]
 }
