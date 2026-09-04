@@ -1,12 +1,12 @@
 {
-  "id": "2026-W36-Phase-2-Week-17-Progression",
-  "name": "W36 MPLS Planet Fitness — Solo",
+  "id": "2026-W38-Phase-2-Week-19-Reentry",
+  "name": "W38 MPLS Planet Fitness — Solo",
   "phase": "2",
-  "start_date": "2026-08-30",
-  "end_date": "2026-09-04",
-  "source_md": "Weekly Plans/2026-W36-Phase-2-Week-17-Progression.md",
+  "start_date": "2026-09-14",
+  "end_date": "2026-09-20",
+  "source_md": "Weekly Plans/2026-W38-Phase-2-Week-19-Reentry.md",
   "days": {
-    "sunday": {
+    "monday": {
       "label": "Push (Chest / Shoulders / Triceps)",
       "warmup": "Treadmill incline walk 5 min + band pull-aparts × 15 × 2 + DB front raise 5 lbs × 10",
       "cooldown": "Doorway pec stretch 60s ea side + cross-body shoulder stretch 60s ea side + overhead triceps stretch 60s ea side",
@@ -15,9 +15,9 @@
           "exercise_id": "incline-db-bench-press",
           "target_weight_kg": 27.22,
           "target_weight_raw": "60 lbs (27 kg) ea",
-          "target_reps": 12,
+          "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — 12/11/11 on 8/24. Finish the last two reps; 12/12/12 → 65. Deep stretch at the bottom"
+          "notes": "Hold — 12/11/7 on 8/30. Re-own 10×3 before targeting 12. Deep stretch at the bottom"
         },
         {
           "exercise_id": "flat-db-bench-press",
@@ -25,7 +25,7 @@
           "target_weight_raw": "60 lbs (27 kg) ea",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "**+5 earned** off 12/12/12 at 55 on 8/24. You previously reached 10/10/9 at 60, so the honest next target is 10×3, not 12×3. Gate remains 12/12/12"
+          "notes": "Hold — 12/10/9 on 8/30. Re-own 10×3; 12×3 remains the weight gate"
         },
         {
           "exercise_id": "cable-chest-fly",
@@ -33,7 +33,7 @@
           "target_weight_raw": "30 lbs (14 kg)",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — 11/10/8 on 8/24. Lock 10×3 before targeting 12. Last set: controlled lengthened partials"
+          "notes": "Hold — 10/9/9 on 8/30. Controlled eccentric; no forced reps"
         },
         {
           "exercise_id": "seated-db-shoulder-press",
@@ -41,7 +41,7 @@
           "target_weight_raw": "50 lbs (23 kg) ea",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — push-slot actuals were 8/9/8 on 8/24. Beat that with 10×3; 12/12/12 eventually unlocks 55"
+          "notes": "Hold — 10×3 on 8/30. Keep 2 reps in reserve; 12×3 eventually unlocks 55"
         },
         {
           "exercise_id": "db-lateral-raise",
@@ -49,7 +49,7 @@
           "target_weight_raw": "20 lbs (9 kg) ea",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — 8/9/9 on 8/24. Strict 10×3 before reps move to 12"
+          "notes": "Hold — 10×3 on 8/30. Strict form, no swing"
         },
         {
           "exercise_id": "rope-tricep-pushdown",
@@ -57,7 +57,7 @@
           "target_weight_raw": "40 lbs (18 kg)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Hold — 12/11/11 on 8/24. One rep on sets 2–3 earns the lock; 12/12/12 → 45"
+          "notes": "Hold — 12/12/10 on 8/30. Finish the third set before progressing"
         },
         {
           "exercise_id": "overhead-db-tricep-extension",
@@ -65,11 +65,11 @@
           "target_weight_raw": "55 lbs (25 kg)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Hold — 12/10/12 on 8/24. Finish set 2; 12/12/12 → 60"
+          "notes": "Hold — 12/11/12 on 8/30. Re-own 12×3 before targeting 60"
         }
       ]
     },
-    "monday": {
+    "tuesday": {
       "label": "Pull (Back / Biceps / Rear Delts)",
       "warmup": "Rower 5 min + band pull-aparts × 15 × 2 + scap pull-ups × 10",
       "cooldown": "Child's pose with side reach 60s ea side + cross-body rear-delt stretch 60s ea side + gentle forearm stretch 45s ea side",
@@ -80,23 +80,23 @@
           "target_weight_raw": "130 lbs (59 kg)",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "Keep the user-selected pull-back — 12/9/9 on 8/25 after 150 proved premature. Lock 10×3, then target 12; do not return to 140 until 12/12/12 at 130"
+          "notes": "Re-own the confirmed W36 load. Do not return to 140 until 12×3 at 130"
         },
         {
           "exercise_id": "seated-cable-row",
           "target_weight_kg": 58.97,
           "target_weight_raw": "130 lbs (59 kg)",
-          "target_reps": 12,
+          "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold load — the new 130 landed at 10/10/10 on 8/25. Reps now climb to 12; 12/12/12 → 135"
+          "notes": "Hold despite the confirmed W36 12×3 gate. Re-entry target is 10×3; bank 135 for W39"
         },
         {
           "exercise_id": "single-arm-db-row",
           "target_weight_kg": 29.48,
           "target_weight_raw": "65 lbs (29 kg) ea",
-          "target_reps": 12,
+          "target_reps": 10,
           "target_sets": 3,
-          "notes": "**Corrected progression:** 8/8/8 on 8/19 became 10/10/10 on 8/25, so 12 is now earned as the rep target. Weight stays 65 until 12/12/12"
+          "notes": "Hold despite the confirmed W36 12×3 gate. Strict 10×3; bank 70 for W39"
         },
         {
           "exercise_id": "cable-face-pull",
@@ -104,7 +104,7 @@
           "target_weight_raw": "60 lbs (27 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Hold — 15/15/13 on 8/25. Two clean reps finish the 15×3 gate; then 65"
+          "notes": "Repeat the confirmed W36 15×3 with strict form; bank 65 for W39"
         },
         {
           "exercise_id": "db-reverse-fly",
@@ -112,7 +112,7 @@
           "target_weight_raw": "20 lbs (9 kg) ea",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Hold — 15/14/14 on 8/25. Strict 15×3 → 25"
+          "notes": "Repeat the confirmed W36 15×3. Strict only; bank 25 for W39"
         },
         {
           "exercise_id": "barbell-curl",
@@ -120,7 +120,7 @@
           "target_weight_raw": "60 lbs (27 kg)",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — 11/9/8 on 8/25. Lock 10×3 before targeting 12; 12/12/12 → next available bar"
+          "notes": "Repeat the confirmed W36 target; no hip swing"
         },
         {
           "exercise_id": "hammer-curl",
@@ -128,7 +128,7 @@
           "target_weight_raw": "30 lbs (14 kg) ea",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — 10/9/9 on 8/25. Finish 10×3 before targeting 12"
+          "notes": "Repeat the confirmed W36 target; finish 10×3 before targeting 12"
         },
         {
           "exercise_id": "suitcase-carry",
@@ -136,30 +136,30 @@
           "target_weight_raw": "75 lbs (34 kg) ea",
           "target_reps": 25,
           "target_sets": 3,
-          "notes": "Hold — 25/20/20 seconds on 8/25. First lock 25s×3, then target 30s×3 before any load increase. Tall posture, no lean"
+          "notes": "Repeat the confirmed W36 target: 25 sec each side. Tall posture, no lean"
         }
       ]
     },
-    "tuesday": {
+    "wednesday": {
       "label": "Legs (Quads / Hams / Glutes / Calves / Core)",
       "warmup": "Easy treadmill 5–8 min + controlled bodyweight squats × 10 + glute bridges × 10 + progressive ramp-up sets. Pain rule: keep left groin/adductor discomfort at 0–2/10; stop or modify anything sharp, worsening, or movement-changing",
       "cooldown": "Easy walk 5 min + gentle standing quad stretch 45s ea side + gentle hamstring stretch 45s ea side + calf stretch 45s ea side. No wide-stance or aggressive adductor stretching",
       "exercises": [
         {
           "exercise_id": "barbell-back-squat",
-          "target_weight_kg": 68.04,
-          "target_weight_raw": "150 lbs (68 kg)",
+          "target_weight_kg": 63.5,
+          "target_weight_raw": "140 lbs (64 kg)",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — 8×3 on 8/26 was the successful symptom check. Reps climb to 10; use pain-free depth and stop if the groin changes mechanics"
+          "notes": "Hold the hip-protective 9/1 load. Do not return to 150 yet; use pain-free depth"
         },
         {
           "exercise_id": "leg-press",
-          "target_weight_kg": 149.69,
-          "target_weight_raw": "330 lbs (150 kg)",
+          "target_weight_kg": 145.15,
+          "target_weight_raw": "320 lbs (145 kg)",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — 10/10/8 on 8/26. Lock 10×3 before targeting 12; 12/12/12 → 340"
+          "notes": "Consolidate the two successful 320-lb sets from 9/1; 270 lbs was set 1. Use 270 for the first work set if the hip check is not completely quiet"
         },
         {
           "exercise_id": "barbell-rdl",
@@ -167,15 +167,15 @@
           "target_weight_raw": "120 lbs (54 kg)",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — 8×3 on the cautious 8/26 session. Reps climb to 10. Keep double-overhand grip; 12/12/12 → 125"
+          "notes": "Hold — 10/10/9 on 9/1. Controlled eccentric; double-overhand grip"
         },
         {
           "exercise_id": "seated-leg-curl",
           "target_weight_kg": 38.56,
           "target_weight_raw": "85 lbs (39 kg)",
-          "target_reps": 12,
+          "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — 10×3 on 8/26. Reps now climb to 12; 12/12/12 → 90"
+          "notes": "Hold — 12/12/10 on 9/1. Re-own 10×3 before targeting 12"
         },
         {
           "exercise_id": "barbell-hip-thrust",
@@ -183,7 +183,7 @@
           "target_weight_raw": "110 lbs (50 kg)",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — 8/8/10 during the symptom-check session. Return to a clean 10×3 before targeting 12"
+          "notes": "Hold — 10/10/9 on 9/1. Full lockout without provoking the hip"
         },
         {
           "exercise_id": "calf-raise",
@@ -191,15 +191,15 @@
           "target_weight_raw": "260 lbs (118 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Hold load — 12×3 on 8/26 advances the rep stage to 15. Full 15×3 → 270"
+          "notes": "Hold — 15/15/14 on 9/1. Full range and controlled pause"
         },
         {
           "exercise_id": "cable-rope-crunch",
           "target_weight_kg": 27.22,
           "target_weight_raw": "60 lbs (27 kg)",
-          "target_reps": 12,
+          "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — 12/11/10 on 8/26. Lock 12×3 before returning to the 15-rep gate"
+          "notes": "Repeat 9/1's 10×3; controlled spinal flexion"
         },
         {
           "exercise_id": "back-extension",
@@ -207,11 +207,11 @@
           "target_weight_raw": "25 lbs (11 kg)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Hold the plate to your chest. The later 8/29 session locked 10×3, so reps climb to 12; 15×3 eventually unlocks 35"
+          "notes": "Repeat 9/1's 12×3; plate held to chest, controlled extension"
         }
       ]
     },
-    "wednesday": {
+    "thursday": {
       "label": "Upper Hybrid (Shoulders / Chest / Back / Arms / Core)",
       "warmup": "Rower 5 min + scap circles + band pull-aparts × 15 × 2",
       "cooldown": "Doorway pec stretch 60s ea side + child's pose with side reach 60s ea side + cross-body shoulder stretch 60s ea side",
@@ -220,25 +220,25 @@
           "exercise_id": "seated-db-shoulder-press",
           "target_weight_kg": 22.68,
           "target_weight_raw": "50 lbs (23 kg) ea",
-          "target_reps": 12,
+          "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — 12/12/11 on 8/27. One rep finishes the lock; 12/12/12 → 55"
+          "notes": "Hold despite 12×3 on 9/2. Re-entry target is 10×3; bank 55 for W39"
         },
         {
           "exercise_id": "incline-db-bench-press",
           "target_weight_kg": 24.95,
           "target_weight_raw": "55 lbs (25 kg) ea",
-          "target_reps": 12,
+          "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — 12/12/9 on 8/27. Finish set 3; 12/12/12 → 60. Controlled tempo, deep stretch"
+          "notes": "Re-own 10×3 after 11/12/11 on 9/2; then return to the 12-rep target"
         },
         {
           "exercise_id": "db-lateral-raise",
           "target_weight_kg": 6.8,
           "target_weight_raw": "15 lbs (7 kg) ea",
-          "target_reps": 18,
+          "target_reps": 15,
           "target_sets": 3,
-          "notes": "Hold — 18/14/15 on 8/27. Strict 18×3 before moving to 20"
+          "notes": "Repeat 9/2's 16/15/15 with strict form"
         },
         {
           "exercise_id": "cable-face-pull",
@@ -246,7 +246,7 @@
           "target_weight_raw": "60 lbs (27 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "**+5 earned in this slot** off 15×3 at 55 on 8/27. Pull-day work already reached 15/15/13 at 60, so target 15 with strict form"
+          "notes": "Repeat 9/2's 15×3; bank 65 for W39"
         },
         {
           "exercise_id": "single-arm-db-row",
@@ -254,23 +254,23 @@
           "target_weight_raw": "60 lbs (27 kg) ea",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "**+5 earned** off 12/12/12 at 55 on 8/27. You previously reached 12/10/10 at 60, so start by locking 10×3; gate remains 12/12/12"
+          "notes": "Repeat 9/2's 10×3"
         },
         {
           "exercise_id": "db-curl",
           "target_weight_kg": 11.34,
           "target_weight_raw": "25 lbs (11 kg) ea",
-          "target_reps": 12,
+          "target_reps": 10,
           "target_sets": 3,
-          "notes": "Hold — 12/10/10 on 8/27. Finish sets 2–3; 12/12/12 → 30"
+          "notes": "Re-own 10×3 after 12/12/11 on 9/2; then return to the 12-rep target"
         },
         {
           "exercise_id": "db-skullcrusher",
           "target_weight_kg": 15.88,
           "target_weight_raw": "35 lbs (16 kg)",
-          "target_reps": 10,
+          "target_reps": 8,
           "target_sets": 3,
-          "notes": "**+5 earned** off 12/12/12 at 30 on 8/27. Start the new weight at 10; gate remains 12/12/12"
+          "notes": "Re-own the new load after 9/9/7 on 9/2; no progression yet"
         },
         {
           "exercise_id": "pallof-press",
@@ -278,7 +278,7 @@
           "target_weight_raw": "50 lbs (23 kg)",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "**+5 earned** off 12/12/12 at 45 on 8/27. Start the new weight at 10; gate remains 12/12/12"
+          "notes": "Repeat 9/2's target; controlled anti-rotation"
         },
         {
           "exercise_id": "side-plank",
@@ -286,11 +286,11 @@
           "target_weight_raw": "bodyweight",
           "target_reps": 60,
           "target_sets": 3,
-          "notes": "Repeat the new 60-second milestone with level hips and controlled breathing before adding difficulty"
+          "notes": "Repeat the 60-second milestone with level hips and controlled breathing"
         }
       ]
     },
-    "thursday": {
+    "friday": {
       "label": "Lower Hybrid (Glutes / Quads / Hams / Calves / Core)",
       "warmup": "Easy bike or treadmill 5–8 min + controlled bodyweight squats × 10 + glute bridges × 10 + gentle reverse lunges only if pain-free + progressive ramp-up sets. No wide hip openers",
       "cooldown": "Easy walk 5 min + gentle quad, hamstring, and calf stretches 45s ea side. No wide-leg, straddle, 90/90, figure-4, or other position that reproduces the inner-thigh pull",
@@ -301,7 +301,7 @@
           "target_weight_raw": "115 lbs (52 kg)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Hold the protective load — 10/12/12 on 8/29. LEFT first; right matches left. Finish 12×3 with pain-free depth; not a load-progression test"
+          "notes": "Repeat 9/4's 12×3. LEFT first; pain-free depth; not a load-progression test"
         },
         {
           "exercise_id": "db-walking-lunge",
@@ -309,7 +309,7 @@
           "target_weight_raw": "25 lbs (11 kg) ea",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Hold load — 12×3 on 8/29 advances the rep stage to 15. Comfortable hip-width tracks and pain-free depth; no side-to-side shift"
+          "notes": "Repeat 9/4's 15×3. Comfortable hip-width tracks and pain-free depth"
         },
         {
           "exercise_id": "seated-leg-curl",
@@ -317,7 +317,7 @@
           "target_weight_raw": "75 lbs (34 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Hold — 15/15/11 on 8/29. Finish set 3; 15×3 → 80"
+          "notes": "Repeat 9/4's 15×3; bank 80 for W39"
         },
         {
           "exercise_id": "hip-abductor-machine",
@@ -325,7 +325,7 @@
           "target_weight_raw": "90 lbs (41 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "Hold the protective load despite 15×3 on 8/29. Use controlled symptom-free ROM; no load increase during this recovery week"
+          "notes": "Repeat 9/4's 15×3. Controlled symptom-free middle ROM; no load increase"
         },
         {
           "exercise_id": "single-leg-calf-raise",
@@ -333,7 +333,7 @@
           "target_weight_raw": "50 lbs (23 kg) ea",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Hold — 10×3 on 8/29. Reps climb to 12; left first. Full 15×3 eventually unlocks 55"
+          "notes": "Repeat 9/4's 13/12/12. Left first; full range"
         },
         {
           "exercise_id": "cable-rope-crunch",
@@ -341,7 +341,7 @@
           "target_weight_raw": "55 lbs (25 kg)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "**+5 earned in this slot** off 15×3 at 50 on 8/29. Start the new weight at 12; 15×3 → 60"
+          "notes": "Repeat 9/4's 15/12/12. Re-own 12×3 before progressing"
         },
         {
           "exercise_id": "back-extension",
@@ -349,7 +349,7 @@
           "target_weight_raw": "25 lbs (11 kg)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "Hold the plate to your chest. 10×3 on 8/29 advances the rep stage to 12; 15×3 → 35"
+          "notes": "Repeat 9/4's 15/12/12. Plate to chest; controlled"
         }
       ]
     }

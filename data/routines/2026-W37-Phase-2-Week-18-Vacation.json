@@ -1,0 +1,52 @@
+{
+  "id": "2026-W37-Phase-2-Week-18-Vacation",
+  "name": "W37 Vacation — No Training",
+  "phase": "2",
+  "start_date": "2026-09-05",
+  "end_date": "2026-09-13",
+  "source_md": "Weekly Plans/2026-W37-Phase-2-Week-18-Vacation.md",
+  "days": {
+    "monday": {
+      "label": "Rest (Vacation)",
+      "warmup": "",
+      "cooldown": "",
+      "exercises": []
+    },
+    "tuesday": {
+      "label": "Rest (Vacation)",
+      "warmup": "",
+      "cooldown": "",
+      "exercises": []
+    },
+    "wednesday": {
+      "label": "Rest (Vacation)",
+      "warmup": "",
+      "cooldown": "",
+      "exercises": []
+    },
+    "thursday": {
+      "label": "Rest (Vacation)",
+      "warmup": "",
+      "cooldown": "",
+      "exercises": []
+    },
+    "friday": {
+      "label": "Rest (Vacation)",
+      "warmup": "",
+      "cooldown": "",
+      "exercises": []
+    },
+    "saturday": {
+      "label": "Rest (Travel)",
+      "warmup": "",
+      "cooldown": "",
+      "exercises": []
+    },
+    "sunday": {
+      "label": "Rest (Post-Travel)",
+      "warmup": "",
+      "cooldown": "",
+      "exercises": []
+    }
+  }
+}

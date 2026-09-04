@@ -1,0 +1,241 @@
+{
+  "id": "2026-09-02-wednesday-upper-hybrid",
+  "date": "2026-09-02",
+  "day_of_week": "wednesday",
+  "type": "upper-hybrid",
+  "muscle_groups": [
+    "shoulders",
+    "chest",
+    "lateral-delts",
+    "rear-delts",
+    "back",
+    "biceps",
+    "triceps",
+    "core",
+    "obliques"
+  ],
+  "phase": "2",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "seated-db-shoulder-press",
+      "display_name": "Seated Dumbbell Shoulder Press",
+      "weight_raw": "50 lbs (22.7 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 22.68,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 22.68,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 22.68,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "incline-db-bench-press",
+      "display_name": "Incline Dumbbell Bench Press",
+      "weight_raw": "55 lbs (24.9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 24.95,
+          "reps": 11
+        },
+        {
+          "set": 2,
+          "weight_kg": 24.95,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 24.95,
+          "reps": 11
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-lateral-raise",
+      "display_name": "Dumbbell Lateral Raise",
+      "weight_raw": "15 lbs (6.8 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 6.8,
+          "reps": 16
+        },
+        {
+          "set": 2,
+          "weight_kg": 6.8,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 6.8,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "cable-face-pull",
+      "display_name": "Cable Face Pull",
+      "weight_raw": "60 lbs (27.2 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 27.22,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 27.22,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 27.22,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "single-arm-db-row",
+      "display_name": "Single-Arm Dumbbell Row",
+      "weight_raw": "60 lbs (27.2 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 27.22,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 27.22,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 27.22,
+          "reps": 10
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-curl",
+      "display_name": "Standing Dumbbell Curl",
+      "weight_raw": "25 lbs (11.3 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 11.34,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 11.34,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 11.34,
+          "reps": 11
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-skullcrusher",
+      "display_name": "Dumbbell Skullcrusher",
+      "weight_raw": "35 lbs (15.9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 15.88,
+          "reps": 9
+        },
+        {
+          "set": 2,
+          "weight_kg": 15.88,
+          "reps": 9
+        },
+        {
+          "set": 3,
+          "weight_kg": 15.88,
+          "reps": 7
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "pallof-press",
+      "display_name": "Pallof Press",
+      "weight_raw": "50 lbs (22.7 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 22.68,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 22.68,
+          "reps": 10
+        },
+        {
+          "set": 3,
+          "weight_kg": 22.68,
+          "reps": 10
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "side-plank",
+      "display_name": "Side Plank",
+      "weight_raw": "bodyweight",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 0.0,
+          "reps": 60
+        },
+        {
+          "set": 2,
+          "weight_kg": 0.0,
+          "reps": 60
+        },
+        {
+          "set": 3,
+          "weight_kg": 0.0,
+          "reps": 60
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "cooldown": {
+    "type": "library",
+    "source_key": "upper-hybrid",
+    "completed_at": "2026-09-02T11:56:15.234Z"
+  },
+  "session_notes": "",
+  "submitted_at": "2026-09-02T12:42:56.593Z",
+  "source_md": "Workout Log/2026-09-02-Wednesday-Upper-Hybrid.md"
+}

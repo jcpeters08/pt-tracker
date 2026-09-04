@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-30T01:38:23Z",
+  "generated_at": "2026-09-04T16:12:51Z",
   "routines": [
     "2026-W18-CDMX-Phase-1-Closeout",
     "2026-W20-Phase-2-Launch-Reentry",
@@ -18,7 +18,9 @@
     "2026-W33-Phase-2-Week-14-Progression",
     "2026-W34-Phase-2-Week-15-Progression",
     "2026-W35-Phase-2-Week-16-Rebuild",
-    "2026-W36-Phase-2-Week-17-Progression"
+    "2026-W36-Phase-2-Week-17-Progression",
+    "2026-W37-Phase-2-Week-18-Vacation",
+    "2026-W38-Phase-2-Week-19-Reentry"
   ],
   "logs": [
     "2026-04-13-monday-push",
@@ -88,7 +90,12 @@
     "2026-08-25-tuesday-pull",
     "2026-08-26-wednesday-legs",
     "2026-08-27-thursday-upper-hybrid",
-    "2026-08-29-friday-lower-hybrid"
+    "2026-08-29-friday-lower-hybrid",
+    "2026-08-30-sunday-push",
+    "2026-08-31-monday-pull",
+    "2026-09-01-tuesday-legs",
+    "2026-09-02-wednesday-upper-hybrid",
+    "2026-09-04-thursday-lower-hybrid"
   ],
   "recovery_logs": [
     "2026-05-14-embrace-north",
@@ -165,5 +172,5 @@
     "v-up",
     "wall-sit"
   ],
-  "latest_routine_id": "2026-W36-Phase-2-Week-17-Progression"
+  "latest_routine_id": "2026-W38-Phase-2-Week-19-Reentry"
 }
