@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-04T16:22:48Z",
+  "generated_at": "2026-09-28T00:42:02Z",
   "routines": [
     "2026-W18-CDMX-Phase-1-Closeout",
     "2026-W20-Phase-2-Launch-Reentry",
@@ -20,7 +20,8 @@
     "2026-W35-Phase-2-Week-16-Rebuild",
     "2026-W36-Phase-2-Week-17-Progression",
     "2026-W37-Phase-2-Week-18-Vacation",
-    "2026-W38-Phase-2-Week-19-Reentry"
+    "2026-W38-Phase-2-Week-19-Reentry",
+    "2026-W40-Phase-2-Week-21-Return"
   ],
   "logs": [
     "2026-04-13-monday-push",
@@ -172,5 +173,5 @@
     "v-up",
     "wall-sit"
   ],
-  "latest_routine_id": "2026-W38-Phase-2-Week-19-Reentry"
+  "latest_routine_id": "2026-W40-Phase-2-Week-21-Return"
 }
