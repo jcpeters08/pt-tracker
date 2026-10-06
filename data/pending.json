@@ -3,10 +3,10 @@
   "entries": [
     {
       "type": "log",
-      "submitted_at": "2026-10-06T11:41:30.168Z",
+      "submitted_at": "2026-10-06T11:46:01.327Z",
       "session": {
         "date": "2026-10-06",
-        "submitted_at": "2026-10-06T11:41:30.168Z",
+        "submitted_at": "2026-10-06T11:46:01.327Z",
         "day_of_week": "tuesday",
         "type": "push",
         "muscle_groups": [
@@ -102,6 +102,28 @@
                 "set": 3,
                 "weight_kg": 6.8,
                 "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "rope-tricep-pushdown",
+            "display_name": "Rope Tricep Pushdown (Cable)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 15.88,
+                "reps": 13
+              },
+              {
+                "set": 2,
+                "weight_kg": 15.88,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 15.88,
+                "reps": 10
               }
             ],
             "notes": ""
