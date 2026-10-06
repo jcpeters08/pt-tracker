@@ -3,10 +3,10 @@
   "entries": [
     {
       "type": "log",
-      "submitted_at": "2026-10-06T11:46:01.327Z",
+      "submitted_at": "2026-10-06T11:58:07.737Z",
       "session": {
         "date": "2026-10-06",
-        "submitted_at": "2026-10-06T11:46:01.327Z",
+        "submitted_at": "2026-10-06T11:58:07.737Z",
         "day_of_week": "tuesday",
         "type": "push",
         "muscle_groups": [
@@ -58,6 +58,28 @@
                 "set": 3,
                 "weight_kg": 22.68,
                 "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "cable-chest-fly",
+            "display_name": "Cable Chest Fly",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 11.34,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 11.34,
+                "reps": 15
               }
             ],
             "notes": ""
