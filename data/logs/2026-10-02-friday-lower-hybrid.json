@@ -1,0 +1,172 @@
+{
+  "id": "2026-10-02-friday-lower-hybrid",
+  "date": "2026-10-02",
+  "day_of_week": "friday",
+  "type": "lower-hybrid",
+  "muscle_groups": [
+    "quads",
+    "hamstrings",
+    "glutes",
+    "adductors",
+    "calves",
+    "core",
+    "lower-back"
+  ],
+  "phase": "2",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "single-leg-leg-press",
+      "display_name": "Single-Leg Leg Press",
+      "weight_raw": "85 lbs (38.6 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 38.56,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 38.56,
+          "reps": 10
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "db-walking-lunge",
+      "display_name": "Dumbbell Walking Lunge",
+      "weight_raw": "15 lbs (6.8 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 6.8,
+          "reps": 10
+        },
+        {
+          "set": 2,
+          "weight_kg": 6.8,
+          "reps": 10
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "display_name": "Seated Leg Curl",
+      "weight_raw": "55 lbs (24.9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 24.95,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 24.95,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "hip-abductor-machine",
+      "display_name": "Hip Abductor Machine",
+      "weight_raw": "65 lbs (29.5 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 29.48,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 29.48,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "hip-adductor-machine",
+      "display_name": "Hip Adductor Machine",
+      "weight_raw": "40 lbs (18.1 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 18.14,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 18.14,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "single-leg-calf-raise",
+      "display_name": "Single-Leg Calf Raise (on Step)",
+      "weight_raw": "35 lbs (15.9 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 15.88,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 15.88,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "cable-rope-crunch",
+      "display_name": "Cable Rope Crunch",
+      "weight_raw": "40 lbs (18.1 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 18.14,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 18.14,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "back-extension",
+      "display_name": "Back Extension",
+      "weight_raw": "10 lbs (4.5 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 4.54,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 4.54,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "cooldown": null,
+  "session_notes": "Logged at W40 plan defaults by the 2026-10-05 sync: Jonathan confirmed all five W40 sessions were completed, but this one was not submitted in-app. Reps, sets, and loads are the programmed targets, not measured actuals.",
+  "submitted_at": "2026-10-06T01:28:22Z",
+  "source_md": "Workout Log/2026-10-02-Friday-Lower-Hybrid.md"
+}
