@@ -376,6 +376,204 @@
         "cooldown": null,
         "session_notes": ""
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-10-08T12:19:53.025Z",
+      "session": {
+        "date": "2026-10-08",
+        "submitted_at": "2026-10-08T12:19:53.025Z",
+        "day_of_week": "wednesday",
+        "type": "pull",
+        "muscle_groups": [
+          "back",
+          "rear-delts",
+          "biceps",
+          "core"
+        ],
+        "routine_id": "2026-W41-Phase-2-Week-22-Rebuild",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "lat-pulldown",
+            "display_name": "Lat Pulldown",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 52.16,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 52.16,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 52.16,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-cable-row",
+            "display_name": "Seated Cable Row",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 52.16,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 52.16,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 52.16,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "single-arm-db-row",
+            "display_name": "Single-Arm Dumbbell Row",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 24.95,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 24.95,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 24.95,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "cable-face-pull",
+            "display_name": "Cable Face Pull",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 22.68,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.68,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 22.68,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-reverse-fly",
+            "display_name": "Dumbbell Reverse Fly",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 6.8,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 6.8,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 6.8,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "barbell-curl",
+            "display_name": "Barbell Biceps Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 22.68,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.68,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 22.68,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "hammer-curl",
+            "display_name": "Hammer Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 10
+              },
+              {
+                "set": 2,
+                "weight_kg": 11.34,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 11.34,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "suitcase-carry",
+            "display_name": "Suitcase Carry",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 29.48,
+                "reps": 20
+              },
+              {
+                "set": 2,
+                "weight_kg": 29.48,
+                "reps": 20
+              },
+              {
+                "set": 3,
+                "weight_kg": 29.48,
+                "reps": 20
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": null,
+        "session_notes": ""
+      }
     }
   ]
 }
