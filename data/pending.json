@@ -3,10 +3,10 @@
   "entries": [
     {
       "type": "log",
-      "submitted_at": "2026-10-19T11:59:12.827Z",
+      "submitted_at": "2026-10-19T11:59:25.198Z",
       "session": {
         "date": "2026-10-19",
-        "submitted_at": "2026-10-19T11:59:12.827Z",
+        "submitted_at": "2026-10-19T11:59:25.198Z",
         "day_of_week": "monday",
         "type": "push",
         "muscle_groups": [
@@ -139,6 +139,11 @@
               },
               {
                 "set": 2,
+                "weight_kg": 18.14,
+                "reps": 11
+              },
+              {
+                "set": 3,
                 "weight_kg": 18.14,
                 "reps": 11
               }
