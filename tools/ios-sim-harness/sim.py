@@ -105,9 +105,13 @@ def metrics():
     return js("""const d=document.querySelector('#submit-row'); const r=d?d.getBoundingClientRect():null; const v=visualViewport;
 const a=document.activeElement; const ar=(a&&a.getBoundingClientRect)?a.getBoundingClientRect():null;
 const h=document.querySelector('header.app'); const hr=h?h.getBoundingClientRect():null;
+const s=document.querySelector('#day-toggle'); const sr=s?s.getBoundingClientRect():null;
+const topb=Math.max(0, hr?Math.round(hr.bottom):0, sr?Math.round(sr.bottom):0);
 return {ih:innerHeight, sy:Math.round(scrollY), dh:document.documentElement.scrollHeight, vvh:Math.round(v.height), vvt:Math.round(v.offsetTop), vvs:+v.scale.toFixed(2),
  dock:r?{t:Math.round(r.top),b:Math.round(r.bottom),h:Math.round(r.height),pos:getComputedStyle(d).position,vis:getComputedStyle(d).display!=='none'}:null,
  hdr:hr?{t:Math.round(hr.top),b:Math.round(hr.bottom),pos:getComputedStyle(h).position}:null,
+ strip:sr?{t:Math.round(sr.top),b:Math.round(sr.bottom),h:Math.round(sr.height),pos:getComputedStyle(s).position}:null,
+ topb:topb,
  act:a?{tag:a.tagName,f:a.dataset?a.dataset.field:null,t:ar&&Math.round(ar.top),b:ar&&Math.round(ar.bottom)}:null,
  cls:document.body.className, ki:getComputedStyle(document.documentElement).getPropertyValue('--keyboard-inset').trim(), dof:getComputedStyle(document.documentElement).getPropertyValue('--workout-dock-offset').trim()};""")
 
@@ -185,7 +189,7 @@ def settle(timeout=5):
 
 
 def visible_inputs(field="reps"):
-    return js(f"""const hb=document.querySelector('header.app').getBoundingClientRect().bottom; const dt=document.querySelector('#submit-row').getBoundingClientRect().top;
+    return js(f"""const hb=Math.max(0, document.querySelector('header.app').getBoundingClientRect().bottom, document.querySelector('#day-toggle').getBoundingClientRect().bottom); const dt=document.querySelector('#submit-row').getBoundingClientRect().top;
 const out=[]; document.querySelectorAll('.set-row input[data-field={field}]').forEach((e,i)=>{{const r=e.getBoundingClientRect(); if(r.top>hb&&r.bottom<dt) out.push(i);}}); return out;""")
 
 
@@ -276,7 +280,9 @@ def check(label, cond, detail=""):
 def check_keyboard_state(m, step, expect_input=True):
     """With the keyboard up: an input must be focused, the dock bottom must sit
     on the visible edge (visualViewport.height), the dock must be compact, and
-    the focused input must clear both the sticky header and the dock."""
+    the focused input must clear both the dock and the pinned top chrome
+    (`topb`: the in-flow header near the top of the page, the sticky day strip
+    further down — 0 once both have scrolled away)."""
     kb_open = m["vvh"] < m["ih"] - 80
     check(f"{step}: software keyboard is up", kb_open, f"vvh={m['vvh']} ih={m['ih']}")
     if expect_input:
@@ -285,7 +291,8 @@ def check_keyboard_state(m, step, expect_input=True):
     check(f"{step}: dock is compact (timer only)", bool(m["dock"]) and m["dock"]["h"] <= 120, f"h={m['dock'] and m['dock']['h']}")
     if expect_input and m["act"] and m["act"].get("tag") == "INPUT":
         check(f"{step}: focused input clears the dock", m["act"]["b"] <= m["dock"]["t"], f"input.b={m['act']['b']} dock.t={m['dock']['t']}")
-        check(f"{step}: focused input clears the header", m["act"]["t"] >= m["hdr"]["b"], f"input.t={m['act']['t']} hdr.b={m['hdr']['b']}")
+        check(f"{step}: focused input clears the pinned top chrome", m["act"]["t"] >= m["topb"], f"input.t={m['act']['t']} topb={m['topb']} hdr.b={m['hdr']['b']} strip.b={m['strip'] and m['strip']['b']}")
+        check(f"{step}: no sticky top chrome while typing", m["topb"] <= 0 or m["sy"] == 0, f"topb={m['topb']} sy={m['sy']} strip.pos={m['strip'] and m['strip']['pos']}")
 
 
 def check_closed_state(m, step):

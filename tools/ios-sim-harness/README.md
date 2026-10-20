@@ -41,7 +41,9 @@ Each step prints a metrics line (`vvh`/`vvt` = visualViewport height/offsetTop,
 writes screenshots to `shots/` (or `$SIM_SHOTS`), and **asserts** the pass conditions
 (`sim.check_keyboard_state` / `sim.check_closed_state`): with the keyboard up an input
 must have focus, `dock.b == vvh` (±2), the dock must be compact (≤120px), and the
-focused input must clear both the dock top and the sticky header bottom; after
+focused input must clear both the dock top and the pinned top chrome (`topb` = the lower edge of
+the in-flow header near the top of the page or the sticky day strip further down — 0 once both
+have scrolled away; since 2026-10-20 the strip un-pins while typing, which is asserted); after
 dismissal `dock.b == innerHeight` with the full dock back; typing and dismissing must
 not change `scrollY`. Any failed check makes the script exit 1 and the per-step metrics
 are written to `metrics-<tag>.json` — run from `evidence/<date>/` to keep them.

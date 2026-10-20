@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { freezeAppTime, signIn } from "./helpers.js";
+import { freezeAppTime, signIn, installFakeVisualViewport, setVisualViewport } from "./helpers.js";
 
 // Regression coverage for the 2026-10-09 report: "That timer bar floats when
 // you scroll up and down — it needs to be locked to the bottom." iOS WebKit
@@ -144,37 +144,8 @@ test("workout dock sits at the viewport bottom even when the day view is shorter
   expect(m.bottom).toBe(m.innerHeight);
 });
 
-// iOS keeps the layout viewport full-height while the software keyboard is up
-// and only shrinks window.visualViewport. Chromium can't open a keyboard, so
-// these tests install a controllable visualViewport stand-in before the app
-// boots and drive it the way iOS does.
-async function installFakeVisualViewport(page) {
-  await page.addInitScript(() => {
-    const target = new EventTarget();
-    const fake = {
-      offsetTop: 0, offsetLeft: 0, pageTop: 0, pageLeft: 0, scale: 1,
-      get width() { return this._width ?? window.innerWidth; },
-      set width(v) { this._width = v; },
-      get height() { return this._height ?? window.innerHeight; },
-      set height(v) { this._height = v; },
-      addEventListener: (...args) => target.addEventListener(...args),
-      removeEventListener: (...args) => target.removeEventListener(...args),
-      dispatchEvent: (event) => target.dispatchEvent(event),
-    };
-    Object.defineProperty(window, "visualViewport", { value: fake, configurable: true });
-    window.__fakeVisualViewport = fake;
-  });
-}
-
-async function setVisualViewport(page, { height, offsetTop = 0, scale = 1 }, eventName = "resize") {
-  await page.evaluate(([h, top, sc, name]) => {
-    const vv = window.__fakeVisualViewport;
-    vv.height = h; vv.offsetTop = top; vv.scale = sc;
-    vv.dispatchEvent(new Event(name));
-  }, [height, offsetTop, scale, eventName]);
-  await page.waitForTimeout(100); // rAF-coalesced update
-}
-
+// Keyboard-up behaviour is driven through the fake visualViewport installed by
+// installFakeVisualViewport / setVisualViewport in helpers.js.
 function containerPaddingBottom(page) {
   return page.evaluate(() => getComputedStyle(document.querySelector(".container")).paddingBottom);
 }
