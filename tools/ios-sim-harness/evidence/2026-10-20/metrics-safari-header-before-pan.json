@@ -1,0 +1,265 @@
+{
+ "tag": "safari-header-before-pan",
+ "pwa": false,
+ "steps": [
+  {
+   "ih": 714,
+   "sy": 1136,
+   "dh": 6317,
+   "vvh": 410,
+   "vvt": 153,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -153,
+    "b": 152,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": 25,
+    "b": 84,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 152,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 182,
+    "b": 226
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "151px",
+   "dof": "195px",
+   "step": "1-kbd-open"
+  },
+  {
+   "ih": 714,
+   "sy": 1266,
+   "dh": 6317,
+   "vvh": 410,
+   "vvt": 283,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -283,
+    "b": 22,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": -105,
+    "b": -46,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 22,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 52,
+    "b": 96
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "21px",
+   "dof": "195px",
+   "step": "2-mid-pan-immediate"
+  },
+  {
+   "ih": 714,
+   "sy": 1266,
+   "dh": 6317,
+   "vvh": 410,
+   "vvt": 283,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -283,
+    "b": 22,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": -105,
+    "b": -46,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 22,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 52,
+    "b": 96
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "21px",
+   "dof": "195px",
+   "step": "3-after-pan-settled"
+  },
+  {
+   "ih": 714,
+   "sy": 1136,
+   "dh": 6317,
+   "vvh": 410,
+   "vvt": 153,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -153,
+    "b": 152,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": 25,
+    "b": 84,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 152,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 182,
+    "b": 226
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "151px",
+   "dof": "195px",
+   "step": "4-after-pan-back"
+  },
+  {
+   "ih": 714,
+   "sy": 1136,
+   "dh": 6317,
+   "vvh": 714,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 519,
+    "b": 714,
+    "h": 195,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": 0,
+    "b": 305,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": 178,
+    "b": 237,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 305,
+   "act": {
+    "tag": "BODY",
+    "t": -1136,
+    "b": 5181
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "195px",
+   "step": "5-dismissed"
+  },
+  {
+   "ih": 754,
+   "sy": 2429,
+   "dh": 6317,
+   "vvh": 754,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 559,
+    "b": 754,
+    "h": 195,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": 0,
+    "b": 305,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": 178,
+    "b": 237,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 305,
+   "act": {
+    "tag": "BODY",
+    "t": -2429,
+    "b": 3888
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "195px",
+   "step": "6-fling-immediate"
+  },
+  {
+   "ih": 754,
+   "sy": 3037,
+   "dh": 6317,
+   "vvh": 754,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 559,
+    "b": 754,
+    "h": 195,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": 0,
+    "b": 305,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": 178,
+    "b": 237,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 305,
+   "act": {
+    "tag": "BODY",
+    "t": -3037,
+    "b": 3280
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "195px",
+   "step": "7-fling-settled"
+  }
+ ],
+ "failures": [
+  "1-kbd-open: no sticky top chrome while typing"
+ ]
+}
