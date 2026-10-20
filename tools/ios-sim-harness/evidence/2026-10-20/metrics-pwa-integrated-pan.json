@@ -1,0 +1,263 @@
+{
+ "tag": "pwa-integrated-pan",
+ "pwa": true,
+ "steps": [
+  {
+   "ih": 812,
+   "sy": 1144,
+   "dh": 6509,
+   "vvh": 442,
+   "vvt": 196,
+   "vvs": 1,
+   "dock": {
+    "t": 348,
+    "b": 442,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -1126,
+    "b": -903,
+    "pos": "static"
+   },
+   "strip": {
+    "t": -897,
+    "b": -831,
+    "h": 66,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 198,
+    "b": 242
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "174px",
+   "dof": "229px",
+   "step": "1-kbd-open"
+  },
+  {
+   "ih": 812,
+   "sy": 1274,
+   "dh": 6509,
+   "vvh": 442,
+   "vvt": 326,
+   "vvs": 1,
+   "dock": {
+    "t": 348,
+    "b": 442,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -1256,
+    "b": -1033,
+    "pos": "static"
+   },
+   "strip": {
+    "t": -1027,
+    "b": -961,
+    "h": 66,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 68,
+    "b": 112
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "44px",
+   "dof": "229px",
+   "step": "2-mid-pan-immediate"
+  },
+  {
+   "ih": 812,
+   "sy": 1274,
+   "dh": 6509,
+   "vvh": 442,
+   "vvt": 326,
+   "vvs": 1,
+   "dock": {
+    "t": 348,
+    "b": 442,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -1256,
+    "b": -1033,
+    "pos": "static"
+   },
+   "strip": {
+    "t": -1027,
+    "b": -961,
+    "h": 66,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 68,
+    "b": 112
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "44px",
+   "dof": "229px",
+   "step": "3-after-pan-settled"
+  },
+  {
+   "ih": 812,
+   "sy": 1144,
+   "dh": 6509,
+   "vvh": 442,
+   "vvt": 196,
+   "vvs": 1,
+   "dock": {
+    "t": 348,
+    "b": 442,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -1126,
+    "b": -903,
+    "pos": "static"
+   },
+   "strip": {
+    "t": -897,
+    "b": -831,
+    "h": 66,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 198,
+    "b": 242
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "174px",
+   "dof": "229px",
+   "step": "4-after-pan-back"
+  },
+  {
+   "ih": 812,
+   "sy": 1144,
+   "dh": 6509,
+   "vvh": 812,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 583,
+    "b": 812,
+    "h": 229,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -1126,
+    "b": -903,
+    "pos": "static"
+   },
+   "strip": {
+    "t": 0,
+    "b": 66,
+    "h": 66,
+    "pos": "sticky"
+   },
+   "topb": 66,
+   "act": {
+    "tag": "BODY",
+    "t": -1144,
+    "b": 5365
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "5-dismissed"
+  },
+  {
+   "ih": 812,
+   "sy": 2618,
+   "dh": 6509,
+   "vvh": 812,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 583,
+    "b": 812,
+    "h": 229,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -2600,
+    "b": -2377,
+    "pos": "static"
+   },
+   "strip": {
+    "t": 0,
+    "b": 66,
+    "h": 66,
+    "pos": "sticky"
+   },
+   "topb": 66,
+   "act": {
+    "tag": "BODY",
+    "t": -2618,
+    "b": 3891
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "6-fling-immediate"
+  },
+  {
+   "ih": 812,
+   "sy": 3094,
+   "dh": 6509,
+   "vvh": 812,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 583,
+    "b": 812,
+    "h": 229,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -3076,
+    "b": -2853,
+    "pos": "static"
+   },
+   "strip": {
+    "t": 0,
+    "b": 66,
+    "h": 66,
+    "pos": "sticky"
+   },
+   "topb": 66,
+   "act": {
+    "tag": "BODY",
+    "t": -3094,
+    "b": 3415
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "7-fling-settled"
+  }
+ ],
+ "failures": []
+}

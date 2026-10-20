@@ -1,0 +1,372 @@
+{
+ "tag": "safari-integrated",
+ "pwa": false,
+ "steps": [
+  {
+   "ih": 714,
+   "sy": 0,
+   "dh": 6475,
+   "vvh": 714,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 519,
+    "b": 714,
+    "h": 195,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": 18,
+    "b": 241,
+    "pos": "static"
+   },
+   "strip": {
+    "t": 247,
+    "b": 313,
+    "h": 66,
+    "pos": "sticky"
+   },
+   "topb": 313,
+   "act": {
+    "tag": "BODY",
+    "t": 0,
+    "b": 6475
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "195px",
+   "step": "0-top"
+  },
+  {
+   "ih": 754,
+   "sy": 602,
+   "dh": 6475,
+   "vvh": 410,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -584,
+    "b": -361,
+    "pos": "static"
+   },
+   "strip": {
+    "t": -355,
+    "b": -289,
+    "h": 66,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 183,
+    "b": 227
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "344px",
+   "dof": "195px",
+   "step": "1-kbd-open"
+  },
+  {
+   "ih": 754,
+   "sy": 602,
+   "dh": 6475,
+   "vvh": 410,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -584,
+    "b": -361,
+    "pos": "static"
+   },
+   "strip": {
+    "t": -355,
+    "b": -289,
+    "h": 66,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 183,
+    "b": 227
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "344px",
+   "dof": "195px",
+   "step": "2-typed"
+  },
+  {
+   "ih": 754,
+   "sy": 654,
+   "dh": 6475,
+   "vvh": 410,
+   "vvt": 52,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -636,
+    "b": -413,
+    "pos": "static"
+   },
+   "strip": {
+    "t": -407,
+    "b": -341,
+    "h": 66,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 183,
+    "b": 227
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "292px",
+   "dof": "195px",
+   "step": "3-next-row"
+  },
+  {
+   "ih": 754,
+   "sy": 1738,
+   "dh": 6475,
+   "vvh": 410,
+   "vvt": 344,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -1720,
+    "b": -1497,
+    "pos": "static"
+   },
+   "strip": {
+    "t": -1491,
+    "b": -1425,
+    "h": 66,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 182,
+    "b": 226
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "",
+   "dof": "195px",
+   "step": "4-two-cards-down"
+  },
+  {
+   "ih": 754,
+   "sy": 4402,
+   "dh": 6475,
+   "vvh": 754,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 559,
+    "b": 754,
+    "h": 195,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -4384,
+    "b": -4161,
+    "pos": "static"
+   },
+   "strip": {
+    "t": 0,
+    "b": 66,
+    "h": 66,
+    "pos": "sticky"
+   },
+   "topb": 66,
+   "act": {
+    "tag": "BODY",
+    "t": -4402,
+    "b": 2073
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "195px",
+   "step": "5a-before-last-tap"
+  },
+  {
+   "ih": 754,
+   "sy": 4667,
+   "dh": 6475,
+   "vvh": 410,
+   "vvt": 265,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -4649,
+    "b": -4426,
+    "pos": "static"
+   },
+   "strip": {
+    "t": -4420,
+    "b": -4354,
+    "h": 66,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "weight",
+    "t": 183,
+    "b": 227
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "79px",
+   "dof": "195px",
+   "step": "5b-last-input-focused"
+  },
+  {
+   "ih": 754,
+   "sy": 4667,
+   "dh": 6475,
+   "vvh": 754,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 559,
+    "b": 754,
+    "h": 195,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -4649,
+    "b": -4426,
+    "pos": "static"
+   },
+   "strip": {
+    "t": 0,
+    "b": 66,
+    "h": 66,
+    "pos": "sticky"
+   },
+   "topb": 66,
+   "act": {
+    "tag": "BODY",
+    "t": -4667,
+    "b": 1808
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "195px",
+   "step": "6-dismissed"
+  },
+  {
+   "ih": 714,
+   "sy": 0,
+   "dh": 6475,
+   "vvh": 714,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 519,
+    "b": 714,
+    "h": 195,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": 18,
+    "b": 241,
+    "pos": "static"
+   },
+   "strip": {
+    "t": 247,
+    "b": 313,
+    "h": 66,
+    "pos": "sticky"
+   },
+   "topb": 313,
+   "act": {
+    "tag": "BODY",
+    "t": 0,
+    "b": 6475
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "195px",
+   "step": "7-after-top-rubberband"
+  },
+  {
+   "ih": 714,
+   "sy": 5761,
+   "dh": 6475,
+   "vvh": 714,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 519,
+    "b": 714,
+    "h": 195,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -5743,
+    "b": -5520,
+    "pos": "static"
+   },
+   "strip": {
+    "t": 0,
+    "b": 66,
+    "h": 66,
+    "pos": "sticky"
+   },
+   "topb": 66,
+   "act": {
+    "tag": "BODY",
+    "t": -5761,
+    "b": 714
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "195px",
+   "step": "8-after-bottom-rubberband"
+  }
+ ],
+ "failures": []
+}

@@ -1,0 +1,265 @@
+{
+ "tag": "pwa-integrated-pan",
+ "pwa": true,
+ "steps": [
+  {
+   "ih": 812,
+   "sy": 837,
+   "dh": 6509,
+   "vvh": 442,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 348,
+    "b": 442,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -819,
+    "b": -596,
+    "pos": "static"
+   },
+   "strip": {
+    "t": -590,
+    "b": -524,
+    "h": 66,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 505,
+    "b": 549
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "370px",
+   "dof": "229px",
+   "step": "1-kbd-open"
+  },
+  {
+   "ih": 812,
+   "sy": 967,
+   "dh": 6509,
+   "vvh": 442,
+   "vvt": 130,
+   "vvs": 1,
+   "dock": {
+    "t": 348,
+    "b": 442,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -949,
+    "b": -726,
+    "pos": "static"
+   },
+   "strip": {
+    "t": -720,
+    "b": -654,
+    "h": 66,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 375,
+    "b": 419
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "240px",
+   "dof": "229px",
+   "step": "2-mid-pan-immediate"
+  },
+  {
+   "ih": 812,
+   "sy": 967,
+   "dh": 6509,
+   "vvh": 442,
+   "vvt": 130,
+   "vvs": 1,
+   "dock": {
+    "t": 348,
+    "b": 442,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -949,
+    "b": -726,
+    "pos": "static"
+   },
+   "strip": {
+    "t": -720,
+    "b": -654,
+    "h": 66,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 375,
+    "b": 419
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "240px",
+   "dof": "229px",
+   "step": "3-after-pan-settled"
+  },
+  {
+   "ih": 812,
+   "sy": 837,
+   "dh": 6509,
+   "vvh": 442,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 348,
+    "b": 442,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -819,
+    "b": -596,
+    "pos": "static"
+   },
+   "strip": {
+    "t": -590,
+    "b": -524,
+    "h": 66,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 505,
+    "b": 549
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "370px",
+   "dof": "229px",
+   "step": "4-after-pan-back"
+  },
+  {
+   "ih": 812,
+   "sy": 837,
+   "dh": 6509,
+   "vvh": 812,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 583,
+    "b": 812,
+    "h": 229,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -819,
+    "b": -596,
+    "pos": "static"
+   },
+   "strip": {
+    "t": 0,
+    "b": 66,
+    "h": 66,
+    "pos": "sticky"
+   },
+   "topb": 66,
+   "act": {
+    "tag": "BODY",
+    "t": -837,
+    "b": 5672
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "5-dismissed"
+  },
+  {
+   "ih": 812,
+   "sy": 2790,
+   "dh": 6509,
+   "vvh": 812,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 583,
+    "b": 812,
+    "h": 229,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -2772,
+    "b": -2549,
+    "pos": "static"
+   },
+   "strip": {
+    "t": 0,
+    "b": 66,
+    "h": 66,
+    "pos": "sticky"
+   },
+   "topb": 66,
+   "act": {
+    "tag": "BODY",
+    "t": -2790,
+    "b": 3719
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "6-fling-immediate"
+  },
+  {
+   "ih": 812,
+   "sy": 2803,
+   "dh": 6509,
+   "vvh": 812,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 583,
+    "b": 812,
+    "h": 229,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -2785,
+    "b": -2562,
+    "pos": "static"
+   },
+   "strip": {
+    "t": 0,
+    "b": 66,
+    "h": 66,
+    "pos": "sticky"
+   },
+   "topb": 66,
+   "act": {
+    "tag": "BODY",
+    "t": -2803,
+    "b": 3706
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "7-fling-settled"
+  }
+ ],
+ "failures": [
+  "1-kbd-open: focused input clears the dock"
+ ]
+}
