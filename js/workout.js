@@ -351,13 +351,22 @@ export function renderExerciseCard(exDef, ex) {
   const imgInner = meta.image_url
     ? el("img", { src: meta.image_url, alt: meta.name || ex.exercise_id, loading: "lazy" })
     : document.createTextNode("🏋️");
-  const exImg = el("div", { class: "ex-img" }, imgInner);
+  // A real <button> when there is an image to expand (keyboard + screen-reader
+  // reachable); a plain box for the emoji fallback, which opens nothing.
+  const exImg = meta.image_url
+    ? el("button", { type: "button", class: "ex-img", "aria-label": `Expand image: ${meta.name || ex.exercise_id}` }, imgInner)
+    : el("div", { class: "ex-img" }, imgInner);
 
   // target line — tappable; user data via textContent + dataset (no innerHTML)
   const targetDiv = el("div", { class: "target" }, el("b", { text: "Today:" }), document.createTextNode(" "));
   const targetLine = el("span", {
     class: "target-line",
     text: targetText,
+    // Editable targets are keyboard-reachable buttons (Enter/Space handled in
+    // index.html); past-mode lines stay plain text.
+    role: isPast ? null : "button",
+    tabindex: isPast ? null : "0",
+    title: isPast ? null : "Edit target",
     dataset: {
       routineId: exDef.id || "",
       day: state.selectedDay || "",

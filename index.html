@@ -42,7 +42,9 @@
   a:hover { text-decoration: underline; }
   button { font-family: inherit; font-size: inherit; cursor: pointer; min-height: 44px; }
   button:focus-visible,
-  a:focus-visible {
+  a:focus-visible,
+  [role="button"]:focus-visible,
+  [role="option"]:focus-visible {
     outline: 3px solid var(--accent);
     outline-offset: 2px;
   }
@@ -240,6 +242,8 @@
     overflow: hidden; display: flex; align-items: center; justify-content: center;
     font-size: 32px; color: var(--ink-muted);
     cursor: zoom-in;
+    /* rendered as a <button> when the exercise has an image to expand */
+    padding: 0; border: 0; -webkit-appearance: none; appearance: none;
   }
   .ex-img img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -248,9 +252,10 @@
     position: fixed; inset: 0; background: rgba(20, 14, 10, 0.92);
     display: flex; align-items: center; justify-content: center;
     z-index: 2100; padding: 16px;
-    opacity: 0; pointer-events: none; transition: opacity .18s ease;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity .18s ease, visibility 0s linear .18s;
   }
-  .video-modal.show { opacity: 1; pointer-events: auto; }
+  .video-modal.show { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity .18s ease, visibility 0s; }
   .video-modal .vm-frame {
     position: relative; width: 100%; max-width: 880px; aspect-ratio: 16 / 9;
     background: #000; border-radius: 12px; overflow: hidden;
@@ -260,10 +265,12 @@
     position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
   }
   .video-modal .vm-close {
-    position: absolute; top: 12px; right: 12px;
+    position: absolute; top: 8px; right: 8px;
     background: rgba(0,0,0,0.6); border: none; color: white;
-    font-size: 22px; cursor: pointer; padding: 4px 12px;
-    border-radius: 999px; line-height: 1; min-height: 0;
+    font-size: 22px; cursor: pointer; padding: 0;
+    border-radius: 999px; line-height: 1;
+    min-width: 44px; min-height: 44px;
+    display: inline-flex; align-items: center; justify-content: center;
     z-index: 2;
   }
   .video-modal .vm-caption {
@@ -276,7 +283,7 @@
     font-size: 13px;
     background: transparent;
     border: 1px solid var(--rule); border-radius: 999px;
-    padding: 4px 12px; min-height: 0; cursor: pointer;
+    padding: 0 14px; min-height: 44px; cursor: pointer;
     color: var(--ink-soft); text-decoration: none;
   }
   .ex-meta .pill:hover { background: var(--bg-soft); }
@@ -288,9 +295,10 @@
     position: fixed; inset: 0; background: rgba(20, 14, 10, 0.78);
     display: flex; align-items: center; justify-content: center;
     z-index: 2050; padding: 16px;
-    opacity: 0; pointer-events: none; transition: opacity .18s ease;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity .18s ease, visibility 0s linear .18s;
   }
-  .howto-modal.show { opacity: 1; pointer-events: auto; }
+  .howto-modal.show { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity .18s ease, visibility 0s; }
   .howto-modal .ht-frame {
     background: var(--bg-card); border-radius: 12px; max-width: 680px;
     width: 100%; max-height: 92vh; overflow-y: auto;
@@ -298,9 +306,11 @@
     box-shadow: 0 8px 32px rgba(0,0,0,.4);
   }
   .howto-modal .ht-close {
-    position: absolute; top: 8px; right: 12px;
+    position: absolute; top: 4px; right: 6px;
     background: transparent; border: none; font-size: 26px; line-height: 1;
-    color: var(--ink-muted); cursor: pointer; padding: 4px 8px; min-height: 0;
+    color: var(--ink-muted); cursor: pointer; padding: 0;
+    min-width: 44px; min-height: 44px;
+    display: inline-flex; align-items: center; justify-content: center;
   }
   .howto-modal h3 { margin: 0 0 4px; font-size: 22px; }
   .howto-modal .ht-muscles { font-size: 12px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 14px; }
@@ -317,9 +327,10 @@
     position: fixed; inset: 0; background: rgba(20, 14, 10, 0.92);
     display: flex; align-items: center; justify-content: center;
     z-index: 2000; padding: 24px;
-    opacity: 0; pointer-events: none; transition: opacity .18s ease;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity .18s ease, visibility 0s linear .18s;
   }
-  .lightbox.show { opacity: 1; pointer-events: auto; }
+  .lightbox.show { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity .18s ease, visibility 0s; }
   .lightbox img {
     max-width: 100%; max-height: 100%;
     border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,.5);
@@ -330,10 +341,11 @@
     color: white; font-size: 14px; opacity: 0.9;
   }
   .lightbox .lb-close {
-    position: absolute; top: 16px; right: 16px;
+    position: absolute; top: 8px; right: 8px;
     background: transparent; border: none; color: white;
-    font-size: 28px; cursor: pointer; padding: 4px 12px;
-    line-height: 1; min-height: 0;
+    font-size: 28px; cursor: pointer; padding: 0;
+    line-height: 1; min-width: 44px; min-height: 44px;
+    display: inline-flex; align-items: center; justify-content: center;
   }
   .ex-meta h3 { margin: 0 0 4px; font-size: 18px; line-height: 1.2; }
   .ex-meta .muscles { font-size: 12px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .04em; }
@@ -350,7 +362,7 @@
   .set-row input { width: 100%; }
   .set-row .done-btn {
     background: var(--bg-soft); border: 1px solid var(--rule); border-radius: 8px;
-    color: var(--ink-soft); font-size: 13px; padding: 0 10px; min-height: 40px;
+    color: var(--ink-soft); font-size: 13px; padding: 0 10px; min-height: 44px;
   }
   .set-row.done .done-btn {
     background: var(--good); color: white; border-color: var(--good);
@@ -527,8 +539,8 @@
   }
   .cooldown .cd-tab {
     background: var(--bg-soft); border: 1px solid var(--rule); border-radius: 999px;
-    padding: 4px 12px; font-size: 12px; color: var(--ink-soft);
-    cursor: pointer; min-height: 0; font-weight: 600;
+    padding: 0 14px; font-size: 12px; color: var(--ink-soft);
+    cursor: pointer; min-height: 44px; font-weight: 600;
   }
   .cooldown .cd-tab.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
   .cooldown .cd-tab.fitnessplus { color: var(--accent); border-color: var(--accent); background: transparent; }
@@ -792,11 +804,11 @@
 
     <!-- Recovery panel (sauna / cold plunge) — independent of workout submit -->
     <section class="recovery-panel collapsed" id="recovery-panel">
-      <div class="rec-head" id="rec-head">
+      <div class="rec-head" id="rec-head" role="button" tabindex="0" aria-expanded="false" aria-controls="rec-body">
         <h3>🧊 Log recovery — sauna &amp; cold plunge</h3>
-        <span class="rec-toggle" id="rec-toggle">▾</span>
+        <span class="rec-toggle" id="rec-toggle" aria-hidden="true">▾</span>
       </div>
-      <div class="rec-body">
+      <div class="rec-body" id="rec-body">
         <div class="rec-grid">
           <div>
             <label for="rec-date">Date</label>
@@ -834,7 +846,7 @@
     </div>
   </main>
 
-  <div id="toast" class="toast"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <!-- Lightbox: tap an exercise image to expand it -->
   <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Exercise image">
@@ -1930,16 +1942,30 @@ function syncUnitToggleUI() {
 
 // ---- Tap-to-edit target lines ---------------------------------------------
 
+function tryOpenTargetEditor(el, opts = {}) {
+  if (getRoutineMode(state.routine) === "past") return;
+  if (el.querySelector(".target-editor")) return;
+  openTargetEditor(el, opts);
+}
+
 document.addEventListener("click", (e) => {
   const el = e.target.closest(".target-line");
   if (!el) return;
-  const mode = getRoutineMode(state.routine);
-  if (mode === "past") return;
-  if (el.querySelector(".target-editor")) return;
-  openTargetEditor(el);
+  tryOpenTargetEditor(el);
 });
 
-function openTargetEditor(el) {
+// Keyboard parity for the role="button" target line: Enter/Space open the
+// editor and move focus into it. Keys inside the editor's own inputs are left
+// alone — their target is the input, not the line.
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  const el = e.target;
+  if (!(el instanceof Element) || !el.matches(".target-line")) return;
+  e.preventDefault();
+  tryOpenTargetEditor(el, { focusEditor: true });
+});
+
+function openTargetEditor(el, { focusEditor = false } = {}) {
   const weightRaw = el.dataset.weightRaw || "";
   const weightKg = parseFloat(el.dataset.weightKg || "0");
   const reps = parseInt(el.dataset.reps || "0", 10);
@@ -1974,9 +2000,22 @@ function openTargetEditor(el) {
   editor.append(lbsIn, document.createTextNode(" lbs × "), repsIn, document.createTextNode(" × "), setsIn, saveBtn, cancelBtn);
   el.appendChild(editor);
 
+  // Inputs now live inside the line, so drop its button semantics while the
+  // editor is open and restore them (plus focus) when it closes.
+  const wasButton = el.getAttribute("role") === "button";
+  if (wasButton) { el.removeAttribute("role"); el.removeAttribute("tabindex"); }
+  const restoreLine = () => {
+    if (!wasButton) return;
+    el.setAttribute("role", "button");
+    el.setAttribute("tabindex", "0");
+    el.focus({ preventScroll: true });
+  };
+  if (focusEditor) lbsIn.focus();
+
   cancelBtn.addEventListener("click", (e) => {
     e.stopPropagation();
     el.textContent = originalText;
+    restoreLine();
   });
   saveBtn.addEventListener("click", async (e) => {
     e.stopPropagation();
@@ -2007,6 +2046,7 @@ function openTargetEditor(el) {
     el.dataset.reps = String(newReps);
     el.dataset.sets = String(newSets);
     el.textContent = `${newRaw} × ${newReps} × ${newSets}`;
+    restoreLine();
   });
 }
 
@@ -2083,6 +2123,8 @@ document.addEventListener("DOMContentLoaded", () => {
       item.className = "routine-popover-item" + (m.id === currentId ? " active" : "");
       item.setAttribute("data-id", m.id);
       item.setAttribute("role", "option");
+      item.setAttribute("tabindex", "0");
+      item.setAttribute("aria-selected", m.id === currentId ? "true" : "false");
 
       const name = document.createElement("span");
       name.className = "routine-popover-name";
@@ -2099,6 +2141,12 @@ document.addEventListener("DOMContentLoaded", () => {
       item.appendChild(name);
       item.appendChild(chip);
       item.addEventListener("click", () => selectRoutine(m.id));
+      item.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        e.preventDefault();
+        selectRoutine(m.id);
+        _routineBtn.focus();   // the popover hides, so hand focus back to its trigger
+      });
       _routinePop.appendChild(item);
     }
   }
@@ -2163,9 +2211,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Recovery panel — collapse toggle + live summary + submit
-  $("#rec-head").addEventListener("click", () => {
-    $("#recovery-panel").classList.toggle("collapsed");
-    $("#rec-toggle").textContent = $("#recovery-panel").classList.contains("collapsed") ? "▾" : "▴";
+  const toggleRecoveryPanel = () => {
+    const collapsed = $("#recovery-panel").classList.toggle("collapsed");
+    $("#rec-toggle").textContent = collapsed ? "▾" : "▴";
+    $("#rec-head").setAttribute("aria-expanded", collapsed ? "false" : "true");
+  };
+  $("#rec-head").addEventListener("click", toggleRecoveryPanel);
+  $("#rec-head").addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    e.preventDefault();
+    toggleRecoveryPanel();
   });
   $("#rec-add-round").addEventListener("click", addRecoveryRound);
   $("#rec-date").addEventListener("change", () => {

@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { freezeAppTime, signIn } from "./helpers.js";
+import { freezeAppTime, mockBackends, signIn } from "./helpers.js";
 
 test.beforeEach(async ({ page }) => {
   await freezeAppTime(page, "2026-05-30T12:00:00-05:00");
@@ -13,6 +13,14 @@ async function openPlannedDay(page) {
   await page.dispatchEvent("#workout-date", "change");
   await page.locator("#day-toggle .day-pill:not(.rest)").first().click();
   await expect(page.locator(".ex-card").first()).toBeVisible();
+}
+
+// The first-wave fixture was authored on 2026-08-29 against a planned-but-
+// unlogged Sunday; the real 2026-08-30 Push log synced on 2026-09-04 and would
+// hydrate every set as done. Hide that one snapshot (both log loaders tolerate
+// a failed fetch) so the flow assertions see the day as the fixture assumes.
+async function hideFirstWaveSundayLog(context) {
+  await context.route(/data\/logs\/2026-08-30-sunday-push\.json/, route => route.fulfill({ status: 404, body: "" }));
 }
 
 async function openFirstWaveDay(page) {
@@ -85,6 +93,7 @@ test("editing a target queues a routine_edit payload", async ({ page, context })
 test("first wave: workout controls form one accessible mobile flow", async ({ page, context }, testInfo) => {
   await freezeAppTime(page, "2026-08-30T12:00:00-05:00");
   await page.setViewportSize({ width: 390, height: 844 });
+  await hideFirstWaveSundayLog(context);
   await signIn(page, context);
   await openFirstWaveDay(page);
 
@@ -98,12 +107,26 @@ test("first wave: workout controls form one accessible mobile flow", async ({ pa
   await expect(page.locator(".dock-sync-copy")).toHaveText("Saves to GitHub now. Syncs to your vault overnight.");
   await expect(page.locator("#exercises-host a[href*='muscleandstrength.com']").first()).toBeVisible();
 
-  const hitTargets = page.locator("#rest-bar-host button, #submit-btn, #skip-btn, #reports-link, #replace-token-btn, #unit-toggle button, #signout-btn");
+  // Every tapped control offers a 44px hit target — including the per-set Done
+  // buttons, cool-down tabs, exercise pills, and the three modal close buttons
+  // (shown for measurement; a closed dialog has no box).
+  await page.evaluate(() => {
+    for (const id of ["lightbox", "video-modal", "howto-modal"]) document.getElementById(id).classList.add("show");
+  });
+  const hitTargets = page.locator("#rest-bar-host button, #submit-btn, #skip-btn, #reports-link, #replace-token-btn, #unit-toggle button, #signout-btn, .ex-card .done-btn, #cooldown-card .cd-tab, .ex-card .pill, .lb-close, .vm-close, .ht-close");
+  expect(await page.locator(".ex-card .done-btn").count()).toBeGreaterThan(0);
+  expect(await page.locator("#cooldown-card .cd-tab").count()).toBeGreaterThan(0);
+  expect(await page.locator(".ex-card .pill").count()).toBeGreaterThan(0);
   for (let index = 0; index < await hitTargets.count(); index += 1) {
-    const box = await hitTargets.nth(index).boundingBox();
-    expect(box?.width).toBeGreaterThanOrEqual(44);
-    expect(box?.height).toBeGreaterThanOrEqual(44);
+    const target = hitTargets.nth(index);
+    const box = await target.boundingBox();
+    const label = `${await target.evaluate(element => element.className)}[${index}]`;
+    expect(box?.width, `${label} width`).toBeGreaterThanOrEqual(44);
+    expect(box?.height, `${label} height`).toBeGreaterThanOrEqual(44);
   }
+  await page.evaluate(() => {
+    for (const id of ["lightbox", "video-modal", "howto-modal"]) document.getElementById(id).classList.remove("show");
+  });
 
   await expect(page.locator("header.app a[href='reports.html']")).toHaveCount(1);
   await expect(page.locator("#replace-token-btn")).toBeVisible();
@@ -208,9 +231,127 @@ test("first wave: workout controls form one accessible mobile flow", async ({ pa
   })).toBe("legs");
 });
 
+test("toast is a polite live region that escalates errors to assertive", async ({ page, context }) => {
+  await mockBackends(context);
+  await page.goto("/index.html");
+  const toastEl = page.locator("#toast");
+  await expect(toastEl).toHaveAttribute("role", "status");
+  await expect(toastEl).toHaveAttribute("aria-live", "polite");
+
+  await page.evaluate(async () => {
+    const { toast } = await import("/js/ui.js");
+    toast("Submit failed — try again", "err");
+  });
+  await expect(toastEl).toHaveText("Submit failed — try again");
+  await expect(toastEl).toHaveAttribute("aria-live", "assertive");
+
+  await page.evaluate(async () => {
+    const { toast } = await import("/js/ui.js");
+    toast("Session submitted", "ok");
+  });
+  await expect(toastEl).toHaveText("Session submitted");
+  await expect(toastEl).toHaveAttribute("aria-live", "polite");
+  await expect(toastEl).toHaveAttribute("role", "status");
+});
+
+test("closed dialogs are hidden from focus and assistive tech until opened", async ({ page, context }) => {
+  await signIn(page, context);
+  await openPlannedDay(page);
+
+  const takesFocus = (selector) => page.evaluate((s) => {
+    const element = document.querySelector(s);
+    element.focus();
+    return document.activeElement === element;
+  }, selector);
+
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  for (const dialog of ["#lightbox", "#video-modal", "#howto-modal"]) await expect(page.locator(dialog)).toBeHidden();
+  for (const close of [".lb-close", "#vm-close", "#ht-close"]) {
+    expect(await takesFocus(close), `${close} must not take focus while its dialog is closed`).toBe(false);
+  }
+
+  // How-to opens from its pill; its Close becomes the only reachable dialog control.
+  await page.locator(".ex-card .pill[data-action='show-howto']").first().click();
+  await expect(page.locator("#howto-modal")).toBeVisible();
+  await expect(page.getByRole("dialog")).toHaveCount(1);
+  expect(await takesFocus("#ht-close")).toBe(true);
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#howto-modal")).toBeHidden();
+  expect(await takesFocus("#ht-close")).toBe(false);
+
+  // The lightbox opens from the keyboard on the exercise image button.
+  const image = page.locator(".ex-card .ex-img").first();
+  await expect(image).toHaveJSProperty("tagName", "BUTTON");
+  await expect(image).toHaveAttribute("aria-label", /.+/);
+  await image.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#lightbox")).toBeVisible();
+  await expect(page.getByRole("dialog")).toHaveCount(1);
+  expect(await takesFocus(".lb-close")).toBe(true);
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#lightbox")).toBeHidden();
+  expect(await takesFocus(".lb-close")).toBe(false);
+
+  // The video modal follows the same show/hide contract (opened without an embed).
+  await page.evaluate(() => document.getElementById("video-modal").classList.add("show"));
+  await expect(page.locator("#video-modal")).toBeVisible();
+  expect(await takesFocus("#vm-close")).toBe(true);
+  await page.evaluate(() => document.getElementById("video-modal").classList.remove("show"));
+  await expect(page.locator("#video-modal")).toBeHidden();
+  expect(await takesFocus("#vm-close")).toBe(false);
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+});
+
+test("target line, recovery header, and routine picker items are keyboard-operable", async ({ page, context }) => {
+  page.on("dialog", d => d.accept());
+  await signIn(page, context);
+  await openPlannedDay(page);
+
+  // Target line: a tabbable button that Enter or Space opens.
+  const targetLine = page.locator(".ex-card .target-line").first();
+  await expect(targetLine).toHaveAttribute("role", "button");
+  await expect(targetLine).toHaveAttribute("tabindex", "0");
+  const targetText = await targetLine.textContent();
+  await targetLine.focus();
+  await page.keyboard.press("Enter");
+  await expect(targetLine.locator(".target-editor")).toBeVisible();
+  await targetLine.locator(".editor-btn.cancel").click();
+  await expect(targetLine.locator(".target-editor")).toHaveCount(0);
+  await expect(targetLine).toHaveText(targetText || "");
+  await targetLine.focus();
+  await page.keyboard.press("Space");
+  await expect(targetLine.locator(".target-editor")).toBeVisible();
+  await targetLine.locator(".editor-btn.cancel").click();
+  await expect(targetLine.locator(".target-editor")).toHaveCount(0);
+
+  // Recovery header: Enter expands, Space collapses, aria-expanded tracks it.
+  const head = page.locator("#rec-head");
+  await expect(head).toHaveAttribute("role", "button");
+  await expect(head).toHaveAttribute("tabindex", "0");
+  await expect(head).toHaveAttribute("aria-expanded", "false");
+  await head.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#recovery-panel")).not.toHaveClass(/collapsed/);
+  await expect(head).toHaveAttribute("aria-expanded", "true");
+  await page.keyboard.press("Space");
+  await expect(page.locator("#recovery-panel")).toHaveClass(/collapsed/);
+  await expect(head).toHaveAttribute("aria-expanded", "false");
+
+  // Routine picker: options are tabbable and Enter selects one.
+  await page.click("#routine-label");
+  const other = page.locator(".routine-popover-item:not(.active)").first();
+  await expect(other).toHaveAttribute("tabindex", "0");
+  const otherId = await other.getAttribute("data-id");
+  await other.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#routine-popover")).toHaveClass(/hidden/);
+  await expect.poll(() => page.evaluate(async () => (await import("/js/app-context.js")).state.routine?.id)).toBe(otherId);
+});
+
 test("first wave: a live rest timer resumes from its stored end after reload", async ({ page, context }) => {
   await freezeAppTime(page, "2026-08-30T12:00:00-05:00");
   await page.setViewportSize({ width: 390, height: 844 });
+  await hideFirstWaveSundayLog(context);
   await signIn(page, context);
   await openFirstWaveDay(page);
   await page.locator(".ex-card [data-action='done']").first().click();
@@ -305,6 +446,10 @@ test("past mode prevents keyboard workout edits without blocking global or refer
   await addSet.focus();
   await page.keyboard.press("Enter");
   await card.locator(".target-line").click();
+  await expect(card.locator(".target-line")).not.toHaveAttribute("tabindex", "0");
+  await expect(card.locator(".target-line")).not.toHaveAttribute("role", "button");
+  await card.locator(".target-line").focus();
+  await page.keyboard.press("Enter");
 
   expect(await weight.inputValue()).toBe(original.weight);
   expect(await reps.inputValue()).toBe(original.reps);
