@@ -1,3 +1,5 @@
+import { selectRoutineForDate } from "./routines.js";
+
 export function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({
     "&": "&amp;",
@@ -305,4 +307,38 @@ export function recoveryCorrelationRows(analytics) {
       prs,
     };
   });
+}
+
+// Which routine the reports treat as "active": the one whose date window covers
+// the latest logged session (today's when nothing is logged yet), chosen with
+// the same date-window logic the app uses. Deliberately NOT profile.active_routine
+// — that is whatever the last sync wrote, and it goes stale across week
+// boundaries, pointing Actual-vs-planned and Stale-lifts at the wrong week.
+export function reportRoutineId(routines, logs, today) {
+  const meta = (routines || [])
+    .filter(r => r && r.id)
+    .map(r => ({ id: r.id, start_date: r.start_date, end_date: r.end_date }));
+  const latestLog = (logs || []).map(l => l && l.date).filter(Boolean).sort().pop();
+  const date = latestLog || today;
+  if (!meta.length || !date) return null;
+  return selectRoutineForDate({ date, routines: meta.map(m => m.id), meta }) ?? null;
+}
+
+// Run each report section's renderer in isolation so one failure (Chart.js not
+// loading in an offline PWA, a malformed snapshot) cannot blank every other
+// table. `onError(section, error)` is called per failure; its own errors are
+// swallowed so a broken handler can't abort the remaining sections either.
+export function renderSections(sections, { onError } = {}) {
+  const rendered = [];
+  const failed = [];
+  for (const section of sections || []) {
+    try {
+      section.render();
+      rendered.push(section.name);
+    } catch (error) {
+      failed.push({ name: section.name, error });
+      try { if (onError) onError(section, error); } catch { /* keep going */ }
+    }
+  }
+  return { rendered, failed };
 }
