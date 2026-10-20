@@ -15,11 +15,21 @@ async function openPlannedDay(page) {
   await expect(page.locator(".ex-card").first()).toBeVisible();
 }
 
-// W36 (Aug 30 – Sep 4) is "current" under the frozen 2026-08-30 clock. Pill
-// index 4 = Friday Upper Hybrid, the only W36 day with no log in data/logs —
-// the first-wave tests assume an unlogged day (0/N progress, Done starts a
-// rest timer). Sunday Push (index 6) has been logged since 2026-09-04.
+// W36 (Aug 30 – Sep 4) is "current" under the frozen 2026-08-30 clock. The
+// first-wave tests need an UNLOGGED day (0/N progress, Done starts a rest
+// timer), so freezeFirstWaveLogs() strips every W36 log id from the manifest
+// the app boots from — production data can keep changing without moving
+// this spec. Pill index 4 = Friday Upper Hybrid.
 const FIRST_WAVE_PILL = 4;
+
+async function freezeFirstWaveLogs(context) {
+  await context.route(/data\/manifest\.json/, async route => {
+    const response = await route.fetch();
+    const manifest = await response.json();
+    manifest.logs = (manifest.logs || []).filter(id => !/^2026-(08-3[01]|09-0[1-5])-/.test(id));
+    await route.fulfill({ json: manifest });
+  });
+}
 
 async function openFirstWaveDay(page) {
   await page.fill("#workout-date", "2026-08-30");
@@ -90,6 +100,7 @@ test("editing a target queues a routine_edit payload", async ({ page, context })
 
 test("first wave: workout controls form one accessible mobile flow", async ({ page, context }, testInfo) => {
   await freezeAppTime(page, "2026-08-30T12:00:00-05:00");
+  await freezeFirstWaveLogs(context);
   await page.setViewportSize({ width: 390, height: 844 });
   await signIn(page, context);
   await openFirstWaveDay(page);
@@ -216,6 +227,7 @@ test("first wave: workout controls form one accessible mobile flow", async ({ pa
 
 test("first wave: a live rest timer resumes from its stored end after reload", async ({ page, context }) => {
   await freezeAppTime(page, "2026-08-30T12:00:00-05:00");
+  await freezeFirstWaveLogs(context);
   await page.setViewportSize({ width: 390, height: 844 });
   await signIn(page, context);
   await openFirstWaveDay(page);
@@ -352,6 +364,7 @@ test("past mode prevents keyboard workout edits without blocking global or refer
 
 test("first wave: the dock and header reflow across supported mobile viewports", async ({ page, context }, testInfo) => {
   await freezeAppTime(page, "2026-08-30T12:00:00-05:00");
+  await freezeFirstWaveLogs(context);
   await signIn(page, context);
   await openFirstWaveDay(page);
 

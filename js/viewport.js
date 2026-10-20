@@ -19,11 +19,15 @@ const TEXT_INPUT_TYPES = new Set([
  * Keyboard inset in CSS px: how far the visual viewport's bottom edge sits
  * above the layout viewport's bottom edge. 0 when the keyboard is closed.
  * Pinch-zoom also shrinks the visual viewport; `scale` != 1 means the user is
- * zoomed, not typing, so the inset is reported as 0 and the dock stays put.
+ * zoomed, not typing, so the inset is reported as 0 and the dock stays put —
+ * unless `ignoreZoom` is set (a text field is focused): then the distance to
+ * the visible bottom edge is returned whatever the zoom level, so a zoomed
+ * user typing still gets the dock on the visible edge rather than behind the
+ * keyboard.
  */
-export function keyboardInset({ innerHeight, vvHeight, vvOffsetTop = 0, vvScale = 1 }) {
+export function keyboardInset({ innerHeight, vvHeight, vvOffsetTop = 0, vvScale = 1, ignoreZoom = false }) {
   if (!Number.isFinite(innerHeight) || !Number.isFinite(vvHeight)) return 0;
-  if (Number.isFinite(vvScale) && Math.abs(vvScale - 1) > 0.01) return 0;
+  if (!ignoreZoom && Number.isFinite(vvScale) && Math.abs(vvScale - 1) > 0.01) return 0;
   const inset = innerHeight - vvHeight - (Number.isFinite(vvOffsetTop) ? vvOffsetTop : 0);
   return Math.max(0, Math.round(inset));
 }

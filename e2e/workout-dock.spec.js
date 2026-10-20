@@ -87,9 +87,13 @@ test("workout dock stays locked to the viewport bottom while scrolling with a ru
   });
   expect(notesBottom).toBeLessThanOrEqual(atTop.top);
 
-  // The countdown kept running through every scroll + re-layout.
+  // The countdown kept running through every scroll + re-layout: the stored
+  // end is untouched AND the displayed remainder actually goes down.
   await expect(page.locator("#rest-bar-host .rest-time")).toHaveAttribute("aria-label", /Stop rest timer, \d+ seconds remaining/);
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)).endsAtMs, TIMER_KEY)).toBe(storedEnd);
+  await expect(page.locator("#rest-bar-host .rest-time")).toHaveText("2:00");
+  await page.clock.setFixedTime("2026-05-30T12:00:07-05:00");
+  await expect(page.locator("#rest-bar-host .rest-time")).toHaveText("1:53");
 
   // Switching days re-renders around the static dock nodes; the running timer
   // must survive that too (pt_tracker_rest_timer_v1 is never cancelled by renders).
@@ -100,6 +104,25 @@ test("workout dock stays locked to the viewport bottom while scrolling with a ru
   const afterRender = await dockMetrics(page);
   expect(afterRender.position).toBe("fixed");
   expect(afterRender.bottom).toBe(afterRender.innerHeight);
+});
+
+test("every text field on the day view is at least 16px so iOS never auto-zooms on focus", async ({ page, context }) => {
+  await freezeAppTime(page, "2026-05-30T12:00:00-05:00");
+  await page.setViewportSize({ width: 375, height: 812 });
+  await signIn(page, context);
+  await openWorkoutDay(page);
+  await page.locator(".ex-card .target-line").first().click();   // opens the inline target editor
+  await expect(page.locator(".target-editor input").first()).toBeVisible();
+  const small = await page.evaluate(() => {
+    const out = [];
+    for (const el of document.querySelectorAll("#app input, #app textarea")) {
+      if (["checkbox", "radio", "hidden", "range"].includes(el.type)) continue;
+      const size = parseFloat(getComputedStyle(el).fontSize);
+      if (size < 16) out.push(`${el.id || el.className || el.name || el.type}:${size}px`);
+    }
+    return out;
+  });
+  expect(small, "fields under 16px trigger the iOS focus auto-zoom").toEqual([]);
 });
 
 test("workout dock sits at the viewport bottom even when the day view is shorter than the viewport", async ({ page, context }) => {
@@ -209,6 +232,72 @@ test("workout dock rides above the iOS keyboard, compacts to the timer, and drop
 
 test.describe("touch devices", () => {
   test.use({ hasTouch: true, isMobile: true, viewport: { width: 375, height: 812 } });
+
+  test("a zoomed user who opens the keyboard still gets the dock on the visible edge", async ({ page, context }) => {
+    await freezeAppTime(page, "2026-05-30T12:00:00-05:00");
+    await installFakeVisualViewport(page);
+    await signIn(page, context);
+    await openWorkoutDay(page);
+
+    // Pinch-zoom alone: not a keyboard, the dock stays at the layout bottom.
+    await setVisualViewport(page, { height: 406, offsetTop: 100, scale: 2 });
+    expect((await dockMetrics(page)).bottom).toBe(812);
+    await expect(page.locator("body")).not.toHaveClass(/keyboard-open/);
+
+    // Now focus a set input while still zoomed (coarse pointer → keyboard):
+    // the compact dock must sit on the visible bottom edge (100 + 406), not
+    // stay hidden behind the keyboard at the layout bottom.
+    const weight = page.locator(".ex-card").first().locator(".set-row[data-set='0'] input[data-field='weight']");
+    await weight.focus();
+    await setVisualViewport(page, { height: 406, offsetTop: 100, scale: 2 });
+    await expect(page.locator("body")).toHaveClass(/keyboard-open/);
+    await expect(page.locator("#submit-btn")).toBeHidden();
+    expect((await dockMetrics(page)).bottom).toBe(506);
+
+    // Blur → zoom guard applies again, dock drops back to the layout bottom.
+    await weight.blur();
+    await setVisualViewport(page, { height: 406, offsetTop: 100, scale: 2 });
+    await expect(page.locator("body")).not.toHaveClass(/keyboard-open/);
+    expect((await dockMetrics(page)).bottom).toBe(812);
+  });
+
+  test("the <=240px static dock neither lifts nor compacts while typing", async ({ page, context }) => {
+    await freezeAppTime(page, "2026-05-30T12:00:00-05:00");
+    await installFakeVisualViewport(page);
+    await signIn(page, context);
+    await openWorkoutDay(page);
+    // 195x422 is the effective CSS viewport of a 390x844 phone at 200% zoom.
+    await page.setViewportSize({ width: 195, height: 422 });
+    await page.waitForTimeout(150);
+    const before = await page.evaluate(() => ({
+      position: getComputedStyle(document.querySelector("#submit-row")).position,
+      transform: getComputedStyle(document.querySelector("#submit-row")).transform,
+      dockHeight: Math.round(document.querySelector("#submit-row").getBoundingClientRect().height),
+      scrollHeight: document.documentElement.scrollHeight,
+      padding: getComputedStyle(document.querySelector(".container")).paddingBottom,
+    }));
+    expect(before.position).toBe("static");
+    expect(before.padding).toBe("0px");
+
+    const weight = page.locator(".ex-card").first().locator(".set-row[data-set='0'] input[data-field='weight']");
+    await weight.scrollIntoViewIfNeeded();
+    const scrollBefore = await page.evaluate(() => Math.round(window.scrollY));
+    await weight.focus();
+    await setVisualViewport(page, { height: 422 - 300 });
+    await expect(page.locator("body")).toHaveClass(/keyboard-open/);
+    const after = await page.evaluate(() => ({
+      transform: getComputedStyle(document.querySelector("#submit-row")).transform,
+      dockHeight: Math.round(document.querySelector("#submit-row").getBoundingClientRect().height),
+      scrollHeight: document.documentElement.scrollHeight,
+      scrollY: Math.round(window.scrollY),
+      submitVisible: getComputedStyle(document.querySelector("#submit-btn")).display !== "none",
+    }));
+    expect(after.transform, "in-flow dock is never translated").toBe("none");
+    expect(after.submitVisible, "in-flow dock keeps its full content").toBe(true);
+    expect(after.dockHeight).toBe(before.dockHeight);
+    expect(after.scrollHeight, "document height does not change under the user").toBe(before.scrollHeight);
+    expect(after.scrollY).toBe(scrollBefore);
+  });
 
   test("focusing a set input compacts the dock before the keyboard even reports its size", async ({ page, context }) => {
     await freezeAppTime(page, "2026-05-30T12:00:00-05:00");

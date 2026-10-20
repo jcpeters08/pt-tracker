@@ -25,6 +25,15 @@ describe("keyboardInset", () => {
     expect(keyboardInset({ innerHeight: 812, vvHeight: 406, vvOffsetTop: 100, vvScale: 2 })).toBe(0);
   });
 
+  it("still measures the visible edge when zoomed if a text field is focused (ignoreZoom)", () => {
+    // Zoomed 2x, keyboard up: the visible region ends 506px into the layout viewport.
+    expect(keyboardInset({ innerHeight: 812, vvHeight: 406, vvOffsetTop: 100, vvScale: 2, ignoreZoom: true })).toBe(306);
+    // Zoomed with the visible edge at the layout bottom → nothing to lift.
+    expect(keyboardInset({ innerHeight: 812, vvHeight: 406, vvOffsetTop: 406, vvScale: 2, ignoreZoom: true })).toBe(0);
+    // ignoreZoom changes nothing at scale 1.
+    expect(keyboardInset({ innerHeight: 812, vvHeight: 512, vvOffsetTop: 0, vvScale: 1, ignoreZoom: true })).toBe(300);
+  });
+
   it("defaults offsetTop and scale and tolerates missing numbers", () => {
     expect(keyboardInset({ innerHeight: 812, vvHeight: 600 })).toBe(212);
     expect(keyboardInset({ innerHeight: NaN, vvHeight: 600 })).toBe(0);

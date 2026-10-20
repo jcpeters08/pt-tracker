@@ -171,7 +171,7 @@
   .date-picker-wrap label { color: var(--ink-muted); font-weight: 600; }
   .date-picker-wrap input[type=date] {
     border: none; background: transparent; padding: 4px 0;
-    color: var(--ink); font-size: 13px; min-height: 0;
+    color: var(--ink); font-size: 16px; min-height: 0;
   }
   .date-picker-wrap input[type=date]:focus { outline: none; }
   .log-status {
@@ -370,9 +370,11 @@
     border: 1px dashed var(--accent); border-radius: 8px;
     padding: 8px 12px; width: 100%; font-size: 13px;
   }
+  /* Every focusable text field stays >= 16px: iOS Safari auto-zooms the page
+     when a smaller field gains focus, which reads as the page "jumping". */
   .ex-card .ex-notes {
     width: 100%; margin-top: 10px; min-height: 36px;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   /* Submit */
@@ -692,8 +694,15 @@
   }
 
   @media (max-width: 240px) {
-    .submit-row { position: static; max-width: none; }
+    /* Static fallback: the dock is in normal flow here, so the keyboard lift
+       and the typing-time compaction must both be off — a translated or
+       shrinking in-flow block would move the document under the user. */
+    .submit-row { position: static; max-width: none; transform: none; }
     body.workout-dock-visible .container { padding-bottom: 0; }
+    body.keyboard-open .submit-row { padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
+    body.keyboard-open .submit-row .session-progress,
+    body.keyboard-open .submit-row #submit-btn,
+    body.keyboard-open .submit-row .dock-sync-copy { display: revert; }
     .rest-bar { flex-direction: column; align-items: stretch; }
     .ex-head { flex-direction: column; }
     .ex-meta { width: 100%; min-width: 0; }
@@ -723,7 +732,7 @@
     border-radius: 8px; padding: 4px 8px; flex-wrap: wrap;
   }
   .target-editor input {
-    width: 56px; padding: 4px 6px; font-size: 13px;
+    width: 64px; padding: 4px 6px; font-size: 16px;
     border: 1px solid var(--rule); border-radius: 6px; background: var(--bg-card);
   }
   .target-editor .editor-btn {
@@ -1374,10 +1383,14 @@ function updateDockOffset() {
 // non-zero after the keyboard closes, so never assume it reset on blur.
 function updateKeyboardInset() {
   const vv = window.visualViewport;
-  const inset = vv
-    ? keyboardInset({ innerHeight: window.innerHeight, vvHeight: vv.height, vvOffsetTop: vv.offsetTop, vvScale: vv.scale })
-    : 0;
   const typing = coarsePointer.matches && isTextEntry(document.activeElement);
+  // Pinch-zoom alone must not lift the dock (the shrunken visual viewport is
+  // not a keyboard), but while a text field is focused the gap below the
+  // visible edge is real whatever the zoom level — so ignore the zoom guard
+  // and let the compact dock ride the visible bottom edge.
+  const inset = vv
+    ? keyboardInset({ innerHeight: window.innerHeight, vvHeight: vv.height, vvOffsetTop: vv.offsetTop, vvScale: vv.scale, ignoreZoom: typing })
+    : 0;
   const open = isKeyboardOpen(inset) || typing;
   const root = document.documentElement;
   if (inset > 0) root.style.setProperty("--keyboard-inset", `${inset}px`);
