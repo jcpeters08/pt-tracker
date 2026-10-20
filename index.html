@@ -872,6 +872,7 @@ import { payloadSignature, gcOldDrafts } from "./js/storage.js";
 import { buildSessionPayload, buildSkipPayload, buildRecoveryPayload } from "./js/payloads.js";
 import { selectRoutineForDate, resolveSessionForView } from "./js/routines.js";
 import { mergePending } from "./js/pending.js";
+import { rememberSubmit, overlayRecentSubmits, loadRecentSubmits, saveRecentSubmits } from "./js/recent-submits.js";
 import { toast, shortDate, openHowto, closeHowto, openVideo, closeVideo, openLightbox, closeLightbox } from "./js/ui.js";
 import { ensureRecoveryRounds, renderRecoveryRounds, renderRecoverySummary } from "./js/recovery.js";
 import { state, hooks, todayKey, CD_CHOICE_KEY } from "./js/app-context.js";
@@ -1013,12 +1014,30 @@ function clearSid() {
   state.sid = null; state.email = null; state.hasPat = false;
 }
 
+// The Worker session expired mid-use (401 on an authenticated call). Clear the
+// dead sid, route back to sign-in, and say so — the in-progress workout /
+// recovery draft stays in localStorage (and in memory) for after re-auth.
+const SESSION_EXPIRED_MSG = "Session expired — sign in again. Your draft is kept.";
+function handleSessionExpired() {
+  clearSid();
+  const status = $("#email-status");
+  if (status) { status.className = "status-msg err"; status.textContent = SESSION_EXPIRED_MSG; }
+  showPanel("signin");
+  toast(SESSION_EXPIRED_MSG, "err");
+  const err = new Error(SESSION_EXPIRED_MSG);
+  err.sessionExpired = true;
+  return err;
+}
+
 async function apiFetch(path, opts = {}) {
   if (!WORKER_URL || WORKER_URL.includes("REPLACE")) throw new Error("Worker URL not configured");
   const headers = new Headers(opts.headers || {});
   if (state.sid) headers.set("Authorization", `Bearer ${state.sid}`);
   if (opts.body && !headers.has("Content-Type")) headers.set("Content-Type", "application/json");
   const res = await fetch(`${WORKER_URL}${path}`, { ...opts, headers });
+  // A 401 on any authenticated (non-/auth/*) call means the session is gone.
+  // /auth/* 401s are the caller's business (verifySession already handles /auth/me).
+  if (res.status === 401 && state.sid && !path.startsWith("/auth/")) throw handleSessionExpired();
   return res;
 }
 
@@ -1111,6 +1130,19 @@ async function fetchExercise(id) {
   }
 }
 
+// Pending overlay = fetched data/pending.json + remembered recent submits
+// (js/recent-submits.js — survive a relaunch inside the Pages deploy window)
+// + this session's in-memory appends. Prunes the remembered list as a side
+// effect: entries now present in the fetched file, or older than the TTL, drop.
+function overlayLocalPending(pending) {
+  const { entries, remaining } = overlayRecentSubmits(
+    pending?.entries || [], loadRecentSubmits(localStorage), Date.now());
+  saveRecentSubmits(localStorage, remaining);
+  let merged = entries;
+  for (const localEntry of state.pendingEntries || []) merged = mergePending(merged, localEntry);
+  return merged;
+}
+
 async function loadSessions() {
   await loadManifest();
   state.sessionLookup = new Map();
@@ -1133,10 +1165,7 @@ async function loadSessions() {
   // logs for the same key, so we let pending overwrite synced.
   try {
     const pending = await fetchJson("data/pending.json");
-    const entries = [...(pending?.entries || [])];
-    for (const localEntry of state.pendingEntries || []) {
-      entries.splice(0, entries.length, ...mergePending(entries, localEntry));
-    }
+    const entries = overlayLocalPending(pending);
     for (const entry of entries) {
       const s = entry.session || {};
       if (!s.date || !s.day_of_week) continue;
@@ -1300,10 +1329,7 @@ async function loadRecoveryLogs() {
   // Overlay pending recovery entries
   try {
     const pending = await fetchJson("data/pending.json");
-    const entries = [...(pending?.entries || [])];
-    for (const localEntry of state.pendingEntries || []) {
-      entries.splice(0, entries.length, ...mergePending(entries, localEntry));
-    }
+    const entries = overlayLocalPending(pending);
     for (const entry of entries) {
       if (entry.type !== "recovery") continue;
       const s = entry.session || {};
@@ -1323,6 +1349,10 @@ async function appendPending(entry) {
     throw new Error(data.error || `pending append failed: ${res.status}`);
   }
   state.pendingEntries = mergePending(state.pendingEntries || [], entry);
+  // Also remember it in localStorage so a relaunch inside the GitHub Pages
+  // deploy window (~1–2 min before data/pending.json reflects the Worker's
+  // commit) still shows the day as submitted. Pruned by overlayLocalPending.
+  saveRecentSubmits(localStorage, rememberSubmit(loadRecentSubmits(localStorage), entry, Date.now()));
 }
 
 // ---- UI: sign-in / PAT panels ---------------------------------------------
@@ -1767,9 +1797,10 @@ async function submitRecovery() {
     const msg = denied
       ? "Recovery save failed: GitHub denied the write (403) — token expired or lost access. Paste a fresh one."
       : `Recovery save failed: ${e.message}`;
-    toast(msg, "err");
     btn.textContent = "Log recovery session";
     btn.disabled = false;
+    if (e.sessionExpired) return;   // apiFetch already routed to sign-in; draft kept
+    toast(msg, "err");
     if (denied) showPanel("pat");
   } finally {
     state.recoverySubmitting = false;
@@ -1810,8 +1841,9 @@ async function submitSkip() {
     const msg = denied
       ? "Skip failed: GitHub denied the write (403) — token expired or lost access. Paste a fresh one."
       : `Skip failed: ${e.message}`;
-    toast(msg, "err");
     btn.disabled = false;
+    if (e.sessionExpired) return;   // apiFetch already routed to sign-in; draft kept
+    toast(msg, "err");
     if (denied) showPanel("pat");
   } finally {
     state.submitting = false;
@@ -1868,9 +1900,12 @@ async function submitSession() {
     const msg = denied
       ? "Submit failed: GitHub denied the write (403) — token expired or lost access. Paste a fresh one below."
       : `Submit failed: ${e.message}`;
-    toast(msg, "err");
     btn.textContent = "Submit session";
     btn.disabled = false;
+    // Draft is deliberately NOT cleared on any failure — clearWorkoutDraft()
+    // only runs on the success path above.
+    if (e.sessionExpired) return;   // apiFetch already routed to sign-in; draft kept
+    toast(msg, "err");
     if (denied) showPanel("pat");
   } finally {
     state.submitting = false;
