@@ -7,18 +7,18 @@
    "sy": 1110,
    "dh": 6313,
    "vvh": 442,
-   "vvt": 186,
+   "vvt": 333,
    "vvs": 1,
    "dock": {
-    "t": 397,
-    "b": 626,
+    "t": 250,
+    "b": 479,
     "h": 229,
     "pos": "sticky",
     "vis": true
    },
    "hdr": {
-    "t": -186,
-    "b": 113,
+    "t": -333,
+    "b": -34,
     "pos": "sticky"
    },
    "act": {
@@ -37,18 +37,18 @@
    "sy": 1240,
    "dh": 6313,
    "vvh": 442,
-   "vvt": 316,
+   "vvt": 370,
    "vvs": 1,
    "dock": {
-    "t": 267,
-    "b": 496,
+    "t": 213,
+    "b": 442,
     "h": 229,
     "pos": "sticky",
     "vis": true
    },
    "hdr": {
-    "t": -316,
-    "b": -17,
+    "t": -370,
+    "b": -71,
     "pos": "sticky"
    },
    "act": {
@@ -67,18 +67,18 @@
    "sy": 1240,
    "dh": 6313,
    "vvh": 442,
-   "vvt": 316,
+   "vvt": 370,
    "vvs": 1,
    "dock": {
-    "t": 267,
-    "b": 496,
+    "t": 213,
+    "b": 442,
     "h": 229,
     "pos": "sticky",
     "vis": true
    },
    "hdr": {
-    "t": -316,
-    "b": -17,
+    "t": -370,
+    "b": -71,
     "pos": "sticky"
    },
    "act": {
@@ -94,28 +94,28 @@
   },
   {
    "ih": 812,
-   "sy": 983,
+   "sy": 1110,
    "dh": 6313,
    "vvh": 442,
-   "vvt": 59,
+   "vvt": 240,
    "vvs": 1,
    "dock": {
-    "t": 524,
-    "b": 753,
+    "t": 343,
+    "b": 572,
     "h": 229,
     "pos": "sticky",
     "vis": true
    },
    "hdr": {
-    "t": -59,
-    "b": 240,
+    "t": -240,
+    "b": 59,
     "pos": "sticky"
    },
    "act": {
     "tag": "INPUT",
     "f": "reps",
-    "t": 325,
-    "b": 369
+    "t": 198,
+    "b": 242
    },
    "cls": "mode-current workout-dock-visible",
    "ki": "",
@@ -124,7 +124,7 @@
   },
   {
    "ih": 812,
-   "sy": 983,
+   "sy": 1110,
    "dh": 6313,
    "vvh": 812,
    "vvt": 0,
@@ -143,8 +143,8 @@
    },
    "act": {
     "tag": "BODY",
-    "t": -983,
-    "b": 5330
+    "t": -1110,
+    "b": 5203
    },
    "cls": "mode-current workout-dock-visible",
    "ki": "",
@@ -153,7 +153,7 @@
   },
   {
    "ih": 812,
-   "sy": 2489,
+   "sy": 2541,
    "dh": 6313,
    "vvh": 812,
    "vvt": 0,
@@ -172,8 +172,8 @@
    },
    "act": {
     "tag": "BODY",
-    "t": -2489,
-    "b": 3824
+    "t": -2541,
+    "b": 3772
    },
    "cls": "mode-current workout-dock-visible",
    "ki": "",
@@ -182,7 +182,7 @@
   },
   {
    "ih": 812,
-   "sy": 2957,
+   "sy": 3047,
    "dh": 6313,
    "vvh": 812,
    "vvt": 0,
@@ -201,8 +201,8 @@
    },
    "act": {
     "tag": "BODY",
-    "t": -2957,
-    "b": 3356
+    "t": -3047,
+    "b": 3266
    },
    "cls": "mode-current workout-dock-visible",
    "ki": "",
@@ -213,9 +213,7 @@
  "failures": [
   "1-kbd-open: dock bottom == visible edge",
   "1-kbd-open: dock is compact (timer only)",
-  "2-mid-pan: dock bottom == visible edge",
   "2-mid-pan: dock is compact (timer only)",
-  "3-after-pan: dock bottom == visible edge",
   "3-after-pan: dock is compact (timer only)",
   "4-after-pan-back: dock bottom == visible edge",
   "4-after-pan-back: dock is compact (timer only)"

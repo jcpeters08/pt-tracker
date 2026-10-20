@@ -5,7 +5,7 @@
   {
    "ih": 714,
    "sy": 0,
-   "dh": 6279,
+   "dh": 6317,
    "vvh": 714,
    "vvt": 0,
    "vvs": 1,
@@ -18,13 +18,13 @@
    },
    "hdr": {
     "t": 18,
-    "b": 317,
+    "b": 323,
     "pos": "sticky"
    },
    "act": {
     "tag": "BODY",
     "t": 0,
-    "b": 6279
+    "b": 6317
    },
    "cls": "mode-current workout-dock-visible",
    "ki": "",
@@ -33,21 +33,21 @@
   },
   {
    "ih": 754,
-   "sy": 1074,
-   "dh": 6279,
+   "sy": 1084,
+   "dh": 6317,
    "vvh": 410,
    "vvt": 290,
    "vvs": 1,
    "dock": {
-    "t": 316,
-    "b": 410,
+    "t": 315,
+    "b": 409,
     "h": 94,
     "pos": "fixed",
     "vis": true
    },
    "hdr": {
-    "t": -290,
-    "b": 9,
+    "t": -291,
+    "b": 14,
     "pos": "sticky"
    },
    "act": {
@@ -63,21 +63,21 @@
   },
   {
    "ih": 754,
-   "sy": 1074,
-   "dh": 6279,
+   "sy": 1084,
+   "dh": 6317,
    "vvh": 410,
    "vvt": 290,
    "vvs": 1,
    "dock": {
-    "t": 316,
-    "b": 410,
+    "t": 315,
+    "b": 409,
     "h": 94,
     "pos": "fixed",
     "vis": true
    },
    "hdr": {
-    "t": -290,
-    "b": 9,
+    "t": -291,
+    "b": 14,
     "pos": "sticky"
    },
    "act": {
@@ -93,21 +93,21 @@
   },
   {
    "ih": 754,
-   "sy": 1126,
-   "dh": 6279,
+   "sy": 1136,
+   "dh": 6317,
    "vvh": 410,
    "vvt": 342,
    "vvs": 1,
    "dock": {
-    "t": 316,
-    "b": 410,
+    "t": 315,
+    "b": 409,
     "h": 94,
     "pos": "fixed",
     "vis": true
    },
    "hdr": {
-    "t": -342,
-    "b": -43,
+    "t": -343,
+    "b": -38,
     "pos": "sticky"
    },
    "act": {
@@ -123,10 +123,10 @@
   },
   {
    "ih": 754,
-   "sy": 1126,
-   "dh": 6279,
+   "sy": 2240,
+   "dh": 6317,
    "vvh": 410,
-   "vvt": 342,
+   "vvt": 344,
    "vvs": 1,
    "dock": {
     "t": 316,
@@ -136,85 +136,25 @@
     "vis": true
    },
    "hdr": {
-    "t": -342,
-    "b": -43,
+    "t": -344,
+    "b": -39,
     "pos": "sticky"
    },
    "act": {
     "tag": "INPUT",
     "f": "reps",
-    "t": 182,
-    "b": 226
+    "t": 183,
+    "b": 227
    },
    "cls": "mode-current workout-dock-visible keyboard-open",
-   "ki": "2px",
+   "ki": "",
    "dof": "195px",
    "step": "4-two-cards-down"
   },
   {
    "ih": 754,
-   "sy": 4410,
-   "dh": 6279,
-   "vvh": 410,
-   "vvt": 344,
-   "vvs": 1,
-   "dock": {
-    "t": 316,
-    "b": 410,
-    "h": 94,
-    "pos": "fixed",
-    "vis": true
-   },
-   "hdr": {
-    "t": -344,
-    "b": -45,
-    "pos": "sticky"
-   },
-   "act": {
-    "tag": "INPUT",
-    "f": "reps",
-    "t": -3102,
-    "b": -3058
-   },
-   "cls": "mode-current workout-dock-visible keyboard-open",
-   "ki": "",
-   "dof": "195px",
-   "step": "5a-before-last-tap"
-  },
-  {
-   "ih": 754,
-   "sy": 4494,
-   "dh": 6279,
-   "vvh": 410,
-   "vvt": 344,
-   "vvs": 1,
-   "dock": {
-    "t": 316,
-    "b": 410,
-    "h": 94,
-    "pos": "fixed",
-    "vis": true
-   },
-   "hdr": {
-    "t": -344,
-    "b": -45,
-    "pos": "sticky"
-   },
-   "act": {
-    "tag": "INPUT",
-    "f": "weight",
-    "t": 182,
-    "b": 226
-   },
-   "cls": "mode-current workout-dock-visible keyboard-open",
-   "ki": "",
-   "dof": "195px",
-   "step": "5b-last-input-focused"
-  },
-  {
-   "ih": 754,
-   "sy": 4494,
-   "dh": 6279,
+   "sy": 4228,
+   "dh": 6317,
    "vvh": 754,
    "vvt": 0,
    "vvs": 1,
@@ -227,13 +167,72 @@
    },
    "hdr": {
     "t": 0,
-    "b": 299,
+    "b": 305,
     "pos": "sticky"
    },
    "act": {
     "tag": "BODY",
-    "t": -4494,
-    "b": 1785
+    "t": -4228,
+    "b": 2089
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "195px",
+   "step": "5a-before-last-tap"
+  },
+  {
+   "ih": 754,
+   "sy": 4528,
+   "dh": 6317,
+   "vvh": 410,
+   "vvt": 300,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -300,
+    "b": 5,
+    "pos": "sticky"
+   },
+   "act": {
+    "tag": "INPUT",
+    "f": "weight",
+    "t": 182,
+    "b": 226
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "44px",
+   "dof": "195px",
+   "step": "5b-last-input-focused"
+  },
+  {
+   "ih": 754,
+   "sy": 4528,
+   "dh": 6317,
+   "vvh": 754,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 559,
+    "b": 754,
+    "h": 195,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": 0,
+    "b": 305,
+    "pos": "sticky"
+   },
+   "act": {
+    "tag": "BODY",
+    "t": -4528,
+    "b": 1789
    },
    "cls": "mode-current workout-dock-visible",
    "ki": "",
@@ -243,7 +242,7 @@
   {
    "ih": 714,
    "sy": 0,
-   "dh": 6279,
+   "dh": 6317,
    "vvh": 714,
    "vvt": 0,
    "vvs": 1,
@@ -256,13 +255,13 @@
    },
    "hdr": {
     "t": 18,
-    "b": 317,
+    "b": 323,
     "pos": "sticky"
    },
    "act": {
     "tag": "BODY",
     "t": 0,
-    "b": 6279
+    "b": 6317
    },
    "cls": "mode-current workout-dock-visible",
    "ki": "",
@@ -271,8 +270,8 @@
   },
   {
    "ih": 714,
-   "sy": 5565,
-   "dh": 6279,
+   "sy": 5603,
+   "dh": 6317,
    "vvh": 714,
    "vvt": 0,
    "vvs": 1,
@@ -285,12 +284,12 @@
    },
    "hdr": {
     "t": 0,
-    "b": 299,
+    "b": 305,
     "pos": "sticky"
    },
    "act": {
     "tag": "BODY",
-    "t": -5565,
+    "t": -5603,
     "b": 714
    },
    "cls": "mode-current workout-dock-visible",

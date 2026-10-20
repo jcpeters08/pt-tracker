@@ -16,8 +16,8 @@ if sim.js("const p=document.querySelector('#signin-panel'); return p && !p.class
     sim.sign_in()
 sim.wait_js("return document.querySelectorAll('.ex-card').length>0", 40); time.sleep(0.5); sim.settle()
 idx = 4
-sim.js(f"document.querySelectorAll('.set-row input[data-field=reps]')[{idx}].scrollIntoView({{block:'center'}}); return 1"); time.sleep(0.5); sim.settle()
-sim.tap_sel(".set-row input[data-field=reps]", idx); time.sleep(1.8); sim.settle()
+sim.check("swiped the target input into the band (no page JS scrolling)", sim.swipe_until_in_band(".set-row input[data-field=reps]", idx))
+sim.tap_focus(".set-row input[data-field=reps]", idx, "1-kbd-open")
 m = M("1-kbd-open"); sim.check_keyboard_state(m, "1-kbd-open")
 # pan up 150pt slowly with the keyboard up (finger within the visible content band)
 sim.swipe(200, 330, 200, 180, duration=0.6); time.sleep(0.2)

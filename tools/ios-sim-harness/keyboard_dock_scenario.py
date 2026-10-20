@@ -25,7 +25,7 @@ M("0-top"); S("0-top")
 # 1. scroll a bit, tap first visible reps input → keyboard
 sim.swipe(200, 600, 200, 250, duration=0.25); sim.settle()
 vis = sim.visible_inputs(); idx = vis[0]
-sim.tap_sel(".set-row input[data-field=reps]", idx); time.sleep(1.8); sim.settle()
+sim.tap_focus(".set-row input[data-field=reps]", idx, "1-kbd-open")
 m = M("1-kbd-open"); S("1-kbd-open"); sim.check_keyboard_state(m, "1-kbd-open")
 
 # 2. type "1" via number pad, confirm value + no jump
@@ -36,26 +36,28 @@ sim.check("2-typed: digit reached the focused input", str(val).endswith("1"), f"
 sim.check("2-typed: no scroll jump while typing", m["sy"] == before, f"delta={m['sy'] - before}")
 sim.check_keyboard_state(m, "2-typed")
 
-# 3. tap the next row's reps input while keyboard is up
-sim.tap_sel(".set-row input[data-field=reps]", idx + 1); time.sleep(1.2); sim.settle()
+# 3. tap the next row's reps input while the keyboard is up (exact identity)
+sim.tap_focus(".set-row input[data-field=reps]", idx + 1, "3-next-row")
 m = M("3-next-row"); S("3-next-row"); sim.check_keyboard_state(m, "3-next-row")
 
-# 4. tap a reps input two cards down (requires Safari to scroll with keyboard up)
-sim.tap_sel(".set-row input[data-field=reps]", idx + 6); time.sleep(1.5); sim.settle()
+# 4. a reps input two cards down: bring it into the band with REAL swipes while
+#    the keyboard stays up, then tap it; the focus must move to exactly that input.
+sim.check("4: swiped the two-cards-down input into the band with the keyboard up", sim.swipe_until_in_band(".set-row input[data-field=reps]", idx + 6))
+sim.tap_focus(".set-row input[data-field=reps]", idx + 6, "4-two-cards-down")
 m = M("4-two-cards-down"); S("4-two-cards-down"); sim.check_keyboard_state(m, "4-two-cards-down")
+print("   note: keyboard", "stayed up" if m["vvh"] < m["ih"] - 80 else "was closed by iOS", "across the swipe + retarget (platform behaviour, not asserted)")
 
-# 5. the "jump to bottom" case: the LAST card's last weight input, focused by a
-#    real tap while it sits at the very bottom of the clear band (just above the
-#    dock) — iOS must reposition it itself; nothing pre-clears it.
+# 5. the "jump to bottom" case: dismiss, then reach the LAST card's last weight
+#    input with real swipes only, tap it (exact identity), and let iOS do the
+#    repositioning — nothing pre-clears it with page JavaScript.
+sim.tap(*keys()[1]); time.sleep(1.2); sim.settle()
 n = sim.js("return document.querySelectorAll('.set-row input[data-field=weight]').length")
-sim.js(f"""const e=document.querySelectorAll('.set-row input[data-field=weight]')[{n-1}]; const d=document.querySelector('#submit-row').getBoundingClientRect();
-const r=e.getBoundingClientRect(); window.scrollBy(0, r.bottom - (d.top - 6)); return 1"""); time.sleep(0.6); sim.settle()
+LAST = ".set-row input[data-field=weight]"
+sim.check("5a: swiped the last weight input into the band (no page JS scrolling)", sim.swipe_until_in_band(LAST, n - 1, max_swipes=40, step=420))
 m = M("5a-before-last-tap")
-gap = sim.js(f"""const e=document.querySelectorAll('.set-row input[data-field=weight]')[{n-1}]; return Math.round(document.querySelector('#submit-row').getBoundingClientRect().top - e.getBoundingClientRect().bottom)""")
-sim.check("5a: last input sits just above the dock before the tap", 0 <= gap <= 40, f"gap={gap}")
-sim.tap_sel(".set-row input[data-field=weight]", n - 1); time.sleep(1.5); sim.settle()
+sim.tap_focus(LAST, n - 1, "5b-last-input")
 m = M("5b-last-input-focused"); S("5b-last-input"); sim.check_keyboard_state(m, "5b-last-input")
-sim.check("5b: the focused input is the last weight input", bool(m["act"]) and m["act"].get("f") == "weight", m["act"])
+sim.check("5b: the focused element is exactly the last weight input", sim.is_focused(LAST, n - 1))
 
 # 6. dismiss with the accessory ✓ → dock must return to the bottom, no float
 sy_before = sim.js("return scrollY")

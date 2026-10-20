@@ -36,18 +36,18 @@
    "sy": 1074,
    "dh": 6279,
    "vvh": 410,
-   "vvt": 286,
+   "vvt": 242,
    "vvs": 1,
    "dock": {
-    "t": 273,
-    "b": 467,
+    "t": 317,
+    "b": 512,
     "h": 195,
     "pos": "sticky",
     "vis": true
    },
    "hdr": {
-    "t": -287,
-    "b": 12,
+    "t": -242,
+    "b": 57,
     "pos": "sticky"
    },
    "act": {
@@ -66,18 +66,18 @@
    "sy": 1074,
    "dh": 6279,
    "vvh": 410,
-   "vvt": 286,
+   "vvt": 242,
    "vvs": 1,
    "dock": {
-    "t": 273,
-    "b": 467,
+    "t": 317,
+    "b": 512,
     "h": 195,
     "pos": "sticky",
     "vis": true
    },
    "hdr": {
-    "t": -287,
-    "b": 12,
+    "t": -242,
+    "b": 57,
     "pos": "sticky"
    },
    "act": {
@@ -96,18 +96,18 @@
    "sy": 1126,
    "dh": 6279,
    "vvh": 410,
-   "vvt": 338,
+   "vvt": 294,
    "vvs": 1,
    "dock": {
-    "t": 221,
-    "b": 415,
+    "t": 265,
+    "b": 460,
     "h": 195,
     "pos": "sticky",
     "vis": true
    },
    "hdr": {
-    "t": -339,
-    "b": -40,
+    "t": -294,
+    "b": 5,
     "pos": "sticky"
    },
    "act": {
@@ -123,28 +123,28 @@
   },
   {
    "ih": 754,
-   "sy": 1126,
+   "sy": 2222,
    "dh": 6279,
    "vvh": 410,
-   "vvt": 338,
+   "vvt": 321,
    "vvs": 1,
    "dock": {
-    "t": 221,
-    "b": 415,
+    "t": 238,
+    "b": 433,
     "h": 195,
     "pos": "sticky",
     "vis": true
    },
    "hdr": {
-    "t": -339,
-    "b": -40,
+    "t": -321,
+    "b": -22,
     "pos": "sticky"
    },
    "act": {
     "tag": "INPUT",
     "f": "reps",
-    "t": 182,
-    "b": 226
+    "t": 183,
+    "b": 227
    },
    "cls": "mode-current workout-dock-visible",
    "ki": "",
@@ -153,28 +153,27 @@
   },
   {
    "ih": 754,
-   "sy": 4505,
+   "sy": 4176,
    "dh": 6279,
-   "vvh": 410,
-   "vvt": 344,
+   "vvh": 754,
+   "vvt": 0,
    "vvs": 1,
    "dock": {
-    "t": 216,
-    "b": 410,
+    "t": 559,
+    "b": 754,
     "h": 195,
     "pos": "sticky",
     "vis": true
    },
    "hdr": {
-    "t": -344,
-    "b": -45,
+    "t": 0,
+    "b": 299,
     "pos": "sticky"
    },
    "act": {
-    "tag": "INPUT",
-    "f": "reps",
-    "t": -3197,
-    "b": -3153
+    "tag": "BODY",
+    "t": -4176,
+    "b": 2103
    },
    "cls": "mode-current workout-dock-visible",
    "ki": "",
@@ -186,18 +185,18 @@
    "sy": 4494,
    "dh": 6279,
    "vvh": 410,
-   "vvt": 332,
+   "vvt": 317,
    "vvs": 1,
    "dock": {
-    "t": 227,
-    "b": 421,
+    "t": 242,
+    "b": 436,
     "h": 195,
     "pos": "sticky",
     "vis": true
    },
    "hdr": {
-    "t": -333,
-    "b": -34,
+    "t": -318,
+    "b": -19,
     "pos": "sticky"
    },
    "act": {
@@ -306,10 +305,8 @@
   "2-typed: dock is compact (timer only)",
   "3-next-row: dock bottom == visible edge",
   "3-next-row: dock is compact (timer only)",
-  "3-next-row: focused input clears the dock",
   "4-two-cards-down: dock bottom == visible edge",
   "4-two-cards-down: dock is compact (timer only)",
-  "4-two-cards-down: focused input clears the dock",
   "5b-last-input: dock bottom == visible edge",
   "5b-last-input: dock is compact (timer only)"
  ]

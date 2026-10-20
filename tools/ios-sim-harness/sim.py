@@ -33,6 +33,8 @@ def tap(x, y, duration=None):
 
 
 def swipe(x1, y1, x2, y2, duration=0.3, delta=None):
+    # idb wants integer points
+    x1, y1, x2, y2 = (int(round(v)) for v in (x1, y1, x2, y2))
     args = ["ui", "swipe", str(x1), str(y1), str(x2), str(y2), "--duration", str(duration)]
     if delta:
         args += ["--delta", str(delta)]
@@ -116,10 +118,15 @@ def calibrate():
     """Tap a neutral spot and read back the page's clientY: content_top is the
     exact screen-point offset of the layout viewport (Safari chrome height)."""
     global CONTENT_TOP
+    ensure_software_keyboard()
     js("window.__lastTap=null; if(!window.__tapHook){window.__tapHook=1; document.addEventListener('pointerdown',e=>{window.__lastTap={x:e.clientX,y:e.clientY,t:visualViewport.offsetTop};},true);} return 1")
-    tap(390, 500)  # right edge, mid-screen: no controls there
-    time.sleep(0.4)
-    t = js("return window.__lastTap")
+    t = None
+    for _ in range(3):              # a first tap may only dismiss a Safari sheet
+        tap(390, 500)  # right edge, mid-screen: no controls there
+        time.sleep(0.5)
+        t = js("return window.__lastTap")
+        if t:
+            break
     if not t:
         raise RuntimeError("calibration tap not seen by the page")
     CONTENT_TOP = 500 - (t["y"] - t["t"])
@@ -225,6 +232,20 @@ def ax_tap(substr, typ=None, index=0):
 ICON = tuple(int(v) for v in os.environ.get("ICON", "340,223").split(","))  # web clip icon on home-screen page 2
 
 
+_KB_DONE = False
+
+
+def ensure_software_keyboard():
+    """The simulator silently reverts to 'hardware keyboard connected' (no
+    on-screen keys, just the ▲▼✓ bar) — e.g. after an app is terminated — so
+    re-assert it once per process before the first tap."""
+    global _KB_DONE
+    if _KB_DONE or not UDID:
+        return
+    subprocess.run([IDB, "set", "hardware-keyboard", "disable", "--udid", UDID], capture_output=True, text=True)
+    _KB_DONE = True
+
+
 def open_pwa():
     idb("ui", "button", "HOME"); time.sleep(1.2)
     idb("ui", "button", "HOME"); time.sleep(0.8)          # ensure page 1
@@ -303,3 +324,94 @@ def finish(tag, out, extra=None):
         print(f"FAILED {tag}: {len(FAILURES)} check(s) failed → metrics-{tag}.json")
         sys.exit(1)
     print(f"PASSED {tag}: all checks held → metrics-{tag}.json")
+
+
+def is_focused(sel, index=0):
+    """Exact identity: is document.activeElement the index-th match of sel?"""
+    return bool(js(f"return document.activeElement === document.querySelectorAll({json.dumps(sel)})[{index}]"))
+
+
+def stable_geometry(sel, index=0, tries=14, gap=0.4):
+    """Measure twice `gap` seconds apart and only return once nothing moved:
+    after a pan with the keyboard up iOS keeps nudging the visual viewport for
+    a moment after scrollY looks settled, and a tap aimed at a stale rect misses."""
+    last = None
+    for _ in range(tries):
+        g = _geometry(sel, index)
+        if g and last and all(abs(g[k] - last[k]) < 1.5 for k in ("top", "bottom", "band_top", "band_bot")):
+            return g
+        last = g
+        time.sleep(gap)
+    return last
+
+
+def _geometry(sel, index=0):
+    """Screen-space rects (points). Verified against screenshots on iOS 27.1:
+    while the keyboard is up iOS reports client rects relative to the VISIBLE
+    viewport (fixed dock bottom == visualViewport.height), so screen y is
+    simply rect.y + CONTENT_TOP in every state — no offsetTop correction."""
+    g = js(f"""const e=document.querySelectorAll({json.dumps(sel)})[{index}]; if(!e) return null;
+const r=e.getBoundingClientRect(); const hb=document.querySelector('header.app').getBoundingClientRect().bottom;
+const dt=document.querySelector('#submit-row').getBoundingClientRect().top;
+return {{top:r.top, bottom:r.bottom, cx:r.left+r.width/2, cy:r.top+r.height/2, hdrB:hb, dockT:dt, vvh:visualViewport.height}};""")
+    if not g:
+        return None
+    off = CONTENT_TOP
+    vis_top, vis_bot = CONTENT_TOP, CONTENT_TOP + g["vvh"]
+    return {"top": g["top"] + off, "bottom": g["bottom"] + off, "cx": g["cx"], "cy": g["cy"] + off,
+            "band_top": max(g["hdrB"] + off, vis_top), "band_bot": min(g["dockT"] + off, vis_bot)}
+
+
+def screen_geometry(sel, index=0):
+    return stable_geometry(sel, index)
+
+
+def in_band(sel, index=0, margin=4, geom=None):
+    g = geom or screen_geometry(sel, index)
+    return bool(g) and g["top"] >= g["band_top"] + margin and g["bottom"] <= g["band_bot"] - margin
+
+
+def swipe_until_in_band(sel, index=0, max_swipes=14, step=220):
+    """Bring an element into the on-screen clear band with REAL swipes only
+    (no page JS scrolling). Returns True when it is in the band."""
+    for _ in range(max_swipes):
+        g = screen_geometry(sel, index)
+        if not g:
+            return False
+        if in_band(sel, index, geom=g):
+            return True
+        # The finger must stay inside the visible band: a swipe that starts on
+        # the keyboard, the accessory bar or the dock scrolls nothing.
+        lo, hi = g["band_top"] + 12, g["band_bot"] - 12
+        if hi - lo < 40:
+            time.sleep(0.5)                  # band degenerate mid-transition; re-measure
+            continue
+        # Slow, proportional swipes: a quick 220pt flick carries ~2x its travel
+        # in momentum, which overshoots short distances and oscillates. Aim for
+        # roughly half the remaining distance with a 0.6s drag (little momentum).
+        mid_y = (lo + hi) / 2
+        distance = ((g["top"] + g["bottom"]) / 2) - mid_y     # +: target below the band centre
+        travel = max(40, min(hi - lo, abs(distance) * 0.45, step))
+        if distance > 0:                     # below → finger moves up (content moves up)
+            swipe(200, mid_y + travel / 2, 200, mid_y - travel / 2, duration=0.6)
+        else:                                # above → finger moves down
+            swipe(200, mid_y - travel / 2, 200, mid_y + travel / 2, duration=0.6)
+        settle()
+    return in_band(sel, index)
+
+
+def tap_focus(sel, index=0, label=None):
+    """Real-touch focus with exact identity assertion: the element must be in
+    the on-screen clear band (measured in the live frame), then a tap at its
+    live screen position must make document.activeElement exactly that
+    element — a missed tap fails the scenario."""
+    label = label or f"{sel}[{index}]"
+    g = screen_geometry(sel, index)
+    check(f"{label}: target is inside the tappable band before the tap", in_band(sel, index, geom=g),
+          g and f"top={g['top']:.0f} bottom={g['bottom']:.0f} band={g['band_top']:.0f}..{g['band_bot']:.0f}")
+    if g:
+        tap(g["cx"], g["cy"])
+    time.sleep(1.5)
+    settle()
+    return check(f"{label}: tap focused exactly that element", is_focused(sel, index),
+                 js("const a=document.activeElement; return a ? (a.tagName + '/' + (a.dataset ? a.dataset.field : '')) : null"))

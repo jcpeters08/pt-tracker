@@ -48,12 +48,26 @@ are written to `metrics-<tag>.json` — run from `evidence/<date>/` to keep them
 The last-card case taps the last weight input by a real touch while it sits just above
 the dock, so iOS (not the script) has to reposition it. `evidence/2026-10-20/` holds the
 runs behind the dock fix: fixed build PASS, pre-fix build FAIL, Safari and PWA.
+One run in three of the PWA pan scenario (`metrics-pwa-fixed-pan.flake-1-of-3.json`)
+saw iOS not scroll a freshly tapped input above the keyboard (input bottom 548 vs
+visible edge 442, dock untouched); the two re-runs revealed it to y=198 as usual.
+Treat a single "focused input clears the dock" failure as an iOS reveal race and
+re-run before blaming the dock.
 
 To compare against an older build, serve it on a second port (e.g. a
 `git archive` of the commit under test) and run the same scripts there.
 
 Notes: tap coordinates are converted from client rects with a one-tap
 calibration (`calibrate()`); iOS reports client rects relative to the visible
-viewport while the keyboard is up, so no offsetTop correction is applied. The
+viewport while the keyboard is up (verified against screenshots, including
+mid-pan), so no offsetTop correction is applied. Every targeted tap goes through
+`tap_focus()`: the target must be inside the on-screen band between header and
+dock, measured twice 0.4 s apart until nothing moves (iOS keeps nudging the
+visual viewport briefly after a pan), and afterwards `document.activeElement`
+must be exactly that element — a missed tap is a recorded failure, never a pass.
+Distant fields are reached with real swipes (`swipe_until_in_band`), never page
+JavaScript. The simulator silently reverts to "hardware keyboard connected"
+(no on-screen keys) after apps are terminated; `ensure_software_keyboard()`
+re-asserts `idb set hardware-keyboard disable` once per process. The
 accessory-bar ✓ and number-pad positions are derived from `visualViewport.height`
 (Safari keeps a 58pt URL-pill strip between page and keyboard; the PWA has none).
