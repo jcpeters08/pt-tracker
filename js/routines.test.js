@@ -104,3 +104,56 @@ describe("resolveSessionForView (tapping a day shows the actual logged session)"
       .toBeNull();
   });
 });
+
+describe("resolveSessionForView — the VIEW date must itself be inside the routine week", () => {
+  // Real shape of the bug: W43 starts 2026-10-19 with end_date null, so
+  // index.html derives weekEnd = start+6 = 2026-10-25, yet selectRoutineForDate
+  // keeps W43 active for every later date until W44 is synced. Viewing Monday
+  // 2026-10-26 must NOT surface the 10/19 Monday log as a catch-up — doing so
+  // makes buildSessionPayload write date 2026-10-19 and overwrite last week.
+  const w43 = { weekStart: "2026-10-19", weekEnd: "2026-10-25" };
+  const lookup = new Map([["2026-10-19|monday|push", { kind: "log", id: "last-monday" }]]);
+  const view = (date, extra = {}) =>
+    resolveSessionForView(lookup, { date, day: "monday", type: "push", ...w43, ...extra });
+
+  it("(a) view date inside the week still falls back to that week's catch-up log", () => {
+    expect(view("2026-10-21"))
+      .toMatchObject({ id: "last-monday", resolvedDate: "2026-10-19", isFallback: true });
+    expect(view("2026-10-25")).toMatchObject({ resolvedDate: "2026-10-19", isFallback: true }); // inclusive end
+  });
+
+  it("(b) view date after weekEnd returns null (routine defaults, nominal date)", () => {
+    expect(view("2026-10-26")).toBeNull(); // next Monday, W44 not yet synced
+    expect(view("2026-11-02")).toBeNull();
+  });
+
+  it("(c) view date before weekStart returns null", () => {
+    expect(view("2026-10-18")).toBeNull(); // the Sunday before the week
+    expect(view("2026-10-12")).toBeNull(); // last week's Monday
+  });
+
+  it("(d) with no weekEnd the window is open-ended for the fallback, but still requires date >= weekStart", () => {
+    // index.html always passes a derived weekEnd (start+6) when end_date is
+    // missing; a caller that omits it is declaring the week open-ended.
+    expect(view("2026-10-21", { weekEnd: undefined }))
+      .toMatchObject({ id: "last-monday", resolvedDate: "2026-10-19", isFallback: true });
+    expect(view("2026-10-18", { weekEnd: undefined })).toBeNull();
+    // Open-ended by contract: a far-future view date still matches. Bounding
+    // the week is the caller's job (index.html derives start+6).
+    expect(view("2026-12-07", { weekEnd: undefined }))
+      .toMatchObject({ id: "last-monday", resolvedDate: "2026-10-19", isFallback: true });
+  });
+
+  it("an exact-date match still wins even when the view date is outside the window", () => {
+    const withNext = new Map([
+      ...lookup,
+      ["2026-10-26|monday|push", { kind: "log", id: "this-monday" }],
+    ]);
+    expect(resolveSessionForView(withNext, { date: "2026-10-26", day: "monday", type: "push", ...w43 }))
+      .toMatchObject({ id: "this-monday", resolvedDate: "2026-10-26", isFallback: false });
+  });
+
+  it("a missing view date never falls back (nothing to place inside the window)", () => {
+    expect(view(undefined)).toBeNull();
+  });
+});

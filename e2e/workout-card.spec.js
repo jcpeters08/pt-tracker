@@ -261,6 +261,12 @@ test("first wave: history context respects routine mode", async ({ page, context
   await expect(page.locator(".ex-card .previous-line").first()).toContainText(/Last Push · Aug \d+:/);
   await expect(page.locator("#submit-row")).toBeHidden();
   await expect(page.locator("#workout-top-actions")).toBeHidden();
+  // Upcoming = pre-tune targets only: logging controls are locked so a stray
+  // Done can't start a persisted rest timer or seed a draft under a future date.
+  await expect(page.locator(".ex-card input[data-field='weight']").first()).toHaveJSProperty("readOnly", true);
+  await expect(page.locator(".ex-card [data-action='done']").first()).toBeDisabled();
+  await expect(page.locator(".ex-card [data-action='add-set']").first()).toBeDisabled();
+  await expect(page.locator(".ex-card .target-line").first()).toBeVisible();
 
   await page.fill("#workout-date", "2026-08-23");
   await page.dispatchEvent("#workout-date", "change");

@@ -114,7 +114,9 @@ export function renderCooldown(day) {
   const lib = cd.library?.[key] || cd.library?.default;
   const fp = cd.apple_fitness_plus;
   const choice = state.cooldownChoice || "library";
-  const isPast = hooks.getRoutineMode(state.routine) === "past";
+  // Logging controls are live only for the current routine: a past week is
+  // read-only, and an upcoming week is "pre-tune targets, can't log yet".
+  const isPast = hooks.getRoutineMode(state.routine) !== "current";
   const dayCooldownText = (day.cooldown || "").trim();
   const cdLog = getCooldownLog();
   const isDone = !!cdLog.completed_at && cdLog.type === choice;
@@ -345,7 +347,10 @@ export function renderExerciseCard(exDef, ex) {
   const targetText = formatTargetText(ex);
   const unitLabel = state.unitPref;
   const step = weightInputStep();
-  const isPast = hooks.getRoutineMode(state.routine) === "past";
+  // Set inputs / Done / Add set / notes are editable only in the current
+  // routine. Upcoming weeks used to leave them live, so a tap on Done started
+  // (and persisted) a rest timer and drafts piled up under a future date.
+  const isPast = hooks.getRoutineMode(state.routine) !== "current";
 
   // image (or emoji fallback)
   const imgInner = meta.image_url

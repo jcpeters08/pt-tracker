@@ -88,12 +88,17 @@ async function handleAuthRequest(request: Request, env: Env): Promise<Response> 
   if (emailCount >= RL_EMAIL_MAX_PER_WINDOW || ipCount >= RL_IP_MAX_PER_WINDOW) {
     return json({ ok: true });
   }
+
+  // Send first, persist second. A failed Resend send throws here (→ 500 from
+  // the entry point) and nothing below runs, so an outage neither burns one of
+  // the 3 per-window attempts nor overwrites a code that was already delivered.
+  // Counting before sending let three failed sends lock the user out for 15 min
+  // while every later request returned {ok:true} without emailing anything.
+  const code = generateCode();
+  await sendCodeEmail(env, email, code);
+  await env.KV.put(`code:${email}`, JSON.stringify({ code, attempts: 0 }), { expirationTtl: CODE_TTL_SECONDS });
   await env.KV.put(emailKey, String(emailCount + 1), { expirationTtl: RL_WINDOW_SECONDS });
   await env.KV.put(ipKey, String(ipCount + 1), { expirationTtl: RL_WINDOW_SECONDS });
-
-  const code = generateCode();
-  await env.KV.put(`code:${email}`, JSON.stringify({ code, attempts: 0 }), { expirationTtl: CODE_TTL_SECONDS });
-  await sendCodeEmail(env, email, code);
 
   return json({ ok: true });
 }
@@ -204,9 +209,24 @@ async function handleAppendPending(request: Request, env: Env): Promise<Response
   const ghHeaders = githubHeaders(pat);
   for (let attempt = 0; attempt < 2; attempt++) {
     const getRes = await fetch(ghUrl, { headers: ghHeaders });
-    if (!getRes.ok) return json({ error: `pending read failed (${getRes.status})` }, 502);
-    const cur = await getRes.json() as { content?: string; sha?: string };
-    const pending = parsePendingContent(cur.content || "");
+    let pending: PendingFile;
+    let sha: string | undefined;
+    if (getRes.status === 404) {
+      // No pending.json yet — start a fresh queue. A PUT without `sha` creates
+      // the file; GitHub rejects it (422) if the file turns out to exist, so
+      // this can never clobber a queue the GET failed to show us.
+      pending = { entries: [] };
+    } else {
+      if (!getRes.ok) return json({ error: `pending read failed (${getRes.status})` }, 502);
+      const cur = await getRes.json() as { content?: string; sha?: string };
+      const parsed = parsePendingContent(cur.content || "");
+      // Unreadable content must fail loudly. Treating it as an empty queue and
+      // writing back under the still-valid sha would silently discard every
+      // workout queued since the last sync. Retrying can't fix the file.
+      if (!parsed) return json({ error: "pending.json is unreadable (not a JSON object with an entries array) — fix data/pending.json before appending" }, 500);
+      pending = parsed;
+      sha = cur.sha;
+    }
     pending.entries = mergePendingEntries(pending.entries, entry!);
 
     const putRes = await fetch(ghUrl, {
@@ -215,7 +235,7 @@ async function handleAppendPending(request: Request, env: Env): Promise<Response
       body: JSON.stringify({
         message: pendingCommitMessage(entry!),
         content: utf8ToBase64(JSON.stringify(pending, null, 2) + "\n"),
-        sha: cur.sha,
+        sha, // omitted by JSON.stringify when undefined (fresh file)
       }),
     });
     if (putRes.ok) return json({ ok: true });
@@ -263,13 +283,25 @@ function validatePendingEntry(entry: Record<string, unknown> | undefined): strin
   return "unknown pending entry type";
 }
 
-function parsePendingContent(contentB64: string): { format_note?: string; entries: unknown[] } {
+type PendingFile = { format_note?: string; entries: unknown[] };
+
+// Decodes data/pending.json. Returns null — never a guessed empty queue — when
+// the content is undecodable, not valid JSON, not a JSON object, or has an
+// `entries` that is present but not an array (something is queued there that
+// we can't read). An object with no `entries` key at all (e.g. a hand-made
+// `{}`) is unambiguously empty and is accepted as a fresh queue; sync.py
+// always writes `entries: []`, so this only ever applies to hand-created files.
+function parsePendingContent(contentB64: string): PendingFile | null {
+  let parsed: any;
   try {
-    const parsed = JSON.parse(base64ToUtf8(contentB64));
-    return { ...parsed, entries: Array.isArray(parsed.entries) ? parsed.entries : [] };
+    parsed = JSON.parse(base64ToUtf8(contentB64));
   } catch {
-    return { entries: [] };
+    return null;
   }
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return null;
+  if (parsed.entries === undefined) return { ...parsed, entries: [] };
+  if (!Array.isArray(parsed.entries)) return null;
+  return parsed as PendingFile;
 }
 
 function mergePendingEntries(entries: unknown[], entry: Record<string, unknown>): unknown[] {

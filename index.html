@@ -909,6 +909,7 @@ import { ensureRecoveryRounds, renderRecoveryRounds, renderRecoverySummary } fro
 import { state, hooks, todayKey, CD_CHOICE_KEY } from "./js/app-context.js";
 import { dayLabel, renderDayToggle, renderCooldown, cooldownStateKey, renderExercises } from "./js/workout.js";
 import { renderRestBar } from "./js/rest-bar.js";
+import { findIncompleteDoneSets, describeIncompleteDoneSet } from "./js/session-check.js";
 import { keyboardInset, isKeyboardOpen, isTextEntry } from "./js/viewport.js";
 "use strict";
 
@@ -1717,13 +1718,21 @@ function markWorkoutDirty() {
 }
 
 function markRecoveryDirty() {
+  resetRecoveryDirty();
+  saveRecoveryDraft();
+}
+
+// Re-arm the recovery submit WITHOUT touching localStorage. Date changes must
+// use this: the inputs still hold the previous date's values while #rec-date
+// already names the new one, so a draft save here would write the old notes
+// (and empty rounds) into the NEW date's draft slot — or delete that slot.
+function resetRecoveryDirty() {
   state.lastRecoverySig = null;
   const btn = $("#rec-submit-btn");
   if (btn) {
     btn.disabled = false;
     btn.textContent = "Log recovery session";
   }
-  saveRecoveryDraft();
 }
 
 // Backwards-compatible aliases (existing callers may still use these names).
@@ -1752,7 +1761,7 @@ function hydrateRecoveryFromExisting(rec) {
     }));
   }
   if (rec.location) $("#rec-location").value = rec.location;
-  if (rec.notes) $("#rec-notes").value = rec.notes;
+  $("#rec-notes").value = rec.notes || "";
 }
 
 // recoveryPayloadFromInputs → buildRecoveryPayload in js/payloads.js
@@ -1787,6 +1796,9 @@ function renderRecoveryPanel() {
       // Stale draft (older than synced) — drop it
       if (draft) clearRecoveryDraft();
     } else {
+      // Fresh date with nothing stored: the previous date's notes must not
+      // ride along into this session (location is a sticky preference).
+      if ($("#rec-notes")) $("#rec-notes").value = "";
       state._recoveryDraftAfterSubmit = false;
     }
     state._recoveryHydratedFor = recDate;
@@ -1908,6 +1920,14 @@ async function submitSession() {
   if (state.submitting || btn.disabled) return;
   btn.disabled = true;
   state.submitting = true;
+  const incomplete = findIncompleteDoneSets(state);
+  if (incomplete.length) {
+    // buildSessionPayload would silently drop these; refuse instead of losing data.
+    toast(describeIncompleteDoneSet(incomplete[0]), "err");
+    btn.disabled = false;
+    state.submitting = false;
+    return;
+  }
   const payload = buildSessionPayload(state);
   if (!payload.session.exercises.length) {
     toast("Log at least one set before submitting.", "err");
@@ -1940,7 +1960,11 @@ async function submitSession() {
     state.hydratedKeys = new Set();
     state.workoutHydrationKey = null;
     $("#session-notes-input").value = "";
-    setTimeout(() => { btn.disabled = false; btn.textContent = "Submit session"; renderApp(); }, 1800);
+    // Re-render NOW so the cards re-bind to the fresh (pending) session. With
+    // the old delayed render, an edit made in the next ~2s mutated the
+    // detached pre-submit log objects and was discarded by the re-render.
+    renderApp();
+    setTimeout(() => { btn.disabled = false; btn.textContent = "Submit session"; }, 1800);
   } catch (e) {
     console.error("submitSession:", e);
     // Be explicit about a 403 so the user knows it's a token-permission
@@ -2203,7 +2227,7 @@ document.addEventListener("DOMContentLoaded", () => {
       recInput.value = v;
       state._recoveryHydratedFor = null;
       state.recoveryRounds = null;
-      clearLastRecoverySig();
+      resetRecoveryDirty();   // never saveRecoveryDraft() mid date change
     }
     // Re-evaluate routine selection: a different date may belong to a different routine
     if (state.routineMeta?.length) {
@@ -2254,7 +2278,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Reset hydration marker so the new date hydrates fresh from existing log if any
     state._recoveryHydratedFor = null;
     state.recoveryRounds = null;  // forces ensureRecoveryRounds() to seed defaults
-    clearLastRecoverySig();
+    resetRecoveryDirty();         // never saveRecoveryDraft() mid date change
     renderRecoveryPanel();
   });
   $("#rec-submit-btn").addEventListener("click", submitRecovery);

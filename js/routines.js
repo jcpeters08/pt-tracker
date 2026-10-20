@@ -39,6 +39,13 @@ export function selectRoutineForDate({ date, routines = [], meta = [], pinned = 
 // day-of-week + type within the routine week [weekStart, weekEnd] — so a workout
 // performed on a different date than its nominal day (a catch-up: e.g. Monday's
 // session actually done Tuesday) still surfaces when you tap that day pill.
+// The catch-up fallback only applies when the VIEW date is itself inside that
+// week: the latest routine stays selected (open-ended) past its derived
+// weekEnd, and resolving last week's log for a next-week view would make the
+// submit path (buildSessionPayload → resolvedDate) overwrite last week's log
+// instead of creating a new one. Outside the window → null (routine defaults,
+// nominal date). A missing weekEnd leaves the window open-ended — bounding it
+// is the caller's job (index.html derives start+6 when end_date is absent).
 // `lookup` is a Map keyed "date|day|type" → entry ({ kind, session, … }).
 export function resolveSessionForView(lookup, { date, day, type, weekStart, weekEnd } = {}) {
   if (!lookup || !day) return null;
@@ -46,6 +53,7 @@ export function resolveSessionForView(lookup, { date, day, type, weekStart, week
   if (exact) return { ...exact, resolvedDate: date, isFallback: false };
   if (!weekStart) return null;
   const end = weekEnd || "9999-12-31";
+  if (!date || date < weekStart || date > end) return null;   // view date outside the week
   let best = null;                          // latest LOGGED match within the week
   for (const [k, v] of lookup) {
     if (!v || v.kind !== "log") continue;

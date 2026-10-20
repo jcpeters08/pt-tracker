@@ -40,7 +40,7 @@ describe("/auth/request rate limiting", () => {
     // Stub the Resend email send so under-limit requests don't hit the network.
     vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ id: "x" }), { status: 200 })));
   });
-  afterEach(() => vi.unstubAllGlobals());
+  afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 
   it("sends up to the per-email limit (3), then throttles — still {ok:true}, no email", async () => {
     const env = makeEnv();
@@ -78,5 +78,54 @@ describe("/auth/request rate limiting", () => {
     const res = await worker.fetch(authReq("user@example.com", "2.2.2.2"), env);
     expect(await res.json()).toEqual({ ok: true });
     expect(resendCalls()).toBe(3); // email limit (3) already hit, IP change doesn't bypass it
+  });
+
+  it("a failed Resend send does not consume an attempt or leave a code behind — counting happens only after a successful send", async () => {
+    // Resend is down for three requests, then recovers.
+    let sends = 0;
+    vi.stubGlobal("fetch", vi.fn(async () => {
+      sends += 1;
+      return sends <= 3
+        ? new Response("quota exceeded", { status: 500 })
+        : new Response(JSON.stringify({ id: "x" }), { status: 200 });
+    }));
+    vi.spyOn(console, "error").mockImplementation(() => {}); // the entry point logs the thrown Resend error
+    const env = makeEnv();
+
+    for (let i = 0; i < 3; i++) {
+      const res = await worker.fetch(authReq("user@example.com"), env);
+      expect(res.status).toBe(500); // surfaced as a failure, not masked as "Code sent"
+    }
+    expect(await env.KV.get("rl:email:user@example.com")).toBeNull();
+    expect(await env.KV.get("rl:ip:1.2.3.4")).toBeNull();
+    expect(await env.KV.get("code:user@example.com")).toBeNull();
+
+    // Resend is healthy again: the 4th request must still send (nothing was
+    // throttled) and only now count. Before the fix this returned {ok:true}
+    // with zero Resend calls — the user was locked out for the whole window.
+    const res = await worker.fetch(authReq("user@example.com"), env);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true });
+    expect(resendCalls()).toBe(4);
+    expect(await env.KV.get("rl:email:user@example.com")).toBe("1");
+    expect(await env.KV.get("rl:ip:1.2.3.4")).toBe("1");
+    expect(await env.KV.get("code:user@example.com")).toBeTruthy();
+  });
+
+  it("a failed resend keeps the previously delivered code valid", async () => {
+    let sends = 0;
+    vi.stubGlobal("fetch", vi.fn(async () => (++sends === 1
+      ? new Response(JSON.stringify({ id: "x" }), { status: 200 })
+      : new Response("boom", { status: 500 }))));
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const env = makeEnv();
+
+    expect((await worker.fetch(authReq("user@example.com"), env)).status).toBe(200);
+    const delivered = await env.KV.get("code:user@example.com");
+    expect(delivered).toBeTruthy();
+
+    expect((await worker.fetch(authReq("user@example.com"), env)).status).toBe(500);
+    expect(await env.KV.get("code:user@example.com")).toBe(delivered); // not clobbered by an undelivered code
+    expect(await env.KV.get("rl:email:user@example.com")).toBe("1");  // only the delivered send counted
   });
 });
