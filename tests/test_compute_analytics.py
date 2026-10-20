@@ -238,14 +238,16 @@ class TestLoadPrUnitRoundTrip(unittest.TestCase):
         self.assertEqual(ca.pf_lbs(None), 0)
 
     def test_60lb_round_trip_through_integer_lbs_is_not_a_pr(self):
-        # 27.2 kg renders in vault MD as "60 lbs (27.2 kg)"; re-parsing that cell
-        # makes the authored lbs canonical → 27.22 kg. Same lift, not a PR.
+        # Historically 27.2 kg rendered as "60 lbs (27.2 kg)" and re-parsed lbs-first
+        # to 27.22 kg, so the same lift showed up as a +0 lb "PR". Since 2026-10-20
+        # _format_weight renders a non-whole-pound kg value kg-first so the cell
+        # re-parses to the stored kg exactly; the analytics must still treat the
+        # 27.2 / 27.22 pair (already present in older logs) as one PF load class.
         rendered = sync._format_weight({"sets": [{"weight_kg": 27.2}]})
-        self.assertEqual(rendered, "60 lbs (27.2 kg)")
         round_tripped, _ = pc.parse_weight(rendered)
-        self.assertEqual(round_tripped, 27.22)
+        self.assertEqual(round_tripped, 27.2)
         logs = [self._log("2026-06-01", 27.2, 10),
-                self._log("2026-06-08", round_tripped, 10)]
+                self._log("2026-06-08", 27.22, 10)]
         recs, legacy = self._records(logs)
         self.assertEqual(legacy, [])
         self.assertFalse(any(r["type"] == "load_pr" for r in recs))
