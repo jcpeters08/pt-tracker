@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { mergePending } from "./pending.js";
+import { mergePending, slotKey } from "./pending.js";
 
 const log = (date, day, type) => ({ type: "log", session: { date, day_of_week: day, type } });
 const skip = (date, day, type) => ({ type: "skip", session: { date, day_of_week: day, type } });
@@ -44,5 +44,32 @@ describe("mergePending (convention #5 pre-dedupe)", () => {
   it("does not cross-dedupe between unrelated entry types", () => {
     const out = mergePending([rec("2026-05-18", "Embrace North")], log("2026-05-18", "monday", "push"));
     expect(out).toHaveLength(2);
+  });
+});
+
+describe("slotKey (shared slot identity)", () => {
+  it("keys workouts by (date, day_of_week, type) regardless of log vs skip", () => {
+    expect(slotKey(log("2026-05-18", "monday", "push"))).toBe(slotKey(skip("2026-05-18", "monday", "push")));
+    expect(slotKey(log("2026-05-18", "monday", "push"))).not.toBe(slotKey(log("2026-05-19", "monday", "push")));
+  });
+
+  it("keys recovery by (date, location)", () => {
+    expect(slotKey(rec("2026-05-18", "Embrace North"))).toBe(slotKey(rec("2026-05-18", "Embrace North")));
+    expect(slotKey(rec("2026-05-18", "Embrace North"))).not.toBe(slotKey(rec("2026-05-18", "Other Gym")));
+  });
+
+  it("keys routine_edit by (routine_id, day, exercise_id)", () => {
+    expect(slotKey(edit("W21", "monday", "a"))).toBe(slotKey(edit("W21", "monday", "a")));
+    expect(slotKey(edit("W21", "monday", "a"))).not.toBe(slotKey(edit("W21", "monday", "b")));
+  });
+
+  it("never collides across entry types", () => {
+    expect(slotKey(rec("2026-05-18", "monday"))).not.toBe(slotKey(log("2026-05-18", "monday", "")));
+  });
+
+  it("returns null for unknown or malformed entries", () => {
+    expect(slotKey(null)).toBeNull();
+    expect(slotKey({ type: "other" })).toBeNull();
+    expect(slotKey({ type: "log" })).toBeNull();
   });
 });

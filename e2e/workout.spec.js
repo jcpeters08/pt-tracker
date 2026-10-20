@@ -84,3 +84,41 @@ test("submitting with a Done set that has no reps is refused, not silently dropp
   expect(appended, "nothing was queued").toBeNull();
   await expect(page.locator("#submit-btn")).toBeEnabled();
 });
+
+// A just-submitted session must survive a relaunch inside the GitHub Pages
+// deploy window: the Worker has committed the entry, but data/pending.json as
+// served by Pages still lacks it for ~1–2 min. Before the fix the entry lived
+// only in memory, so a reload showed the day as unlogged with routine defaults
+// (inviting a duplicate submit). The route below pins pending.json to the
+// pre-submit file to simulate that window.
+test("a just-submitted session still shows as pending after a reload inside the deploy window", async ({ page, context }) => {
+  await context.route(/\/data\/pending\.json/, route => route.fulfill({ json: { entries: [] } }));
+  page.on("dialog", d => d.accept());
+  await freezeAppTime(page, "2026-06-10T12:00:00-05:00");   // W24 current
+  await signIn(page, context);
+
+  // W24 Tuesday Pull (2026-06-09) has no synced log → starts unlogged.
+  const openTuesday = async () => {
+    await page.fill("#workout-date", "2026-06-09");
+    await page.dispatchEvent("#workout-date", "change");
+    await page.locator("#day-toggle .day-pill").nth(1).click();
+    await expect(page.locator(".ex-card").first()).toBeVisible();
+  };
+  await openTuesday();
+  await expect(page.locator("#log-status")).toBeHidden();
+
+  const set0 = page.locator(".ex-card").first().locator(".set-row[data-set='0']");
+  await set0.locator("input[data-field='weight']").fill("60");
+  await set0.locator("input[data-field='reps']").fill("9");
+  await set0.locator("[data-action='done']").click();
+  await expect(set0).toHaveClass(/done/);
+  await page.click("#submit-btn");
+  await expect(page.locator("#log-status")).toHaveText("● Submitted (pending sync)");
+
+  // Relaunch: pending.json still returns the old (empty) file.
+  await page.reload();
+  await expect(page.locator("#app")).toBeVisible({ timeout: 15_000 });
+  await openTuesday();
+  await expect(page.locator("#log-status")).toHaveText("● Submitted (pending sync)");
+  await expect(page.locator(".ex-card").first().locator(".set-row[data-set='0'] input[data-field='reps']")).toHaveValue("9");
+});
