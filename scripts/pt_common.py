@@ -52,6 +52,7 @@ EXERCISE_ALIASES: dict[str, str] = {
     "lateral raise":                         "db-lateral-raise",
     "front raise":                           "db-front-raise",
     "db front raise":                        "db-front-raise",
+    "dumbbell front raise":                  "db-front-raise",
     "seated db front raise":                 "db-front-raise",
     "seated dumbbell front raise":           "db-front-raise",
     "db skullcrusher":                       "db-skullcrusher",
@@ -66,6 +67,8 @@ EXERCISE_ALIASES: dict[str, str] = {
     "overhead cable triceps extension":      "overhead-cable-tricep-extension",
     "overhead cable triceps ext":            "overhead-cable-tricep-extension",
     "overhead cable triceps extension (rope)": "overhead-cable-tricep-extension",
+    "overhead cable tricep extension":       "overhead-cable-tricep-extension",
+    "overhead cable tricep ext":             "overhead-cable-tricep-extension",
     "rope triceps pushdown":                 "rope-tricep-pushdown",
     "rope tricep pushdown":                  "rope-tricep-pushdown",
     "tricep pushdown":                       "rope-tricep-pushdown",
@@ -73,6 +76,8 @@ EXERCISE_ALIASES: dict[str, str] = {
     # Pull
     "bent-over db row":                      "bent-over-db-row",
     "bent over db row":                      "bent-over-db-row",
+    "bent-over dumbbell row":                "bent-over-db-row",
+    "bent over dumbbell row":                "bent-over-db-row",
     "barbell row":                           "barbell-bent-over-row",
     "barbell bent-over row":                 "barbell-bent-over-row",
     "barbell bent over row":                 "barbell-bent-over-row",
@@ -307,13 +312,31 @@ def parse_frontmatter(text: str) -> tuple[dict, str]:
 # Markdown table parsing
 # ---------------------------------------------------------------------------
 
+# A '|' inside a cell is written as '\|' (markdown's escape). The splitter must
+# only split on UNESCAPED pipes and unescape the rest, or an exercise note like
+# "left 10 | right 9" shears into two cells and parse_table_rows truncates it.
+_UNESCAPED_PIPE_RE = re.compile(r"(?<!\\)\|")
+
+
+def escape_table_cell(text: str) -> str:
+    """Escape literal '|' so `text` survives as a single markdown table cell."""
+    return text.replace("|", "\\|")
+
+
 def split_table_row(line: str) -> list[str]:
+    """Split '| a | b |' into ['a', 'b'], honoring '\\|' as an escaped pipe inside
+    a cell (the inverse of join_table_row / escape_table_cell)."""
     line = line.strip()
     if line.startswith("|"):
         line = line[1:]
-    if line.endswith("|"):
+    if line.endswith("|") and not line.endswith("\\|"):
         line = line[:-1]
-    return [c.strip() for c in line.split("|")]
+    return [c.strip().replace("\\|", "|") for c in _UNESCAPED_PIPE_RE.split(line)]
+
+
+def join_table_row(cells: list[str]) -> str:
+    """Render cells as '| a | b |', re-escaping any '|' inside a cell."""
+    return "| " + " | ".join(escape_table_cell(str(c)) for c in cells) + " |"
 
 
 def find_table(lines: list[str], start: int) -> tuple[int, int] | None:

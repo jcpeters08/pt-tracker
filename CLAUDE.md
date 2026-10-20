@@ -111,7 +111,7 @@ Tests: unit specs are co-located (`js/*.test.js`, run via `npm test` → vitest)
 - **Pending entry types**: `log` (workout), `skip` (didn't do the workout), `recovery` (sauna/plunge), `routine_edit` (in-app target tweak — rewrites a cell in the Weekly Plan MD on next sync)
 - **Recovery has `rounds_detail`** — array of `{round, sauna_min, plunge_min}`. Summary fields (`rounds`, `sauna_min`, `plunge_min`, `total_min`) are derived from it. Backward-compatible with old uniform-round entries.
 - **Workout logs have an optional `cooldown` field**: `{type: "library"|"fitnessplus", source_key, fitnessplus_name, completed_at}` — populated when user clicks "Mark cool-down complete" in the app. Renders as a `## Cool-down` section in vault MD.
-- **Weight rendering in vault MD**: `_format_weight` in `sync.py` outputs `"<lbs> lbs (<kg> kg)"` (lbs primary, integer-rounded). Routine MDs use the same format.
+- **Weight rendering in vault MD**: `_format_weight` in `sync.py` outputs `"<lbs> lbs (<kg> kg)"` (lbs primary, integer-rounded) for whole-pound values — every PF-logged weight. Since 2026-10-20 a half-pound lbs-mode value renders with one decimal (`142.5 lbs (64.6 kg)`) and a kg-mode value that is not a whole pound renders kg-first (`27.5 kg (61 lbs)`, the Phase-1 house format), so the lbs-first parser (`parse_weight`: first unit is canonical) round-trips the stored kg exactly instead of drifting on every sync. Routine MDs use the lbs-first format. Exercise-note cells escape `|` as `\|` and `split_table_row` honors the escape.
 - **`routine_edit` entry shape**: `{type: "routine_edit", routine_id, day_of_week, exercise_id, changes: {target_weight_kg?, target_weight_raw?, target_reps?, target_sets?}, created_at}`. `changes` is partial — only edited fields are present. `target_weight_raw` is included whenever `target_weight_kg` changes (web app pre-formats the lbs/kg string and preserves any `ea` suffix from the prior raw value).
 - **`data/manifest.json`** lists local snapshot IDs for `routines`, `logs`, `recovery_logs`, and `exercises`, plus `latest_routine_id`. Browser reads should use the manifest and same-origin JSON files; do not add GitHub Contents directory listings for normal app/report loads.
 
@@ -122,7 +122,7 @@ The interactive Claude session owns the sync now — there is **no automatic 8:0
 **Plain sync (drain logged workouts → vault + JSON):**
 1. `git pull --ff-only` — local often trails origin (the Worker + prior syncs push remotely; trust `origin/main`, not the local working copy — `git fetch` before reading `data/logs` or `pending.json`).
 2. `python3 scripts/sync.py` — drains `data/pending.json` (routine_edit first, then log/skip/recovery) into vault MD, re-derives `data/{routines,logs,recovery_logs}/*.json`, recomputes `analytics.json` + `manifest.json` + `profile.json`, commits `sync: drain N pending entries (YYYY-MM-DD)`, pushes.
-3. Verify: `git status` clean, `HEAD == origin/main`. Summarize what drained + any new PRs.
+3. Verify: `git status` clean, `HEAD == origin/main`. Summarize what drained + any new PRs. Since 2026-10-20 `sync.py` **aborts before any write** if `git pull --ff-only` fails, and **exits 1 with "push did NOT land"** if the push is rejected — in that case the vault MDs are written and a local-only commit holds `entries: []`; resolve with `git pull --rebase` keeping origin's newer pending entries, then push. Never re-run sync on top of a rejected push without reconciling first.
 
 **Updating / adding a routine week (also a sync):**
 1. `git pull --ff-only`.

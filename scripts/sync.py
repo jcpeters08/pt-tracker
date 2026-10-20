@@ -9,7 +9,9 @@ pushes if anything changed.
 Run from anywhere — paths resolve from env or sensible defaults.
 
 Algorithm:
-  1. git pull --ff-only
+  1. git pull --ff-only — a failed pull ABORTS (exit 1) before anything is read
+     or written; the local checkout usually trails origin, so draining a stale
+     pending.json would materialize old entries and wedge later pulls.
   2. Drain data/pending.json. For each "log" entry:
        - Write Workout Log/YYYY-MM-DD-Day-Type.md (canonical template). A
          re-submitted session OVERWRITES the existing MD (correction workflow);
@@ -20,7 +22,9 @@ Algorithm:
        - Parse Overview.md → data/profile.json (light)
   4. Recompute data/analytics.json and data/manifest.json
   5. Reset pending.json → {entries: []}
-  6. git add data/ → commit + push if anything changed.
+  6. git add data/ → commit + push if anything changed. A rejected push exits 1
+     (the commit stays on local main; see the comment in main() for the exact
+     on-disk state and how to resolve it).
 
 Env overrides:
   PT_TRACKER_VAULT_ROOT   path to "Jonathan's Vault" (default: ~/Documents/Jonathan's Vault)
@@ -87,10 +91,39 @@ def _exercise_display(ex: dict, exercises_index: dict[str, dict]) -> str:
     return meta.get("name") or ex["exercise_id"].replace("-", " ").title()
 
 
+# Factors that turn an authored pounds value into the stored (2-dp) kg: the web
+# app's lbsToKg (js/util.js KG_PER_LB) and pc.parse_weight's lbs→kg factor.
+_LBS_TO_KG_FACTORS = (0.453592, 0.4536)
+
+
+def _lbs_stores_as(lbs: float, w_kg: float) -> bool:
+    """True when `lbs` pounds — stored by the app or re-derived by parse_weight —
+    yields exactly the 2-dp kg we hold, i.e. `lbs` is the value that was authored."""
+    target = round(w_kg, 2)
+    return any(round(lbs * f, 2) == target for f in _LBS_TO_KG_FACTORS)
+
+
+def _is_half_pound(lbs: float) -> bool:
+    """x.0 / x.5 — the only fractional loads a 2.5-lb plate can produce."""
+    return abs(lbs * 2 - round(lbs * 2)) < 1e-6
+
+
+def _fmt_num(x: float, nd: int) -> str:
+    return f"{x:.{nd}f}".rstrip("0").rstrip(".")
+
+
 def _format_weight(ex: dict) -> str:
     """Render a workout-log weight cell with both lbs and kg.
-    Primary unit is lbs (Planet Fitness era); kg in parens.
-    If the exercise carries a weight_raw and it already has both units, trust it.
+
+    pc.parse_weight makes the FIRST unit canonical on the next sync, so whatever
+    is emitted first must parse back to the stored kg (storage is kg-canonical):
+      - whole-pound entry (the normal PF case): "60 lbs (27.2 kg)" — unchanged;
+      - half-pound entry typed in lbs mode (2.5-lb plates): one decimal,
+        "142.5 lbs (64.6 kg)", instead of rounding to a pound the user never lifted;
+      - anything else (kg-mode entry, or a pounds value no plate produces): kg first,
+        "27.5 kg (61 lbs)", matching the Phase-1 house format, so the parser keeps
+        the authored kg instead of drifting it by the lbs rounding.
+    If the exercise carries a weight_raw that already has both units, trust it.
     """
     raw = ex.get("weight_raw")
     if raw:
@@ -104,11 +137,15 @@ def _format_weight(ex: dict) -> str:
     if w_kg is None or w_kg == 0:
         return "bodyweight"
     w_lbs = w_kg * 2.20462
-    # Round lbs to whole numbers (PF plates are 2.5+ lb increments, integer reads cleanest)
-    lbs_str = f"{int(round(w_lbs))} lbs"
     kg_rounded = round(w_kg, 1)
     kg_str = f"{int(kg_rounded)} kg" if kg_rounded == int(kg_rounded) else f"{kg_rounded} kg"
-    return f"{lbs_str} ({kg_str})"
+    whole_lbs = int(round(w_lbs))
+    if _lbs_stores_as(whole_lbs, w_kg):
+        return f"{whole_lbs} lbs ({kg_str})"
+    tenth_lbs = round(w_lbs, 1)
+    if _is_half_pound(tenth_lbs) and _lbs_stores_as(tenth_lbs, w_kg):
+        return f"{_fmt_num(tenth_lbs, 1)} lbs ({kg_str})"
+    return f"{_fmt_num(round(w_kg, 2), 2)} kg ({whole_lbs} lbs)"
 
 
 def _format_reps(ex: dict) -> str:
@@ -176,11 +213,11 @@ def render_log_md(session: dict, exercises_index: dict[str, dict]) -> str:
     body.append("| Exercise | Weight | Reps | Sets | Notes |")
     body.append("|---|---|---|---|---|")
     for ex in session.get("exercises", []):
-        name = _exercise_display(ex, exercises_index)
+        name = pc.escape_table_cell(_exercise_display(ex, exercises_index))
         weight = _format_weight(ex)
         reps = _format_reps(ex)
         sets_n = len(ex.get("sets", [])) or "-"
-        notes = (ex.get("notes") or "").replace("\n", " ").replace("|", "\\|")
+        notes = pc.escape_table_cell((ex.get("notes") or "").replace("\n", " "))
         body.append(f"| {name} | {weight} | {reps} | {sets_n} | {notes} |")
 
     cd = session.get("cooldown")
@@ -261,6 +298,14 @@ def render_skip_md(session: dict) -> str:
     return "\n".join(fm_lines) + "\n" + "\n".join(body)
 
 
+def _index_has_link(existing: str, link: str) -> bool:
+    """Exact wikilink-token match. A plain `link in existing` test let the skip
+    marker '[[2026-10-19-Monday-Push-Skipped|…]]' shadow the real session link
+    '2026-10-19-Monday-Push' (a strict prefix), so a catch-up logged after a skip
+    never got its Log.md line."""
+    return f"[[{link}|" in existing or f"[[{link}]]" in existing
+
+
 def append_skip_index_line(log_md_path: Path, session: dict) -> None:
     date = session["date"]
     day = (session.get("day_of_week") or "").capitalize()
@@ -272,7 +317,7 @@ def append_skip_index_line(log_md_path: Path, session: dict) -> None:
     line = f"- {date} · [[{link}|{day} {type_label}]] — **skipped**{suffix}"
 
     existing = log_md_path.read_text(encoding="utf-8") if log_md_path.exists() else ""
-    if link in existing:
+    if _index_has_link(existing, link):
         return
     if existing and not existing.endswith("\n"):
         existing += "\n"
@@ -373,7 +418,7 @@ def append_recovery_index_line(recovery_md_path: Path, session: dict) -> None:
     line = f"- {date} · [[{link}|{location}]]" + (f" — {summary}" if summary else "")
 
     existing = recovery_md_path.read_text(encoding="utf-8") if recovery_md_path.exists() else ""
-    if link in existing:
+    if _index_has_link(existing, link):
         return
     if existing and not existing.endswith("\n"):
         existing += "\n"
@@ -396,7 +441,7 @@ def append_log_index_line(log_md_path: Path, session: dict) -> None:
     line = f"- {date} · [[{link}|{day} {type_label}]] — {len(session.get('exercises', []))} exercises"
 
     existing = log_md_path.read_text(encoding="utf-8") if log_md_path.exists() else ""
-    if link in existing:
+    if _index_has_link(existing, link):
         return
     if existing and not existing.endswith("\n"):
         existing += "\n"
@@ -493,7 +538,7 @@ def _apply_routine_edit(md_path: Path, entry: dict) -> dict:
     if "target_sets" in changes and col_sets is not None:
         cells[col_sets] = str(changes["target_sets"])
 
-    lines[target_row_idx] = "| " + " | ".join(cells) + " |"
+    lines[target_row_idx] = pc.join_table_row(cells)
     md_path.write_text("\n".join(lines) + ("\n" if text.endswith("\n") else ""), encoding="utf-8")
     return {"status": "applied"}
 
@@ -516,13 +561,11 @@ def main() -> int:
 
     plans_dir = project_dir / "Weekly Plans"
     workout_logs_md_dir = project_dir / "Workout Log"
-    workout_logs_md_dir.mkdir(parents=True, exist_ok=True)
     recovery_md_dir = project_dir / "Recovery Log"
-    recovery_md_dir.mkdir(parents=True, exist_ok=True)
     log_md = project_dir / "Log.md"
     recovery_index_md = project_dir / "Recovery Log.md"
 
-    # Step 1: git pull
+    # Step 1: git pull — must succeed before anything is read or written.
     in_git = (repo_root / ".git").exists()
     has_remote = False
     if in_git:
@@ -535,7 +578,22 @@ def main() -> int:
         try:
             run(["git", "pull", "--ff-only"], cwd=repo_root)
         except subprocess.CalledProcessError as e:
-            print(f"WARN: git pull failed (continuing): {e.stderr}", file=sys.stderr)
+            # Abort BEFORE touching pending.json or the vault. The local checkout
+            # routinely trails origin (the auth Worker commits there on every app
+            # submit), so draining whatever pending.json the stale checkout holds
+            # would materialize old entries, reset the file, and leave a local-only
+            # commit that makes every later --ff-only pull fail as well.
+            print(
+                "ERROR: git pull --ff-only failed — aborting before any vault/data writes. "
+                "Reconcile the checkout with origin/main (git status; git pull --rebase) and re-run sync.",
+                file=sys.stderr,
+            )
+            if e.stderr:
+                print(e.stderr.rstrip(), file=sys.stderr)
+            return 1
+
+    workout_logs_md_dir.mkdir(parents=True, exist_ok=True)
+    recovery_md_dir.mkdir(parents=True, exist_ok=True)
 
     # Step 2: drain pending
     pending_path = repo_root / "data" / "pending.json"
@@ -724,6 +782,7 @@ def main() -> int:
         })
 
     # Step 6: git status / commit / push
+    push_error: str | None = None
     if in_git:
         status = run(["git", "status", "--porcelain", "data/"], cwd=repo_root)
         dirty = bool(status.stdout.strip())
@@ -736,13 +795,42 @@ def main() -> int:
                 try:
                     run(["git", "push"], cwd=repo_root)
                 except subprocess.CalledProcessError as e:
-                    print(f"WARN: git push failed (commit was made locally): {e.stderr}", file=sys.stderr)
+                    push_error = (e.stderr or "").rstrip() or str(e)
 
-    print(f"Synced {len(drained)} session(s) to vault; {analytics['log_count']} total logs, {len(analytics['prs'])} PRs.")
+    if push_error is not None:
+        # State left on disk when the push is rejected:
+        #   - every drained entry is already written to the vault (Workout Log /
+        #     Recovery Log MDs + index lines) — nothing that was logged is lost;
+        #   - data/ (re-derived JSON, analytics, manifest, AND pending.json reset
+        #     to entries: []) is committed on LOCAL main only;
+        #   - origin/main was NOT updated. Because step 1's pull succeeded, a
+        #     rejection almost always means the Worker appended new entries to
+        #     origin's data/pending.json between our pull and push — those entries
+        #     exist only on origin and have not been drained.
+        # The pending reset cannot be withheld here: it is already inside the
+        # local commit, which has to carry it so origin stops re-serving entries
+        # we just drained. An automatic `git pull --rebase` would stop on the
+        # pending.json conflict and leave the checkout mid-rebase, so fail loudly
+        # and leave the resolution to the operator: rebase, keep ORIGIN's
+        # pending.json entries (the local side is always []), then re-run sync.
+        print(f"Drained {len(drained)} entries to the vault, but the push did NOT land; "
+              f"{analytics['log_count']} total logs, {len(analytics['prs'])} PRs.")
+    else:
+        print(f"Synced {len(drained)} session(s) to vault; {analytics['log_count']} total logs, {len(analytics['prs'])} PRs.")
     for d in drained:
         print(f"  + {d}")
     for s in skipped:
         print(f"  ~ skipped: {s}")
+    if push_error is not None:
+        print(
+            "ERROR: git push was rejected — origin/main was NOT updated. The sync commit "
+            "(vault-drained data + pending.json reset) is on local main only, and origin's "
+            "data/pending.json may hold newer Worker-appended entries. Resolve with "
+            "`git pull --rebase`, keeping origin's pending.json entries, then re-run sync.",
+            file=sys.stderr,
+        )
+        print(push_error, file=sys.stderr)
+        return 1
     return 0
 
 

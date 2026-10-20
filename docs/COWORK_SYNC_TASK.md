@@ -10,7 +10,7 @@ Quick how-to lives in repo `CLAUDE.md` → **"Syncing & updating the plan (on-de
 
 ## Steps
 
-1. **Pre-flight.** `git pull --ff-only` from `/Users/jonathanpeters/Git/pt-tracker`. The local checkout often trails `origin/main` (the auth Worker and prior syncs push *remotely*), so always pull/fetch first and trust `origin/main`, not the local working copy. If the pull can't fast-forward, stop and report — don't force it.
+1. **Pre-flight.** `git pull --ff-only` from `/Users/jonathanpeters/Git/pt-tracker`. The local checkout often trails `origin/main` (the auth Worker and prior syncs push *remotely*), so always pull/fetch first and trust `origin/main`, not the local working copy. If the pull can't fast-forward, stop and report — don't force it. (`sync.py` enforces this itself since 2026-10-20: a failed pull aborts before `pending.json` is read or anything is written, and a rejected push makes it exit 1 with "push did NOT land" rather than reporting success.)
 
 2. **Drain pending + re-derive snapshots.** Run `python3 scripts/sync.py` from the working directory. The script does the following in order:
 
