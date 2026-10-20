@@ -68,6 +68,46 @@ def write_json(path: Path, data: dict) -> None:
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
 
 
+def prune_stale_snapshots(out_dir: Path, derived_ids: set[str], *, source_dir: Path,
+                          label: str, parse_failures: int = 0) -> list[str]:
+    """Delete `out_dir/*.json` snapshots whose id was NOT re-derived from
+    `source_dir` this run — i.e. the vault MD was deleted or renamed. Without
+    this, stale snapshots keep being served and listed in data/manifest.json.
+
+    Guards — each means "the vault may not be telling the whole truth right
+    now", so a missing id is not proof the MD is gone. Any of them skips the
+    prune entirely (WARN on stderr, nothing deleted):
+      * source_dir missing;
+      * iCloud placeholders (`.<name>.icloud`) present — content evicted, not deleted;
+      * any source file failed to parse this run (its id is unknown);
+      * nothing was derived at all.
+    Returns the removed ids, sorted.
+    """
+    existing = {p.stem: p for p in out_dir.glob("*.json")} if out_dir.exists() else {}
+    stale = sorted(set(existing) - set(derived_ids))
+    if not stale:
+        return []
+    reason = None
+    if not source_dir.exists():
+        reason = f"source folder missing: {source_dir}"
+    else:
+        placeholders = sorted(p.name for p in source_dir.glob(".*.icloud"))
+        if placeholders:
+            reason = (f"{len(placeholders)} iCloud placeholder(s) present — content evicted, "
+                      f"not deleted (e.g. {placeholders[0]})")
+        elif parse_failures:
+            reason = f"{parse_failures} source file(s) failed to parse"
+        elif not derived_ids:
+            reason = "nothing was derived from the vault"
+    if reason:
+        print(f"  WARN: not pruning {len(stale)} stale {label} snapshot(s) — {reason}: "
+              f"{', '.join(stale)}", file=sys.stderr)
+        return []
+    for sid in stale:
+        existing[sid].unlink()
+    return stale
+
+
 # ---------------------------------------------------------------------------
 # Render a session-log JSON object as the canonical Workout Log markdown.
 # Matches the format of 2026-05-01-Friday-Pull-Shoulders.md.
@@ -650,23 +690,35 @@ def main() -> int:
         write_json(failed_path, {"entries": existing + failed_routine_edits})
 
     # Step 3: re-derive routine + log JSONs
+    # Snapshots whose source MD disappeared (deleted/renamed in the vault) are
+    # pruned after each re-derive — see prune_stale_snapshots for the guards.
+    pruned: list[str] = []
     routines_out = repo_root / "data" / "routines"
     routines_out.mkdir(parents=True, exist_ok=True)
     if plans_dir.exists():
         parsed_routines: list[dict] = []
+        routine_failures = 0
         for f in sorted(plans_dir.glob("*.md")):
             try:
                 routine = pr.parse_routine_md(f.read_text(encoding="utf-8"), routine_id=f.stem)
                 parsed_routines.append(routine)
             except Exception as e:
+                routine_failures += 1
                 print(f"  WARN: bad routine MD {f.name}: {e}", file=sys.stderr)
+        derived_routine_ids: set[str] = set()
         for routine in pr.derive_end_dates(parsed_routines):
             (routines_out / (routine["id"] + ".json")).write_text(
                 json.dumps(routine, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
             )
+            derived_routine_ids.add(routine["id"])
+        pruned += [f"routines/{rid}.json" for rid in prune_stale_snapshots(
+            routines_out, derived_routine_ids, source_dir=plans_dir, label="routine",
+            parse_failures=routine_failures)]
 
     logs_out = repo_root / "data" / "logs"
     logs_out.mkdir(parents=True, exist_ok=True)
+    derived_log_ids: set[str] = set()
+    log_failures = 0
     for f in sorted(workout_logs_md_dir.glob("*.md")):
         try:
             log = pl.parse_log_md(f.read_text(encoding="utf-8"), filename=f.name)
@@ -676,13 +728,20 @@ def main() -> int:
             (logs_out / (log["id"] + ".json")).write_text(
                 json.dumps(log, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
             )
+            derived_log_ids.add(log["id"])
         except Exception as e:
+            log_failures += 1
             print(f"  WARN: bad log MD {f.name}: {e}", file=sys.stderr)
+    pruned += [f"logs/{lid}.json" for lid in prune_stale_snapshots(
+        logs_out, derived_log_ids, source_dir=workout_logs_md_dir, label="log",
+        parse_failures=log_failures)]
 
     # Re-derive recovery logs from vault MD
     recovery_out = repo_root / "data" / "recovery_logs"
     recovery_out.mkdir(parents=True, exist_ok=True)
     if recovery_md_dir.exists():
+        derived_recovery_ids: set[str] = set()
+        recovery_failures = 0
         for f in sorted(recovery_md_dir.glob("*.md")):
             try:
                 rec = pre.parse_recovery_md(f.read_text(encoding="utf-8"), filename=f.name)
@@ -691,8 +750,13 @@ def main() -> int:
                 (recovery_out / (rec["id"] + ".json")).write_text(
                     json.dumps(rec, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
                 )
+                derived_recovery_ids.add(rec["id"])
             except Exception as e:
+                recovery_failures += 1
                 print(f"  WARN: bad recovery MD {f.name}: {e}", file=sys.stderr)
+        pruned += [f"recovery_logs/{rid}.json" for rid in prune_stale_snapshots(
+            recovery_out, derived_recovery_ids, source_dir=recovery_md_dir, label="recovery",
+            parse_failures=recovery_failures)]
 
     # Re-derive profile from Overview.md (light: phase, gym, goals, protein target)
     overview_md = project_dir / "Overview.md"
@@ -743,6 +807,8 @@ def main() -> int:
         print(f"  + {d}")
     for s in skipped:
         print(f"  ~ skipped: {s}")
+    for p in pruned:
+        print(f"  - pruned stale snapshot (vault MD gone): data/{p}")
     return 0
 
 

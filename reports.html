@@ -84,6 +84,7 @@
   .week-detail ul { margin: 0; padding-left: 20px; }
 
   .empty { color: var(--ink-muted); font-style: italic; padding: 16px 0; }
+  .section-error { color: var(--accent); font-size: 13px; margin: 8px 0 0; }
   .pr-area-title { margin: 14px 0 6px; font-family: var(--serif); font-size: 16px; font-weight: 600; }
 
   @media (max-width: 480px) {
@@ -186,8 +187,11 @@ import {
   muscleTargetBandRows,
   targetAchievementRows,
   recoveryCorrelationRows,
+  renderSections,
+  reportRoutineId,
   staleLiftRows,
 } from "./js/reports.js";
+import { localDateIso } from "./js/util.js";
 "use strict";
 
 const MUSCLE_COLORS = {
@@ -254,14 +258,6 @@ async function fetchRoutines(manifest) {
   const ids = Array.isArray(manifest.routines) ? manifest.routines : [];
   const routines = await Promise.all(ids.map(id => fetchJson(`data/routines/${id}.json`).catch(() => null)));
   return routines.filter(Boolean).sort((a, b) => (a.start_date || "").localeCompare(b.start_date || ""));
-}
-
-async function fetchProfile() {
-  try {
-    return await fetchJson("data/profile.json");
-  } catch {
-    return {};
-  }
 }
 
 function lastN(arr, n) { return arr.slice(Math.max(0, arr.length - n)); }
@@ -572,9 +568,8 @@ function renderVolumeBands(analytics) {
   draw(select.value);
 }
 
-function renderStaleLifts(routines, logs, exerciseNames, activeRoutineId) {
+function renderStaleLifts(routines, logs, exerciseNames, activeRoutineId, today = localDateIso()) {
   const host = document.getElementById("stale-lifts-host");
-  const today = new Date().toISOString().slice(0, 10);
   const activeRoutine = routines.find(r => r.id === activeRoutineId);
   const basis = activeRoutine ? [activeRoutine] : routines.filter(r => !r.start_date || r.start_date <= today);
   const rows = staleLiftRows(basis, logs, exerciseNames, today);
@@ -727,36 +722,57 @@ function renderPrs(analytics, exerciseMeta, exerciseNames) {
   draw("All");
 }
 
+function markSectionFailed(section, error) {
+  console.error(`reports: "${section.name}" failed to render`, error);
+  const host = document.getElementById(section.host);
+  if (!host) return;
+  const note = document.createElement("p");
+  note.className = "section-error";
+  note.textContent = `Couldn't render ${section.name}: ${error?.message || error}`;
+  host.insertAdjacentElement("afterend", note);
+}
+
 (async () => {
+  let data;
   try {
     const manifest = await loadManifest();
-    const [analytics, exerciseMeta, logs, recovery, routines, profile] = await Promise.all([
+    const [analytics, exerciseMeta, logs, recovery, routines] = await Promise.all([
       fetchJson("data/analytics.json"),
       fetchExerciseMetaMap(manifest),
       fetchLogs(manifest),
       fetchRecovery(manifest),
       fetchRoutines(manifest),
-      fetchProfile(),
     ]);
-    const exerciseNames = exerciseNamesFromMeta(exerciseMeta);
-    renderVolumeChart(analytics);
-    renderLiftChart(analytics, exerciseNames);
-    renderComplianceChart(analytics);
-    renderCoachingSummary(analytics);
-    renderTargetAchievement(logs, routines, exerciseNames);
-    renderActualVsPlanned(routines, logs, exerciseNames, profile.active_routine);
-    renderVolumeBands(analytics);
-    renderStaleLifts(routines, logs, exerciseNames, profile.active_routine);
-    renderRecoveryCorrelation(analytics);
-    renderRecoveryChart(analytics);
-    renderCalendar(logs, recovery);
-    renderWeekDrilldown(analytics, logs, recovery, exerciseNames);
-    renderPrs(analytics, exerciseMeta, exerciseNames);
+    data = { analytics, exerciseMeta, logs, recovery, routines };
   } catch (e) {
     console.error(e);
     document.querySelector(".container").insertAdjacentHTML("beforeend",
       `<div class="section"><p style="color:var(--accent)">Failed to load reports: ${escapeHtml(e.message)}</p></div>`);
+    return;
   }
+  const { analytics, exerciseMeta, logs, recovery, routines } = data;
+  const exerciseNames = exerciseNamesFromMeta(exerciseMeta);
+  const today = localDateIso();
+  // The routine the reports treat as active: date-window selection on the latest
+  // log (same logic as the app), never profile.active_routine — see js/reports.js.
+  const activeRoutineId = reportRoutineId(routines, logs, today);
+  // Each section renders in isolation: a Chart.js failure (CDN blocked, offline
+  // PWA) flags that section inline instead of blanking every data table.
+  renderSections([
+    { name: "Weekly volume", host: "volume-chart", render: () => renderVolumeChart(analytics) },
+    { name: "Lift progression", host: "lift-chart", render: () => renderLiftChart(analytics, exerciseNames) },
+    { name: "Session compliance", host: "compliance-chart", render: () => renderComplianceChart(analytics) },
+    { name: "Coaching summary", host: "coaching-host", render: () => renderCoachingSummary(analytics) },
+    { name: "Programmed target met", host: "target-achievement-host", render: () => renderTargetAchievement(logs, routines, exerciseNames) },
+    { name: "Actual vs planned", host: "actual-planned-host", render: () => renderActualVsPlanned(routines, logs, exerciseNames, activeRoutineId) },
+    { name: "Body-area target bands", host: "volume-band-host", render: () => renderVolumeBands(analytics) },
+    { name: "Stale lifts", host: "stale-lifts-host", render: () => renderStaleLifts(routines, logs, exerciseNames, activeRoutineId, today) },
+    { name: "Recovery correlation", host: "recovery-correlation-host", render: () => renderRecoveryCorrelation(analytics) },
+    { name: "Recovery", host: "recovery-chart", render: () => renderRecoveryChart(analytics) },
+    { name: "Training calendar", host: "calendar-host", render: () => renderCalendar(logs, recovery) },
+    { name: "Week drilldown", host: "week-detail-host", render: () => renderWeekDrilldown(analytics, logs, recovery, exerciseNames) },
+    { name: "PRs", host: "prs-host", render: () => renderPrs(analytics, exerciseMeta, exerciseNames) },
+  ], { onError: markSectionFailed });
 })();
 </script>
 </body>

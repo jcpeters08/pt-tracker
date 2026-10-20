@@ -24,7 +24,8 @@ Quick how-to lives in repo `CLAUDE.md` → **"Syncing & updating the plan (on-de
    - Re-derives `data/routines/*.json` from vault `Weekly Plans/*.md` (reads optional `**Cool-down:**` line per day in addition to `**Warm-up:**`). Missing routine `end_date` values are generated as the day before the next routine's `start_date`; the latest routine remains open-ended. Weight parsing (`scripts/pt_common.parse_weight`) treats the **first authored unit** in a Working-Weight cell as canonical for `target_weight_kg`; parenthetical secondary units are rounded display text — so `25 lbs (11 kg)` re-derives to `11.34 kg` (not `11 kg`) and is never shown back as an impossible `24 lbs`.
    - Re-derives `data/logs/*.json` from vault `Workout Log/*.md` (idempotent).
    - Re-derives `data/recovery_logs/*.json` from vault `Recovery Log/*.md` (idempotent).
-   - Recomputes `data/analytics.json` (weekly volume, lift progression, legacy `prs` plus the richer `personal_records` load/rep/volume PRs, `session_compliance` with planned-vs-completed, `recovery_count`, and `recovery_by_week`).
+   - **Prunes stale snapshots** after each of the three re-derives: a `data/routines|logs|recovery_logs/*.json` whose source MD no longer exists in the vault (deleted or renamed) is deleted, so it stops being served and listed in `data/manifest.json`. Guarded (`sync.prune_stale_snapshots`) — the prune for a folder is skipped with a `WARN` and nothing deleted when that vault folder is missing, contains iCloud placeholders (`.<name>.icloud` — content evicted, not deleted), had any MD fail to parse this run, or yielded nothing at all. Pruned files appear in the run summary (`- pruned stale snapshot …`) and are committed with the rest of `data/`.
+   - Recomputes `data/analytics.json` (weekly volume, lift progression, legacy `prs` plus the richer `personal_records` load/rep/volume PRs, `session_compliance` with planned-vs-completed, `recovery_count`, and `recovery_by_week`). Load and rep PRs compare top-set loads on **PF-rounded lbs** (nearest 5-lb increment, `compute_analytics.pf_lbs`), not raw kg — so the `27.2 kg → "60 lbs" → 27.22 kg` vault round trip and a Phase-1 kg plate swapped for the nearest PF dumbbell (`20 kg → 45 lb`) cannot register phantom `+0 lbs` / `+1 lbs` PRs. `delta_kg` is still reported in real kg.
    - Regenerates `data/manifest.json` so the app and reports can discover routines/logs/recovery/exercises from same-origin static JSON instead of GitHub Contents directory listings.
    - Resets `data/pending.json` to `{entries: []}` if anything was drained.
    - Auto-commits with message `sync: drain N pending entries (YYYY-MM-DD)` and pushes if anything changed.
@@ -33,7 +34,7 @@ Quick how-to lives in repo `CLAUDE.md` → **"Syncing & updating the plan (on-de
 
 3. **Verify.** Run `git status` (expect clean) and confirm `HEAD == origin/main` (it pushed). `git log -1 --oneline data/` shows the sync commit.
 
-4. **Summary.** Print a brief summary: pending entries drained (with filenames, broken out by type — workout / skip / recovery), total logs aggregated, recovery sessions aggregated, PRs detected since the last run, latest commit hash if pushed. Keep it under 10 lines.
+4. **Summary.** Print a brief summary: pending entries drained (with filenames, broken out by type — workout / skip / recovery), stale snapshots pruned (if any), total logs aggregated, recovery sessions aggregated, PRs detected since the last run, latest commit hash if pushed. Keep it under 10 lines.
 
 ---
 

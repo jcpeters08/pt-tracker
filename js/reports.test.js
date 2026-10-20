@@ -10,6 +10,8 @@ import {
   prDeltaText,
   targetAchievementRows,
   recoveryCorrelationRows,
+  renderSections,
+  reportRoutineId,
   staleLiftRows,
 } from "./reports.js";
 import { formatTargetText } from "./workout.js";
@@ -154,5 +156,59 @@ describe("decision report helpers", () => {
       personal_records: [{ date: "2026-06-03" }, { date: "2026-06-08" }],
     });
     expect(rows[0]).toMatchObject({ week: "2026-W23", compliance: "4/5", recovery: "2 sessions", prs: 1 });
+  });
+});
+
+describe("report routine selection", () => {
+  // Windows as sync.py derives them: end_date = day before the next start; latest open-ended.
+  const routines = [
+    { id: "2026-W40-Return", start_date: "2026-09-28", end_date: "2026-10-05" },
+    { id: "2026-W41-Rebuild", start_date: "2026-10-06", end_date: "2026-10-11" },
+    { id: "2026-W42-Full-Load", start_date: "2026-10-12", end_date: "2026-10-18" },
+    { id: "2026-W43-Progression", start_date: "2026-10-19", end_date: null },
+  ];
+
+  it("keys on the routine whose window covers the latest log date, not a stale profile pointer", () => {
+    const logs = [{ date: "2026-10-13" }, { date: "2026-10-19" }, { date: "2026-10-15" }];
+    expect(reportRoutineId(routines, logs, "2026-10-20")).toBe("2026-W43-Progression");
+  });
+
+  it("falls back to today's routine when nothing is logged yet", () => {
+    expect(reportRoutineId(routines, [], "2026-10-07")).toBe("2026-W41-Rebuild");
+  });
+
+  it("uses the latest routine started before the log when the log date falls in a gap", () => {
+    const gapped = routines.filter(r => r.id !== "2026-W41-Rebuild"); // 10/06–10/11 uncovered
+    expect(reportRoutineId(gapped, [{ date: "2026-10-08" }], "2026-10-20")).toBe("2026-W40-Return");
+  });
+
+  it("returns null when there are no routines", () => {
+    expect(reportRoutineId([], [{ date: "2026-10-08" }], "2026-10-20")).toBeNull();
+  });
+});
+
+describe("renderSections", () => {
+  it("keeps rendering later sections after one throws and reports the failure", () => {
+    const calls = [];
+    const failures = [];
+    const result = renderSections([
+      { name: "Weekly volume", render: () => calls.push("volume") },
+      { name: "Lift progression", render: () => { throw new Error("Chart is not defined"); } },
+      { name: "PRs", render: () => calls.push("prs") },
+    ], { onError: (section, error) => failures.push([section.name, error.message]) });
+    expect(calls).toEqual(["volume", "prs"]);
+    expect(failures).toEqual([["Lift progression", "Chart is not defined"]]);
+    expect(result.rendered).toEqual(["Weekly volume", "PRs"]);
+    expect(result.failed.map(f => f.name)).toEqual(["Lift progression"]);
+  });
+
+  it("does not let a throwing onError handler abort the remaining sections", () => {
+    const calls = [];
+    const result = renderSections([
+      { name: "a", render: () => { throw new Error("boom"); } },
+      { name: "b", render: () => calls.push("b") },
+    ], { onError: () => { throw new Error("handler broke"); } });
+    expect(calls).toEqual(["b"]);
+    expect(result.failed.map(f => f.name)).toEqual(["a"]);
   });
 });

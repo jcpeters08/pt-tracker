@@ -18,10 +18,28 @@ Aggregates (see Web-App-Build-Brief for schema):
 from __future__ import annotations
 
 import json
+import math
 import sys
 from collections import defaultdict
 from datetime import date as _date
 from pathlib import Path
+
+
+LBS_PER_KG = 2.20462
+PF_INCREMENT_LBS = 5
+
+
+def pf_lbs(kg: float | None) -> int:
+    """Nearest Planet Fitness load in lbs (5-lb increments, rounded half-up).
+
+    PR detection compares loads at this granularity: anything closer than a PF
+    increment apart is the same lift, whether the gap comes from a kg → integer-lb
+    → kg round trip in vault MD or from a Phase-1 kg plate replaced by the
+    nearest PF dumbbell. Half-up (not banker's) rounding keeps exact 2.5-lb
+    boundaries deterministic.
+    """
+    lbs = (kg or 0) * LBS_PER_KG
+    return int(math.floor(lbs / PF_INCREMENT_LBS + 0.5)) * PF_INCREMENT_LBS
 
 
 def _load_json(p: Path) -> dict:
@@ -110,13 +128,20 @@ def compute(repo_root: Path) -> dict:
                 "sets_count": len(sets),
             })
 
-    # PRs: any session where weight_kg > prior best for that exercise
+    # PRs: any session whose top-set load beats the prior best for that
+    # exercise. "Beats" is judged on PF-rounded lbs (see pf_lbs), not raw kg:
+    # stored kg round-trips through integer-lb vault rendering (27.2 → "60 lbs"
+    # → 27.22) and Phase-1 kg plates map to the nearest PF dumbbell (20 kg →
+    # 45 lb = 20.41 kg); neither is a heavier lift, so neither may register a
+    # phantom "+0 lbs" / "+1 lbs" PR. delta_kg stays in real kg.
     prs: list[dict] = []
     for ex_id, entries in progression.items():
-        best_kg = -1.0
+        best_kg: float | None = None
         for e in entries:
             w = e["top_set_weight_kg"] or 0
-            if w > best_kg and best_kg >= 0:
+            if best_kg is None:
+                best_kg = w
+            elif pf_lbs(w) > pf_lbs(best_kg):
                 prs.append({
                     "exercise_id": ex_id,
                     "date": e["date"],
@@ -125,16 +150,18 @@ def compute(repo_root: Path) -> dict:
                     "delta_kg": round(w - best_kg, 1),
                 })
                 best_kg = w
-            elif best_kg < 0:
-                best_kg = w
+            elif w > best_kg:
+                best_kg = w  # same PF load class — track the heavier kg for delta math
     prs.sort(key=lambda x: x["date"], reverse=True)
 
     # personal_records: richer PR semantics alongside the legacy load-only `prs`.
     #   load_pr   — heavier top-set weight than any prior session for the lift.
     #   rep_pr    — same top-set weight as the current heaviest, but more reps.
     #   volume_pr — higher total session volume for the lift than any prior.
-    # A single session can produce more than one record type. The first session
-    # for a lift establishes baselines and yields no records.
+    # Load and "same weight" are compared on PF-rounded lbs (pf_lbs), as for
+    # the legacy `prs` above. A single session can produce more than one record
+    # type. The first session for a lift establishes baselines and yields no
+    # records.
     personal_records: list[dict] = []
     for ex_id, entries in progression.items():
         best_w: float | None = None
@@ -146,18 +173,21 @@ def compute(repo_root: Path) -> dict:
             v = e["total_volume_kg"] or 0
             if best_w is None:
                 best_w, best_reps_at_top = w, r
-            elif w > best_w:
+            elif pf_lbs(w) > pf_lbs(best_w):
                 personal_records.append({
                     "exercise_id": ex_id, "date": e["date"], "type": "load_pr",
                     "weight_kg": w, "reps": r, "delta_kg": round(w - best_w, 1),
                 })
                 best_w, best_reps_at_top = w, r
-            elif w == best_w and r > best_reps_at_top:
-                personal_records.append({
-                    "exercise_id": ex_id, "date": e["date"], "type": "rep_pr",
-                    "weight_kg": w, "reps": r, "delta_reps": r - best_reps_at_top,
-                })
-                best_reps_at_top = r
+            elif pf_lbs(w) == pf_lbs(best_w):
+                if r > best_reps_at_top:
+                    personal_records.append({
+                        "exercise_id": ex_id, "date": e["date"], "type": "rep_pr",
+                        "weight_kg": w, "reps": r, "delta_reps": r - best_reps_at_top,
+                    })
+                    best_reps_at_top = r
+                if w > best_w:
+                    best_w = w  # same PF load class — track the heavier kg for delta math
             if best_vol is None:
                 best_vol = v
             elif v > best_vol:

@@ -17,6 +17,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
 import compute_analytics as ca  # noqa: E402
+import pt_common as pc  # noqa: E402
+import sync  # noqa: E402
 
 
 def _compute_with_recovery(entries: list[dict]) -> dict:
@@ -202,6 +204,74 @@ class TestPersonalRecords(unittest.TestCase):
         recs, _ = self._records(logs)
         self.assertFalse(any(r["type"] == "rep_pr" for r in recs))
         self.assertFalse(any(r["type"] == "load_pr" for r in recs))  # 16 < 20
+
+
+class TestLoadPrUnitRoundTrip(unittest.TestCase):
+    """Load/rep PRs compare on PF-rounded lbs (5-lb increments), not raw kg.
+
+    Stored kg goes through integer-lb rendering in vault MD and comes back
+    slightly different (27.2 kg → "60 lbs" → 27.22 kg), and Phase-1 kg plates
+    map to the nearest PF dumbbell (20 kg → 45 lb = 20.41 kg). Neither is a
+    heavier lift, so neither may register a phantom "+0 lbs" / "+1 lbs" PR.
+    """
+
+    @staticmethod
+    def _log(date, weight, reps, ex="flat-db-bench-press"):
+        return {"id": f"{date}-monday-push", "date": date, "day_of_week": "monday",
+                "type": "push",
+                "exercises": [{"exercise_id": ex, "sets": [{"set": 1, "weight_kg": weight, "reps": reps}]}]}
+
+    def _records(self, logs, ex="flat-db-bench-press"):
+        out = _compute_repo(logs=logs)
+        recs = [r for r in out["personal_records"] if r["exercise_id"] == ex]
+        legacy = [r for r in out["prs"] if r["exercise_id"] == ex]
+        return recs, legacy
+
+    def test_pf_lbs_rounds_to_nearest_5lb_increment_half_up(self):
+        self.assertEqual(ca.pf_lbs(27.2), 60)     # 59.97 lb
+        self.assertEqual(ca.pf_lbs(27.22), 60)    # 60.01 lb
+        self.assertEqual(ca.pf_lbs(20.0), 45)     # 44.09 lb (CDMX 20 kg plate)
+        self.assertEqual(ca.pf_lbs(20.41), 45)    # 45 lb PF dumbbell
+        self.assertEqual(ca.pf_lbs(22.68), 50)
+        self.assertEqual(ca.pf_lbs(1.134), 5)     # exactly 2.5 lb → half-up, deterministic
+        self.assertEqual(ca.pf_lbs(0), 0)
+        self.assertEqual(ca.pf_lbs(None), 0)
+
+    def test_60lb_round_trip_through_integer_lbs_is_not_a_pr(self):
+        # 27.2 kg renders in vault MD as "60 lbs (27.2 kg)"; re-parsing that cell
+        # makes the authored lbs canonical → 27.22 kg. Same lift, not a PR.
+        rendered = sync._format_weight({"sets": [{"weight_kg": 27.2}]})
+        self.assertEqual(rendered, "60 lbs (27.2 kg)")
+        round_tripped, _ = pc.parse_weight(rendered)
+        self.assertEqual(round_tripped, 27.22)
+        logs = [self._log("2026-06-01", 27.2, 10),
+                self._log("2026-06-08", round_tripped, 10)]
+        recs, legacy = self._records(logs)
+        self.assertEqual(legacy, [])
+        self.assertFalse(any(r["type"] == "load_pr" for r in recs))
+
+    def test_phase1_kg_plate_to_nearest_pf_dumbbell_is_not_a_pr(self):
+        # 20 kg (CDMX) → 45 lb (PF, 20.41 kg) is the same load class; 50 lb is a PR,
+        # measured from the 45-lb session rather than the 20 kg one.
+        logs = [self._log("2026-05-01", 20.0, 10),
+                self._log("2026-06-01", 20.41, 10),
+                self._log("2026-06-08", 22.68, 8)]
+        recs, legacy = self._records(logs)
+        load = [r for r in recs if r["type"] == "load_pr"]
+        self.assertEqual([r["date"] for r in load], ["2026-06-08"])
+        self.assertEqual(load[0]["delta_kg"], 2.3)
+        self.assertEqual([r["date"] for r in legacy], ["2026-06-08"])
+        self.assertEqual(legacy[0]["delta_kg"], 2.3)
+
+    def test_rep_pr_compares_within_the_same_pf_weight_class(self):
+        # 20 kg × 12, then 45 lb × 10 (same class, fewer reps: nothing), then 45 lb × 14.
+        logs = [self._log("2026-05-01", 20.0, 12),
+                self._log("2026-06-01", 20.41, 10),
+                self._log("2026-06-08", 20.41, 14)]
+        recs, _ = self._records(logs)
+        self.assertFalse(any(r["type"] == "load_pr" for r in recs))
+        reps = [(r["date"], r["delta_reps"]) for r in recs if r["type"] == "rep_pr"]
+        self.assertEqual(reps, [("2026-06-08", 2)])
 
 
 if __name__ == "__main__":
