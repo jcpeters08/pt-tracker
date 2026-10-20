@@ -50,6 +50,8 @@ are written to `metrics-<tag>.json` — run from `evidence/<date>/` to keep them
 The last-card case taps the last weight input by a real touch while it sits just above
 the dock, so iOS (not the script) has to reposition it. `evidence/2026-10-20/` holds the
 runs behind the dock fix: fixed build PASS, pre-fix build FAIL, Safari and PWA.
+`metrics-safari-header*.json` are the header-compaction runs (static header, sticky day strip):
+this build PASS, base build FAIL on the no-sticky-top-chrome-while-typing check, Safari only.
 
 To compare against an older build, serve it on a second port (e.g. a
 `git archive` of the commit under test) and run the same scripts there.
