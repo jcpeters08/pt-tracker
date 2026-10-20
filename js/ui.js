@@ -8,6 +8,9 @@ const $ = (s) => document.querySelector(s);
 export function toast(msg, kind) {
   const t = $("#toast");
   if (!t) return;
+  // Live region: errors interrupt (assertive); everything else waits its turn.
+  t.setAttribute("role", "status");
+  t.setAttribute("aria-live", kind === "err" ? "assertive" : "polite");
   t.textContent = msg;
   t.classList.toggle("err", kind === "err");
   t.classList.toggle("ok", kind === "ok");
