@@ -1,0 +1,378 @@
+{
+ "tag": "safari-header-before",
+ "pwa": false,
+ "steps": [
+  {
+   "ih": 714,
+   "sy": 0,
+   "dh": 6317,
+   "vvh": 714,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 519,
+    "b": 714,
+    "h": 195,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": 18,
+    "b": 323,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": 196,
+    "b": 255,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 323,
+   "act": {
+    "tag": "BODY",
+    "t": 0,
+    "b": 6317
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "195px",
+   "step": "0-top"
+  },
+  {
+   "ih": 754,
+   "sy": 1084,
+   "dh": 6317,
+   "vvh": 410,
+   "vvt": 248,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -248,
+    "b": 57,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": -70,
+    "b": -11,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 57,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 182,
+    "b": 226
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "96px",
+   "dof": "195px",
+   "step": "1-kbd-open"
+  },
+  {
+   "ih": 754,
+   "sy": 1084,
+   "dh": 6317,
+   "vvh": 410,
+   "vvt": 248,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -248,
+    "b": 57,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": -70,
+    "b": -11,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 57,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 182,
+    "b": 226
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "96px",
+   "dof": "195px",
+   "step": "2-typed"
+  },
+  {
+   "ih": 754,
+   "sy": 1136,
+   "dh": 6317,
+   "vvh": 410,
+   "vvt": 300,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -300,
+    "b": 5,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": -122,
+    "b": -63,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 5,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 182,
+    "b": 226
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "44px",
+   "dof": "195px",
+   "step": "3-next-row"
+  },
+  {
+   "ih": 754,
+   "sy": 1136,
+   "dh": 6317,
+   "vvh": 410,
+   "vvt": 300,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -300,
+    "b": 5,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": -122,
+    "b": -63,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 5,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 182,
+    "b": 226
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "44px",
+   "dof": "195px",
+   "step": "4-two-cards-down"
+  },
+  {
+   "ih": 754,
+   "sy": 4444,
+   "dh": 6317,
+   "vvh": 410,
+   "vvt": 344,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -344,
+    "b": -39,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": -166,
+    "b": -107,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": -3126,
+    "b": -3082
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "",
+   "dof": "195px",
+   "step": "5a-before-last-tap"
+  },
+  {
+   "ih": 754,
+   "sy": 4528,
+   "dh": 6317,
+   "vvh": 410,
+   "vvt": 344,
+   "vvs": 1,
+   "dock": {
+    "t": 316,
+    "b": 410,
+    "h": 94,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": -344,
+    "b": -39,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": -166,
+    "b": -107,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 0,
+   "act": {
+    "tag": "INPUT",
+    "f": "weight",
+    "t": 182,
+    "b": 226
+   },
+   "cls": "mode-current workout-dock-visible keyboard-open",
+   "ki": "",
+   "dof": "195px",
+   "step": "5b-last-input-focused"
+  },
+  {
+   "ih": 754,
+   "sy": 4528,
+   "dh": 6317,
+   "vvh": 754,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 559,
+    "b": 754,
+    "h": 195,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": 0,
+    "b": 305,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": 178,
+    "b": 237,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 305,
+   "act": {
+    "tag": "BODY",
+    "t": -4528,
+    "b": 1789
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "195px",
+   "step": "6-dismissed"
+  },
+  {
+   "ih": 714,
+   "sy": 0,
+   "dh": 6317,
+   "vvh": 714,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 519,
+    "b": 714,
+    "h": 195,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": 18,
+    "b": 323,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": 196,
+    "b": 255,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 323,
+   "act": {
+    "tag": "BODY",
+    "t": 0,
+    "b": 6317
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "195px",
+   "step": "7-after-top-rubberband"
+  },
+  {
+   "ih": 714,
+   "sy": 5603,
+   "dh": 6317,
+   "vvh": 714,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 519,
+    "b": 714,
+    "h": 195,
+    "pos": "fixed",
+    "vis": true
+   },
+   "hdr": {
+    "t": 0,
+    "b": 305,
+    "pos": "sticky"
+   },
+   "strip": {
+    "t": 178,
+    "b": 237,
+    "h": 59,
+    "pos": "static"
+   },
+   "topb": 305,
+   "act": {
+    "tag": "BODY",
+    "t": -5603,
+    "b": 714
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "195px",
+   "step": "8-after-bottom-rubberband"
+  }
+ ],
+ "failures": [
+  "1-kbd-open: no sticky top chrome while typing",
+  "2-typed: no sticky top chrome while typing",
+  "3-next-row: no sticky top chrome while typing",
+  "4-two-cards-down: no sticky top chrome while typing"
+ ]
+}

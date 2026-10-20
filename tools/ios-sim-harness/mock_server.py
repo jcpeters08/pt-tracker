@@ -42,6 +42,7 @@ DEBUG_SCRIPT = """
       vvh:vv?Math.round(vv.height):null,vvt:vv?Math.round(vv.offsetTop):null,vvs:vv?+vv.scale.toFixed(2):null,
       dock:r?{t:Math.round(r.top),b:Math.round(r.bottom),h:Math.round(r.height),pos:getComputedStyle(d).position}:null,
       hdr:hr?{t:Math.round(hr.top),b:Math.round(hr.bottom)}:null,
+      strip:(function(){const s=document.querySelector('#day-toggle');if(!s)return null;const q=s.getBoundingClientRect();return {t:Math.round(q.top),b:Math.round(q.bottom),pos:getComputedStyle(s).position};})(),
       act:a?{tag:a.tagName,f:a.dataset?a.dataset.field:null,t:ar&&Math.round(ar.top),b:ar&&Math.round(ar.bottom)}:null,
       cls:document.body.className,ki:getComputedStyle(document.documentElement).getPropertyValue('--keyboard-inset').trim(),
       dof:getComputedStyle(document.documentElement).getPropertyValue('--workout-dock-offset').trim()};

@@ -60,12 +60,14 @@
 
   .container { max-width: 720px; margin: 0 auto; padding: 18px 14px 80px; }
 
-  /* Header */
+  /* Header — in normal flow, it scrolls away. Phone-first: on a 390px-wide
+     phone the title row, lbs/kg + Reports + Token controls, routine pill and
+     date row stack to ~240px, and pinning all of that with the fixed dock
+     left ~150px for the focused set input once the keyboard was up
+     (2026-10-20 sweep). The day strip right below (.day-toggle) is the only
+     sticky chrome, and it carries the rule that used to end the header. */
   header.app {
-    position: sticky; top: 0; z-index: 50;
-    background: var(--bg);
-    padding: 14px 0 10px; margin-bottom: 12px;
-    border-bottom: 1px solid var(--rule);
+    padding: 14px 0 0;
   }
   .header-row {
     display: flex; align-items: center; justify-content: space-between;
@@ -182,12 +184,22 @@
   .log-status.pending { background: var(--warn); color: white; }
   .log-status.skipped { background: var(--bg-soft); color: var(--ink-soft); border: 1px solid var(--rule); }
 
-  /* Day toggle */
+  /* Day strip — the only sticky top chrome (~70px). It lives right after
+     header.app in the DOM, not inside it: a sticky element only sticks while
+     its parent is on screen, and the parent here must be the whole page. */
   .day-toggle {
+    position: sticky; top: 0; z-index: 50;
     display: flex; gap: 6px; overflow-x: auto;
-    padding: 4px 0; margin-top: 12px;
+    padding: 8px 0 6px; margin: 6px 0 12px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
     scrollbar-width: none;
   }
+  /* While typing, nothing is pinned at the top: the compact rest timer in the
+     dock is the only chrome, and iOS can't park the focused input under a
+     strip that isn't there. Sticky→static leaves the layout height unchanged,
+     so the page doesn't shift under the user. */
+  body.keyboard-open .day-toggle { position: static; }
   .day-toggle::-webkit-scrollbar { display: none; }
   .day-pill {
     flex: 0 0 auto;
@@ -690,7 +702,7 @@
   }
 
   @media (max-height: 600px) {
-    header.app { position: static; }
+    .day-toggle { position: static; }
   }
 
   @media (max-width: 240px) {
@@ -762,7 +774,6 @@
       <button type="button" class="routine-pill" id="routine-label" title="Switch routine" aria-haspopup="listbox" aria-expanded="false"><span id="routine-label-text">Loading…</span></button>
       <div class="routine-popover hidden" id="routine-popover" role="listbox"></div>
     </div>
-    <nav class="day-toggle" id="day-toggle"></nav>
     <div class="date-row">
       <span class="date-picker-wrap">
         <label for="workout-date">Workout date</label>
@@ -771,6 +782,7 @@
       <span class="log-status hidden" id="log-status"></span>
     </div>
   </header>
+  <nav class="day-toggle" id="day-toggle" aria-label="Workout day"></nav>
 
   <!-- Sign-in panel -->
   <section id="signin-panel" class="setup hidden">

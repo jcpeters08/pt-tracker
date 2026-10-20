@@ -41,7 +41,9 @@ Each step prints a metrics line (`vvh`/`vvt` = visualViewport height/offsetTop,
 writes screenshots to `shots/` (or `$SIM_SHOTS`), and **asserts** the pass conditions
 (`sim.check_keyboard_state` / `sim.check_closed_state`): with the keyboard up an input
 must have focus, `dock.b == vvh` (±2), the dock must be compact (≤120px), and the
-focused input must clear both the dock top and the sticky header bottom; after
+focused input must clear both the dock top and the pinned top chrome (`topb` = the lower edge of
+the in-flow header near the top of the page or the sticky day strip further down — 0 once both
+have scrolled away; since 2026-10-20 the strip un-pins while typing, which is asserted); after
 dismissal `dock.b == innerHeight` with the full dock back; typing and dismissing must
 not change `scrollY`. Any failed check makes the script exit 1 and the per-step metrics
 are written to `metrics-<tag>.json` — run from `evidence/<date>/` to keep them.
@@ -53,6 +55,8 @@ saw iOS not scroll a freshly tapped input above the keyboard (input bottom 548 v
 visible edge 442, dock untouched); the two re-runs revealed it to y=198 as usual.
 Treat a single "focused input clears the dock" failure as an iOS reveal race and
 re-run before blaming the dock.
+`metrics-safari-header*.json` are the header-compaction runs (static header, sticky day strip):
+this build PASS, base build FAIL on the no-sticky-top-chrome-while-typing check, Safari only.
 
 To compare against an older build, serve it on a second port (e.g. a
 `git archive` of the commit under test) and run the same scripts there.
