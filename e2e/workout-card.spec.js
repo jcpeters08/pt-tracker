@@ -15,10 +15,16 @@ async function openPlannedDay(page) {
   await expect(page.locator(".ex-card").first()).toBeVisible();
 }
 
+// W36 (Aug 30 – Sep 4) is "current" under the frozen 2026-08-30 clock. Pill
+// index 4 = Friday Upper Hybrid, the only W36 day with no log in data/logs —
+// the first-wave tests assume an unlogged day (0/N progress, Done starts a
+// rest timer). Sunday Push (index 6) has been logged since 2026-09-04.
+const FIRST_WAVE_PILL = 4;
+
 async function openFirstWaveDay(page) {
   await page.fill("#workout-date", "2026-08-30");
   await page.dispatchEvent("#workout-date", "change");
-  await page.locator("#day-toggle .day-pill").nth(6).click();
+  await page.locator("#day-toggle .day-pill").nth(FIRST_WAVE_PILL).click();
   await expect(page.locator(".ex-card").first()).toBeVisible();
 }
 
@@ -94,7 +100,7 @@ test("first wave: workout controls form one accessible mobile flow", async ({ pa
   await expect(page.locator("#rest-bar-host .rest-time")).toHaveAttribute("aria-label", "Start 120-second rest timer");
   await expect(page.locator("#rest-bar-host .rest-chip[aria-pressed='true']")).toHaveCount(1);
   await expect(page.locator("#session-progress")).toContainText(/0\/\d+ exercises · 0\/\d+ sets/);
-  await expect(page.locator(".ex-card .previous-line").first()).toContainText(/Last Push · Aug \d+:/);
+  await expect(page.locator(".ex-card .previous-line").first()).toContainText(/Last Upper Hybrid · Aug \d+:/);
   await expect(page.locator(".dock-sync-copy")).toHaveText("Saves to GitHub now. Syncs to your vault overnight.");
   await expect(page.locator("#exercises-host a[href*='muscleandstrength.com']").first()).toBeVisible();
 
@@ -125,7 +131,7 @@ test("first wave: workout controls form one accessible mobile flow", async ({ pa
   await expect(page.locator("#submit-row")).toBeHidden();
   await expect(page.locator("#workout-top-actions")).toBeHidden();
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("pt_tracker_rest_timer_v1")).endsAtMs)).toBe(storedEnd);
-  await page.locator("#day-toggle .day-pill").nth(6).click();
+  await page.locator("#day-toggle .day-pill").nth(FIRST_WAVE_PILL).click();
   await expect(page.locator("#submit-row")).toBeVisible();
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("pt_tracker_rest_timer_v1")).endsAtMs)).toBe(storedEnd);
 
@@ -360,12 +366,18 @@ test("first wave: the dock and header reflow across supported mobile viewports",
     await page.evaluate(() => window.scrollTo(0, 0));
     const initial = await page.evaluate(() => ({
       viewportWidth: window.innerWidth,
+      viewportHeight: window.innerHeight,
       documentWidth: document.documentElement.scrollWidth,
-      headerBottom: document.querySelector("header.app")?.getBoundingClientRect().bottom || 0,
+      headerRowBottom: document.querySelector("header.app .header-row")?.getBoundingClientRect().bottom || 0,
       dockTop: document.querySelector("#submit-row")?.getBoundingClientRect().top || 0,
+      dockBottom: document.querySelector("#submit-row")?.getBoundingClientRect().bottom || 0,
     }));
     expect(initial.documentWidth).toBeLessThanOrEqual(initial.viewportWidth);
-    expect(initial.dockTop).toBeGreaterThanOrEqual(initial.headerBottom);
+    // The dock is fixed to the viewport bottom from the first paint (on short
+    // viewports the static header scrolls out from under it); the primary
+    // header controls must never sit under the dock.
+    expect(Math.abs(initial.dockBottom - initial.viewportHeight)).toBeLessThan(3);
+    expect(initial.dockTop).toBeGreaterThanOrEqual(initial.headerRowBottom);
 
     const controls = page.locator("#rest-bar-host button, #submit-btn, #skip-btn, #reports-link, #replace-token-btn, #unit-toggle button, #signout-btn");
     for (let index = 0; index < await controls.count(); index += 1) {
