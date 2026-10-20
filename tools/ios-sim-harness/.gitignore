@@ -1,4 +1,5 @@
 shots/
 appended.jsonl
-metrics*.json
+metrics.jsonl
+/metrics*.json
 *.log

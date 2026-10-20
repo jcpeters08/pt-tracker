@@ -2,6 +2,7 @@
 the harness command channel, screenshots via simctl (keyboard included)."""
 import json
 import os
+import sys
 import subprocess
 import time
 import urllib.request
@@ -257,3 +258,48 @@ def open_app(url=None):
         calibrate()
     else:
         open_pwa()
+
+
+# ---- executable pass conditions (README) ----------------------------------
+FAILURES = []
+
+
+def check(label, cond, detail=""):
+    """Record a pass/fail; the scenario exits non-zero if anything failed."""
+    status = "PASS" if cond else "FAIL"
+    print(f"  [{status}] {label}{(' — ' + str(detail)) if detail else ''}")
+    if not cond:
+        FAILURES.append(label)
+    return cond
+
+
+def check_keyboard_state(m, step, expect_input=True):
+    """With the keyboard up: an input must be focused, the dock bottom must sit
+    on the visible edge (visualViewport.height), the dock must be compact, and
+    the focused input must clear both the sticky header and the dock."""
+    kb_open = m["vvh"] < m["ih"] - 80
+    check(f"{step}: software keyboard is up", kb_open, f"vvh={m['vvh']} ih={m['ih']}")
+    if expect_input:
+        check(f"{step}: a set input has focus", bool(m["act"]) and m["act"]["tag"] == "INPUT", m["act"])
+    check(f"{step}: dock bottom == visible edge", bool(m["dock"]) and abs(m["dock"]["b"] - m["vvh"]) <= 2, f"dock.b={m['dock'] and m['dock']['b']} vvh={m['vvh']}")
+    check(f"{step}: dock is compact (timer only)", bool(m["dock"]) and m["dock"]["h"] <= 120, f"h={m['dock'] and m['dock']['h']}")
+    if expect_input and m["act"] and m["act"].get("tag") == "INPUT":
+        check(f"{step}: focused input clears the dock", m["act"]["b"] <= m["dock"]["t"], f"input.b={m['act']['b']} dock.t={m['dock']['t']}")
+        check(f"{step}: focused input clears the header", m["act"]["t"] >= m["hdr"]["b"], f"input.t={m['act']['t']} hdr.b={m['hdr']['b']}")
+
+
+def check_closed_state(m, step):
+    check(f"{step}: keyboard is down", m["vvh"] == m["ih"], f"vvh={m['vvh']} ih={m['ih']}")
+    check(f"{step}: dock bottom == viewport bottom", bool(m["dock"]) and abs(m["dock"]["b"] - m["ih"]) <= 2, f"dock.b={m['dock'] and m['dock']['b']} ih={m['ih']}")
+    check(f"{step}: full dock restored", bool(m["dock"]) and m["dock"]["h"] > 150, f"h={m['dock'] and m['dock']['h']}")
+
+
+def finish(tag, out, extra=None):
+    payload = {"tag": tag, "pwa": PWA, "steps": out, "failures": FAILURES}
+    if extra:
+        payload.update(extra)
+    json.dump(payload, open(f"metrics-{tag}.json", "w"), indent=1)
+    if FAILURES:
+        print(f"FAILED {tag}: {len(FAILURES)} check(s) failed → metrics-{tag}.json")
+        sys.exit(1)
+    print(f"PASSED {tag}: all checks held → metrics-{tag}.json")

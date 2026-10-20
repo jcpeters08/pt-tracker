@@ -23,7 +23,8 @@ idb set hardware-keyboard disable --udid <UDID>         # else no software keybo
 ```bash
 # 1. serve the checkout with a mock auth Worker (same origin, no CORS):
 python3 tools/ios-sim-harness/mock_server.py <repo-root> 8790 &
-#    (PT_DEBUG=1 default injects a metrics overlay + JS command channel into index.html)
+#    binds 127.0.0.1 only; PT_DEBUG=1 (default) injects a metrics overlay + JS command
+#    channel that evaluates page JS — never expose this server beyond loopback
 
 # 2. drive Safari in the simulator:
 export SIM_UDID=<UDID> SIM_BASE=http://localhost:8790
@@ -36,9 +37,17 @@ PWA=1 ICON=340,223 python3 tools/ios-sim-harness/keyboard_dock_scenario.py 8790 
 ```
 
 Each step prints a metrics line (`vvh`/`vvt` = visualViewport height/offsetTop,
-`dock` = #submit-row rect, `act` = focused element rect, `ki` = --keyboard-inset)
-and writes screenshots to `shots/`. The pass condition for the dock fix is
-`dock.b == vvh` in every keyboard-open state and `act.b <= dock.t`.
+`dock` = #submit-row rect, `act` = focused element rect, `ki` = --keyboard-inset),
+writes screenshots to `shots/` (or `$SIM_SHOTS`), and **asserts** the pass conditions
+(`sim.check_keyboard_state` / `sim.check_closed_state`): with the keyboard up an input
+must have focus, `dock.b == vvh` (±2), the dock must be compact (≤120px), and the
+focused input must clear both the dock top and the sticky header bottom; after
+dismissal `dock.b == innerHeight` with the full dock back; typing and dismissing must
+not change `scrollY`. Any failed check makes the script exit 1 and the per-step metrics
+are written to `metrics-<tag>.json` — run from `evidence/<date>/` to keep them.
+The last-card case taps the last weight input by a real touch while it sits just above
+the dock, so iOS (not the script) has to reposition it. `evidence/2026-10-20/` holds the
+runs behind the dock fix: fixed build PASS, pre-fix build FAIL, Safari and PWA.
 
 To compare against an older build, serve it on a second port (e.g. a
 `git archive` of the commit under test) and run the same scripts there.

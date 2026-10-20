@@ -186,5 +186,5 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    print(f"serving {ROOT} on http://localhost:{PORT}", flush=True)
-    ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever()
+    print(f"serving {ROOT} on http://127.0.0.1:{PORT} (loopback only)", flush=True)
+    ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()  # loopback only: the simulator shares the host network stack, and the debug command channel runs page JS

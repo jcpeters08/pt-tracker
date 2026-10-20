@@ -1,0 +1,316 @@
+{
+ "tag": "pwa-base",
+ "pwa": true,
+ "steps": [
+  {
+   "ih": 812,
+   "sy": 0,
+   "dh": 6313,
+   "vvh": 812,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 583,
+    "b": 812,
+    "h": 229,
+    "pos": "sticky",
+    "vis": true
+   },
+   "hdr": {
+    "t": 18,
+    "b": 317,
+    "pos": "sticky"
+   },
+   "act": {
+    "tag": "BODY",
+    "t": 0,
+    "b": 6313
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "0-top"
+  },
+  {
+   "ih": 812,
+   "sy": 1058,
+   "dh": 6313,
+   "vvh": 442,
+   "vvt": 209,
+   "vvs": 1,
+   "dock": {
+    "t": 374,
+    "b": 602,
+    "h": 229,
+    "pos": "sticky",
+    "vis": true
+   },
+   "hdr": {
+    "t": -210,
+    "b": 89,
+    "pos": "sticky"
+   },
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 198,
+    "b": 242
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "1-kbd-open"
+  },
+  {
+   "ih": 812,
+   "sy": 1058,
+   "dh": 6313,
+   "vvh": 442,
+   "vvt": 209,
+   "vvs": 1,
+   "dock": {
+    "t": 374,
+    "b": 602,
+    "h": 229,
+    "pos": "sticky",
+    "vis": true
+   },
+   "hdr": {
+    "t": -210,
+    "b": 89,
+    "pos": "sticky"
+   },
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 198,
+    "b": 242
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "2-typed"
+  },
+  {
+   "ih": 812,
+   "sy": 1110,
+   "dh": 6313,
+   "vvh": 442,
+   "vvt": 261,
+   "vvs": 1,
+   "dock": {
+    "t": 322,
+    "b": 550,
+    "h": 229,
+    "pos": "sticky",
+    "vis": true
+   },
+   "hdr": {
+    "t": -262,
+    "b": 37,
+    "pos": "sticky"
+   },
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 198,
+    "b": 242
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "3-next-row"
+  },
+  {
+   "ih": 812,
+   "sy": 1110,
+   "dh": 6313,
+   "vvh": 442,
+   "vvt": 261,
+   "vvs": 1,
+   "dock": {
+    "t": 322,
+    "b": 550,
+    "h": 229,
+    "pos": "sticky",
+    "vis": true
+   },
+   "hdr": {
+    "t": -262,
+    "b": 37,
+    "pos": "sticky"
+   },
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": 198,
+    "b": 242
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "4-two-cards-down"
+  },
+  {
+   "ih": 812,
+   "sy": 4404,
+   "dh": 6313,
+   "vvh": 442,
+   "vvt": 370,
+   "vvs": 1,
+   "dock": {
+    "t": 214,
+    "b": 442,
+    "h": 229,
+    "pos": "sticky",
+    "vis": true
+   },
+   "hdr": {
+    "t": -370,
+    "b": -71,
+    "pos": "sticky"
+   },
+   "act": {
+    "tag": "INPUT",
+    "f": "reps",
+    "t": -3096,
+    "b": -3052
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "5a-before-last-tap"
+  },
+  {
+   "ih": 812,
+   "sy": 4404,
+   "dh": 6313,
+   "vvh": 812,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 583,
+    "b": 812,
+    "h": 229,
+    "pos": "sticky",
+    "vis": true
+   },
+   "hdr": {
+    "t": 0,
+    "b": 299,
+    "pos": "sticky"
+   },
+   "act": {
+    "tag": "BODY",
+    "t": -4404,
+    "b": 1909
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "5b-last-input-focused"
+  },
+  {
+   "ih": 812,
+   "sy": 4404,
+   "dh": 6313,
+   "vvh": 812,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 583,
+    "b": 812,
+    "h": 229,
+    "pos": "sticky",
+    "vis": true
+   },
+   "hdr": {
+    "t": 0,
+    "b": 299,
+    "pos": "sticky"
+   },
+   "act": {
+    "tag": "BODY",
+    "t": -4404,
+    "b": 1909
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "6-dismissed"
+  },
+  {
+   "ih": 812,
+   "sy": 0,
+   "dh": 6313,
+   "vvh": 812,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 583,
+    "b": 812,
+    "h": 229,
+    "pos": "sticky",
+    "vis": true
+   },
+   "hdr": {
+    "t": 18,
+    "b": 317,
+    "pos": "sticky"
+   },
+   "act": {
+    "tag": "BODY",
+    "t": 0,
+    "b": 6313
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "7-after-top-rubberband"
+  },
+  {
+   "ih": 812,
+   "sy": 5501,
+   "dh": 6313,
+   "vvh": 812,
+   "vvt": 0,
+   "vvs": 1,
+   "dock": {
+    "t": 583,
+    "b": 812,
+    "h": 229,
+    "pos": "sticky",
+    "vis": true
+   },
+   "hdr": {
+    "t": 0,
+    "b": 299,
+    "pos": "sticky"
+   },
+   "act": {
+    "tag": "BODY",
+    "t": -5501,
+    "b": 812
+   },
+   "cls": "mode-current workout-dock-visible",
+   "ki": "",
+   "dof": "229px",
+   "step": "8-after-bottom-rubberband"
+  }
+ ],
+ "failures": [
+  "1-kbd-open: dock bottom == visible edge",
+  "1-kbd-open: dock is compact (timer only)",
+  "2-typed: dock bottom == visible edge",
+  "2-typed: dock is compact (timer only)",
+  "3-next-row: dock bottom == visible edge",
+  "3-next-row: dock is compact (timer only)",
+  "4-two-cards-down: dock bottom == visible edge",
+  "4-two-cards-down: dock is compact (timer only)",
+  "5a: last input sits just above the dock before the tap",
+  "5b-last-input: software keyboard is up",
+  "5b-last-input: a set input has focus",
+  "5b-last-input: dock is compact (timer only)",
+  "5b: the focused input is the last weight input"
+ ]
+}
