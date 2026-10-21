@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-20T15:48:53Z",
+  "generated_at": "2026-10-21T02:40:33Z",
   "log_count": 87,
   "recovery_count": 13,
   "lifts_per_week": {
@@ -6525,13 +6525,6 @@
       "delta_kg": 1.3
     },
     {
-      "exercise_id": "single-arm-db-row",
-      "date": "2026-06-18",
-      "weight_kg": 20.41,
-      "reps": 10,
-      "delta_kg": 0.4
-    },
-    {
       "exercise_id": "incline-db-bench-press",
       "date": "2026-06-16",
       "weight_kg": 22.68,
@@ -6644,13 +6637,6 @@
       "delta_kg": 4.5
     },
     {
-      "exercise_id": "lat-pulldown",
-      "date": "2026-06-02",
-      "weight_kg": 45.36,
-      "reps": 10,
-      "delta_kg": 0.4
-    },
-    {
       "exercise_id": "seated-cable-row",
       "date": "2026-06-02",
       "weight_kg": 31.75,
@@ -6670,20 +6656,6 @@
       "weight_kg": 18.14,
       "reps": 12,
       "delta_kg": 2.3
-    },
-    {
-      "exercise_id": "flat-db-bench-press",
-      "date": "2026-06-01",
-      "weight_kg": 18.14,
-      "reps": 20,
-      "delta_kg": 0.1
-    },
-    {
-      "exercise_id": "db-lateral-raise",
-      "date": "2026-06-01",
-      "weight_kg": 6.8,
-      "reps": 12,
-      "delta_kg": 0.8
     },
     {
       "exercise_id": "cable-chest-fly",
@@ -6712,13 +6684,6 @@
       "weight_kg": 43.09,
       "reps": 8,
       "delta_kg": 2.3
-    },
-    {
-      "exercise_id": "calf-raise",
-      "date": "2026-05-27",
-      "weight_kg": 40.82,
-      "reps": 15,
-      "delta_kg": 0.8
     },
     {
       "exercise_id": "seated-cable-row",
@@ -7485,6 +7450,14 @@
     {
       "exercise_id": "db-reverse-fly",
       "date": "2026-08-12",
+      "type": "rep_pr",
+      "weight_kg": 9.07,
+      "reps": 15,
+      "delta_reps": 3
+    },
+    {
+      "exercise_id": "db-reverse-fly",
+      "date": "2026-08-12",
       "type": "volume_pr",
       "weight_kg": 9.07,
       "reps": 15,
@@ -7745,6 +7718,14 @@
     {
       "exercise_id": "db-reverse-fly",
       "date": "2026-08-05",
+      "type": "rep_pr",
+      "weight_kg": 9.07,
+      "reps": 12,
+      "delta_reps": 2
+    },
+    {
+      "exercise_id": "db-reverse-fly",
+      "date": "2026-08-05",
       "type": "volume_pr",
       "weight_kg": 9.07,
       "reps": 12,
@@ -7866,6 +7847,14 @@
       "weight_kg": 24.95,
       "reps": 13,
       "delta_kg": 2.3
+    },
+    {
+      "exercise_id": "db-reverse-fly",
+      "date": "2026-07-29",
+      "type": "rep_pr",
+      "weight_kg": 9.07,
+      "reps": 10,
+      "delta_reps": 2
     },
     {
       "exercise_id": "barbell-curl",
@@ -8803,14 +8792,6 @@
       "delta_volume_kg": 3.1
     },
     {
-      "exercise_id": "single-arm-db-row",
-      "date": "2026-06-18",
-      "type": "load_pr",
-      "weight_kg": 20.41,
-      "reps": 10,
-      "delta_kg": 0.4
-    },
-    {
       "exercise_id": "incline-db-bench-press",
       "date": "2026-06-16",
       "type": "load_pr",
@@ -8825,14 +8806,6 @@
       "weight_kg": 22.68,
       "reps": 15,
       "delta_kg": 2.3
-    },
-    {
-      "exercise_id": "db-lateral-raise",
-      "date": "2026-06-16",
-      "type": "rep_pr",
-      "weight_kg": 6.8,
-      "reps": 15,
-      "delta_reps": 3
     },
     {
       "exercise_id": "db-lateral-raise",
@@ -9073,14 +9046,6 @@
       "delta_volume_kg": 163.4
     },
     {
-      "exercise_id": "lat-pulldown",
-      "date": "2026-06-02",
-      "type": "load_pr",
-      "weight_kg": 45.36,
-      "reps": 10,
-      "delta_kg": 0.4
-    },
-    {
       "exercise_id": "seated-cable-row",
       "date": "2026-06-02",
       "type": "load_pr",
@@ -9125,18 +9090,10 @@
     {
       "exercise_id": "flat-db-bench-press",
       "date": "2026-06-01",
-      "type": "load_pr",
+      "type": "rep_pr",
       "weight_kg": 18.14,
       "reps": 20,
-      "delta_kg": 0.1
-    },
-    {
-      "exercise_id": "db-lateral-raise",
-      "date": "2026-06-01",
-      "type": "load_pr",
-      "weight_kg": 6.8,
-      "reps": 12,
-      "delta_kg": 0.8
+      "delta_reps": 5
     },
     {
       "exercise_id": "cable-chest-fly",
@@ -9273,14 +9230,6 @@
       "reps": 12,
       "total_volume_kg": 816.5,
       "delta_volume_kg": 362.9
-    },
-    {
-      "exercise_id": "calf-raise",
-      "date": "2026-05-27",
-      "type": "load_pr",
-      "weight_kg": 40.82,
-      "reps": 15,
-      "delta_kg": 0.8
     },
     {
       "exercise_id": "calf-raise",
