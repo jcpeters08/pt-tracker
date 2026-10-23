@@ -425,6 +425,207 @@
         "cooldown": null,
         "session_notes": ""
       }
+    },
+    {
+      "type": "log",
+      "submitted_at": "2026-10-23T12:01:47.892Z",
+      "session": {
+        "date": "2026-10-23",
+        "submitted_at": "2026-10-23T12:01:47.892Z",
+        "day_of_week": "friday",
+        "type": "lower-hybrid",
+        "muscle_groups": [
+          "quads",
+          "hamstrings",
+          "glutes",
+          "adductors",
+          "calves",
+          "core",
+          "lower-back"
+        ],
+        "routine_id": "2026-W43-Phase-2-Week-24-Progression",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "single-leg-leg-press",
+            "display_name": "Single-Leg Leg Press",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 81.65,
+                "reps": 6
+              },
+              {
+                "set": 2,
+                "weight_kg": 63.5,
+                "reps": 10
+              },
+              {
+                "set": 3,
+                "weight_kg": 63.5,
+                "reps": 10
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "db-walking-lunge",
+            "display_name": "Dumbbell Walking Lunge",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 11.34,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 11.34,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "seated-leg-curl",
+            "display_name": "Seated Leg Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 34.02,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 34.02,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 34.02,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "hip-abductor-machine",
+            "display_name": "Hip Abductor Machine",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 43.09,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 43.09,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 43.09,
+                "reps": 15
+              }
+            ],
+            "notes": "I’m symptom free stop holding "
+          },
+          {
+            "exercise_id": "hip-adductor-machine",
+            "display_name": "Hip Adductor Machine",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 22.68,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.68,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 22.68,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "single-leg-calf-raise",
+            "display_name": "Single-Leg Calf Raise (on Step)",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 22.68,
+                "reps": 13
+              },
+              {
+                "set": 2,
+                "weight_kg": 22.68,
+                "reps": 13
+              },
+              {
+                "set": 3,
+                "weight_kg": 22.68,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "cable-rope-crunch",
+            "display_name": "Cable Rope Crunch",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 24.95,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 24.95,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 24.95,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "back-extension",
+            "display_name": "Back Extension",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 11.34,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 11.34,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 11.34,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": null,
+        "session_notes": ""
+      }
     }
   ]
 }
