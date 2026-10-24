@@ -428,10 +428,10 @@
     },
     {
       "type": "log",
-      "submitted_at": "2026-10-23T12:01:47.892Z",
+      "submitted_at": "2026-10-24T00:27:32.453Z",
       "session": {
         "date": "2026-10-23",
-        "submitted_at": "2026-10-23T12:01:47.892Z",
+        "submitted_at": "2026-10-24T00:27:32.453Z",
         "day_of_week": "friday",
         "type": "lower-hybrid",
         "muscle_groups": [
