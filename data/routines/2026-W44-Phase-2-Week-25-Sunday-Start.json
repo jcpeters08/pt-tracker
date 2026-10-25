@@ -49,7 +49,7 @@
           "target_weight_raw": "20 lbs (9 kg) ea",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "10/10/9 on 10/19 — one rep short; same target. Strict, no swing; the 20s climb to 12 next"
+          "notes": "10/10/9 on 10/19 — one rep short; same target. Strict, no swing; the 20s climb 10 → 12 → 15, and only 15×3 moves the load (same gate as Wednesday's slot)"
         },
         {
           "exercise_id": "rope-tricep-pushdown",
@@ -80,15 +80,15 @@
           "target_weight_raw": "130 lbs (59 kg)",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "W43 target held (10/10/9 on 10/13; 10/20 unlogged). Chest up, full stretch at the top, no lean-back"
+          "notes": "10/10/9 on 10/20 (and 10/13) — one rep short on set 3 two weeks running; same target. Chest up, full stretch at the top, no lean-back; 12/12/12 → 140"
         },
         {
           "exercise_id": "seated-cable-row",
-          "target_weight_kg": 58.97,
-          "target_weight_raw": "130 lbs (59 kg)",
+          "target_weight_kg": 61.24,
+          "target_weight_raw": "135 lbs (61 kg)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "W43 target held (12/12/11 on 10/13). Pause at the chest; 12/12/12 → 135"
+          "notes": "You took it to 135 on 10/20: 12/12/11 — one rep short on set 3, so 12 at 135 is the target, not a new load. Pause at the chest; 12/12/12 → 140"
         },
         {
           "exercise_id": "single-arm-db-row",
@@ -96,7 +96,7 @@
           "target_weight_raw": "70 lbs (32 kg) ea",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "W43 target held — first week at 70 after the 65 lock. LEFT first; right matches left's reps; no torso heave"
+          "notes": "8/8/8 on 10/20 — first week at 70 after the 65 lock; 8 is owned, 10 is the target. LEFT first; right matches left's reps; no torso heave"
         },
         {
           "exercise_id": "cable-face-pull",
@@ -104,7 +104,7 @@
           "target_weight_raw": "60 lbs (27 kg)",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "W43 target held (15/13/11 on 10/13). Wednesday's slot is at 65 and climbing; this one earns 65 with 15×3. Rope to the ears, strict"
+          "notes": "15/15/14 on 10/20 — one rep from the lock; same target. Wednesday's slot is already at 65; this one earns 65 with 15×3. Rope to the ears, strict"
         },
         {
           "exercise_id": "db-reverse-fly",
@@ -112,7 +112,7 @@
           "target_weight_raw": "20 lbs (9 kg) ea",
           "target_reps": 15,
           "target_sets": 3,
-          "notes": "W43 target held (14/14/14 on 10/13 — one rep per set from the 25). Strict, soft elbows"
+          "notes": "15/14/12 on 10/20 — sets 2–3 fell; same target. Strict, soft elbows; 15×3 → 25"
         },
         {
           "exercise_id": "barbell-curl",
@@ -120,7 +120,7 @@
           "target_weight_raw": "60 lbs (27 kg)",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "W43 target held (10/9/7 on 10/13). Fixed bars step by 10, so 12/12/12 earns 70. No hip swing"
+          "notes": "10/10/9 on 10/20 (up from 10/9/7) — one rep short; same target. Fixed bars step by 10, so 12/12/12 earns 70. No hip swing"
         },
         {
           "exercise_id": "hammer-curl",
@@ -128,7 +128,7 @@
           "target_weight_raw": "30 lbs (14 kg) ea",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "W43 target held (8/8/8 on 10/13 → climb to 10). Elbows still"
+          "notes": "9/9/9 on 10/20 against a target of 10 — same target. Elbows still"
         },
         {
           "exercise_id": "suitcase-carry",
@@ -136,7 +136,7 @@
           "target_weight_raw": "75 lbs (34 kg) ea",
           "target_reps": 25,
           "target_sets": 3,
-          "notes": "W43 target held (25/25/15 s on 10/13). 25 s each side, LEFT hand first; 30 s × 3 → 80. Tall, no lean, keep breathing"
+          "notes": "Not logged on 10/20 (25/25/15 s on 10/13); target holds. 25 s each side, LEFT hand first; 30 s × 3 → 80. Tall, no lean, keep breathing"
         }
       ]
     },
@@ -195,11 +195,11 @@
         },
         {
           "exercise_id": "cable-rope-crunch",
-          "target_weight_kg": 29.48,
-          "target_weight_raw": "65 lbs (29 kg)",
-          "target_reps": 12,
+          "target_weight_kg": 27.22,
+          "target_weight_raw": "60 lbs (27 kg)",
+          "target_reps": 15,
           "target_sets": 3,
-          "notes": "60 locked 12/12/12 on 10/21 → 65, floor of 12. Exhale into the crunch; 15×3 → 70"
+          "notes": "12/12/12 on 10/21 — 12 is owned at 60, reps climb to 15 (high-rep slot: the load moves only after 15×3 → 65). Exhale into the crunch"
         },
         {
           "exercise_id": "back-extension",
@@ -292,7 +292,7 @@
     },
     "thursday": {
       "label": "Lower Hybrid (Glutes / Quads / Hams / Calves / Core)",
-      "warmup": "Easy bike or treadmill 5–8 min + controlled bodyweight squats × 10 + glute bridges × 10 + gentle reverse lunges only if pain-free + ramp-up sets on the single-leg press (90 lbs × 6 then 135 × 4 each leg, left first). No wide hip openers",
+      "warmup": "Easy bike or treadmill 5–8 min + controlled bodyweight squats × 10 + glute bridges × 10 + gentle reverse lunges only if pain-free + ramp-up sets on the single-leg press (90 lbs × 6 then 140 × 4 each leg, left first). No wide hip openers",
       "cooldown": "Easy walk 5 min + gentle quad, hamstring, and calf stretches 45s ea side. No wide-leg, straddle, 90/90, or figure-4 positions. 16 oz electrolyte water. Thermocycling tonight if the session was flag-free",
       "exercises": [
         {
@@ -317,7 +317,7 @@
           "target_weight_raw": "80 lbs (36 kg)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "75 re-proved 15×3 on 10/23 → the 80 banked since W36, floor of 12. Full range, pause at the bottom; 15×3 → 85"
+          "notes": "75 re-proved 15×3 on 10/23 → the 80 banked since W36; this slot now runs the same 12-rep gate as Tuesday's. Full range, pause at the bottom; 12/12/12 → 85"
         },
         {
           "exercise_id": "hip-abductor-machine",
