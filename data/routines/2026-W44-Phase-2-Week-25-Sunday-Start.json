@@ -1,0 +1,365 @@
+{
+  "id": "2026-W44-Phase-2-Week-25-Sunday-Start",
+  "name": "W44 MPLS Planet Fitness — Solo (Sun–Thu)",
+  "phase": "2",
+  "start_date": "2026-10-25",
+  "end_date": null,
+  "source_md": "Weekly Plans/2026-W44-Phase-2-Week-25-Sunday-Start.md",
+  "days": {
+    "sunday": {
+      "label": "Push (Chest / Shoulders / Triceps)",
+      "warmup": "Treadmill incline walk 5 min easy + band pull-aparts × 15 × 2 + DB front raise 5 lbs × 10 + ramp-up sets of incline press at 35 ea × 8 then 50 ea × 4",
+      "cooldown": "Easy walk 5 min + doorway pec stretch 60s ea side + cross-body shoulder stretch 60s ea side + overhead triceps stretch 60s ea side. 16 oz electrolyte water",
+      "exercises": [
+        {
+          "exercise_id": "incline-db-bench-press",
+          "target_weight_kg": 27.22,
+          "target_weight_raw": "60 lbs (27 kg) ea",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "12/12/11 on 10/19 — one rep short on set 3; same target. Deep stretch at the bottom; 12/12/12 → 65"
+        },
+        {
+          "exercise_id": "flat-db-bench-press",
+          "target_weight_kg": 27.22,
+          "target_weight_raw": "60 lbs (27 kg) ea",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "10/10/9 on 10/19 — one rep short on set 3; same target. No spotter: rack the DBs before anything grinds"
+        },
+        {
+          "exercise_id": "cable-chest-fly",
+          "target_weight_kg": 13.61,
+          "target_weight_raw": "30 lbs (14 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "12/10/10 on 10/19 — 10 is owned at 30, reps climb to 12. Lengthened partials on the last set after the 12; 12/12/12 → 35"
+        },
+        {
+          "exercise_id": "seated-db-shoulder-press",
+          "target_weight_kg": 22.68,
+          "target_weight_raw": "50 lbs (23 kg) ea",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "10/10/10 on 10/19 — 10 owned in this slot, reps climb to 12. Wednesday's fresh slot is at 60; this one earns 55 with 12/12/12. Strict"
+        },
+        {
+          "exercise_id": "db-lateral-raise",
+          "target_weight_kg": 9.07,
+          "target_weight_raw": "20 lbs (9 kg) ea",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "10/10/9 on 10/19 — one rep short; same target. Strict, no swing; the 20s climb to 12 next"
+        },
+        {
+          "exercise_id": "rope-tricep-pushdown",
+          "target_weight_kg": 18.14,
+          "target_weight_raw": "40 lbs (18 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "12/11/11 on 10/19 — 10 is owned at 40, reps climb to 12. Elbows pinned; 12/12/12 → 45"
+        },
+        {
+          "exercise_id": "overhead-db-tricep-extension",
+          "target_weight_kg": 27.22,
+          "target_weight_raw": "60 lbs (27 kg)",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "10/10/7 on 10/19 — set 3 fell; same target. Seated with back support; 12/12/12 → 65"
+        }
+      ]
+    },
+    "monday": {
+      "label": "Pull (Back / Biceps / Rear Delts)",
+      "warmup": "Rower 5 min easy + band pull-aparts × 15 × 2 + scap pull-ups × 10 + ramp-up sets of lat pulldown at 90 × 8 then 115 × 4",
+      "cooldown": "Easy walk 5 min + child's pose with side reach 60s ea side + cross-body rear-delt stretch 60s ea side + gentle forearm stretch 45s ea side. 16 oz electrolyte water",
+      "exercises": [
+        {
+          "exercise_id": "lat-pulldown",
+          "target_weight_kg": 58.97,
+          "target_weight_raw": "130 lbs (59 kg)",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "W43 target held (10/10/9 on 10/13; 10/20 unlogged). Chest up, full stretch at the top, no lean-back"
+        },
+        {
+          "exercise_id": "seated-cable-row",
+          "target_weight_kg": 58.97,
+          "target_weight_raw": "130 lbs (59 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "W43 target held (12/12/11 on 10/13). Pause at the chest; 12/12/12 → 135"
+        },
+        {
+          "exercise_id": "single-arm-db-row",
+          "target_weight_kg": 31.75,
+          "target_weight_raw": "70 lbs (32 kg) ea",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "W43 target held — first week at 70 after the 65 lock. LEFT first; right matches left's reps; no torso heave"
+        },
+        {
+          "exercise_id": "cable-face-pull",
+          "target_weight_kg": 27.22,
+          "target_weight_raw": "60 lbs (27 kg)",
+          "target_reps": 15,
+          "target_sets": 3,
+          "notes": "W43 target held (15/13/11 on 10/13). Wednesday's slot is at 65 and climbing; this one earns 65 with 15×3. Rope to the ears, strict"
+        },
+        {
+          "exercise_id": "db-reverse-fly",
+          "target_weight_kg": 9.07,
+          "target_weight_raw": "20 lbs (9 kg) ea",
+          "target_reps": 15,
+          "target_sets": 3,
+          "notes": "W43 target held (14/14/14 on 10/13 — one rep per set from the 25). Strict, soft elbows"
+        },
+        {
+          "exercise_id": "barbell-curl",
+          "target_weight_kg": 27.22,
+          "target_weight_raw": "60 lbs (27 kg)",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "W43 target held (10/9/7 on 10/13). Fixed bars step by 10, so 12/12/12 earns 70. No hip swing"
+        },
+        {
+          "exercise_id": "hammer-curl",
+          "target_weight_kg": 13.61,
+          "target_weight_raw": "30 lbs (14 kg) ea",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "W43 target held (8/8/8 on 10/13 → climb to 10). Elbows still"
+        },
+        {
+          "exercise_id": "suitcase-carry",
+          "target_weight_kg": 34.02,
+          "target_weight_raw": "75 lbs (34 kg) ea",
+          "target_reps": 25,
+          "target_sets": 3,
+          "notes": "W43 target held (25/25/15 s on 10/13). 25 s each side, LEFT hand first; 30 s × 3 → 80. Tall, no lean, keep breathing"
+        }
+      ]
+    },
+    "tuesday": {
+      "label": "Legs (Quads / Hams / Glutes / Calves / Core)",
+      "warmup": "Easy treadmill 5–8 min + controlled bodyweight squats × 10 + glute bridges × 10 + ramp-up sets: squat bar × 8, 95 × 5, 125 × 3; leg press 180 × 8 then 270 × 5. Pain rule: left groin/adductor 0–2/10 or modify",
+      "cooldown": "Easy walk 5 min + gentle standing quad stretch 45s ea side + gentle hamstring stretch 45s ea side + calf stretch 45s ea side. No wide-stance or aggressive adductor stretching. 16 oz electrolyte water. Thermocycling tonight if the session was flag-free",
+      "exercises": [
+        {
+          "exercise_id": "barbell-back-squat",
+          "target_weight_kg": 68.04,
+          "target_weight_raw": "150 lbs (68 kg)",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "140 locked 12/12/12 on 10/21 → 150, reps reset to 10 (150 was 8×3 back in August — you own more now). Pain-free depth, light brace, exhale on the drive; 12/12/12 → 160"
+        },
+        {
+          "exercise_id": "leg-press",
+          "target_weight_kg": 149.69,
+          "target_weight_raw": "330 lbs (150 kg)",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "320 locked 12/12/12 on 10/21 → 330 (45+45+45+25+5 per side), reps reset to 10. Feet hip-width; do not bottom out; 12/12/12 → 340"
+        },
+        {
+          "exercise_id": "barbell-rdl",
+          "target_weight_kg": 63.5,
+          "target_weight_raw": "140 lbs (64 kg)",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "You took it from the planned 120 to 140 on 10/21: 10/8/8. Own 10×3 at 140 before anything climbs; if set 1 is under 10, drop to 130 for sets 2–3 and log the real numbers. Controlled eccentric, double-overhand"
+        },
+        {
+          "exercise_id": "seated-leg-curl",
+          "target_weight_kg": 40.82,
+          "target_weight_raw": "90 lbs (41 kg)",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "85 locked 12/12/12 on 10/21 → 90, reps reset to 10. Full range, pause at the bottom; 12/12/12 → 95"
+        },
+        {
+          "exercise_id": "barbell-hip-thrust",
+          "target_weight_kg": 49.9,
+          "target_weight_raw": "110 lbs (50 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "10/10/10 on 10/21 against a target of 12 — same target. Chin tucked; sit up 20–30 s before standing; 12/12/12 → 120"
+        },
+        {
+          "exercise_id": "calf-raise",
+          "target_weight_kg": 122.47,
+          "target_weight_raw": "270 lbs (122 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "260 locked 15/15/15 on 10/21 → 270, high-rep floor of 12. Full range, 1 s pause, no bounce; 15×3 → 280"
+        },
+        {
+          "exercise_id": "cable-rope-crunch",
+          "target_weight_kg": 29.48,
+          "target_weight_raw": "65 lbs (29 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "60 locked 12/12/12 on 10/21 → 65, floor of 12. Exhale into the crunch; 15×3 → 70"
+        },
+        {
+          "exercise_id": "back-extension",
+          "target_weight_kg": 15.88,
+          "target_weight_raw": "35 lbs (16 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "25 locked 15/15/15 on 10/21 (and again Friday) → the 35 plate, floor of 12. Smooth, no hyperextension; 15×3 → 45"
+        }
+      ]
+    },
+    "wednesday": {
+      "label": "Upper Hybrid (Shoulders / Chest / Back / Arms / Core)",
+      "warmup": "Rower 5 min easy + scap circles + band pull-aparts × 15 × 2 + ramp-up sets of shoulder press at 30 ea × 8 then 45 ea × 4",
+      "cooldown": "Easy walk 5 min + doorway pec stretch 60s ea side + child's pose with side reach 60s ea side + cross-body shoulder stretch 60s ea side. 16 oz electrolyte water",
+      "exercises": [
+        {
+          "exercise_id": "seated-db-shoulder-press",
+          "target_weight_kg": 27.22,
+          "target_weight_raw": "60 lbs (27 kg) ea",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "55 ea locked 12/12/12 on 10/22 — first week at 55 and you owned it → 60, reps reset to 10. Strict, no leg drive; 12/12/12 → 65"
+        },
+        {
+          "exercise_id": "incline-db-bench-press",
+          "target_weight_kg": 24.95,
+          "target_weight_raw": "55 lbs (25 kg) ea",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "12/12/11 on 10/22 — one rep short on set 3 for the second week; same target. Lighter second exposure, 5 under Sunday; 12/12/12 → 60"
+        },
+        {
+          "exercise_id": "db-lateral-raise",
+          "target_weight_kg": 9.07,
+          "target_weight_raw": "20 lbs (9 kg) ea",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "12/11/9 on 10/22 — sets 2–3 fell; same target. Strict, no swing; 15×3 → 25"
+        },
+        {
+          "exercise_id": "cable-face-pull",
+          "target_weight_kg": 29.48,
+          "target_weight_raw": "65 lbs (29 kg)",
+          "target_reps": 15,
+          "target_sets": 3,
+          "notes": "14/12/12 on 10/22 — 12 is owned at 65, reps climb to 15. Rope to the ears, strict; 15×3 → 70"
+        },
+        {
+          "exercise_id": "single-arm-db-row",
+          "target_weight_kg": 27.22,
+          "target_weight_raw": "60 lbs (27 kg) ea",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "12/12/11 on 10/22 — one rep on set 3 again; same target. LEFT first; right matches left's reps"
+        },
+        {
+          "exercise_id": "db-curl",
+          "target_weight_kg": 11.34,
+          "target_weight_raw": "25 lbs (11 kg) ea",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "10/10/8 on 10/22 — set 3 fell; same target. No swing"
+        },
+        {
+          "exercise_id": "db-skullcrusher",
+          "target_weight_kg": 15.88,
+          "target_weight_raw": "35 lbs (16 kg)",
+          "target_reps": 8,
+          "target_sets": 3,
+          "notes": "8/8/6 on 10/22 — cap stays 8; lock 8×3 at 35 before 10. Elbows still, no bounce at the bottom"
+        },
+        {
+          "exercise_id": "pallof-press",
+          "target_weight_kg": 24.95,
+          "target_weight_raw": "55 lbs (25 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "12/10/10 on 10/22 — 10 is owned at 55, reps climb to 12. LEFT side first; exhale on the press-out, no twist; 12×3 → 60"
+        },
+        {
+          "exercise_id": "side-plank",
+          "target_weight_kg": 0.0,
+          "target_weight_raw": "bodyweight",
+          "target_reps": 70,
+          "target_sets": 3,
+          "notes": "60 s × 3 on 10/22 against a target of 70 — same target, 70 s each side, LEFT first; if the hips drop before 70, stop and log the honest time"
+        }
+      ]
+    },
+    "thursday": {
+      "label": "Lower Hybrid (Glutes / Quads / Hams / Calves / Core)",
+      "warmup": "Easy bike or treadmill 5–8 min + controlled bodyweight squats × 10 + glute bridges × 10 + gentle reverse lunges only if pain-free + ramp-up sets on the single-leg press (90 lbs × 6 then 135 × 4 each leg, left first). No wide hip openers",
+      "cooldown": "Easy walk 5 min + gentle quad, hamstring, and calf stretches 45s ea side. No wide-leg, straddle, 90/90, or figure-4 positions. 16 oz electrolyte water. Thermocycling tonight if the session was flag-free",
+      "exercises": [
+        {
+          "exercise_id": "single-leg-leg-press",
+          "target_weight_kg": 81.65,
+          "target_weight_raw": "180 lbs (82 kg)",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "You took the asymmetry slot from the protective 115 to 180 on 10/23: 6/10/10 (set 1 was the feel-out). Own 10×3 at 180, LEFT first, right matches left's reps, pain-free depth; 12/12/12 → 190"
+        },
+        {
+          "exercise_id": "db-walking-lunge",
+          "target_weight_kg": 13.61,
+          "target_weight_raw": "30 lbs (14 kg) ea",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "25 ea re-proved 15×3 on 10/23 → the 30 banked since W36, floor of 12. LEFT leg steps first; hip-width tracks; 15×3 → 35"
+        },
+        {
+          "exercise_id": "seated-leg-curl",
+          "target_weight_kg": 36.29,
+          "target_weight_raw": "80 lbs (36 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "75 re-proved 15×3 on 10/23 → the 80 banked since W36, floor of 12. Full range, pause at the bottom; 15×3 → 85"
+        },
+        {
+          "exercise_id": "hip-abductor-machine",
+          "target_weight_kg": 45.36,
+          "target_weight_raw": "100 lbs (45 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "95 went 15/15/15 symptom-free on 10/23 and you said stop holding → 100, floor of 12. Controlled, middle range; 15×3 → 105"
+        },
+        {
+          "exercise_id": "hip-adductor-machine",
+          "target_weight_kg": 24.95,
+          "target_weight_raw": "55 lbs (25 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "50 went 15/15/15 on 10/23 → 55, floor of 12. Pads narrow, middle range only, 0–2/10 or stop; 15×3 → 60"
+        },
+        {
+          "exercise_id": "single-leg-calf-raise",
+          "target_weight_kg": 22.68,
+          "target_weight_raw": "50 lbs (23 kg) ea",
+          "target_reps": 15,
+          "target_sets": 3,
+          "notes": "13/13/12 on 10/23 — same target. LEFT first; right matches; full range, 1 s pause; 15×3 → 55"
+        },
+        {
+          "exercise_id": "cable-rope-crunch",
+          "target_weight_kg": 27.22,
+          "target_weight_raw": "60 lbs (27 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "55 locked 15×3 on 10/23 → 60, floor of 12. Exhale into the crunch; 15×3 → 65"
+        },
+        {
+          "exercise_id": "back-extension",
+          "target_weight_kg": 15.88,
+          "target_weight_raw": "35 lbs (16 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "25 locked 15×3 on 10/23 → the 35 plate, same as Tuesday, floor of 12. Smooth; come up slowly; 15×3 → 45"
+        }
+      ]
+    }
+  }
+}
