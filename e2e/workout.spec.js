@@ -122,3 +122,57 @@ test("a just-submitted session still shows as pending after a reload inside the 
   await expect(page.locator("#log-status")).toHaveText("● Submitted (pending sync)");
   await expect(page.locator(".ex-card").first().locator(".set-row[data-set='0'] input[data-field='reps']")).toHaveValue("9");
 });
+
+// Regression (2026-10-24): a day logged under one date and never submitted was
+// invisible when reopened later, because drafts are keyed by the date that was
+// selected at the time and the picker defaults to today. The app now rescues
+// the same-slot draft from inside the routine week, switches the view to its
+// real date, says so, and submits it on that date.
+test("an unsubmitted day logged under an earlier date is rescued when its pill is reopened", async ({ page, context }) => {
+  let appended = null;
+  page.on("dialog", d => d.accept());
+  await freezeAppTime(page, "2026-06-10T12:00:00-05:00");   // W24 current; Tue 06-09 has no synced log
+  await signIn(page, context, { onPendingAppend: (entry) => { appended = entry; } });
+  const openTuesday = async () => {
+    await page.locator("#day-toggle .day-pill").nth(1).click();
+    await expect(page.locator(".ex-card").first()).toBeVisible();
+  };
+  // Log a set on Tuesday 06-09 and walk away without submitting.
+  await page.fill("#workout-date", "2026-06-09");
+  await page.dispatchEvent("#workout-date", "change");
+  await openTuesday();
+  const set0 = page.locator(".ex-card").first().locator(".set-row[data-set='0']");
+  await set0.locator("input[data-field='weight']").fill("60");
+  await set0.locator("input[data-field='reps']").fill("9");
+  await set0.locator("[data-action='done']").click();
+  await expect(set0).toHaveClass(/done/);
+  await expect.poll(() => page.evaluate(() => Object.keys(localStorage).filter(k => k.includes("|2026-06-09|tuesday|")).length)).toBe(1);
+
+  // Come back "later": a relaunch puts the picker on today (06-10); tap the Tue pill.
+  await page.reload();
+  await expect(page.locator("#app")).toBeVisible({ timeout: 15_000 });
+  await expect(page.locator("#workout-date")).toHaveValue("2026-06-10");
+  await openTuesday();
+  await expect(page.locator("#workout-date")).toHaveValue("2026-06-09");
+  await expect(page.locator(".draft-banner")).toContainText(/Unsubmitted workout from .*restored/);
+  const restored = page.locator(".ex-card").first().locator(".set-row[data-set='0']");
+  await expect(restored).toHaveClass(/done/);
+  await expect(restored.locator("input[data-field='reps']")).toHaveValue("9");
+
+  // Submitting writes the day it was actually logged.
+  await page.click("#submit-btn");
+  await expect.poll(() => appended, { timeout: 10_000 }).not.toBeNull();
+  expect(appended.session.date).toBe("2026-06-09");
+  expect(appended.session.day_of_week).toBe("tuesday");
+  expect(appended.session.exercises[0].sets[0].reps).toBe(9);
+});
+
+test("a stale unsubmitted draft is announced at boot", async ({ page, context }) => {
+  await freezeAppTime(page, "2026-06-12T12:00:00-05:00");
+  await page.addInitScript(() => {
+    localStorage.setItem("pt_tracker_draft_v2:2026-W24-Phase-2-Week-5|2026-06-09|tuesday|pull",
+      JSON.stringify({ version: 1, last_modified_at: "2026-06-09T12:30:00-05:00", log: { "lat-pulldown": { sets: [{ weight_kg: 59, reps: 10, done: true }] } }, sessionNotes: "", cooldown: null }));
+  });
+  await signIn(page, context);
+  await expect(page.locator("#toast")).toContainText(/Unsubmitted workout from Tue .* open that day and tap Submit/);
+});
