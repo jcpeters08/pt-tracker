@@ -178,6 +178,19 @@ describe("/pending/append", () => {
     expect(captures).toHaveLength(2); // failed append PUT + retry PUT
   });
 
+  it("preserves a cardio log with activity notes and no strength sets", async () => {
+    const { env, captures } = await setup();
+    const base = logEntry("2026-11-04", 0, "wednesday", "easy-cardio-+-core");
+    const entry = {
+      ...base,
+      session: { ...base.session, exercises: [], session_notes: "Recumbent bike 20 minutes; core omitted." },
+    };
+
+    const res = await worker.fetch(req(entry), env);
+    expect(res.status).toBe(200);
+    expect(written(captures).entries).toEqual([entry]);
+  });
+
   it("rejects invalid pending entry shapes", async () => {
     const { env, captures } = await setup();
 

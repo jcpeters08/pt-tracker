@@ -231,12 +231,13 @@ test("first wave: workout controls form one accessible mobile flow", async ({ pa
   await expect(page.locator("#workout-top-actions")).toBeHidden();
 
   await page.locator("#day-toggle .day-pill").nth(3).click();
-  await expect(page.locator("#cooldown-card .cd-duration")).toContainText("Legs-day cooldown");
+  await expect(page.locator("#cooldown-card")).toContainText("Trainer note:");
+  await expect(page.locator("#cooldown-card .cd-move")).toHaveCount(0);
   await page.locator("#cd-complete-btn").click();
   expect(await page.evaluate(async () => {
     const { state } = await import("/js/app-context.js");
     return state.cooldownLog?.["2026-08-30|thursday"]?.source_key;
-  })).toBe("legs");
+  })).toBe("routine:2026-W36-Phase-2-Week-17-Progression:thursday");
 });
 
 test("toast is a polite live region that escalates errors to assertive", async ({ page, context }) => {

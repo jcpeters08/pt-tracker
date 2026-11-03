@@ -133,10 +133,17 @@ export function renderCooldown(day) {
     return tn;
   };
 
+  // A routine prescription overrides the generic library and stays visible in
+  // both tabs, so a saved Fitness+ preference cannot hide its restrictions.
+  if (dayCooldownText) {
+    const tn = trainerNote();
+    tn.style.marginBottom = "8px";
+    card.append(tn);
+  }
+
   if (choice === "library") {
-    if (lib) {
+    if (!dayCooldownText && lib) {
       card.append(el("div", { class: "cd-duration", text: `~${lib.duration_minutes} min · ${lib.name}` }));
-      if (dayCooldownText) { const tn = trainerNote(); tn.style.marginBottom = "8px"; card.append(tn); }
       const body = el("div", { class: "cd-body" });
       for (const m of (lib.moves || [])) {
         const img = m.image_url
@@ -149,12 +156,13 @@ export function renderCooldown(day) {
         body.append(el("div", { class: "cd-move" }, el("div", { class: "cd-move-img" }, img), meta));
       }
       card.append(body);
-    } else if (dayCooldownText) {
-      card.append(trainerNote());
-    } else {
+    } else if (!dayCooldownText) {
       card.append(el("div", { class: "cd-body", text: "No cooldown configured for this day." }));
     }
   } else {
+    if (dayCooldownText) {
+      card.append(el("div", { class: "cd-fp-note", text: "Follow the prescription above when choosing a session; skip any conflicting movement." }));
+    }
     const fpName = cdLog.fitnessplus_name || "";
     if (fp?.mindful_cooldown_url) {
       const b = el("div", { class: "cd-body" },
@@ -198,7 +206,9 @@ export function renderCooldown(day) {
         cdLog.completed_at = null; cdLog.type = null;
       } else {
         cdLog.type = choice;
-        cdLog.source_key = choice === "library" ? key : null;
+        cdLog.source_key = choice === "library"
+          ? (dayCooldownText ? `routine:${state.routine.id}:${state.selectedDay}` : key)
+          : null;
         cdLog.completed_at = isoNow();
       }
       hooks.markWorkoutDirty();

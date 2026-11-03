@@ -27,3 +27,16 @@ export function describeIncompleteDoneSet(item) {
   const what = item.bothZero ? "0 weight and 0 reps" : [item.missingWeight && "no weight", item.missingReps && "no reps"].filter(Boolean).join(" and ");
   return `${item.name} set ${item.set} is marked Done but has ${what} — fill it in or un-mark it.`;
 }
+
+// Validate the actual payload after incomplete Done sets have been checked.
+export function sessionContentError(day, session) {
+  if (session.exercises.length) return null;
+  // Cardio lives in session notes; optional core work must not be required to
+  // record it. Other days still need a real completed set.
+  if (/\bcardio\b/i.test(day?.label || "")) {
+    return session.session_notes?.trim()
+      ? null
+      : "Add cardio activity and minutes in Session notes before submitting.";
+  }
+  return "Log at least one set before submitting.";
+}

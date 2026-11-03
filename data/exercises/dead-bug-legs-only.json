@@ -1,0 +1,31 @@
+{
+  "id": "dead-bug-legs-only",
+  "name": "Dead Bug — Legs Only",
+  "primary_muscle": "core",
+  "secondary_muscles": [],
+  "equipment": [],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dead_Bug/1.jpg",
+  "image_source": "yuhonas/free-exercise-db — public domain under the Unlicense; source dataset credited to yuhonas and the original exercises.json contributors.",
+  "image_match": "Dead_Bug — matching alternating leg-extension pattern, verified by complete GitHub folder-tree keyword search, direct HTTP 200 image probes, and visual inspection. The source photo has arms raised; this legs-only variation keeps both arms resting, with the left forearm comfortably supported. The photo is a leg-pattern reference, not the prescribed arm position.",
+  "video_url": "https://www.muscleandstrength.com/exercises/dead-bug",
+  "video_source": "muscleandstrength.com",
+  "video_id": "eEhoSeBFoBk",
+  "video_id_query": "Dead Bug Muscle and Strength legs only regression",
+  "info_url": "https://www.muscleandstrength.com/exercises/dead-bug",
+  "info_source": "muscleandstrength.com",
+  "form_cues": [
+    "Unlike the photo and full demo, keep both arms resting; support the left forearm comfortably.",
+    "Move only the legs; no reaching, squeezing, or pressing with the injured arm.",
+    "Keep your ribs and pelvis steady while breathing normally; shorten the leg reach if your back arches.",
+    "Count one leg extension as one rep; alternate sides evenly."
+  ],
+  "default_load_unit": "reps",
+  "notes": "Legs-only regression of the dead bug. The linked guide describes moving the legs alone as a regression, while its video demonstrates the full arm-and-leg exercise. Follow these supported-arm instructions; this is not forearm rehabilitation.",
+  "instructions": [
+    "Use a mat only if you can get down and back up safely without pushing, gripping, or bearing weight through the left arm. Otherwise skip this exercise.",
+    "Lie on your back. Rest both arms comfortably, supporting the left forearm on a cushion or beside your torso. Do not copy the raised arms in the photo or the arm reach in the video; do not force the elbow straight or rotate the palm up.",
+    "Bring bent knees above the hips with shins roughly parallel to the floor. Keep the ribs and pelvis steady and breathe normally.",
+    "Slowly reach one leg away only as far as you can without arching your lower back or bracing through your arms. Return that leg, then repeat with the other; a smaller reach is fine.",
+    "Each leg extension counts as one rep; alternate sides evenly. Stop if arm symptoms appear, then lower the feet and use your planned exit without pushing through the left hand or elbow."
+  ]
+}

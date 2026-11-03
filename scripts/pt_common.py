@@ -149,6 +149,9 @@ EXERCISE_ALIASES: dict[str, str] = {
     "plate-loaded deadlift machine":         "plate-loaded-deadlift-machine",
     "plate loaded deadlift machine":         "plate-loaded-deadlift-machine",
     "leg press":                             "leg-press",
+    "leg extension":                         "leg-extension",
+    "leg extensions":                        "leg-extension",
+    "seated leg extension":                  "leg-extension",
     "45-degree incline leg press":           "leg-press",
     "45 degree incline leg press":           "leg-press",
     "single-leg leg press":                  "single-leg-leg-press",
@@ -165,6 +168,8 @@ EXERCISE_ALIASES: dict[str, str] = {
     "calf raise":                            "calf-raise",
     "standing calf raise":                   "calf-raise",
     "wall sit":                              "wall-sit",
+    "bodyweight glute bridge":                "bodyweight-glute-bridge",
+    "bodyweight hip bridge":                  "bodyweight-glute-bridge",
     "db glute bridge":                       "db-glute-bridge",
     "dumbbell glute bridge":                 "db-glute-bridge",
     "glute bridge":                          "db-glute-bridge",
@@ -184,6 +189,8 @@ EXERCISE_ALIASES: dict[str, str] = {
     "adductor machine":                      "hip-adductor-machine",
 
     # Core
+    "dead bug legs only":                     "dead-bug-legs-only",
+    "legs only dead bug":                     "dead-bug-legs-only",
     "plank":                                 "plank",
     "side plank":                            "side-plank",
     "butterfly crunch":                      "butterfly-crunch",

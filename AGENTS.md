@@ -38,6 +38,8 @@ See `README.md` for deploy and how-to-log details.
 
 4. **Routine MDs support optional `**Warm-up:**` and `**Cool-down:**` lines** per day. When `Cool-down` is absent, the app falls back to the curated library in `data/cooldowns.json` keyed by muscle group.
 
+   A prescribed cool-down replaces generic library moves and remains visible on the Apple Fitness+ tab. Its completion keeps `type: "library"` but records `source_key: "routine:<routine_id>:<day_of_week>"`; generic fallback completions retain their library key. This prevents generic stretches from contradicting an injury-specific prescription. Covered by `e2e/cooldown.spec.js`.
+
 5. **Pre-dedupe on append**: appends go through the Worker's `POST /pending/append`, which removes any existing pending entry for the same slot before pushing a new one. The web app mirrors the same `mergePending()` logic locally so the just-submitted entry appears immediately. Workouts dedupe by `(date, day_of_week, type)`; recovery by `(date, location)`; routine_edit by `(routine_id, day_of_week, exercise_id)`.
 
 6. **localStorage drafts auto-save** on every Done click, weight input, rep edit, exercise note, session note, cooldown completion, and recovery round change. Keyed by `pt_tracker_draft_v2:<routine_id>|<date>|<day>|<type>` (workout; legacy `v1` keys are swept on boot) or `pt_tracker_recovery_draft_v1:<date>` (recovery). Cleared on successful submit. GC'd at 5 days. **Reload is gated on the current view, not just the draft key:** `state.log` is a single in-memory slot, and `state.workoutHydrationKey` (the `date|day|type` it currently holds) is the gate — `refreshActiveSession()` re-hydrates whenever `workoutHydrationKey` differs from the current key, so returning to a previously-visited day reloads that day's draft. Don't gate hydration on the `hydratedKeys` set; it accumulates every visited key, so reusing it as the gate skips the reload and silently drops in-progress edits.
@@ -75,6 +77,7 @@ See `README.md` for deploy and how-to-log details.
 ## Schema highlights
 
 - **Pending entry types**: `log` (workout), `skip` (didn't do the workout), `recovery` (sauna/plunge), `routine_edit` (in-app target tweak — rewrites a cell in the Weekly Plan MD on next sync)
+- **Cardio-only logs:** a planned day whose label contains the word `Cardio` may submit with `exercises: []` when session notes describe the completed activity and minutes. Other workout days still require a completed set, and incomplete Done sets remain blocked. Preserve these notes-only logs through sync; they count as completed sessions with zero strength volume, not fabricated reps or skipped workouts.
 - **Recovery has `rounds_detail`** — array of `{round, sauna_min, plunge_min}`. Summary fields (`rounds`, `sauna_min`, `plunge_min`, `total_min`) are derived from it. Backward-compatible with old uniform-round entries.
 - **Workout logs have an optional `cooldown` field**: `{type: "library"|"fitnessplus", source_key, fitnessplus_name, completed_at}` — populated when user clicks "Mark cool-down complete" in the app. Renders as a `## Cool-down` section in vault MD.
 - **Weight rendering in vault MD**: `_format_weight` in `sync.py` outputs `"<lbs> lbs (<kg> kg)"` (lbs primary, integer-rounded). Routine MDs use the same format.

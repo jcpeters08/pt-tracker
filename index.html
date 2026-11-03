@@ -934,7 +934,7 @@ import { ensureRecoveryRounds, renderRecoveryRounds, renderRecoverySummary } fro
 import { state, hooks, DAY_LABELS, todayKey, CD_CHOICE_KEY } from "./js/app-context.js";
 import { dayLabel, renderDayToggle, renderCooldown, cooldownStateKey, renderExercises } from "./js/workout.js";
 import { renderRestBar } from "./js/rest-bar.js";
-import { findIncompleteDoneSets, describeIncompleteDoneSet } from "./js/session-check.js";
+import { findIncompleteDoneSets, describeIncompleteDoneSet, sessionContentError } from "./js/session-check.js";
 import { keyboardInset, isKeyboardOpen, isTextEntry } from "./js/viewport.js";
 "use strict";
 
@@ -2034,8 +2034,9 @@ async function submitSession() {
     return;
   }
   const payload = buildSessionPayload(state);
-  if (!payload.session.exercises.length) {
-    toast("Log at least one set before submitting.", "err");
+  const contentError = sessionContentError(state.routine?.days?.[state.selectedDay], payload.session);
+  if (contentError) {
+    toast(contentError, "err");
     btn.disabled = false;
     state.submitting = false;
     return;

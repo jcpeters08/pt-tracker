@@ -1,0 +1,33 @@
+{
+  "id": "bodyweight-glute-bridge",
+  "name": "Bodyweight Glute Bridge",
+  "primary_muscle": "glutes",
+  "secondary_muscles": [
+    "hamstrings"
+  ],
+  "equipment": [],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butt_Lift_Bridge/1.jpg",
+  "image_source": "yuhonas/free-exercise-db — public domain under the Unlicense; source dataset credited to yuhonas and the original exercises.json contributors.",
+  "image_match": "Butt_Lift_Bridge — exact unloaded, floor-supported hip bridge. Verified by complete GitHub folder-tree keyword search, direct HTTP 200 image probes, and visual inspection. The model's arms rest on the floor; the protected left arm may rest on a cushion instead and must not press into the floor.",
+  "video_url": "https://www.muscleandstrength.com/exercises/bodyweight-glute-bridge",
+  "video_source": "muscleandstrength.com",
+  "video_id": "mm4wbmtDrUc",
+  "video_id_query": "Bodyweight Glute Bridge Muscle and Strength",
+  "info_url": "https://www.muscleandstrength.com/exercises/bodyweight-glute-bridge",
+  "info_source": "muscleandstrength.com",
+  "form_cues": [
+    "Keep the left forearm comfortably supported; no pressing into the mat.",
+    "Lift with your legs and glutes; use no weight, band, or arm drive.",
+    "Stop at a comfortable straight line from shoulders to knees; do not arch the lower back.",
+    "Skip if getting down or back up requires the injured arm."
+  ],
+  "default_load_unit": "reps",
+  "notes": "Unloaded bridge, distinct from the existing dumbbell glute bridge. Left-arm support and safe floor transfers are required; this is not an arm rehabilitation exercise.",
+  "instructions": [
+    "Use a mat only if you can get down and back up safely without pushing, gripping, or bearing weight through the left arm. Otherwise skip this exercise.",
+    "Lie on your back with knees bent and feet about hip-width apart. Rest the left forearm comfortably on a cushion or beside your torso without pressure through it; do not force the elbow straight or the palm upward.",
+    "Exhale gently and lift the hips using the glutes and feet. Keep both arms relaxed; do not press either hand or forearm into the mat to assist.",
+    "Pause briefly at a comfortable height without arching your lower back, then lower the hips slowly. Stop if the position or movement brings on arm symptoms.",
+    "Finish by returning your hips to the mat, then use your planned safe exit without pushing off with the left hand or elbow."
+  ]
+}

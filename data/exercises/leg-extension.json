@@ -1,0 +1,33 @@
+{
+  "id": "leg-extension",
+  "name": "Leg Extension",
+  "primary_muscle": "quads",
+  "secondary_muscles": [],
+  "equipment": [
+    "machine"
+  ],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/0.jpg",
+  "image_source": "yuhonas/free-exercise-db — public domain under the Unlicense; source dataset credited to yuhonas and the original exercises.json contributors.",
+  "image_match": "Leg_Extensions — exact machine movement. Verified by complete GitHub folder-tree keyword search, direct HTTP 200 image probes, and visual inspection. The model grips the handles; for the left-forearm-protected variation, follow the supported-arm instructions instead and skip machines that require left-hand gripping for safe use.",
+  "video_url": "https://www.muscleandstrength.com/exercises/leg-extension.html",
+  "video_source": "muscleandstrength.com",
+  "video_id": "0fl1RRgJ83I",
+  "video_id_query": "Leg Extension Muscle and Strength",
+  "info_url": "https://www.muscleandstrength.com/exercises/leg-extension.html",
+  "info_source": "muscleandstrength.com",
+  "form_cues": [
+    "Keep the left forearm comfortably supported and relaxed; do not grip or push with it.",
+    "Align your knees with the machine pivot; keep hips and back supported.",
+    "Use a light load you can control without hauling on the handles.",
+    "The demo shows ordinary handle use; skip if this machine needs both hands for safe stabilization."
+  ],
+  "default_load_unit": "kg",
+  "notes": "Lower-body exercise with a protected left-arm setup, not forearm rehabilitation. No prescribed resistance or stretching for the injured arm.",
+  "instructions": [
+    "Begin only if you can set up, enter, and leave the machine safely without pushing, gripping, or bearing weight through the left arm. Ask staff to adjust the seat, pad, and pin if needed; skip if safe use requires both hands.",
+    "Sit against the backrest with knees aligned to the pivot and the shin pad above the ankles. Keep the left forearm supported in a comfortable position; do not force the elbow straight or turn the palm up.",
+    "With your torso steady, slowly straighten the knees through a comfortable range and briefly pause. Avoid snapping into lockout or lifting your hips from the seat.",
+    "Lower the pad smoothly. Breathe normally, and stop the set if arm symptoms appear or maintaining your position requires left-hand grip.",
+    "Let the weight stack settle before leaving. Use the same protected-arm setup for the exit; do not push off the seat with the left hand."
+  ]
+}

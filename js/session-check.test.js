@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { findIncompleteDoneSets, describeIncompleteDoneSet } from "./session-check.js";
+import { findIncompleteDoneSets, describeIncompleteDoneSet, sessionContentError } from "./session-check.js";
 
 const base = () => ({
   selectedDay: "monday",
@@ -9,6 +9,30 @@ const base = () => ({
     a: { sets: [{ done: true, weight_kg: 10, reps: 8 }, { done: true, weight_kg: 10, reps: null }] },
     b: { sets: [{ done: false, weight_kg: null, reps: null }, { done: true, weight_kg: null, reps: 5 }] },
   },
+});
+
+describe("sessionContentError", () => {
+  it("allows a cardio day to record actual activity in notes without invented sets", () => {
+    expect(sessionContentError({ label: "Easy Cardio + Core A" }, {
+      exercises: [], session_notes: "Recumbent bike 20 minutes; forearm comfortable; core omitted.",
+    })).toBeNull();
+  });
+
+  it.each(["", "   \n "])("refuses a cardio-only submission with blank notes (%j)", notes => {
+    expect(sessionContentError({ label: "CARDIO" }, { exercises: [], session_notes: notes }))
+      .toBe("Add cardio activity and minutes in Session notes before submitting.");
+  });
+
+  it.each(["Lower A", "Push", "Cardiovascular strength"])("still requires a completed set for %s", label => {
+    expect(sessionContentError({ label }, { exercises: [], session_notes: "Some notes" }))
+      .toBe("Log at least one set before submitting.");
+  });
+
+  it("allows actual completed sets without requiring cardio notes", () => {
+    expect(sessionContentError({ label: "Cardio + Core" }, {
+      exercises: [{ exercise_id: "dead-bug-legs-only", sets: [{ weight_kg: 0, reps: 12 }] }], session_notes: "",
+    })).toBeNull();
+  });
 });
 
 describe("findIncompleteDoneSets", () => {
