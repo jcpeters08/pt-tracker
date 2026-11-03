@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-03T00:45:57Z",
+  "generated_at": "2026-11-03T00:53:56Z",
   "routines": [
     "2026-W18-CDMX-Phase-1-Closeout",
     "2026-W20-Phase-2-Launch-Reentry",
@@ -25,7 +25,8 @@
     "2026-W41-Phase-2-Week-22-Rebuild",
     "2026-W42-Phase-2-Week-23-Full-Load",
     "2026-W43-Phase-2-Week-24-Progression",
-    "2026-W44-Phase-2-Week-25-Sunday-Start"
+    "2026-W44-Phase-2-Week-25-Sunday-Start",
+    "2026-W45-Phase-2-Week-26-Forearm-Protection"
   ],
   "logs": [
     "2026-04-13-monday-push",
@@ -146,6 +147,7 @@
     "barbell-hip-thrust",
     "barbell-rdl",
     "bent-over-db-row",
+    "bodyweight-glute-bridge",
     "butterfly-crunch",
     "cable-chest-fly",
     "cable-face-pull",
@@ -163,6 +165,7 @@
     "db-skullcrusher",
     "db-tricep-kickback",
     "db-walking-lunge",
+    "dead-bug-legs-only",
     "dual-rope-straight-arm-pulldown",
     "flat-db-bench-press",
     "hammer-curl",
@@ -172,6 +175,7 @@
     "inverted-row",
     "iso-lateral-high-row",
     "lat-pulldown",
+    "leg-extension",
     "leg-press",
     "machine-squat",
     "overhead-cable-tricep-extension",
@@ -197,5 +201,5 @@
     "v-up",
     "wall-sit"
   ],
-  "latest_routine_id": "2026-W44-Phase-2-Week-25-Sunday-Start"
+  "latest_routine_id": "2026-W45-Phase-2-Week-26-Forearm-Protection"
 }

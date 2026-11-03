@@ -1,0 +1,136 @@
+{
+  "id": "2026-W45-Phase-2-Week-26-Forearm-Protection",
+  "name": "W45 — Forearm Protection · Tue/Wed/Thu/Fri",
+  "phase": "2",
+  "start_date": "2026-11-02",
+  "end_date": "2026-11-08",
+  "source_md": "Weekly Plans/2026-W45-Phase-2-Week-26-Forearm-Protection.md",
+  "days": {
+    "monday": {
+      "label": "Rest",
+      "warmup": "",
+      "cooldown": "",
+      "exercises": []
+    },
+    "tuesday": {
+      "label": "Lower A (Quads / Hamstrings / Glutes)",
+      "warmup": "5–7 min easy recumbent bike or flat walk, left arm relaxed. No rowing, bands or arm-supported drills. Continue only if symptoms are stable/improving and setup is comfortable without left-hand gripping. One very light practice set per machine; keep at least 4 reps in reserve. Stop any movement that provokes the forearm.",
+      "cooldown": "3–5 min easy flat walk, then comfortable seated breathing with the left arm supported. Follow clinician-directed gentle elbow movement only. No forearm stretches, doorway stretches, quadruped positions, planks or generic video substitutions. No pressure through the left hand/elbow.",
+      "exercises": [
+        {
+          "exercise_id": "leg-extension",
+          "target_weight_kg": 9.07,
+          "target_weight_raw": "20 lbs (9.07 kg)",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "Provisional light starting pin, no prior baseline. Use the lightest comfortable pin and enter its actual weight. Left arm relaxed; do not copy pictured handle gripping. Skip if safe setup or stabilization needs the left hand. Keep 4+ reps in reserve; no increases this week."
+        },
+        {
+          "exercise_id": "seated-leg-curl",
+          "target_weight_kg": 22.68,
+          "target_weight_raw": "50 lbs (22.68 kg)",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "Reduced from prior 75–85-lb work. Thigh pad must stabilize you without left-hand gripping; this week's cue overrides the generic handle-grip instruction. If the machine requires both hands, skip it. Reduce weight for any strain; 4+ reps in reserve."
+        },
+        {
+          "exercise_id": "hip-abductor-machine",
+          "target_weight_kg": 27.22,
+          "target_weight_raw": "60 lbs (27.22 kg)",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "Reduced from prior 95-lb work. Comfortable middle range, no torso rocking. Left arm relaxed, no handle grip or arm brace; skip if needed for safe use. Stop if hip/groin pain returns. No progression this week."
+        },
+        {
+          "exercise_id": "bodyweight-glute-bridge",
+          "target_weight_kg": 0.0,
+          "target_weight_raw": "bodyweight",
+          "target_reps": 10,
+          "target_sets": 2,
+          "notes": "No dumbbell, barbell or band. Left arm comfortably supported, no pressing into mat. Small comfortable lift through the feet, breathe normally. Omit if getting down/up needs the injured arm."
+        }
+      ]
+    },
+    "wednesday": {
+      "label": "Easy Cardio + Core A",
+      "warmup": "Cardio is today's main block: 20 min recumbent bike or flat walking total = 5 min very easy + 12 min easy steady pace + 3 min easing down. Left arm relaxed; no handle gripping, railing support or rowing. RPE 2–3, full-sentence conversation. Then the short core block below if floor entry/exit is safe. Stop for forearm symptoms; record actual cardio minutes in session notes.",
+      "cooldown": "The 3-min easing-down phase is already included in the cardio block before core. Finish with seated relaxed breathing, left arm supported. No loaded arm work, arm stretches, floor support on elbows/hands or generic cooldown video substitutions.",
+      "exercises": [
+        {
+          "exercise_id": "dead-bug-legs-only",
+          "target_weight_kg": 0.0,
+          "target_weight_raw": "bodyweight",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "12 alternating repetitions total = 6 per leg. Arms rest comfortably throughout; ignore raised arms in the reference image. Start with a small bent-knee heel tap, only as far as your back stays comfortable. No left-arm reach or pressure into floor. Omit if setup or movement provokes the forearm. Record 20-min easy cardio and symptom response in session notes."
+        }
+      ]
+    },
+    "thursday": {
+      "label": "Lower B (Repeat Comfortable Loads)",
+      "warmup": "5–7 min easy bike or flat walk with left arm relaxed. Review Tuesday's later-day and next-morning forearm response before repeating anything. One very light practice set per machine. If symptoms worsened, omit the provoking movement; do not compensate with extra sets. No painful gripping or arm brace.",
+      "cooldown": "3–5 min easy flat walk and comfortable seated breathing with left arm supported. No forced forearm stretch, hand-held quad stretch, quadruped position or arm-supported cooldown. Follow only the clinician's gentle elbow-motion guidance.",
+      "exercises": [
+        {
+          "exercise_id": "seated-leg-curl",
+          "target_weight_kg": 22.68,
+          "target_weight_raw": "50 lbs (22.68 kg)",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "Repeat Tuesday's comfortable actual load, or less; no increase. No left-hand handle grip. Skip if correct operation/stability needs both hands or Tuesday increased forearm symptoms. Keep 4+ reps in reserve."
+        },
+        {
+          "exercise_id": "leg-extension",
+          "target_weight_kg": 9.07,
+          "target_weight_raw": "20 lbs (9.07 kg)",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "Repeat Tuesday's comfortable starting pin, or less; enter actual weight. Left arm relaxed, no copying the image's handle grip. Skip if setup or stabilization needs the left hand. No grinding or load progression."
+        },
+        {
+          "exercise_id": "hip-abductor-machine",
+          "target_weight_kg": 27.22,
+          "target_weight_raw": "60 lbs (27.22 kg)",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "Same comfortable range and load as Tuesday, or less. No left-arm grip/brace or torso rocking; skip if required for safety. Stop for any returning hip/groin pain."
+        },
+        {
+          "exercise_id": "bodyweight-glute-bridge",
+          "target_weight_kg": 0.0,
+          "target_weight_raw": "bodyweight",
+          "target_reps": 10,
+          "target_sets": 2,
+          "notes": "Repeat only if Tuesday and the following morning were comfortable. No added load and no pushing into the mat with the arm. Safe transitions without left-hand/elbow support are required."
+        }
+      ]
+    },
+    "friday": {
+      "label": "Easy Cardio + Core B",
+      "warmup": "20 min recumbent bike or flat walking total = 5 min very easy + 12 min easy steady pace + 3 min easing down. Repeat Wednesday's comfortable duration; shorten if fatigue or symptoms increased. Keep the left arm relaxed and supported as needed; no painful grip or railing support. RPE 2–3, no intervals. Then the short core block if safe; note actual cardio minutes and symptoms.",
+      "cooldown": "The 3-min easing-down phase is already included in the cardio block before core. Finish with seated relaxed breathing, left arm supported. No forearm stretch, loaded arms, arm-supported floor positions or generic video substitutions. Review symptoms before planning next week.",
+      "exercises": [
+        {
+          "exercise_id": "dead-bug-legs-only",
+          "target_weight_kg": 0.0,
+          "target_weight_raw": "bodyweight",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "6 per leg, alternating, 12 total. Repeat Wednesday's comfortable range; arms remain resting and supported, unlike the raised-arm reference image. No arm press into mat. Skip for unsafe floor transitions or forearm symptoms. Cardio duration and symptom response belong in session notes."
+        }
+      ]
+    },
+    "saturday": {
+      "label": "Rest",
+      "warmup": "",
+      "cooldown": "",
+      "exercises": []
+    },
+    "sunday": {
+      "label": "Rest",
+      "warmup": "",
+      "cooldown": "",
+      "exercises": []
+    }
+  }
+}
