@@ -1,4 +1,92 @@
 {
   "format_note": "Append-only inbox written by the web app. Daily scheduled task drains entries[] into vault MD files at Workout Log/YYYY-MM-DD-day-type.md and into data/logs/*.json, then resets to []. Schema: {type: 'log', submitted_at: ISO8601, session: {…full log object…}}",
-  "entries": []
+  "entries": [
+    {
+      "type": "log",
+      "submitted_at": "2026-11-04T02:39:56.647Z",
+      "session": {
+        "date": "2026-11-03",
+        "submitted_at": "2026-11-04T02:39:56.647Z",
+        "day_of_week": "tuesday",
+        "type": "lower-a",
+        "muscle_groups": [
+          "quads",
+          "hamstrings",
+          "glutes"
+        ],
+        "routine_id": "2026-W45-Phase-2-Week-26-Forearm-Protection",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "leg-extension",
+            "display_name": "Leg Extension",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 18.14,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 18.14,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 18.14,
+                "reps": 15
+              }
+            ],
+            "notes": "When entering it would just to the bottom of the screen and couldn’t see what I’m typing . Also the time timer disappeared "
+          },
+          {
+            "exercise_id": "seated-leg-curl",
+            "display_name": "Seated Leg Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 27.22,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 27.22,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 27.22,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "hip-abductor-machine",
+            "display_name": "Hip Abductor Machine",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 45.36,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 45.36,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 45.36,
+                "reps": 15
+              }
+            ],
+            "notes": "And adduction  for 80 x 12 x 3"
+          }
+        ],
+        "cooldown": null,
+        "session_notes": ""
+      }
+    }
+  ]
 }
