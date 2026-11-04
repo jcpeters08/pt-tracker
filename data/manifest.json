@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-03T00:53:56Z",
+  "generated_at": "2026-11-04T03:11:07Z",
   "routines": [
     "2026-W18-CDMX-Phase-1-Closeout",
     "2026-W20-Phase-2-Launch-Reentry",
@@ -120,7 +120,8 @@
     "2026-10-21-wednesday-legs",
     "2026-10-22-thursday-upper-hybrid",
     "2026-10-23-friday-lower-hybrid",
-    "2026-10-27-monday-pull"
+    "2026-10-27-monday-pull",
+    "2026-11-03-tuesday-lower-a"
   ],
   "recovery_logs": [
     "2026-05-14-embrace-north",
@@ -187,6 +188,8 @@
     "plate-loaded-row",
     "plate-loaded-shoulder-press",
     "pull-up",
+    "right-arm-chest-supported-row",
+    "right-arm-machine-chest-press",
     "rope-tricep-pushdown",
     "seated-cable-row",
     "seated-db-shoulder-press",

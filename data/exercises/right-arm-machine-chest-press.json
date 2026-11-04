@@ -1,0 +1,30 @@
+{
+  "id": "right-arm-machine-chest-press",
+  "name": "Right-Arm Machine Chest Press",
+  "primary_muscle": "chest",
+  "secondary_muscles": ["triceps", "front-delts"],
+  "equipment": ["machine"],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Chest_Press/0.jpg",
+  "image_source": "yuhonas/free-exercise-db — public domain under the Unlicense (LICENSE.md); attribution to yuhonas and the source exercise-data contributors.",
+  "image_match": "Leverage_Chest_Press — verified by complete GitHub folder-tree keyword search, direct HTTP 200 probes for 0.jpg and 1.jpg, and visual inspection. The photo shows a supported seated lever chest press using BOTH arms. It is an equipment/movement reference only: this prescribed variation uses the RIGHT arm while the left arm rests completely uninvolved. Machine_Bench_Press was also inspected; the Leverage_Chest_Press image better depicts separate work arms. The photo does not establish suitability or availability of a particular gym machine.",
+  "video_url": "https://cdn.muscleandstrength.com/exercises/hammer-strength-bench-press.html",
+  "video_source": "muscleandstrength.com — general bilateral machine-press demonstration; follow the right-arm-only instructions here instead of copying both-arm use.",
+  "video_id_query": "supported independent arm machine chest press right arm only",
+  "info_url": "https://www.lifefitness.com.au/commercial/iso-lateral-chest-press-mtcp",
+  "info_source": "Life Fitness — example of a chest press with separate weight stacks and independent work arms; not confirmation of equipment at this gym.",
+  "form_cues": [
+    "RIGHT arm only; the left arm rests comfortably and never grips, pushes, or braces.",
+    "Use only a supported machine approved for independent one-arm operation; ask staff to check setup.",
+    "Keep your back against the pad and torso still. Skip if staying stable needs the left arm.",
+    "Choose a light comfortable resistance on the actual machine; stop well before straining."
+  ],
+  "default_load_unit": "kg",
+  "notes": "Conditional right-side variation during left-forearm protection, not clearance to load the injured arm. No starting weight is assumed. A suitable machine has not been confirmed at this gym. Prefer a selectorized machine; ask staff to handle adjustments or any plates. Photo and linked demonstration use both arms; do not copy their left-hand position. Do not substitute a Smith machine, dumbbells, or an unsupported cable press.",
+  "instructions": [
+    "Ask staff to confirm that the machine allows independent right-arm pressing and safe entry, setup, release, and exit without using the left hand or elbow. Skip if it requires both handles or left-arm stabilization.",
+    "Have the seat and resistance adjusted so the right handle starts near mid-chest and your back is supported. Do not carry, load, or unload plates with the left arm. Use a light comfortable resistance and record the actual weight.",
+    "Rest the left arm comfortably in your lap or on a non-moving support, clear of the moving equipment. It stays relaxed throughout; do not hold the unused handle or press into the seat.",
+    "With feet planted and torso against the pad, press the right handle forward smoothly through a comfortable range. Avoid twisting, breath-holding, or grinding; keep at least four good repetitions in reserve.",
+    "Return the right handle slowly and fully settle the machine before exiting. Stop for any left-forearm symptoms or need to brace with the left arm. Omit the movement next time if symptoms are worse later that day or the next morning."
+  ]
+}

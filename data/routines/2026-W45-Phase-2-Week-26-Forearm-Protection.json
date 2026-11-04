@@ -52,17 +52,33 @@
       ]
     },
     "wednesday": {
-      "label": "Easy Cardio + Core A",
-      "warmup": "Cardio is today's main block: 20 min recumbent bike or flat walking total = 5 min very easy + 12 min easy steady pace + 3 min easing down. Left arm relaxed; no handle gripping, railing support or rowing. RPE 2–3, full-sentence conversation. Then the short core block below if floor entry/exit is safe. Stop for forearm symptoms; record actual cardio minutes in session notes.",
-      "cooldown": "The 3-min easing-down phase is already included in the cardio block before core. Finish with seated relaxed breathing, left arm supported. No loaded arm work, arm stretches, floor support on elbows/hands or generic cooldown video substitutions.",
+      "label": "Cardio + Right-Arm Upper + Core A",
+      "warmup": "20 min easy recumbent bike or flat walking total = 5 min very easy + 12 min steady + 3 min easing down. RPE 2–3; left arm relaxed, no gripping or railing support. Then optional supported RIGHT-arm machine work only if staff confirms safe independent-arm operation and all setup/repetitions leave the left arm idle. Choose an easy actual load after a very light practice set; leave at least 4 reps in reserve. If either machine is unsuitable, omit it. Record actual cardio minutes and symptom response.",
+      "cooldown": "The 3-min easing-down phase is already included in the cardio block. Finish with seated relaxed breathing, left arm supported. No left-arm stretches, resistance, hand/elbow-supported floor positions or generic cooldown substitutions.",
       "exercises": [
+        {
+          "exercise_id": "right-arm-machine-chest-press",
+          "target_weight_kg": null,
+          "target_weight_raw": "Choose easy actual pin",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "OPTIONAL, RIGHT ONLY. Staff must confirm independent one-arm use; back supported, no trunk rotation, left arm rests without gripping or bracing. Skip if setup or safe use requires the left arm; no Smith/dumbbell substitute. Perform 10–12 controlled reps with 4+ in reserve, enter actual load/reps, no progression. Image shows bilateral reference; do not copy left-arm use. Stop for any forearm increase."
+        },
+        {
+          "exercise_id": "right-arm-chest-supported-row",
+          "target_weight_kg": null,
+          "target_weight_raw": "Choose easy actual pin",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "OPTIONAL, RIGHT ONLY. Independent machine arm and chest support required; left arm rests, never holds the spare handle or seat. Ask for setup help; skip if left-arm support or torso twisting is needed. Perform 10–12 controlled reps with 4+ in reserve, log actual load/reps, no progression. Image shows bilateral reference; written variation controls. Omit if symptoms rise during or after."
+        },
         {
           "exercise_id": "dead-bug-legs-only",
           "target_weight_kg": 0.0,
           "target_weight_raw": "bodyweight",
           "target_reps": 12,
           "target_sets": 2,
-          "notes": "12 alternating repetitions total = 6 per leg. Arms rest comfortably throughout; ignore raised arms in the reference image. Start with a small bent-knee heel tap, only as far as your back stays comfortable. No left-arm reach or pressure into floor. Omit if setup or movement provokes the forearm. Record 20-min easy cardio and symptom response in session notes."
+          "notes": "Optional if floor entry/exit is safe without left-hand/elbow support. 12 alternating reps total = 6 per leg; comfortable bent-knee heel taps with both arms resting. No arm reach or pressure into floor. Skip if setup or movement provokes the forearm."
         }
       ]
     },
@@ -106,17 +122,33 @@
       ]
     },
     "friday": {
-      "label": "Easy Cardio + Core B",
-      "warmup": "20 min recumbent bike or flat walking total = 5 min very easy + 12 min easy steady pace + 3 min easing down. Repeat Wednesday's comfortable duration; shorten if fatigue or symptoms increased. Keep the left arm relaxed and supported as needed; no painful grip or railing support. RPE 2–3, no intervals. Then the short core block if safe; note actual cardio minutes and symptoms.",
-      "cooldown": "The 3-min easing-down phase is already included in the cardio block before core. Finish with seated relaxed breathing, left arm supported. No forearm stretch, loaded arms, arm-supported floor positions or generic video substitutions. Review symptoms before planning next week.",
+      "label": "Cardio + Right-Arm Upper + Core B",
+      "warmup": "20 min easy recumbent bike or flat walking total = 5 min very easy + 12 min steady + 3 min easing down. RPE 2–3; left arm relaxed, no gripping or railing support. Before repeating the optional upper block, confirm Wednesday caused no later-day or next-morning increase in forearm symptoms. Then optional supported RIGHT-arm machine work only if staff confirms safe independent-arm operation and all setup/repetitions leave the left arm idle. Choose an easy actual load after a very light practice set; leave at least 4 reps in reserve. If either machine is unsuitable, omit it. Record actual cardio minutes and symptom response.",
+      "cooldown": "The 3-min easing-down phase is already included in the cardio block. Finish with seated relaxed breathing, left arm supported. No left-arm stretches, resistance, hand/elbow-supported floor positions or generic cooldown substitutions.",
       "exercises": [
+        {
+          "exercise_id": "right-arm-machine-chest-press",
+          "target_weight_kg": null,
+          "target_weight_raw": "Choose easy actual pin",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "OPTIONAL, RIGHT ONLY. Staff must confirm independent one-arm use; back supported, no trunk rotation, left arm rests without gripping or bracing. Skip if setup or safe use requires the left arm; no Smith/dumbbell substitute. Perform 10–12 controlled reps with 4+ in reserve, enter actual load/reps, no progression. Image shows bilateral reference; do not copy left-arm use. Stop for any forearm increase."
+        },
+        {
+          "exercise_id": "right-arm-chest-supported-row",
+          "target_weight_kg": null,
+          "target_weight_raw": "Choose easy actual pin",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "OPTIONAL, RIGHT ONLY. Independent machine arm and chest support required; left arm rests, never holds the spare handle or seat. Ask for setup help; skip if left-arm support or torso twisting is needed. Perform 10–12 controlled reps with 4+ in reserve, log actual load/reps, no progression. Image shows bilateral reference; written variation controls. Omit if symptoms rise during or after."
+        },
         {
           "exercise_id": "dead-bug-legs-only",
           "target_weight_kg": 0.0,
           "target_weight_raw": "bodyweight",
           "target_reps": 12,
           "target_sets": 2,
-          "notes": "6 per leg, alternating, 12 total. Repeat Wednesday's comfortable range; arms remain resting and supported, unlike the raised-arm reference image. No arm press into mat. Skip for unsafe floor transitions or forearm symptoms. Cardio duration and symptom response belong in session notes."
+          "notes": "Optional if floor entry/exit is safe without left-hand/elbow support. 12 alternating reps total = 6 per leg; comfortable bent-knee heel taps with both arms resting. No arm reach or pressure into floor. Skip if setup or movement provokes the forearm."
         }
       ]
     },

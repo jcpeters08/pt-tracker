@@ -1,0 +1,116 @@
+{
+  "id": "2026-11-03-tuesday-lower-a",
+  "date": "2026-11-03",
+  "day_of_week": "tuesday",
+  "type": "lower-a",
+  "muscle_groups": [
+    "quads",
+    "hamstrings",
+    "glutes"
+  ],
+  "phase": "2",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "leg-extension",
+      "display_name": "Leg Extension",
+      "weight_raw": "40 lbs (18.1 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 18.14,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 18.14,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 18.14,
+          "reps": 15
+        }
+      ],
+      "notes": "When entering it would just to the bottom of the screen and couldn’t see what I’m typing . Also the time timer disappeared"
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "display_name": "Seated Leg Curl",
+      "weight_raw": "60 lbs (27.2 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 27.22,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 27.22,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 27.22,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "hip-abductor-machine",
+      "display_name": "Hip Abductor Machine",
+      "weight_raw": "100 lbs (45.4 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 45.36,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 45.36,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 45.36,
+          "reps": 15
+        }
+      ],
+      "notes": "And adduction  for 80 x 12 x 3"
+    },
+    {
+      "exercise_id": "hip-adductor-machine",
+      "display_name": "Hip Adductor Machine",
+      "weight_raw": "80 lbs (36.3 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 36.29,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 36.29,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 36.29,
+          "reps": 12
+        }
+      ],
+      "notes": "Recorded from the submitted hip-abductor note: And adduction  for 80 x 12 x 3"
+    }
+  ],
+  "cooldown": null,
+  "session_notes": "",
+  "submitted_at": "2026-11-04T02:39:56.647Z",
+  "source_md": "Workout Log/2026-11-03-Tuesday-Lower-A.md"
+}

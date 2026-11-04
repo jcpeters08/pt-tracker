@@ -1,0 +1,31 @@
+{
+  "id": "right-arm-chest-supported-row",
+  "name": "Right-Arm Chest-Supported Row",
+  "primary_muscle": "back",
+  "secondary_muscles": ["biceps", "rear-delts"],
+  "equipment": ["machine"],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Iso_Row/0.jpg",
+  "image_source": "yuhonas/free-exercise-db — public domain under the Unlicense (LICENSE.md); attribution to yuhonas and the source exercise-data contributors.",
+  "image_match": "Leverage_Iso_Row — verified by complete GitHub folder-tree keyword search, direct HTTP 200 probes for 0.jpg and 1.jpg, and visual inspection. The photo shows a seated chest-supported lever row using BOTH arms. It is an equipment/movement reference only: this variation uses the RIGHT arm while the left arm rests completely uninvolved. Do not copy the pictured left-hand grip. The photo does not establish suitability or availability of a particular gym machine.",
+  "video_url": "https://www.youtube.com/watch?v=2ONPJj4Gvm8",
+  "video_source": "Life Fitness / Hammer Strength — Iso-Lateral Row, general equipment demonstration; follow the right-arm-only instructions here.",
+  "video_id": "2ONPJj4Gvm8",
+  "video_id_query": "Iso-Lateral Row Hammer Strength Plate Loaded",
+  "info_url": "https://www.lifefitness.com/en-us/catalog/strength-training/plate-loaded/plate-loaded-iso-lateral-row",
+  "info_source": "Life Fitness / Hammer Strength — independent work arms and chest support; example equipment, not confirmation of availability at this gym.",
+  "form_cues": [
+    "RIGHT arm only; keep the left arm resting and clear of moving parts.",
+    "Chest stays on the pad. No left-hand handle grip, seat grip, or counter-bracing.",
+    "Use only a machine that supports safe independent one-arm rowing; ask staff to check it.",
+    "Pull and return smoothly with an easy load; do not rotate or lean away from the chest pad."
+  ],
+  "default_load_unit": "kg",
+  "notes": "Conditional right-side variation during left-forearm protection, not clearance for left-arm pulling. No starting weight is assumed. A suitable machine has not been confirmed at this gym. Prefer selectorized equipment; staff must help with setup or plates if needed. The reference photo/video may show bilateral work; keep the left hand off all handles. Do not substitute an unsupported cable row, dumbbell row, rower, or pulldown.",
+  "instructions": [
+    "Ask staff to confirm independent right-arm operation and a stable chest-supported position without left-arm assistance. Skip if the machine instructions require the other hand on a handle or support, or if entry and exit need the left arm.",
+    "Adjust the seat and chest pad with staff help as needed so the right handle is reachable without lifting your chest off the pad. Select a light comfortable resistance and record the actual weight; never use the left arm to load or unload plates.",
+    "Place your feet securely and rest the left arm comfortably in your lap or on a non-moving support away from the mechanism. Do not grip the unused handle or brace through the left hand or elbow.",
+    "Pull the right handle toward your torso with a controlled elbow bend while your chest stays on the pad. Keep your torso facing forward and stop well before straining, leaving at least four good repetitions in reserve.",
+    "Return slowly without twisting or reaching beyond a comfortable position. Settle the machine before exiting. Stop for left-forearm symptoms or any need for left-arm support; omit the movement next time if symptoms are worse later that day or the next morning."
+  ]
+}
