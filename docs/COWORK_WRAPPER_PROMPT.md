@@ -1,5 +1,7 @@
 # Cowork wrapper prompt — paste-once into the Cowork task UI
 
+**Historical:** the schedule is documented as disabled since 2026-06-21; before re-enabling, reconcile this wrapper's disposable-checkout routing with `docs/COWORK_SYNC_TASK.md` and `PT_TRACKER_REPO_ROOT` (changing directories alone does not redirect `sync.py`).
+
 This is the **only** thing that lives inside the Cowork task definition itself. It's a thin wrapper: prepare a disposable Git checkout under `/tmp`, then read `docs/COWORK_SYNC_TASK.md` from that checkout and execute. Everything else lives in the repo, version-controlled, and edits land automatically on the next run.
 
 **Paste the contents of the fenced block below into the Cowork task `pt-tracker-daily-sync`. After that, never paste again unless this file itself changes** (e.g. mounted source path moves, disposable checkout path changes, bridge invocation changes, or you want to point Cowork at a different instructions file).

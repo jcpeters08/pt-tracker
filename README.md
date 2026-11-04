@@ -1,6 +1,6 @@
 # 🏋️ PT Tracker
 
-Personal workout tracker — static web app on GitHub Pages backed by JSON in this repo, with the Obsidian vault as source of truth and a daily sync script that closes the loop.
+Personal workout tracker — static web app on GitHub Pages backed by JSON in this repo, with the Obsidian vault as source of truth and an on-demand sync script that closes the loop.
 
 **Live app:** https://jcpeters08.github.io/pt-tracker/
 **Reports:** https://jcpeters08.github.io/pt-tracker/reports.html
@@ -19,7 +19,7 @@ Log.md                      ←──     (appended by sync)
                                     data/analytics.json      ←──    (sync recomputes)
 ```
 
-The web app reads `data/manifest.json` and same-origin JSON snapshots from GitHub Pages. Writes go to the auth Worker (`POST /pending/append`); the Worker holds the encrypted PAT and updates `data/pending.json` via the GitHub Contents API. A daily sync script drains pending → vault MD, re-derives all snapshots, recomputes analytics + manifest, then commits + pushes.
+The web app reads `data/manifest.json` and same-origin JSON snapshots from GitHub Pages. Writes go to the auth Worker (`POST /pending/append`); the Worker holds the encrypted PAT and updates `data/pending.json` via the GitHub Contents API. An on-demand sync script drains pending → vault MD, re-derives all snapshots, recomputes analytics + manifest, then commits + pushes.
 
 ## How to log a session
 
@@ -28,12 +28,12 @@ The web app reads `data/manifest.json` and same-origin JSON snapshots from GitHu
 3. Tap the day pill (Mon / Tue / …). Today is highlighted.
 4. Edit weight/reps per set, mark Done, repeat per exercise.
 5. Tap **Submit session** when done. The app asks the Worker to append to `data/pending.json` immediately.
-6. Overnight, the sync script writes `Workout Log/YYYY-MM-DD-Day-Type.md` to your vault.
+6. At the next requested sync, the script writes `Workout Log/YYYY-MM-DD-Day-Type.md` to your vault and refreshes analytics.
 
 ## How to add a new routine
 
 1. Create a new `Weekly Plans/YYYY-WXX-name.md` in your vault (mirror the format of `2026-W18-CDMX-Phase-1-Closeout.md`).
-2. Wait for the next sync run, or run it manually:
+2. Run the on-demand sync:
    ```bash
    python3 ~/Git/pt-tracker/scripts/sync.py
    ```
@@ -65,24 +65,21 @@ Open **Reports** from the day-view header (`reports.html`) — read-only; it rea
 - **Stale lifts** — active-routine exercises not trained in 7+/14+/21+ days.
 - **Recovery correlation** — weekly compliance, recovery minutes, and PR signals (descriptive only).
 
-## Daily sync — Cowork scheduled task
+## Sync on demand
 
-A Cowork scheduled task fires daily at 8:03 CT (mirrors the TV Concierge setup). It runs as Claude on your Mac, so it has access to the vault.
+Ask the interactive session to **"sync"** or **"update the workout plan."** It follows `docs/COWORK_SYNC_TASK.md`, the authoritative spec for the sync's drain order, outputs and hard limits.
 
-- **Task id:** `pt-tracker-daily-sync`
-- **Cron:** `3 8 * * *` (local time)
-- **Authoritative spec:** `docs/COWORK_SYNC_TASK.md` (version-controlled in this repo). Cowork's UI holds only a thin wrapper that does `git pull` then reads and runs that file — see `docs/COWORK_WRAPPER_PROMPT.md` for the paste-once wrapper text.
-- **Manage:** the "Scheduled" section in the Claude sidebar — pause, disable, or run on demand from there
-
-The high-level steps it runs:
+The high-level steps:
 
 1. `git pull --ff-only` in `~/Git/pt-tracker`
-2. `python3 scripts/sync.py` — drains `data/pending.json` into vault MD, re-derives JSON snapshots from vault MD, recomputes `data/analytics.json` and `data/manifest.json`, resets pending, auto-commits and pushes
-3. Reports a summary
+2. `python3 scripts/sync.py` — drains `data/pending.json` into vault MD, re-derives routine/log/recovery/profile snapshots, recomputes analytics and manifest, resets pending, auto-commits and pushes
+3. Verify the checkout is clean and pushed, then report a summary. If the push is rejected, reconcile the local sync commit with `origin/main`, preserving newer incoming pending entries, before another sync.
 
-**Pre-conditions:** Mac on, vault mounted at `~/Documents/Jonathan's Vault`, repo on `main`.
+**Pre-conditions:** vault materialized locally at `~/Documents/Jonathan's Vault`, repo on `main` with its remote configured. The script targets `~/Git/pt-tracker` regardless of the current directory unless `PT_TRACKER_REPO_ROOT` overrides it.
 
-You can also run sync on demand:
+The former `pt-tracker-daily-sync` Cowork schedule is documented as disabled since 2026-06-21. Its wrapper and Git bridge are retained for possible future use; submitted workouts remain in pending until the next requested sync.
+
+Direct invocation:
 ```bash
 python3 ~/Git/pt-tracker/scripts/sync.py
 ```
