@@ -188,6 +188,10 @@ EXERCISE_ALIASES: dict[str, str] = {
     "hip adductor":                          "hip-adductor-machine",
     "adductor machine":                      "hip-adductor-machine",
 
+    # Supported, right-arm-only variants used during left-forearm protection.
+    "right arm machine chest press":          "right-arm-machine-chest-press",
+    "right arm chest supported row":          "right-arm-chest-supported-row",
+
     # Core
     "dead bug legs only":                     "dead-bug-legs-only",
     "legs only dead bug":                     "dead-bug-legs-only",

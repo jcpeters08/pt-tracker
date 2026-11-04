@@ -53,8 +53,10 @@ runs behind the dock fix: fixed build PASS, pre-fix build FAIL, Safari and PWA.
 One run in three of the PWA pan scenario (`metrics-pwa-fixed-pan.flake-1-of-3.json`)
 saw iOS not scroll a freshly tapped input above the keyboard (input bottom 548 vs
 visible edge 442, dock untouched); the two re-runs revealed it to y=198 as usual.
-Treat a single "focused input clears the dock" failure as an iOS reveal race and
-re-run before blaming the dock.
+Those historical failures exposed an iOS focus-reveal race. The app now explicitly
+reveals obscured workout fields on focus, typing and viewport resize, with a separate
+keyboard-height end spacer for the final notes field. Treat a fresh visibility failure
+as a regression to investigate; a successful rerun alone does not resolve it.
 `metrics-safari-header*.json` are the header-compaction runs (static header, sticky day strip):
 this build PASS, base build FAIL on the no-sticky-top-chrome-while-typing check, Safari only.
 

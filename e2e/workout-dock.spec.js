@@ -204,6 +204,63 @@ test("workout dock rides above the iOS keyboard, compacts to the timer, and drop
 test.describe("touch devices", () => {
   test.use({ hasTouch: true, isMobile: true, viewport: { width: 375, height: 812 } });
 
+  test("settles delayed iOS layout height after the final keyboard resize event", async ({ page, context }) => {
+    await freezeAppTime(page, "2026-05-30T12:00:00-05:00");
+    await installFakeVisualViewport(page);
+    await signIn(page, context);
+    await openWorkoutDay(page);
+    await page.evaluate(() => {
+      const vv = window.__fakeVisualViewport;
+      vv.height = 484; vv.offsetTop = 150;
+      Object.defineProperty(window, "innerHeight", { value: 806, configurable: true });
+      vv.dispatchEvent(new Event("resize"));
+      // Real WebKit changes innerHeight after its final viewport event as
+      // the bottom-of-page keyboard layout settles; no new event is emitted.
+      setTimeout(() => {
+        Object.defineProperty(window, "innerHeight", { value: 812, configurable: true });
+      }, 100);
+    });
+    await expect.poll(async () => (await dockMetrics(page)).bottom).toBe(634);
+  });
+
+  for (const field of ["input[data-field='weight']", "textarea.ex-notes", "#session-notes-input"]) {
+    test(`reveals a bottom-of-screen ${field} above the keyboard and keeps the running timer visible`, async ({ page, context }) => {
+      await freezeAppTime(page, "2026-05-30T12:00:00-05:00");
+      await installFakeVisualViewport(page);
+      await signIn(page, context);
+      await openWorkoutDay(page);
+      await page.locator("#rest-bar-host .rest-time").click();
+      const storedEnd = await page.evaluate(key => JSON.parse(localStorage.getItem(key)).endsAtMs, TIMER_KEY);
+      const entry = field.startsWith("#") ? page.locator(field) : page.locator(".ex-card").nth(1).locator(field).first();
+      // Reproduce the recorded iOS reveal race: the tapped control was visible
+      // before the keyboard, but WebKit leaves it at y=504 after shrinking.
+      await entry.evaluate(el => window.scrollBy(0, el.getBoundingClientRect().top - 504));
+      await entry.focus();
+      await setVisualViewport(page, { height: 442 });
+      await expect.poll(async () => entry.evaluate(el => {
+        const r = el.getBoundingClientRect();
+        return Math.round(document.querySelector("#submit-row").getBoundingClientRect().top - r.bottom);
+      }), { message: "focused field is revealed above the compact timer, not hidden behind the keyboard" }).toBeGreaterThanOrEqual(8);
+      expect(await entry.evaluate(el => el.getBoundingClientRect().top)).toBeGreaterThanOrEqual(8);
+      const beforeTyping = await page.evaluate(() => window.scrollY);
+      await entry.fill(field.startsWith("input") ? "40" : "The field and timer stay visible while I type.");
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      expect(await page.evaluate(() => window.scrollY), "typing in an already visible field does not jump the page").toBe(beforeTyping);
+      const m = await dockMetrics(page);
+      expect(m.bottom).toBe(442);
+      expect(m.top).toBeGreaterThanOrEqual(0);
+      expect(await page.locator("#rest-bar-host .rest-time").evaluate(el => {
+        const r = el.getBoundingClientRect();
+        return document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2) === el;
+      }), "timer remains on screen and tappable").toBe(true);
+      expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key)).endsAtMs, TIMER_KEY)).toBe(storedEnd);
+      await entry.blur();
+      await setVisualViewport(page, { height: 812 });
+      expect((await dockMetrics(page)).bottom).toBe(812);
+      expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key)).endsAtMs, TIMER_KEY)).toBe(storedEnd);
+    });
+  }
+
   test("a zoomed user who opens the keyboard still gets the dock on the visible edge", async ({ page, context }) => {
     await freezeAppTime(page, "2026-05-30T12:00:00-05:00");
     await installFakeVisualViewport(page);

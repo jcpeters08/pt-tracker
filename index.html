@@ -524,6 +524,13 @@
   body.workout-dock-visible { padding-bottom: 0; }
   /* Keep the last card / session notes scrollable above the fixed dock. */
   body.workout-dock-visible .container { padding-bottom: var(--workout-dock-offset, 0px); }
+  /* Keep enough scroll range to reveal even the final notes field above the
+     keyboard. Separate from the frozen full-dock reserve; offsetTop changes
+     while panning must not shrink the document and yank the scroll position. */
+  body.workout-dock-visible .container::after {
+    content: ""; display: block; height: var(--keyboard-scroll-space, 0px);
+    overflow-anchor: none;
+  }
   #cooldown-card,
   #session-notes-input,
   #recovery-panel {
@@ -723,6 +730,7 @@
        shrinking in-flow block would move the document under the user. */
     .submit-row { position: static; max-width: none; transform: none; }
     body.workout-dock-visible .container { padding-bottom: 0; }
+    body.workout-dock-visible .container::after { height: 0; }
     body.keyboard-open .submit-row { padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
     body.keyboard-open .submit-row .session-progress,
     body.keyboard-open .submit-row #submit-btn,
@@ -1450,17 +1458,60 @@ function updateKeyboardInset() {
   const root = document.documentElement;
   if (inset > 0) root.style.setProperty("--keyboard-inset", `${inset}px`);
   else root.style.removeProperty("--keyboard-inset");
+  const scrollSpace = open && vv ? Math.max(0, Math.round(window.innerHeight - vv.height)) : 0;
+  if (scrollSpace > 0) root.style.setProperty("--keyboard-scroll-space", `${scrollSpace}px`);
+  else root.style.removeProperty("--keyboard-scroll-space");
   const wasOpen = document.body.classList.contains("keyboard-open");
   document.body.classList.toggle("keyboard-open", open);
   if (wasOpen !== open) updateDockOffset();
 }
 const coarsePointer = window.matchMedia ? window.matchMedia("(pointer: coarse)") : { matches: false };
+// WebKit occasionally opens its keyboard without revealing the tapped field.
+// Moving the dock alone leaves that field behind the timer/keyboard. Reveal
+// only on focus, typing and viewport resize; ordinary swipes must remain free.
+function revealFocusedWorkoutField() {
+  const field = document.activeElement;
+  const dock = $("#submit-row");
+  if (!coarsePointer.matches || !isTextEntry(field)
+      || !field.closest("#exercises-host, #session-notes-host, #cooldown-host")
+      || !document.body.classList.contains("keyboard-open")
+      || !dock?.getClientRects().length || getComputedStyle(dock).position !== "fixed") return;
+  const dockRect = dock.getBoundingClientRect();
+  const rect = field.getBoundingClientRect();
+  // Derive the visible top in the same coordinate space as the dock: iOS can
+  // report client rects relative to the visual viewport while Chromium uses
+  // layout coordinates. This also handles a panned/zoomed visual viewport.
+  const visibleTop = dockRect.bottom - (window.visualViewport?.height || window.innerHeight);
+  const top = visibleTop + 12;
+  const bottom = dockRect.top - 12;
+  if (bottom <= top) return;
+  let delta = 0;
+  if (rect.height > bottom - top || rect.top < top) delta = rect.top - top;
+  else if (rect.bottom > bottom) delta = rect.bottom - bottom;
+  if (Math.abs(delta) >= 1) window.scrollBy({ top: delta, behavior: "instant" });
+}
 let keyboardInsetFrame = 0;
-function scheduleKeyboardInset() {
+let keyboardSettleUntil = 0;
+let revealWorkoutField = false;
+function scheduleKeyboardInset(event) {
+  if (["focusin", "input", "resize"].includes(event?.type)) revealWorkoutField = true;
+  if (coarsePointer.matches && ["focusin", "focusout", "resize"].includes(event?.type)) {
+    keyboardSettleUntil = performance.now() + 500;
+  }
   if (keyboardInsetFrame) return;
   keyboardInsetFrame = requestAnimationFrame(() => {
-    keyboardInsetFrame = 0;
     updateKeyboardInset();
+    // Near the page bottom WebKit changes innerHeight after the final
+    // viewport event. Observe only this short keyboard transition so the
+    // timer/spacer settle too; ordinary swipes do not prolong or reveal it.
+    keyboardInsetFrame = requestAnimationFrame(function settle(now) {
+      updateKeyboardInset();
+      if (revealWorkoutField) {
+        revealWorkoutField = false;
+        revealFocusedWorkoutField();
+      }
+      keyboardInsetFrame = now < keyboardSettleUntil ? requestAnimationFrame(settle) : 0;
+    });
   });
 }
 function bindKeyboardAwareDock() {
@@ -1468,12 +1519,14 @@ function bindKeyboardAwareDock() {
   if (vv) {
     vv.addEventListener("resize", scheduleKeyboardInset);
     vv.addEventListener("scroll", scheduleKeyboardInset);
+    vv.addEventListener("scrollend", scheduleKeyboardInset);
   }
   window.addEventListener("resize", scheduleKeyboardInset);
   window.addEventListener("scroll", scheduleKeyboardInset, { passive: true });
   window.addEventListener("scrollend", scheduleKeyboardInset);
   document.addEventListener("focusin", scheduleKeyboardInset);
   document.addEventListener("focusout", scheduleKeyboardInset);
+  document.addEventListener("input", scheduleKeyboardInset);
   updateKeyboardInset();
 }
 
