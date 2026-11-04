@@ -84,40 +84,40 @@
     },
     "thursday": {
       "label": "Lower B (Repeat Comfortable Loads)",
-      "warmup": "5–7 min easy bike or flat walk with left arm relaxed. Review Tuesday's later-day and next-morning forearm response before repeating anything. One very light practice set per machine. If symptoms worsened, omit the provoking movement; do not compensate with extra sets. No painful gripping or arm brace.",
-      "cooldown": "3–5 min easy flat walk and comfortable seated breathing with left arm supported. No forced forearm stretch, hand-held quad stretch, quadruped position or arm-supported cooldown. Follow only the clinician's gentle elbow-motion guidance.",
+      "warmup": "5–7 min easy bike or flat walk with left arm relaxed. Tuesday caused no reported forearm or hip/groin pain increase during or afterward; repeat the listed actual loads only if symptoms also stayed at baseline the next morning and before this session. One very light practice set per machine. Keep 4+ reps in reserve. If there was delayed worsening, reduce or omit the provoking exercise; do not make up sets. No left-hand gripping or arm brace.",
+      "cooldown": "3–5 min easy flat walk and comfortable seated breathing with left arm supported. No forced forearm stretch, hand-held quad stretch, quadruped position or arm-supported cooldown. Follow only the clinician’s gentle elbow-motion guidance.",
       "exercises": [
         {
-          "exercise_id": "seated-leg-curl",
-          "target_weight_kg": 22.68,
-          "target_weight_raw": "50 lbs (22.68 kg)",
-          "target_reps": 12,
-          "target_sets": 2,
-          "notes": "Repeat Tuesday's comfortable actual load, or less; no increase. No left-hand handle grip. Skip if correct operation/stability needs both hands or Tuesday increased forearm symptoms. Keep 4+ reps in reserve."
+          "exercise_id": "leg-extension",
+          "target_weight_kg": 18.14,
+          "target_weight_raw": "40 lbs (18.14 kg)",
+          "target_reps": 15,
+          "target_sets": 3,
+          "notes": "Repeat Tuesday’s actual load as a ceiling, only after a stable next-morning response. Use less if needed for 4+ reps in reserve. Left arm relaxed; no copying the image’s handle grip. Skip if safe setup or stabilization needs the left hand. No load/rep/set progression."
         },
         {
-          "exercise_id": "leg-extension",
-          "target_weight_kg": 9.07,
-          "target_weight_raw": "20 lbs (9.07 kg)",
-          "target_reps": 12,
-          "target_sets": 2,
-          "notes": "Repeat Tuesday's comfortable starting pin, or less; enter actual weight. Left arm relaxed, no copying the image's handle grip. Skip if setup or stabilization needs the left hand. No grinding or load progression."
+          "exercise_id": "seated-leg-curl",
+          "target_weight_kg": 27.22,
+          "target_weight_raw": "60 lbs (27.22 kg)",
+          "target_reps": 15,
+          "target_sets": 3,
+          "notes": "Repeat Tuesday’s actual load, or less, if the forearm remains at baseline. Thigh pad must stabilize you without left-hand gripping; skip if the machine requires both hands. No grinding or increases; leave 4+ reps in reserve."
         },
         {
           "exercise_id": "hip-abductor-machine",
-          "target_weight_kg": 27.22,
-          "target_weight_raw": "60 lbs (27.22 kg)",
-          "target_reps": 12,
-          "target_sets": 2,
-          "notes": "Same comfortable range and load as Tuesday, or less. No left-arm grip/brace or torso rocking; skip if required for safety. Stop for any returning hip/groin pain."
+          "target_weight_kg": 45.36,
+          "target_weight_raw": "100 lbs (45.36 kg)",
+          "target_reps": 15,
+          "target_sets": 3,
+          "notes": "Tuesday’s actual load is the ceiling. Comfortable middle range, no torso rocking or left-arm grip/brace. Reduce for any strain and stop for returning hip/groin or forearm symptoms. Repeat only after a stable next-morning check."
         },
         {
-          "exercise_id": "bodyweight-glute-bridge",
-          "target_weight_kg": 0.0,
-          "target_weight_raw": "bodyweight",
-          "target_reps": 10,
+          "exercise_id": "hip-adductor-machine",
+          "target_weight_kg": 36.29,
+          "target_weight_raw": "80 lbs (36.29 kg)",
+          "target_reps": 12,
           "target_sets": 2,
-          "notes": "Repeat only if Tuesday and the following morning were comfortable. No added load and no pushing into the mat with the arm. Safe transitions without left-hand/elbow support are required."
+          "notes": "Tuesday’s note recorded 80 × 12 × 3 with no reported pain increase. Limit the repeat to TWO sets given prior hip/groin symptoms; use less if needed. Comfortable range only, no forced wide starting stretch. Left arm rests; this overrides generic handle-grip instructions. Skip if either symptom area worsens or setup needs the injured arm."
         }
       ]
     },
