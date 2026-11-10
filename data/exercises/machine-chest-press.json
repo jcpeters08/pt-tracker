@@ -1,0 +1,29 @@
+{
+  "id": "machine-chest-press",
+  "name": "Machine Chest Press",
+  "primary_muscle": "chest",
+  "secondary_muscles": ["triceps", "front-delts"],
+  "equipment": ["machine"],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Bench_Press/0.jpg",
+  "image_source": "yuhonas/free-exercise-db and contributors, public domain (Unlicense).",
+  "image_match": "Machine_Bench_Press. Seated bilateral chest press with a back pad and weight stack.",
+  "video_url": "https://www.youtube.com/watch?v=_1rj1FY-b1Q",
+  "video_id": "_1rj1FY-b1Q",
+  "video_id_query": "Life Fitness Insignia Series Chest Press",
+  "video_source": "Life Fitness Australia, Insignia Series Chest Press demonstration.",
+  "info_url": "https://www.lifefitness.com/en-us/catalog/strength-training/selectorized/insignia-series-chest-press",
+  "info_source": "Life Fitness, Insignia Series Chest Press.",
+  "default_load_unit": "kg",
+  "form_cues": [
+    "Set the seat so the handles meet the middle of your chest.",
+    "Keep your wrists straight and your back against the pad.",
+    "Press evenly with both arms and control the return."
+  ],
+  "instructions": [
+    "Choose a pin-loaded, back-supported chest press. Set the pin while the stack is resting. Adjust the seat and start position so both handles are comfortably within reach.",
+    "Plant both feet, rest your back on the pad and take a secure grip. Use the neutral handles if available and comfortable.",
+    "Press both handles forward smoothly. Keep your shoulders down and stop before your elbows lock or your back lifts off the pad.",
+    "Bring both handles back under control within your comfortable range. Settle the stack before releasing the handles."
+  ],
+  "notes": "Record the marked load on the machine you used. Follow your weekly plan for starting resistance, reps and symptom limits."
+}

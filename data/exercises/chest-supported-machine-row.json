@@ -1,0 +1,29 @@
+{
+  "id": "chest-supported-machine-row",
+  "name": "Chest-Supported Machine Row",
+  "primary_muscle": "back",
+  "secondary_muscles": ["biceps", "rear-delts"],
+  "equipment": ["machine"],
+  "image_url": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Iso_Row/0.jpg",
+  "image_source": "yuhonas/free-exercise-db and contributors, public domain (Unlicense).",
+  "image_match": "Leverage_Iso_Row. The photo shows the bilateral grip and chest-pad position on a plate-loaded row. The linked demonstration shows the prescribed pin-loaded machine.",
+  "video_url": "https://www.youtube.com/watch?v=5VqeNOZt2ok",
+  "video_id": "5VqeNOZt2ok",
+  "video_id_query": "Life FitnessTraining Insignia Series Row",
+  "video_source": "Life FitnessTraining, Insignia Series Row demonstration.",
+  "info_url": "https://www.lifefitness.com/en-us/catalog/strength-training/selectorized/insignia-series-row",
+  "info_source": "Life Fitness, Insignia Series Row.",
+  "default_load_unit": "kg",
+  "form_cues": [
+    "Adjust the pad so you can reach both handles with your chest supported.",
+    "Keep wrists straight and draw both elbows toward your sides.",
+    "Maintain contact with the chest pad as you pull and return."
+  ],
+  "instructions": [
+    "Choose a pin-loaded row with a chest pad. Set the pin with the stack resting. Adjust the seat and pad so your feet are stable and the handles are within reach.",
+    "Rest your chest against the pad and take both handles with a secure grip. Use the neutral handles if available and comfortable.",
+    "Draw both elbows back toward your sides at the same pace. Keep your shoulders down and chest in contact with the pad.",
+    "Let both handles move forward slowly within a comfortable range. Settle the stack before releasing your grip."
+  ],
+  "notes": "Use the pin-loaded version shown in the demonstration. Record the marked load on your machine and follow your weekly plan for reps and symptom limits."
+}
