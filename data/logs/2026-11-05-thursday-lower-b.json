@@ -1,0 +1,117 @@
+{
+  "id": "2026-11-05-thursday-lower-b",
+  "date": "2026-11-05",
+  "day_of_week": "thursday",
+  "type": "lower-b",
+  "muscle_groups": [
+    "quads",
+    "hamstrings",
+    "glutes",
+    "adductors"
+  ],
+  "phase": "2",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "leg-extension",
+      "display_name": "Leg Extension",
+      "weight_raw": "40 lbs (18.1 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 18.14,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 18.14,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 18.14,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "display_name": "Seated Leg Curl",
+      "weight_raw": "70 lbs (31.8 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 31.75,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 31.75,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 31.75,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "hip-abductor-machine",
+      "display_name": "Hip Abductor Machine",
+      "weight_raw": "100 lbs (45.4 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 45.36,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 45.36,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 45.36,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "hip-adductor-machine",
+      "display_name": "Hip Adductor Machine",
+      "weight_raw": "80 lbs (36.3 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 36.29,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 36.29,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 36.29,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "cooldown": null,
+  "session_notes": "",
+  "submitted_at": "2026-11-05T12:15:24.587Z",
+  "source_md": "Workout Log/2026-11-05-Thursday-Lower-B.md"
+}

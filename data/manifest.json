@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-04T03:18:15Z",
+  "generated_at": "2026-11-10T02:05:59Z",
   "routines": [
     "2026-W18-CDMX-Phase-1-Closeout",
     "2026-W20-Phase-2-Launch-Reentry",
@@ -121,7 +121,8 @@
     "2026-10-22-thursday-upper-hybrid",
     "2026-10-23-friday-lower-hybrid",
     "2026-10-27-monday-pull",
-    "2026-11-03-tuesday-lower-a"
+    "2026-11-03-tuesday-lower-a",
+    "2026-11-05-thursday-lower-b"
   ],
   "recovery_logs": [
     "2026-05-14-embrace-north",

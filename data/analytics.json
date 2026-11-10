@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-04T03:18:15Z",
-  "log_count": 93,
+  "generated_at": "2026-11-10T02:05:59Z",
+  "log_count": 94,
   "recovery_count": 13,
   "lifts_per_week": {
     "2026-W16": {
@@ -143,7 +143,8 @@
       "monday": "pull"
     },
     "2026-W45": {
-      "tuesday": "lower-a"
+      "tuesday": "lower-a",
+      "thursday": "lower-b"
     }
   },
   "weekly_volume_by_muscle": [
@@ -1565,22 +1566,22 @@
     {
       "week": "2026-W45",
       "muscle": "adductors",
-      "sets": 3
+      "sets": 6
     },
     {
       "week": "2026-W45",
       "muscle": "glutes",
-      "sets": 3
+      "sets": 6
     },
     {
       "week": "2026-W45",
       "muscle": "hamstrings",
-      "sets": 3
+      "sets": 6
     },
     {
       "week": "2026-W45",
       "muscle": "quads",
-      "sets": 3
+      "sets": 6
     }
   ],
   "exercise_progression": {
@@ -2745,6 +2746,13 @@
         "top_set_weight_kg": 27.22,
         "top_set_reps": 15,
         "total_volume_kg": 1224.9,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-11-05",
+        "top_set_weight_kg": 31.75,
+        "top_set_reps": 15,
+        "total_volume_kg": 1428.8,
         "sets_count": 3
       }
     ],
@@ -5715,6 +5723,13 @@
         "top_set_reps": 15,
         "total_volume_kg": 2041.2,
         "sets_count": 3
+      },
+      {
+        "date": "2026-11-05",
+        "top_set_weight_kg": 45.36,
+        "top_set_reps": 15,
+        "total_volume_kg": 2041.2,
+        "sets_count": 3
       }
     ],
     "cable-rope-crunch": [
@@ -6301,6 +6316,13 @@
         "top_set_reps": 12,
         "total_volume_kg": 1306.4,
         "sets_count": 3
+      },
+      {
+        "date": "2026-11-05",
+        "top_set_weight_kg": 36.29,
+        "top_set_reps": 12,
+        "total_volume_kg": 1306.4,
+        "sets_count": 3
       }
     ],
     "single-leg-leg-press": [
@@ -6343,6 +6365,13 @@
     "leg-extension": [
       {
         "date": "2026-11-03",
+        "top_set_weight_kg": 18.14,
+        "top_set_reps": 15,
+        "total_volume_kg": 816.3,
+        "sets_count": 3
+      },
+      {
+        "date": "2026-11-05",
         "top_set_weight_kg": 18.14,
         "top_set_reps": 15,
         "total_volume_kg": 816.3,
@@ -10341,8 +10370,8 @@
     },
     "2026-W45": {
       "planned": 4,
-      "completed": 1,
-      "completion_rate": 0.25
+      "completed": 2,
+      "completion_rate": 0.5
     }
   },
   "recovery_by_week": {
