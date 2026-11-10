@@ -1,4 +1,115 @@
 {
   "format_note": "Append-only inbox written by the web app. Daily scheduled task drains entries[] into vault MD files at Workout Log/YYYY-MM-DD-day-type.md and into data/logs/*.json, then resets to []. Schema: {type: 'log', submitted_at: ISO8601, session: {…full log object…}}",
-  "entries": []
+  "entries": [
+    {
+      "type": "log",
+      "submitted_at": "2026-11-10T12:24:18.058Z",
+      "session": {
+        "date": "2026-11-10",
+        "submitted_at": "2026-11-10T12:24:18.058Z",
+        "day_of_week": "tuesday",
+        "type": "lower-a",
+        "muscle_groups": [
+          "quads",
+          "hamstrings",
+          "glutes",
+          "adductors"
+        ],
+        "routine_id": "2026-W46-Phase-2-Week-27-Upper-Body-Return",
+        "phase": "2",
+        "exercises": [
+          {
+            "exercise_id": "leg-extension",
+            "display_name": "Leg Extension",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 20.41,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 20.41,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 20.41,
+                "reps": 15
+              }
+            ],
+            "notes": "Al"
+          },
+          {
+            "exercise_id": "seated-leg-curl",
+            "display_name": "Seated Leg Curl",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 31.75,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 31.75,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 31.75,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "hip-abductor-machine",
+            "display_name": "Hip Abductor Machine",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 45.36,
+                "reps": 15
+              },
+              {
+                "set": 2,
+                "weight_kg": 45.36,
+                "reps": 15
+              },
+              {
+                "set": 3,
+                "weight_kg": 45.36,
+                "reps": 15
+              }
+            ],
+            "notes": ""
+          },
+          {
+            "exercise_id": "hip-adductor-machine",
+            "display_name": "Hip Adductor Machine",
+            "sets": [
+              {
+                "set": 1,
+                "weight_kg": 36.29,
+                "reps": 12
+              },
+              {
+                "set": 2,
+                "weight_kg": 36.29,
+                "reps": 12
+              },
+              {
+                "set": 3,
+                "weight_kg": 36.29,
+                "reps": 12
+              }
+            ],
+            "notes": ""
+          }
+        ],
+        "cooldown": null,
+        "session_notes": "Also leg press 45 degree, 270 x 12 x 3\nHip thrusts 90 x 10 x 3 \nDeclined press 45 pbs each arm\nLay pulldown 70 lbs\nLow row 100 lbs "
+      }
+    }
+  ]
 }
