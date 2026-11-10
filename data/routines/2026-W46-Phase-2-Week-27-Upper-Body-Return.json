@@ -1,0 +1,161 @@
+{
+  "id": "2026-W46-Phase-2-Week-27-Upper-Body-Return",
+  "name": "W46 — Lower Strength and Upper-Body Return",
+  "phase": "2",
+  "start_date": "2026-11-09",
+  "end_date": "2026-11-15",
+  "source_md": "Weekly Plans/2026-W46-Phase-2-Week-27-Upper-Body-Return.md",
+  "days": {
+    "monday": {
+      "label": "Rest",
+      "warmup": "",
+      "cooldown": "",
+      "exercises": []
+    },
+    "tuesday": {
+      "label": "Lower A (Quads / Hamstrings / Hips)",
+      "warmup": "5 minutes on the recumbent bike, then one light practice set on the leg extension. Rest 90 seconds between working sets. Choose loads that leave 2–3 clean reps in reserve and let the left hand stay relaxed.",
+      "cooldown": "Walk easily for 3 minutes, then do a gentle seated hamstring stretch on each side. Rest your hands on your thighs.",
+      "exercises": [
+        {
+          "exercise_id": "leg-extension",
+          "target_weight_kg": 20.41,
+          "target_weight_raw": "45 lbs (20.41 kg)",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "First 5-lb increase after two sessions at 40 × 15 × 3. Use 40 if the 45-lb setting is unavailable or 10 controlled reps would require gripping hard."
+        },
+        {
+          "exercise_id": "seated-leg-curl",
+          "target_weight_kg": 31.75,
+          "target_weight_raw": "70 lbs (31.75 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "Use Thursday’s pin. Keep hips down and lower the pad slowly."
+        },
+        {
+          "exercise_id": "hip-abductor-machine",
+          "target_weight_kg": 45.36,
+          "target_weight_raw": "100 lbs (45.36 kg)",
+          "target_reps": 15,
+          "target_sets": 3,
+          "notes": "Repeat last week’s load. Keep the torso still and pause briefly at the open position."
+        },
+        {
+          "exercise_id": "hip-adductor-machine",
+          "target_weight_kg": 36.29,
+          "target_weight_raw": "80 lbs (36.29 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "Repeat the logged sets through a comfortable range. Keep the return controlled."
+        }
+      ]
+    },
+    "wednesday": {
+      "label": "Upper A + Cardio (Chest / Back)",
+      "warmup": "Ride the recumbent bike easily for 5 minutes. Check that elbow movement, light grip and reaching the handles feel comfortable. Try the lightest pin on each supported machine. If either movement provokes the forearm, stop it. If both are uncomfortable, ride or walk for 15–20 minutes total and log the activity and minutes.",
+      "cooldown": "Walk easily for 3 minutes. Record the machine settings and how the forearm felt. Compare with your usual baseline that evening and Thursday morning.",
+      "exercises": [
+        {
+          "exercise_id": "machine-chest-press",
+          "target_weight_kg": null,
+          "target_weight_raw": "Lightest comfortable pin",
+          "target_reps": 8,
+          "target_sets": 2,
+          "notes": "Use both arms with your back supported and wrists straight. Start with one set. Rest 90 seconds and do the second only if the first was pain-free with at least four good reps left. Enter the actual pin weight."
+        },
+        {
+          "exercise_id": "chest-supported-machine-row",
+          "target_weight_kg": null,
+          "target_weight_raw": "Lightest comfortable pin",
+          "target_reps": 8,
+          "target_sets": 2,
+          "notes": "Use a pin-loaded row with a chest pad and palms facing each other. Pull smoothly with an easy grip. Use the same one-set check before doing the second. Skip if the lightest setting takes effort to grip."
+        }
+      ]
+    },
+    "thursday": {
+      "label": "Cardio + Core",
+      "warmup": "Take 25 minutes total on the recumbent bike or a flat walk. Start easy for 5 minutes, go at a conversational pace for 17, then ease down for 3. Record activity and actual minutes in session notes. Add heel taps if getting down to the mat and back up is comfortable.",
+      "cooldown": "The final 3 easy minutes are included in the cardio time. After any heel taps, sit comfortably and relax your shoulders.",
+      "exercises": [
+        {
+          "exercise_id": "dead-bug-legs-only",
+          "target_weight_kg": 0.0,
+          "target_weight_raw": "bodyweight",
+          "target_reps": 12,
+          "target_sets": 2,
+          "notes": "Optional. Keep arms resting. Alternate six heel taps per side per set. A cardio-only entry can be submitted with activity and minutes in session notes."
+        }
+      ]
+    },
+    "friday": {
+      "label": "Lower B (Hamstrings / Glutes / Quads)",
+      "warmup": "5 minutes of easy cycling, then one light set on the leg curl. Rest 90 seconds between working sets. Keep 2–3 clean reps in reserve and avoid hard gripping on the machine handles.",
+      "cooldown": "Walk for 3 minutes. Finish with a gentle seated calf or hamstring stretch. Keep the forearm relaxed.",
+      "exercises": [
+        {
+          "exercise_id": "seated-leg-curl",
+          "target_weight_kg": 31.75,
+          "target_weight_raw": "70 lbs (31.75 kg)",
+          "target_reps": 15,
+          "target_sets": 3,
+          "notes": "Repeat last Thursday’s performance if it feels smooth. Stop the set earlier if form starts to go."
+        },
+        {
+          "exercise_id": "bodyweight-glute-bridge",
+          "target_weight_kg": 0.0,
+          "target_weight_raw": "bodyweight",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "Drive through the heels and pause at the top. Rest arms comfortably. Omit if you need to push through the left arm to get up."
+        },
+        {
+          "exercise_id": "leg-extension",
+          "target_weight_kg": 20.41,
+          "target_weight_raw": "45 lbs (20.41 kg)",
+          "target_reps": 10,
+          "target_sets": 3,
+          "notes": "Repeat the load that worked on Tuesday. Use 40 if you used 40 then. Finish without pulling on the handles."
+        },
+        {
+          "exercise_id": "hip-adductor-machine",
+          "target_weight_kg": 36.29,
+          "target_weight_raw": "80 lbs (36.29 kg)",
+          "target_reps": 12,
+          "target_sets": 3,
+          "notes": "Hold the pin steady. Keep the pelvis still and ease back to the starting position."
+        }
+      ]
+    },
+    "saturday": {
+      "label": "Upper B + Cardio (Chest / Back)",
+      "warmup": "Ride or walk easily for 5 minutes. Repeat only movements that felt fine Wednesday, stayed at baseline that evening and the next morning, and feel comfortable now. Follow any updated clinician advice. If neither lift qualifies, make this a 15–20 minute easy cardio session and log your activity and actual minutes.",
+      "cooldown": "Walk easily for 3 minutes. Note the load, sets, and forearm response in the tracker. Check again Sunday morning before deciding on next week’s loads.",
+      "exercises": [
+        {
+          "exercise_id": "machine-chest-press",
+          "target_weight_kg": null,
+          "target_weight_raw": "Repeat Wednesday’s comfortable pin",
+          "target_reps": 8,
+          "target_sets": 2,
+          "notes": "Use the same machine and pin. Match the number of pain-free sets completed Wednesday, up to two. Keep four reps in reserve and stop for forearm pain."
+        },
+        {
+          "exercise_id": "chest-supported-machine-row",
+          "target_weight_kg": null,
+          "target_weight_raw": "Repeat Wednesday’s comfortable pin",
+          "target_reps": 8,
+          "target_sets": 2,
+          "notes": "Use the same chest pad, neutral grip, load and number of comfortable sets as Wednesday, up to two. Skip any movement that caused delayed symptoms."
+        }
+      ]
+    },
+    "sunday": {
+      "label": "Rest",
+      "warmup": "",
+      "cooldown": "",
+      "exercises": []
+    }
+  }
+}
