@@ -1,0 +1,117 @@
+{
+  "id": "2026-11-10-tuesday-lower-a",
+  "date": "2026-11-10",
+  "day_of_week": "tuesday",
+  "type": "lower-a",
+  "muscle_groups": [
+    "quads",
+    "hamstrings",
+    "glutes",
+    "adductors"
+  ],
+  "phase": "2",
+  "location": null,
+  "trainer": null,
+  "training_partner": null,
+  "thermocycling": false,
+  "fasted": false,
+  "warmup_exercises": [],
+  "exercises": [
+    {
+      "exercise_id": "leg-extension",
+      "display_name": "Leg Extension",
+      "weight_raw": "45 lbs (20.4 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 20.41,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 20.41,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 20.41,
+          "reps": 15
+        }
+      ],
+      "notes": "Al"
+    },
+    {
+      "exercise_id": "seated-leg-curl",
+      "display_name": "Seated Leg Curl",
+      "weight_raw": "70 lbs (31.8 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 31.75,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 31.75,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 31.75,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "hip-abductor-machine",
+      "display_name": "Hip Abductor Machine",
+      "weight_raw": "100 lbs (45.4 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 45.36,
+          "reps": 15
+        },
+        {
+          "set": 2,
+          "weight_kg": 45.36,
+          "reps": 15
+        },
+        {
+          "set": 3,
+          "weight_kg": 45.36,
+          "reps": 15
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "exercise_id": "hip-adductor-machine",
+      "display_name": "Hip Adductor Machine",
+      "weight_raw": "80 lbs (36.3 kg)",
+      "sets": [
+        {
+          "set": 1,
+          "weight_kg": 36.29,
+          "reps": 12
+        },
+        {
+          "set": 2,
+          "weight_kg": 36.29,
+          "reps": 12
+        },
+        {
+          "set": 3,
+          "weight_kg": 36.29,
+          "reps": 12
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "cooldown": null,
+  "session_notes": "Also leg press 45 degree, 270 x 12 x 3\nHip thrusts 90 x 10 x 3\nDeclined press 45 pbs each arm\nLay pulldown 70 lbs\nLow row 100 lbs",
+  "submitted_at": "2026-11-10T12:24:18.058Z",
+  "source_md": "Workout Log/2026-11-10-Tuesday-Lower-A.md"
+}
