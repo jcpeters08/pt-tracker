@@ -179,19 +179,19 @@
         },
         {
           "exercise_id": "barbell-hip-thrust",
-          "target_weight_kg": 45.36,
-          "target_weight_raw": "100 lbs (45 kg)",
+          "target_weight_kg": 49.9,
+          "target_weight_raw": "110 lbs (50 kg)",
           "target_reps": 10,
           "target_sets": 3,
-          "notes": "100/95/95 × 10 → 100 on all three sets. Pre-layoff was 110. Chin tucked; sit up 20–30 s before standing"
+          "notes": "Back to the pre-layoff load: 100 × 10 × 3 beat the 95 target. 25 + 5 + 2.5 per side. Set 1 under 8 → 100 for sets 2–3. Chin tucked; sit up 20–30 s before standing"
         },
         {
           "exercise_id": "calf-raise",
-          "target_weight_kg": 104.33,
-          "target_weight_raw": "230 lbs (104 kg)",
+          "target_weight_kg": 117.94,
+          "target_weight_raw": "260 lbs (118 kg)",
           "target_reps": 12,
           "target_sets": 3,
-          "notes": "230/220/220 × 12 → 230 on all three sets. Pre-layoff was 260. Full range, 1 s pause, no bounce"
+          "notes": "Back to the pre-layoff load: 230 × 12 × 3 beat the 220 target, and 260 went 15 × 3 on 10/21. Set 1 under 10 → 240 for sets 2–3. Full range, 1 s pause, no bounce"
         },
         {
           "exercise_id": "cable-rope-crunch",
