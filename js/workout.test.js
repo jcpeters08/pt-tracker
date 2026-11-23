@@ -1,5 +1,7 @@
-import { describe, it, expect } from "vitest";
-import { cooldownKeyForDay, formatHistoryDate, formatLoggedPerformance } from "./workout.js";
+import { describe, it, expect, afterEach } from "vitest";
+import { state } from "./app-context.js";
+import { applySetWeightEdit } from "./set-weights.js";
+import { cooldownKeyForDay, ensureLogState, formatHistoryDate, formatLoggedPerformance } from "./workout.js";
 
 describe("formatLoggedPerformance", () => {
   it("compacts equal canonical loads into one weight and a rep sequence", () => {
@@ -65,5 +67,25 @@ describe("cooldownKeyForDay", () => {
     ["Mobility", "default"],
   ])("maps %s to %s", (label, expected) => {
     expect(cooldownKeyForDay({ label })).toBe(expected);
+  });
+});
+
+describe("ensureLogState weight seeding", () => {
+  afterEach(() => { state.log = {}; state.activeSession = null; });
+
+  it("seeds routine-target sets as not user-edited, so a set-1 edit carries", () => {
+    state.activeSession = null;
+    const log = ensureLogState("lat-pulldown", 49.9, 8, 3);
+    applySetWeightEdit(log.sets, 0, 54.43);
+    expect(log.sets.map(s => s.weight_kg)).toEqual([54.43, 54.43, 54.43]);
+  });
+
+  it("treats sets prefilled from a saved log as user-entered, so an edit never rewrites them", () => {
+    state.activeSession = { kind: "log", session: { exercises: [{ exercise_id: "squat", sets: [
+      { weight_kg: 49.9, reps: 10 }, { weight_kg: 58.97, reps: 8 }, { weight_kg: 58.97, reps: 8 },
+    ] }] } };
+    const log = ensureLogState("squat", 52.16, 8, 3);
+    applySetWeightEdit(log.sets, 0, 47.63);
+    expect(log.sets.map(s => s.weight_kg)).toEqual([47.63, 58.97, 58.97]);
   });
 });
