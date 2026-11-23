@@ -8,6 +8,7 @@ import { openHowto, openVideo, openLightbox } from "./ui.js";
 import { startRest } from "./rest-bar.js";
 import { findPreviousExercisePerformance } from "./workout-history.js";
 import { summarizeWorkoutProgress } from "./workout-progress.js";
+import { applySetWeightEdit } from "./set-weights.js";
 
 // Tiny DOM builder: el("div", {class, text, href, dataset…}, ...children).
 // Keeps the render functions readable without innerHTML.
@@ -337,6 +338,7 @@ export function ensureLogState(exId, targetWeight, targetReps, targetSets) {
         weight_kg: s.weight_kg ?? null,
         reps: s.reps ?? null,
         done: true,                   // it's in the saved log → it counted
+        weight_edited: true,          // a logged weight, so never fill it down
       }));
       state.log[exId] = { sets, notes: logged.notes || "" };
       return state.log[exId];
@@ -494,7 +496,11 @@ function bindCardEvents(card, exId) {
     const idx = Number(row.dataset.set);
     row.querySelector('input[data-field="weight"]').addEventListener("input", e => {
       const kg = inputToKg(e.target.value);
-      log.sets[idx].weight_kg = kg == null ? null : roundTo(kg, 2);
+      // Fill down to later sets still on their seeded weight (see set-weights.js).
+      for (const i of applySetWeightEdit(log.sets, idx, kg == null ? null : roundTo(kg, 2))) {
+        const later = card.querySelector(`.set-row[data-set="${i}"] input[data-field="weight"]`);
+        if (later) later.value = e.target.value;
+      }
       hooks.markWorkoutDirty();
     });
     row.querySelector('input[data-field="reps"]').addEventListener("input", e => {
